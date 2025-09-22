@@ -1,0 +1,42 @@
+rules:
+  - id: go-reflection-advanced-patterns
+    message: Advanced reflection patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.MakeFunc($TYPE, $FUNC)
+          - pattern: reflect.MakeChan($TYPE, $BUFFER)
+          - pattern: reflect.MakeMap($TYPE)
+          - pattern: reflect.MakeMapWithSize($TYPE, $SIZE)
+          - pattern: reflect.MakeSlice($TYPE, $LEN, $CAP)
+          - pattern: reflect.ValueOf($OBJ).Interface()
+          - pattern: reflect.ValueOf($OBJ).Convert($TYPE)
+          - pattern: reflect.ValueOf($OBJ).Elem()
+          - pattern: reflect.ValueOf($OBJ).Addr()
+          - pattern: reflect.ValueOf($OBJ).UnsafeAddr()
+          - pattern: reflect.ValueOf($OBJ).OverflowInt($VALUE)
+          - pattern: reflect.ValueOf($OBJ).OverflowUint($VALUE)
+          - pattern: reflect.ValueOf($OBJ).OverflowFloat($VALUE)
+          - pattern: reflect.ValueOf($OBJ).OverflowComplex($VALUE)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Interface()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Convert($TYPE)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Addr()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.UnsafeAddr()
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety, create security vulnerabilities through resource exhaustion and type confusion

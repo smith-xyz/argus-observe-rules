@@ -1,0 +1,20 @@
+rules:
+  - id: gosec-config-files
+    message: Found gosec configuration file
+    severity: INFO
+    languages:
+      - json
+      - yaml
+    patterns:
+      - pattern: $...CONTENT
+    paths:
+      include:
+        - .gosec.json
+        - gosec.json
+        - .gosec.yaml
+        - gosec.yaml
+        - .gosec.yml
+        - gosec.yml
+    metadata:
+      category: static-analysis
+      tool: gosec

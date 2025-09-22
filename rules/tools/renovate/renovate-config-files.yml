@@ -1,0 +1,23 @@
+rules:
+  - id: renovate-config-files
+    message: Found Renovate configuration file
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern: renovatebot.com/renovate-schema.json
+          - pattern: '"extends"'
+          - pattern: '"schedule"'
+          - pattern: '"packageRules"'
+          - pattern: '"automerge"'
+          - pattern: '"rangeStrategy"'
+    paths:
+      include:
+        - renovate.json
+        - .renovaterc
+        - .renovaterc.json
+        - "**/.github/renovate.json"
+    metadata:
+      category: dependency-management
+      tool: renovate

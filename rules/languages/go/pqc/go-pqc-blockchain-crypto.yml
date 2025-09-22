@@ -1,0 +1,34 @@
+rules:
+  - id: go-pqc-blockchain-crypto
+    message: Blockchain/cryptocurrency operations detected - assess quantum-resistant algorithm migration readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: btc.NewPrivateKey()
+          - pattern: btc.NewPublicKey($BYTES)
+          - pattern: btcec.PrivateKey{...}
+          - pattern: btcec.PublicKey{...}
+          - pattern: secp256k1.PrivateKey{...}
+          - pattern: secp256k1.Sign($HASH, $PRIVKEY)
+          - pattern: secp256k1.Verify($HASH, $SIG, $PUBKEY)
+          - pattern: crypto.GenerateKey()
+          - pattern: crypto.Sign($DIGESTHASH, $PRIV)
+          - pattern: crypto.Ecrecover($HASH, $SIG)
+          - pattern: crypto.VerifySignature($PUBKEY, $HASH, $SIGNATURE)
+          - pattern: crypto.SigToPub($HASH, $SIG)
+          - pattern: accounts.NewKeyStore($KEYDIR, $SCRYPTN, $SCRYPTP)
+          - pattern: blockchain.NewBlock($DATA, $PREVHASH)
+          - pattern: $BLOCK.Hash()
+          - pattern: $BLOCK.Sign($PRIVKEY)
+          - pattern: $BLOCK.Verify($PUBKEY)
+          - pattern: merkletree.NewTree($LEAVES)
+          - pattern: $TREE.Root()
+          - pattern: $TREE.GetMerklePath($INDEX)
+          - pattern: contract.Sign($DATA, $KEY)
+          - pattern: contract.Verify($DATA, $SIG, $PUBKEY)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Blockchain/cryptocurrency usage catalogued - evaluate blockchain platform support for quantum-resistant algorithms

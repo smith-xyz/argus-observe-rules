@@ -1,0 +1,25 @@
+rules:
+  - id: go-pqc-ssh-client
+    message: SSH client configuration detected - evaluate PQC SSH algorithm support readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: ssh.ClientConfig{...}
+          - pattern: ssh.Dial($NETWORK, $ADDR, $CONFIG)
+          - pattern: ssh.NewClientConn($CONN, $ADDR, $CONFIG)
+          - patterns:
+              - pattern: ssh.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(Parse(Private|Public)Key|NewPublicKey)$
+          - pattern: ssh.InsecureIgnoreHostKey()
+          - pattern: ssh.FixedHostKey($KEY)
+          - pattern: ssh.HostKeyCallback($FUNC)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact:
+        SSH client configuration documented - verify SSH library supports hybrid or PQC key exchange and authentication
+        algorithms

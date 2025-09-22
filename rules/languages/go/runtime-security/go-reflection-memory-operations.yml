@@ -1,0 +1,42 @@
+rules:
+  - id: go-reflection-memory-operations
+    message: Reflection-based memory operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.NewAt($TYPE, $PTR)
+          - pattern: reflect.New($TYPE)
+          - pattern: reflect.ValueOf($EXPR).Set($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetBool($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetInt($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetUint($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetFloat($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetString($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetBytes($VALUE)
+          - pattern: reflect.ValueOf($EXPR).SetComplex($VALUE)
+          - pattern: |
+              $VAL := reflect.ValueOf($EXPR)
+              ...
+              $VAL.Set($VALUE)
+          - pattern: |
+              $VAL := reflect.ValueOf($EXPR)
+              ...
+              $VAL.SetBool($VALUE)
+          - pattern: |
+              $VAL := reflect.ValueOf($EXPR)
+              ...
+              $VAL.SetInt($VALUE)
+          - pattern: |
+              $VAL := reflect.ValueOf($EXPR)
+              ...
+              $VAL.SetString($VALUE)
+          - pattern: reflect.ValueOf($EXPR).FieldByName($NAME).Set($VALUE)
+          - pattern: reflect.ValueOf($EXPR).Elem().Set($VALUE)
+          - pattern: reflect.Indirect($VALUE).Set($NEWVAL)
+          - pattern: reflect.Indirect($VALUE).FieldByName($NAME).Set($NEWVAL)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Immediate memory corruption risk - can bypass all Go safety guarantees and security controls

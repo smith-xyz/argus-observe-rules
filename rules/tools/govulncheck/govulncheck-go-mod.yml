@@ -1,0 +1,29 @@
+rules:
+  - id: govulncheck-go-mod
+    message: "Found govulncheck in go.mod dependencies"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              require (
+                ...
+                golang.org/x/vuln/cmd/govulncheck $VERSION
+                ...
+              )
+          - pattern: golang.org/x/vuln/cmd/govulncheck
+          - pattern: |
+              require golang.org/x/vuln/cmd/govulncheck $VERSION
+          - pattern: |
+              require (
+                ...
+                golang.org/x/vuln $VERSION
+                ...
+              )
+    paths:
+      include:
+        - "go.mod"
+        - "go.work"
+    metadata:
+      category: vulnerability-scanning
+      tool: govulncheck

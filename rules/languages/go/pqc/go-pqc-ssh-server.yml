@@ -1,0 +1,21 @@
+rules:
+  - id: go-pqc-ssh-server
+    message: SSH server configuration detected - assess PQC SSH algorithm implementation capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: ssh.NewServerConn($CONN, $CONFIG)
+          - pattern: ssh.ServerConfig{...}
+          - pattern: ssh.Listen($NETWORK, $ADDR, $CONFIG)
+          - pattern: $CONFIG.AddHostKey($SIGNER)
+          - patterns:
+              - pattern: ssh.$FUNC($ARG)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^NewSignerFrom(Key|Signer)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms

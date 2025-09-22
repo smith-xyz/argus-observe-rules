@@ -1,0 +1,29 @@
+rules:
+  - id: go-weak-key-derivation
+    message: Weak key derivation function detected
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $KEY := []byte($PASSWORD)
+          - pattern: $KEY := md5.Sum([]byte($PASSWORD))
+          - pattern: $KEY := sha1.Sum([]byte($PASSWORD))
+          - pattern: |
+              hasher := md5.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha1.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: pbkdf2.Key($PASSWORD, nil, $ITER, $KEYLEN, $HASH)
+          - pattern: pbkdf2.Key($PASSWORD, []byte("$STATIC_SALT"), $ITER, $KEYLEN, $HASH)
+    fix: "Use PBKDF2, scrypt, or Argon2 with random salt: pbkdf2.Key(password, randomSalt, 100000, 32, sha256.New)"
+    metadata:
+      category: crypto
+      cwe: CWE-326

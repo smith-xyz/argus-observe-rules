@@ -1,0 +1,28 @@
+rules:
+  - id: go-pqc-container-security
+    message: Container security operations detected - verify quantum-resistant protection
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: docker.SignImage($IMAGE, $PRIVKEY)
+          - pattern: docker.VerifyImage($IMAGE, $PUBKEY)
+          - pattern: notary.Sign($TARGET, $KEY)
+          - pattern: notary.Verify($TARGET, $PUBKEY)
+          - pattern: registry.NewClient($URL, $CREDS)
+          - pattern: $CLIENT.Login($USERNAME, $PASSWORD)
+          - pattern: bearer.NewTokenSource($TOKEN)
+          - pattern: clientcmd.LoadFromFile($KUBECONFIG)
+          - pattern: rest.InClusterConfig()
+          - pattern: $CONFIG.BearerToken = $TOKEN
+          - pattern: $CONFIG.TLSClientConfig = $TLS
+          - pattern: oci.Verify($IMAGE, $PUBKEY)
+          - pattern: cosign.Verify($IMAGE, $PUBKEY)
+          - pattern: $VERIFIER.VerifyImageSignature($CTX, $IMAGE)
+          - pattern: helm.VerifyChart($CHART, $PUBKEY)
+          - pattern: $CHART.Verify($KEYRING)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Container security relies on digital signatures vulnerable to quantum attacks

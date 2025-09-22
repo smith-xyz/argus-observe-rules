@@ -1,0 +1,21 @@
+rules:
+  - id: go-unsafe-pointer-operations
+    message: Unsafe pointer operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: unsafe.Pointer($EXPR)
+          - pattern: (*$TYPE)(unsafe.Pointer($EXPR))
+          - pattern: uintptr(unsafe.Pointer($EXPR))
+          - pattern: unsafe.Sizeof($EXPR)
+          - pattern: unsafe.Offsetof($EXPR)
+          - pattern: unsafe.Pointer(uintptr($PTR) + $OFFSET)
+          - pattern: unsafe.Pointer(uintptr($PTR) - $OFFSET)
+          - pattern: $VAR := (*$TYPE)(unsafe.Pointer($EXPR))
+          - pattern: $VAR := unsafe.Pointer($EXPR)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe operations can lead to memory corruption

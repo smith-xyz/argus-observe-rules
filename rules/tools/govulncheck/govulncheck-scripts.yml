@@ -1,0 +1,18 @@
+rules:
+  - id: govulncheck-scripts
+    message: Found govulncheck in shell script
+    severity: INFO
+    languages:
+      - bash
+    patterns:
+      - pattern-either:
+          - pattern: govulncheck $...ARGS
+          - pattern: go install golang.org/x/vuln/cmd/govulncheck@$VERSION
+    paths:
+      include:
+        - "*.sh"
+        - "**/scripts/*.sh"
+        - "**/scripts/*.bash"
+    metadata:
+      category: vulnerability-scanning
+      tool: govulncheck

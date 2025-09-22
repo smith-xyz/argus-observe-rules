@@ -1,0 +1,27 @@
+rules:
+  - id: go-pqc-golang-crypto-extended
+    message: Extended Go crypto library usage detected - verify quantum resistance
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: argon2.IDKey($PASS, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: argon2.Key($PASS, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: bcrypt.GenerateFromPassword($PASS, $COST)
+          - pattern: bcrypt.CompareHashAndPassword($HASH, $PASS)
+          - pattern: scrypt.Key($PASS, $SALT, $N, $R, $P, $KEYLEN)
+          - pattern: chacha20.NewCipher($KEY, $NONCE)
+          - pattern: chacha20poly1305.New($KEY)
+          - pattern: chacha20poly1305.NewX($KEY)
+          - pattern: curve25519.ScalarMult($DST, $SCALAR, $POINT)
+          - pattern: curve25519.ScalarBaseMult($DST, $SCALAR)
+          - pattern: blake2b.New($SIZE, $KEY)
+          - pattern: blake2s.New($SIZE, $KEY)
+          - pattern: blake2b.Sum256($DATA)
+          - pattern: blake2b.Sum384($DATA)
+          - pattern: blake2b.Sum512($DATA)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Extended crypto libraries mix quantum-resistant and vulnerable algorithms

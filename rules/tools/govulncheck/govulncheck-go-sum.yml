@@ -1,0 +1,14 @@
+rules:
+  - id: govulncheck-go-sum
+    message: "Found govulncheck in go.sum (dependency lock file)"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern: golang.org/x/vuln/cmd/govulncheck
+    paths:
+      include:
+        - "go.sum"
+        - "**/go.sum"
+    metadata:
+      category: vulnerability-scanning
+      tool: govulncheck

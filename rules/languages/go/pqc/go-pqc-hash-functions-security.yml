@@ -1,0 +1,30 @@
+rules:
+  - id: go-pqc-hash-functions-security
+    message: Cryptographic hash function usage detected - verify post-quantum security level
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: sha256.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(New|Sum256)$
+          - patterns:
+              - pattern: sha512.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(New|New384|Sum512|Sum384)$
+          - patterns:
+              - pattern: sha3.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(New|Sum)(224|256|384|512)$
+          - pattern: hmac.New(sha256.New, $KEY)
+          - pattern: hmac.New(sha512.New, $KEY)
+          - pattern: hkdf.New($HASH, $SECRET, $SALT, $INFO)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hash functions provide different quantum security levels - SHA-2 reduced, SHA-3 maintains strength

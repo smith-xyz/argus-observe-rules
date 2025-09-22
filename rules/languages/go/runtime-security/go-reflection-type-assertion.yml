@@ -1,0 +1,26 @@
+rules:
+  - id: go-reflection-type-assertion
+    message: Reflection-based type assertion detected - potential type confusion risk
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $VALUE.Interface().($TYPE)
+          - pattern: $VALUE.Interface()
+          - pattern: |
+              switch $M := $VALUE.Interface().(type) {
+              case $TYPE:
+              ...
+              }
+          - pattern: |
+              $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME)
+              $FN := $METHOD.Interface()
+          - pattern: $RESULTS[$INDEX].Interface()
+          - pattern: $VALUE[$INDEX].Interface()
+          - pattern: json.Marshal($RESULT.Interface())
+          - pattern: json.MarshalIndent($RESULT.Interface(), $PREFIX, $INDENT)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to runtime panics and type confusion vulnerabilities

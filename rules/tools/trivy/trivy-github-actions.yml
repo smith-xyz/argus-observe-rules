@@ -1,0 +1,21 @@
+rules:
+  - id: trivy-github-actions
+    message: Found Trivy in GitHub Actions workflow
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern: aquasecurity/trivy-action
+          - pattern: aquasecurity/trivy-action@$VERSION
+          - pattern: trivy scan
+          - pattern: trivy fs
+          - pattern: trivy image
+          - pattern: trivy repo
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: vulnerability-scanning
+      tool: trivy

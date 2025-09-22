@@ -1,0 +1,28 @@
+rules:
+  - id: go-pqc-kdf-analysis
+    message: Key derivation function detected - verify quantum-resistant parameters
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: pbkdf2.Key($PASS, $SALT, $ITER, $KEYLEN, $HASH)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: ^([1-9][0-9]{0,4}|[1-9][0-9]{5})$
+          - patterns:
+              - pattern: hkdf.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(New|Extract|Expand)$
+          - patterns:
+              - pattern: argon2.$FUNC($PASS, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(ID)?Key$
+          - pattern: scrypt.Key($PASS, $SALT, $N, $R, $P, $KEYLEN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-326
+      impact: KDF parameters may need adjustment for post-quantum security levels

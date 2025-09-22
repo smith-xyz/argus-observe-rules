@@ -1,0 +1,14 @@
+rules:
+  - id: snyk-config-file
+    message: Found Snyk configuration file
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern: $...CONTENT
+    paths:
+      include:
+        - .snyk
+    metadata:
+      category: vulnerability-scanning
+      tool: snyk

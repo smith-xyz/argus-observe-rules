@@ -1,0 +1,32 @@
+rules:
+  - id: go-pqc-rsa-usage
+    message: RSA cryptography usage detected - assess PQC migration readiness and hybrid support capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rsa.GenerateKey($RANDOM, $BITS)
+          - pattern: rsa.GenerateMultiPrimeKey($RANDOM, $NPRIMES, $BITS)
+          - pattern: rsa.EncryptPKCS1v15($RANDOM, $PUB, $PLAINTEXT)
+          - pattern: rsa.EncryptOAEP($HASH, $RANDOM, $PUB, $PLAINTEXT, $LABEL)
+          - pattern: rsa.DecryptPKCS1v15($RANDOM, $PRIV, $CIPHERTEXT)
+          - pattern: rsa.DecryptOAEP($HASH, $RANDOM, $PRIV, $CIPHERTEXT, $LABEL)
+          - pattern: rsa.SignPKCS1v15($RANDOM, $PRIV, $HASH, $HASHED)
+          - pattern: rsa.SignPSS($RANDOM, $PRIV, $HASH, $HASHED, $OPTS)
+          - pattern: rsa.VerifyPKCS1v15($PUB, $HASH, $HASHED, $SIG)
+          - pattern: rsa.VerifyPSS($PUB, $HASH, $HASHED, $SIG, $OPTS)
+          - patterns:
+              - pattern: x509.$FUNC($ARG)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(Parse|Marshal)PKCS1(Private|Public)Key$
+          - patterns:
+              - pattern: $TYPE
+              - metavariable-regex:
+                  metavariable: $TYPE
+                  regex: ^(\*?)rsa\.(Private|Public)Key$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: RSA usage identified for PQC transition planning - evaluate cryptographic agility and hybrid algorithm support

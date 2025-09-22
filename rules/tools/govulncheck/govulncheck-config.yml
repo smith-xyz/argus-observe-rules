@@ -1,0 +1,38 @@
+rules:
+    - id: govulncheck-config
+      message: "Found govulncheck in configuration files"
+      severity: INFO
+      languages: [yaml, json]
+      patterns:
+          - pattern-either:
+                - pattern: |
+                      cmd: govulncheck
+                - pattern: |
+                      command: govulncheck
+                - pattern: |
+                      tool: govulncheck
+                - pattern: |
+                      name: govulncheck
+                # JSON configs
+                - pattern: |
+                      "cmd": "govulncheck"
+                - pattern: |
+                      "command": "govulncheck"
+                - pattern: |
+                      "tool": "govulncheck"
+                - pattern: |
+                      "name": "govulncheck"
+      paths:
+          include:
+              - "**/.golangci.yml"
+              - "**/.golangci.yaml"
+              - "**/tools.yml"
+              - "**/tools.yaml"
+              - "**/config.yml"
+              - "**/config.yaml"
+          exclude:
+              - "**/.github/workflows/*.yml"
+              - "**/.github/workflows/*.yaml"
+      metadata:
+          category: vulnerability-scanning
+          tool: govulncheck

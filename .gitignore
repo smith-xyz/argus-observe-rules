@@ -1,0 +1,17 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+*.pyz
+
+# Developer artifacts
+.ruff_cache/
+.vscode/
+.idea/
+.pytest_cache/
+.coverage
+
+# AI agent tools
+.cursor

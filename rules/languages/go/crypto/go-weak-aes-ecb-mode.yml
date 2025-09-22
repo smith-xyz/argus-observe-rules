@@ -1,0 +1,22 @@
+rules:
+  - id: go-weak-aes-ecb-mode
+    message: AES ECB mode is insecure - patterns in ciphertext reveal information
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: cipher.NewECBDecrypter($BLOCK)
+          - pattern: cipher.NewECBEncrypter($BLOCK)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewECBDecrypter($BLOCK)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewECBEncrypter($BLOCK)
+    fix: "Use CBC, GCM, or other secure modes: cipher.NewGCM() or cipher.NewCBCEncrypter()"
+    metadata:
+      category: crypto
+      cwe: CWE-327

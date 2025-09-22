@@ -1,0 +1,26 @@
+rules:
+  - id: go-pqc-ecdsa-usage
+    message: ECDSA cryptography usage detected - evaluate PQC transition readiness and algorithm flexibility
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: ecdsa.GenerateKey($CURVE, $RAND)
+          - pattern: ecdsa.Sign($RAND, $PRIV, $HASH)
+          - pattern: ecdsa.SignASN1($RAND, $PRIV, $HASH)
+          - pattern: ecdsa.Verify($PUB, $HASH, $R, $S)
+          - pattern: ecdsa.VerifyASN1($PUB, $HASH, $SIG)
+          - patterns:
+              - pattern: $TYPE
+              - metavariable-regex:
+                  metavariable: $TYPE
+                  regex: ^(\*?)ecdsa\.(Private|Public)Key$
+          - pattern: x509.ParseECPrivateKey($DER)
+          - pattern: x509.MarshalECPrivateKey($KEY)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact:
+        ECDSA usage catalogued for PQC migration planning - assess cryptographic agility and prepare hybrid implementation
+        strategy

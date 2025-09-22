@@ -1,0 +1,21 @@
+rules:
+  - id: semgrep-makefile
+    message: "Found Semgrep in Makefile"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $TARGET:
+                ...
+                semgrep $...ARGS
+                ...
+          - pattern: semgrep
+    paths:
+      include:
+        - "Makefile"
+        - "makefile"
+        - "*.mk"
+    metadata:
+      category: static-analysis
+      tool: semgrep

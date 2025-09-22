@@ -1,0 +1,19 @@
+rules:
+  - id: codeql-database-commands
+    message: Found CodeQL CLI usage
+    severity: INFO
+    languages:
+      - bash
+    patterns:
+      - pattern-either:
+          - pattern: codeql database create $...ARGS
+          - pattern: codeql database analyze $...ARGS
+          - pattern: codeql query run $...ARGS
+    paths:
+      include:
+        - "*.sh"
+        - "**/scripts/*.sh"
+        - "**/scripts/*.bash"
+    metadata:
+      category: static-analysis
+      tool: codeql

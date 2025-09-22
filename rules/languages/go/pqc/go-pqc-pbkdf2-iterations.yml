@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-pbkdf2-iterations
+    message: PBKDF2 iteration count detected - verify quantum resistance
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern: pbkdf2.Key($PASS, $SALT, $ITER, $KEYLEN, $HASH)
+      - metavariable-regex:
+          metavariable: $ITER
+          regex: ^(1000|4096|10000|100000|1000000)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-326
+      impact: PBKDF2 iteration counts may need adjustment for post-quantum era

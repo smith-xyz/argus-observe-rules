@@ -1,0 +1,18 @@
+rules:
+  - id: trivy-dockerfile
+    message: Found Trivy in Dockerfile
+    severity: INFO
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-either:
+          - pattern: RUN trivy $...ARGS
+          - pattern: RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          - pattern: FROM aquasec/trivy:$VERSION
+    paths:
+      include:
+        - Dockerfile*
+        - "*.dockerfile"
+    metadata:
+      category: vulnerability-scanning
+      tool: trivy

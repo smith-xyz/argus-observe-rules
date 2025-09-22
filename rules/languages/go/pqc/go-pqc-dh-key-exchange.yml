@@ -1,0 +1,19 @@
+rules:
+  - id: go-pqc-dh-key-exchange
+    message: Diffie-Hellman key exchange detected - assess hybrid key exchange implementation readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: dh.GenerateKey($GROUP, $RAND)
+          - pattern: dh.GenerateParameters($BITS, $RAND)
+          - pattern: ecdh.GenerateKey($CURVE, $RAND)
+          - pattern: $PRIV.ECDH($PUB)
+          - pattern: curve25519.X25519($SCALAR, $BASEPOINT)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact:
+        Key exchange mechanisms identified for PQC readiness evaluation - verify support for hybrid or PQC key agreement
+        protocols

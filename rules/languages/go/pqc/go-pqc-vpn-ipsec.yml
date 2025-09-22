@@ -1,0 +1,21 @@
+rules:
+  - id: go-pqc-vpn-ipsec
+    message: VPN/IPSec configuration detected - evaluate hybrid key exchange implementation capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: ipsec.NewConnection($CONFIG)
+          - pattern: $CONN.Encrypt($DATA)
+          - pattern: $CONN.Decrypt($DATA)
+          - pattern: wg.NewDevice($NAME, $BIND, $LOGGER)
+          - pattern: wg.ParseKey($KEY)
+          - pattern: device.NewDevice($TUNTAP, $BIND, $LOGGER)
+          - pattern: vpn.NewClient($CONFIG)
+          - pattern: vpn.Connect($ENDPOINT, $CREDS)
+          - pattern: tunnel.NewTunnel($CONFIG)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: VPN/IPSec configuration catalogued - verify VPN supports hybrid key exchange and PQC authentication

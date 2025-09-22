@@ -1,0 +1,26 @@
+rules:
+  - id: semgrep-github-actions
+    message: "Found Semgrep in GitHub Actions workflow"
+    severity: INFO
+    languages: [yaml]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              - name: $NAME
+                run: |
+                  ...
+                  semgrep $...ARGS
+                  ...
+          - pattern: |
+              run: semgrep $...ARGS
+          - pattern: |
+              uses: returntocorp/semgrep-action@$VERSION
+          - pattern: |
+              uses: semgrep/semgrep-action@$VERSION
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: static-analysis
+      tool: semgrep

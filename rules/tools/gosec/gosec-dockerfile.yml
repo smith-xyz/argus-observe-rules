@@ -1,0 +1,17 @@
+rules:
+  - id: gosec-dockerfile
+    message: Found gosec in Dockerfile
+    severity: INFO
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-either:
+          - pattern: RUN gosec $...ARGS
+          - pattern: RUN go install github.com/securego/gosec/v2/cmd/gosec@$VERSION
+    paths:
+      include:
+        - Dockerfile*
+        - "*.dockerfile"
+    metadata:
+      category: static-analysis
+      tool: gosec

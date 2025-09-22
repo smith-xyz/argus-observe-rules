@@ -1,0 +1,24 @@
+rules:
+  - id: dependabot-github-actions
+    message: "Found Dependabot in GitHub Actions workflow"
+    severity: INFO
+    languages: [yaml]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              - name: $NAME
+                run: |
+                  ...
+                  dependabot $...ARGS
+                  ...
+          - pattern: |
+              run: dependabot $...ARGS
+          - pattern: |
+              if: github.actor == 'dependabot[bot]'
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: dependency-management
+      tool: dependabot

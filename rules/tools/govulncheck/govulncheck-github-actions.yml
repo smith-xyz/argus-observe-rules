@@ -1,0 +1,48 @@
+rules:
+  - id: govulncheck-github-actions
+    message: "Found govulncheck in GitHub Actions workflow"
+    severity: INFO
+    languages: [yaml]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              - name: $NAME
+                run: |
+                  ...
+                  govulncheck $...ARGS
+                  ...
+          - pattern: |
+              run: govulncheck $...ARGS
+          - pattern: |
+              uses: golang/govulncheck-action@$VERSION
+          - pattern: |
+              - name: $NAME
+                run: govulncheck $...ARGS
+          - pattern: |
+              run: |
+                ...
+                go install golang.org/x/vuln/cmd/govulncheck@$VERSION
+                ...
+                govulncheck $...ARGS
+                ...
+          - pattern: |
+              run: go install golang.org/x/vuln/cmd/govulncheck@$VERSION && govulncheck $...ARGS
+          - pattern: |
+              run: |
+                go install golang.org/x/vuln/cmd/govulncheck@$VERSION
+                govulncheck $...ARGS
+          - pattern: |
+              - run: govulncheck $...ARGS
+          - pattern: |
+              - name: $...NAME vulnerability $...SCAN
+                run: $...CMD govulncheck $...ARGS
+          - pattern: |
+              - name: $...NAME vuln $...CHECK
+                run: $...CMD govulncheck $...ARGS
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: vulnerability-scanning
+      tool: govulncheck

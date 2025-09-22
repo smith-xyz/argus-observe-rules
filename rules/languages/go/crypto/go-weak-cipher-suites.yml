@@ -1,0 +1,30 @@
+rules:
+  - id: go-weak-cipher-suites
+    message: Weak or insecure TLS cipher suites detected
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: tls.TLS_RSA_WITH_NULL_MD5
+          - pattern: tls.TLS_RSA_WITH_NULL_SHA
+          - pattern: tls.TLS_NULL_WITH_NULL_NULL
+          - pattern: tls.TLS_RSA_EXPORT_WITH_RC4_40_MD5
+          - pattern: tls.TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5
+          - pattern: tls.TLS_DH_anon_EXPORT_WITH_RC4_40_MD5
+          - pattern: tls.TLS_DH_anon_WITH_RC4_128_MD5
+          - pattern: tls.TLS_DH_anon_WITH_3DES_EDE_CBC_SHA
+          - pattern: tls.TLS_DH_anon_WITH_AES_128_CBC_SHA
+          - pattern: tls.TLS_DH_anon_WITH_AES_256_CBC_SHA
+          - pattern: tls.TLS_RSA_WITH_RC4_128_MD5
+          - pattern: tls.TLS_RSA_WITH_RC4_128_SHA
+          - pattern: tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA
+          - pattern: tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
+          - pattern: tls.TLS_RSA_WITH_DES_CBC_SHA
+          - pattern: tls.TLS_DHE_RSA_WITH_DES_CBC_SHA
+          - pattern: tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA
+          - pattern: tls.TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+    fix: Use strong cipher suites like TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 or TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+    metadata:
+      category: crypto
+      cwe: CWE-327

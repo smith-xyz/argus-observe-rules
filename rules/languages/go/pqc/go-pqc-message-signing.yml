@@ -1,0 +1,23 @@
+rules:
+  - id: go-pqc-message-signing
+    message: Message signing operations detected - evaluate PQC signature algorithm support capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $PRIV.Sign($RAND, $DIGEST, $OPTS)
+          - pattern: $PUB.Verify($MESSAGE, $SIG, $OPTS)
+          - pattern: jws.Sign($PAYLOAD, $ALG, $KEY)
+          - pattern: jws.Verify($MESSAGE, $ALG, $KEY)
+          - pattern: jose.NewSigner($ALG, $KEY)
+          - pattern: jose.NewVerifier($ALG, $KEY)
+          - patterns:
+              - pattern: openpgp.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(Armored)?Detach(Sign|.*Signature)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Message signing mechanisms documented - verify signing libraries support hybrid or PQC signature algorithms

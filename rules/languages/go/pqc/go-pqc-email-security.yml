@@ -1,0 +1,27 @@
+rules:
+  - id: go-pqc-email-security
+    message: Email security operations detected - evaluate hybrid signature and encryption support readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: smime.Sign($MSG, $CERT, $PRIVKEY)
+          - pattern: smime.Verify($MSG, $CERT)
+          - pattern: smime.Encrypt($MSG, $CERTS)
+          - pattern: smime.Decrypt($MSG, $CERT, $PRIVKEY)
+          - pattern: openpgp.ReadMessage($KEYRING, $CIPHERTEXT, $PROMPT, $CONFIG)
+          - pattern: openpgp.Encrypt($CIPHERTEXT, $TO, $SIGNER, $HINTS, $CONFIG)
+          - pattern: dkim.Sign($MSG, $SELECTOR, $DOMAIN, $PRIVKEY)
+          - pattern: dkim.Verify($MSG, $PUBKEY)
+          - pattern: $DKIM.SignMessage($MSG)
+          - pattern: $DKIM.VerifyMessage($MSG)
+          - pattern: smtp.NewClient($CONN, $HOST)
+          - pattern: $CLIENT.StartTLS($CONFIG)
+          - pattern: $CLIENT.Auth($AUTH)
+          - pattern: mail.ParseCertificate($CERT)
+          - pattern: mail.ValidateCertChain($CHAIN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Email security operations catalogued - verify email systems support hybrid signatures and PQC encryption

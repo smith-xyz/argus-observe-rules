@@ -1,0 +1,34 @@
+rules:
+  - id: go-pqc-pki-infrastructure
+    message: PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: x509.ParseCertificate($DER)
+          - pattern: x509.ParseCertificates($DER)
+          - pattern: x509.CreateCertificate($RAND, $TEMPLATE, $PARENT, $PUB, $PRIV)
+          - pattern: x509.ParseCertificateRequest($ASN1_DATA)
+          - pattern: x509.CreateCertificateRequest($RAND, $TEMPLATE, $PRIV)
+          - pattern: $CERT.Verify($OPTS)
+          - pattern: $CERT.CheckSignature($ALGO, $SIGNED, $SIGNATURE)
+          - pattern: $CERT.CheckSignatureFrom($PARENT)
+          - pattern: x509.VerifyOptions{...}
+          - pattern: x509.CertPool{}
+          - pattern: $POOL.AddCert($CERT)
+          - pattern: ocsp.ParseRequest($BYTES)
+          - pattern: ocsp.CreateRequest($CERT, $ISSUER, $OPTS)
+          - pattern: ocsp.ParseResponse($BYTES, $CERT)
+          - pattern: ocsp.CreateResponse($TEMPLATE, $CERT, $PRIV)
+          - pattern: x509.ParseCRL($CRL_BYTES)
+          - pattern: x509.CreateCRL($RAND, $TEMPLATE, $CERT, $PRIV)
+          - pattern: $CRL.CheckSignatureFrom($CERT)
+          - pattern: pkcs12.Decode($P12, $PASSWORD)
+          - pattern: pkcs12.Encode($RAND, $PRIV, $CERT, $CACERTS, $PASSWORD)
+          - pattern: pkcs7.Parse($DATA)
+          - pattern: pkcs7.NewSignedData($DATA)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: PKI infrastructure usage documented - verify certificate authorities and systems support hybrid or PQC certificates

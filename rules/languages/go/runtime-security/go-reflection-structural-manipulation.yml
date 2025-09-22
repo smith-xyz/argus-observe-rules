@@ -1,0 +1,69 @@
+rules:
+  - id: go-reflection-structural-manipulation
+    message: Reflection structural manipulation detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.StructOf($FIELDS)
+          - pattern: reflect.SliceOf($TYPE)
+          - pattern: reflect.ArrayOf($SIZE, $TYPE)
+          - pattern: reflect.MapOf($KEY, $VALUE)
+          - pattern: reflect.PtrTo($TYPE)
+          - pattern: reflect.ChanOf($DIR, $TYPE)
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).FieldByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).Call($ARGS)
+          - pattern: reflect.ValueOf($OBJ).CallSlice($ARGS)
+          - pattern: reflect.ValueOf($OBJ).MapIndex($KEY)
+          - pattern: reflect.ValueOf($OBJ).SetMapIndex($KEY, $VALUE)
+          - pattern: reflect.ValueOf($OBJ).Index($INDEX)
+          - pattern: reflect.ValueOf($OBJ).Slice($LOW, $HIGH)
+          - pattern: reflect.ValueOf($OBJ).Slice3($LOW, $HIGH, $MAX)
+          - pattern: reflect.ValueOf($OBJ).Send($VALUE)
+          - pattern: reflect.ValueOf($OBJ).Recv()
+          - pattern: reflect.ValueOf($OBJ).TrySend($VALUE)
+          - pattern: reflect.ValueOf($OBJ).TryRecv()
+          - pattern: reflect.ValueOf($OBJ).Close()
+          - pattern: reflect.ValueOf($OBJ).Cap()
+          - pattern: reflect.ValueOf($OBJ).Len()
+          - pattern: reflect.TypeOf($OBJ).ConvertibleTo($OTHER)
+          - pattern: reflect.TypeOf($OBJ).AssignableTo($OTHER)
+          - pattern: reflect.TypeOf($OBJ).Implements($INTERFACE)
+          - pattern: reflect.TypeOf($OBJ).Comparable()
+          - pattern: reflect.TypeOf($OBJ).Key()
+          - pattern: reflect.TypeOf($OBJ).Elem()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.MethodByName($NAME)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.FieldByName($NAME)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Call($ARGS)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.SetMapIndex($KEY, $VALUE)
+          - pattern: reflect.Indirect($VALUE).FieldByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).Elem().FieldByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).Index($INDEX).String()
+          - pattern: reflect.ValueOf($OBJ).FieldByName($NAME).Index($INDEX)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ).MethodByName($NAME)
+              ...
+              $RESULT := $VAL.Call($ARGS)
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)[$INDEX]
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)[$INDEX].Interface()
+          - pattern: $DST.Set(reflect.MakeMap($TYPE))
+          - pattern: $DST.SetMapIndex($KEY, $SRC.MapIndex($KEY))
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety and introduce race conditions

@@ -1,0 +1,17 @@
+rules:
+  - id: go-hardcoded-crypto-key
+    message: Hardcoded cryptographic key detected
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := "$VALUE"
+              ...
+              aes.NewCipher($KEY)
+          - pattern: aes.NewCipher("$KEY")
+          - pattern: cipher.NewCFBDecrypter($BLOCK, "$IV")
+    metadata:
+      category: crypto
+      cwe: CWE-798

@@ -1,0 +1,28 @@
+rules:
+  - id: go-pqc-elliptic-curves
+    message: Elliptic curve cryptography identified - catalog for PQC migration assessment
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: elliptic.$CURVE()
+              - metavariable-regex:
+                  metavariable: $CURVE
+                  regex: ^(P224|P256|P384|P521)$
+          - pattern: $CURVE.Add($X1, $Y1, $X2, $Y2)
+          - pattern: $CURVE.Double($X1, $Y1)
+          - pattern: $CURVE.ScalarMult($X, $Y, $K)
+          - pattern: $CURVE.ScalarBaseMult($K)
+          - pattern: curve25519.ScalarMult($DST, $SCALAR, $POINT)
+          - pattern: curve25519.ScalarBaseMult($DST, $SCALAR)
+          - pattern: curve25519.X25519($SCALAR, $POINT)
+          - pattern: ed25519.GenerateKey($RAND)
+          - pattern: ed25519.Sign($PRIV, $MESSAGE)
+          - pattern: ed25519.Verify($PUB, $MESSAGE, $SIG)
+          - pattern: ed25519.NewKeyFromSeed($SEED)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution

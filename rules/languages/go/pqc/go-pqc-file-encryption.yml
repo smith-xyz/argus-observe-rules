@@ -1,0 +1,28 @@
+rules:
+  - id: go-pqc-file-encryption
+    message: File encryption operations detected - verify quantum-resistant algorithms
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $FILE := encrypt.NewFile($PATH, $KEY)
+          - pattern: $DATA := encrypt.EncryptFile($PATH, $KEY)
+          - pattern: $DATA := decrypt.DecryptFile($PATH, $KEY)
+          - pattern: zip.NewEncryptedWriter($OUT, $PASSWORD)
+          - pattern: zip.OpenEncryptedReader($IN, $PASSWORD)
+          - pattern: tar.NewEncryptedWriter($OUT, $KEY)
+          - pattern: luks.CreateVolume($DEVICE, $PASSWORD)
+          - pattern: luks.OpenVolume($DEVICE, $PASSWORD)
+          - pattern: fscrypt.SetPolicy($DIR, $POLICY)
+          - pattern: backup.EncryptBackup($DATA, $KEY)
+          - pattern: backup.DecryptBackup($ENCRYPTED, $KEY)
+          - pattern: restic.NewRepository($BACKEND, $PASSWORD)
+          - pattern: $ENC := aes.NewCipher($KEY)
+          - pattern: cipher.NewGCM($BLOCK)
+          - pattern: $AESGCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: $AESGCM.Open($DST, $NONCE, $CIPHERTEXT, $DATA)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: File encryption may use AES which provides reduced quantum security compared to classical

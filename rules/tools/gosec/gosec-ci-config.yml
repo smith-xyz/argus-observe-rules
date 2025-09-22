@@ -1,0 +1,20 @@
+rules:
+  - id: gosec-ci-config
+    message: Found gosec in CI configuration
+    severity: INFO
+    languages:
+      - yaml
+    patterns:
+      - pattern-either:
+          - pattern: gosec
+          - pattern: github.com/securego/gosec
+    paths:
+      include:
+        - .gitlab-ci.yml
+        - .circleci/config.yml
+        - "**/.travis.yml"
+        - "**/jenkins/**/*.yml"
+        - "**/jenkins/**/*.yaml"
+    metadata:
+      category: static-analysis
+      tool: gosec

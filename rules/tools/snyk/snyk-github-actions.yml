@@ -1,0 +1,24 @@
+rules:
+  - id: snyk-github-actions
+    message: "Found Snyk in GitHub Actions workflow"
+    severity: INFO
+    languages: [yaml]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              - name: $NAME
+                run: |
+                  ...
+                  snyk $...ARGS
+                  ...
+          - pattern: |
+              run: snyk $...ARGS
+          - pattern: |
+              uses: snyk/actions/$ACTION@$VERSION
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: vulnerability-scanning
+      tool: snyk

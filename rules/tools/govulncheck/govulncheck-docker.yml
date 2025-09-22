@@ -1,0 +1,23 @@
+rules:
+  - id: govulncheck-docker
+    message: "Found govulncheck in Docker/container configuration"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              RUN $...CMDS govulncheck $...ARGS
+          - pattern: |
+              RUN go install golang.org/x/vuln/cmd/govulncheck@$VERSION
+          - pattern: |
+              CMD ["govulncheck", $...ARGS]
+          - pattern: |
+              ENTRYPOINT ["govulncheck", $...ARGS]
+    paths:
+      include:
+        - "Dockerfile"
+        - "Dockerfile.*"
+        - "*.dockerfile"
+    metadata:
+      category: vulnerability-scanning
+      tool: govulncheck

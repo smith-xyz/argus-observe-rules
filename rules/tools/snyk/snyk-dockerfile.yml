@@ -1,0 +1,18 @@
+rules:
+  - id: snyk-dockerfile
+    message: Found Snyk in Dockerfile
+    severity: INFO
+    languages:
+      - dockerfile
+    patterns:
+      - pattern-either:
+          - pattern: RUN snyk $...ARGS
+          - pattern: RUN npm install -g snyk
+          - pattern: RUN yarn global add snyk
+    paths:
+      include:
+        - Dockerfile*
+        - "*.dockerfile"
+    metadata:
+      category: vulnerability-scanning
+      tool: snyk

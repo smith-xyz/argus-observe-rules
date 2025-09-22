@@ -1,0 +1,45 @@
+rules:
+  - id: go-weak-hash-comparison
+    message: Weak hash function used in comparison or verification
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $EXPECTED := md5.Sum($DATA)
+              ...
+              $ACTUAL := md5.Sum($OTHER)
+              ...
+              bytes.Equal($EXPECTED[:], $ACTUAL[:])
+          - pattern: |
+              $EXPECTED := sha1.Sum($DATA)
+              ...
+              $ACTUAL := sha1.Sum($OTHER)
+              ...
+              bytes.Equal($EXPECTED[:], $ACTUAL[:])
+          - pattern: |
+              $HASH1 := hex.EncodeToString(md5.Sum($DATA1))
+              $HASH2 := hex.EncodeToString(md5.Sum($DATA2))
+              ...
+              $HASH1 == $HASH2
+          - pattern: |
+              $HASH1 := hex.EncodeToString(sha1.Sum($DATA1))
+              $HASH2 := hex.EncodeToString(sha1.Sum($DATA2))
+              ...
+              $HASH1 == $HASH2
+          - pattern: |
+              if hex.EncodeToString(md5.Sum($DATA)) == $EXPECTED {
+                ...
+              }
+          - pattern: |
+              if hex.EncodeToString(sha1.Sum($DATA)) == $EXPECTED {
+                ...
+              }
+    fix: Use SHA-256 or SHA-3 for cryptographic verification and integrity checks
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact:
+        Weak hash functions in verification can be exploited through collision
+        attacks

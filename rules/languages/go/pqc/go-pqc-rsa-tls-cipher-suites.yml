@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-rsa-tls-cipher-suites
+    message: RSA-based TLS cipher suites detected - evaluate hybrid cipher suite support capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern: tls.$CIPHER
+      - metavariable-regex:
+          metavariable: $CIPHER
+          regex: ^TLS_RSA_WITH_.*
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: RSA-based TLS cipher suites identified - verify TLS library supports hybrid or PQC cipher suite negotiation

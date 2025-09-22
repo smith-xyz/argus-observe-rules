@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-aes-key-sizes
+    message: AES key size detected - verify quantum resistance level
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern: make([]byte, $SIZE)
+      - metavariable-regex:
+          metavariable: $SIZE
+          regex: ^(16|24|32)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-326
+      impact: AES-128 provides ~64-bit quantum security, AES-256 provides ~128-bit quantum security

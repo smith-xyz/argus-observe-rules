@@ -1,0 +1,18 @@
+rules:
+  - id: gosec-scripts
+    message: "Found gosec in shell script"
+    severity: INFO
+    languages: [bash]
+    patterns:
+      - pattern-either:
+          - pattern: gosec $...ARGS
+          - pattern: go install github.com/securego/gosec/v2/cmd/gosec@$VERSION
+          - pattern: curl -sfL https://raw.githubusercontent.com/securecodewarrior/gosec/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
+    paths:
+      include:
+        - "*.sh"
+        - "**/scripts/*.sh"
+        - "**/scripts/*.bash"
+    metadata:
+      category: static-analysis
+      tool: gosec

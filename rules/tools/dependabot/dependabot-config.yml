@@ -1,0 +1,24 @@
+rules:
+  - id: dependabot-config
+    message: Found Dependabot configuration
+    severity: INFO
+    languages:
+      - yaml
+    patterns:
+      - pattern-either:
+          - pattern: |
+              version: $VERSION
+              updates:
+                ...
+          - pattern: |
+              updates:
+                - package-ecosystem: $ECOSYSTEM
+                  ...
+    paths:
+      include:
+        - "**/.github/dependabot.yml"
+        - "**/.github/dependabot.yaml"
+        - "**/.dependabot/config.yml"
+    metadata:
+      category: dependency-management
+      tool: dependabot

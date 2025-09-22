@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-standard-rsa-keys
+    message: Standard RSA key generation detected - document for PQC migration timeline planning
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern: rsa.GenerateKey($RAND, $BITS)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: ^(2048|3072|4096)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Standard RSA key sizes catalogued for PQC migration planning - assess key lifecycle and rotation capabilities

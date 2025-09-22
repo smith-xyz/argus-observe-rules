@@ -1,0 +1,41 @@
+rules:
+  - id: go-kubernetes-client-tls-override
+    message: Kubernetes client TLS configuration override detected
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Kubernetes client-go specific TLS overrides
+          - pattern: |
+              &rest.Config{
+                ...,
+                TLSClientConfig: rest.TLSClientConfig{
+                  Insecure: true,
+                  ...,
+                },
+                ...,
+              }
+          - pattern: |
+              rest.HTTPClientFor(&rest.Config{
+                ...,
+                TLSClientConfig: rest.TLSClientConfig{
+                  Insecure: true,
+                  ...,
+                },
+                ...,
+              })
+          # Kubernetes config loading followed by TLS override
+          - pattern: |
+              $CONFIG, $ERR := clientcmd.BuildConfigFromFlags($MASTER, $KUBECONFIG)
+              ...
+              $CONFIG.TLSClientConfig.Insecure = true
+          - pattern: |
+              $CONFIG, $ERR := rest.InClusterConfig()
+              ...
+              $CONFIG.TLSClientConfig.Insecure = true
+    fix: Use in-cluster configuration or properly configured service accounts
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Kubernetes client TLS override can bypass cluster security policies

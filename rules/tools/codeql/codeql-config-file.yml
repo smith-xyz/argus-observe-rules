@@ -1,0 +1,24 @@
+rules:
+  - id: codeql-config-file
+    message: Found CodeQL configuration file
+    severity: INFO
+    languages:
+      - yaml
+    patterns:
+      - pattern-either:
+          - pattern: |
+              name: $NAME
+              queries:
+                ...
+          - pattern: |
+              queries:
+                - $...QUERIES
+    paths:
+      include:
+        - "**/.github/codeql/*.yml"
+        - "**/.github/codeql/*.yaml"
+        - codeql.yml
+        - codeql.yaml
+    metadata:
+      category: static-analysis
+      tool: codeql

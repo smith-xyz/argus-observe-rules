@@ -1,0 +1,24 @@
+rules:
+  - id: gosec-makefile
+    message: "Found gosec in Makefile"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $TARGET:
+                ...
+                gosec $...ARGS
+                ...
+          - pattern: gosec
+          - pattern: gosec ./...
+          - pattern: gosec -quiet ./...
+          - pattern: go install github.com/securego/gosec/v2/cmd/gosec@$VERSION
+    paths:
+      include:
+        - "Makefile"
+        - "makefile"
+        - "*.mk"
+    metadata:
+      category: static-analysis
+      tool: gosec

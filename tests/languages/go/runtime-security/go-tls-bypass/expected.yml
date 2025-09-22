@@ -1,0 +1,79 @@
+findings:
+  - file: test_code.go
+    line: 39
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 39
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 42
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 46
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 49
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 52
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 52
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 56
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 59
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 62
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 63
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 67
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 68
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 72
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 76
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 80
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 84
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 88
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 92
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 96
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 100
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 104
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 108
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 112
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.go
+    line: 116
+    message: "TLS security bypass detected - compromises transport security"
+
+no_findings:
+  - negative_cases.go

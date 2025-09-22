@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-jwt-rsa-ecdsa
+    message: JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern: jwt.$METHOD
+      - metavariable-regex:
+          metavariable: $METHOD
+          regex: ^SigningMethod(RS|ES|PS)(256|384|512)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT signature algorithms catalogued - verify JWT library supports hybrid or PQC signature methods

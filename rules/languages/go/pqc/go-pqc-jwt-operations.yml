@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-jwt-operations
+    message: JWT token operations detected - verify PQC signature algorithm support
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: jwt.NewWithClaims($METHOD, $CLAIMS)
+          - pattern: jwt.Parse($TOKEN_STRING, $KEY_FUNC)
+          - pattern: jwt.ParseWithClaims($TOKEN_STRING, $CLAIMS, $KEY_FUNC)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT infrastructure may need updates for PQC signature algorithms

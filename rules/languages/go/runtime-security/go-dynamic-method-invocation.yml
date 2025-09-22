@@ -1,0 +1,38 @@
+rules:
+  - id: go-dynamic-method-invocation
+    message: Dynamic method invocation patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)
+          - pattern: reflect.TypeOf($OBJ).MethodByName($NAME).Call($ARGS)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $METHOD := $VAL.MethodByName($NAME)
+              ...
+              $METHOD.Call($ARGS)
+          - pattern: |
+              $TYPE := reflect.TypeOf($OBJ)
+              ...
+              $METHOD := $TYPE.MethodByName($NAME)
+              ...
+              $METHOD.Call($ARGS)
+          - pattern: |
+              $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME)
+              if $METHOD.IsValid() {
+                ...
+                $METHOD.Call($ARGS)
+              }
+          - pattern: |
+              if $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME); $METHOD.IsValid() {
+                ...
+                $METHOD.Call($ARGS)
+              }
+          - pattern: reflect.ValueOf($OBJ).FieldByName($FIELD).MethodByName($METHOD).Call($ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Dynamic method calls can bypass authentication, authorization, and input validation

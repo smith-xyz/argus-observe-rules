@@ -1,0 +1,55 @@
+rules:
+  - id: go-reflection-basic-usage
+    message: Basic reflection usage detected - mapping reflection landscape
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.TypeOf($OBJ)
+          - pattern: reflect.ValueOf($OBJ)
+          - pattern: reflect.DeepEqual($A, $B)
+          - pattern: reflect.Copy($DST, $SRC)
+          - pattern: reflect.Swapper($SLICE)
+          - pattern: reflect.Indirect($VALUE)
+          - pattern: reflect.Zero($TYPE)
+          - pattern: reflect.Append($SLICE, $VALUES...)
+          - pattern: reflect.AppendSlice($SLICE1, $SLICE2)
+          - pattern: reflect.Select($CASES)
+          - pattern: reflect.TypeOf($OBJ).Method($INDEX)
+          - pattern: reflect.TypeOf($OBJ).MethodByName($NAME)
+          - pattern: reflect.TypeOf($OBJ).NumMethod()
+          - pattern: reflect.TypeOf($OBJ).Field($INDEX)
+          - pattern: reflect.TypeOf($OBJ).FieldByName($NAME)
+          - pattern: reflect.TypeOf($OBJ).NumField()
+          - pattern: reflect.TypeOf($OBJ).Kind()
+          - pattern: reflect.TypeOf($OBJ).String()
+          - pattern: reflect.TypeOf($OBJ).Name()
+          - pattern: reflect.ValueOf($OBJ).IsValid()
+          - pattern: reflect.ValueOf($OBJ).IsNil()
+          - pattern: reflect.ValueOf($OBJ).IsZero()
+          - pattern: reflect.ValueOf($OBJ).CanSet()
+          - pattern: reflect.ValueOf($OBJ).CanAddr()
+          - pattern: reflect.ValueOf($OBJ).CanInterface()
+          - pattern: reflect.ValueOf($OBJ).Kind()
+          - pattern: reflect.ValueOf($OBJ).Type()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.IsValid()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Kind()
+          - pattern: |
+              $TYPE := reflect.TypeOf($OBJ)
+              ...
+              $TYPE.Kind()
+          - pattern: |
+              $TYPE := reflect.TypeOf($OBJ)
+              ...
+              $TYPE.Name()
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

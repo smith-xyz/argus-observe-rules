@@ -1,0 +1,21 @@
+rules:
+  - id: trivy-makefile
+    message: "Found Trivy in Makefile"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $TARGET:
+                ...
+                trivy $...ARGS
+                ...
+          - pattern: trivy
+    paths:
+      include:
+        - "Makefile"
+        - "makefile"
+        - "*.mk"
+    metadata:
+      category: vulnerability-scanning
+      tool: trivy

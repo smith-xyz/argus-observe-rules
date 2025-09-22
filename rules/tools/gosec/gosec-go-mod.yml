@@ -1,0 +1,22 @@
+rules:
+  - id: gosec-go-mod
+    message: "Found gosec in go.mod dependencies"
+    severity: INFO
+    languages: [generic]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              require (
+                ...
+                github.com/securego/gosec/v2/cmd/gosec $VERSION
+                ...
+              )
+          - pattern: github.com/securego/gosec/v2/cmd/gosec
+          - pattern: github.com/securego/gosec/v2
+          - pattern: github.com/securego/gosec
+    paths:
+      include:
+        - "go.mod"
+    metadata:
+      category: static-analysis
+      tool: gosec

@@ -1,0 +1,24 @@
+rules:
+  - id: semgrep-config-files
+    message: "Found Semgrep configuration file"
+    severity: INFO
+    languages: [yaml]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              rules:
+                - id: $ID
+                  ...
+          - pattern: |
+              extends: $...CONFIGS
+    paths:
+      include:
+        - ".semgrep.yml"
+        - ".semgrep.yaml"
+        - "semgrep.yml"
+        - "semgrep.yaml"
+        - "**/.semgrep/*.yml"
+        - "**/.semgrep/*.yaml"
+    metadata:
+      category: static-analysis
+      tool: semgrep

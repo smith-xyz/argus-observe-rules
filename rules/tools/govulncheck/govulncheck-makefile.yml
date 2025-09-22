@@ -1,0 +1,51 @@
+rules:
+  - id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $TARGET:
+              ...
+              govulncheck $...ARGS
+              ...
+          - pattern: govulncheck
+          - pattern: |
+              vuln:
+              ...
+              govulncheck $...ARGS
+              ...
+          - pattern: |
+              vulnerability:
+              ...
+              govulncheck $...ARGS
+              ...
+          - pattern: |
+              security:
+              ...
+              govulncheck $...ARGS
+              ...
+          - pattern: |
+              check:
+              ...
+              govulncheck $...ARGS
+              ...
+          - pattern: |
+              test:
+              ...
+              govulncheck $...ARGS
+              ...
+          - pattern: |
+              $TARGET:
+              go install golang.org/x/vuln/cmd/govulncheck@$VERSION
+          - pattern: go install golang.org/x/vuln/cmd/govulncheck@$VERSION
+    paths:
+      include:
+        - Makefile
+        - makefile
+        - "*.mk"
+    metadata:
+      category: vulnerability-scanning
+      tool: govulncheck

@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-ecdhe-tls-cipher-suites
+    message: ECDHE-based TLS cipher suites detected - assess hybrid key exchange transition capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern: tls.$CIPHER
+      - metavariable-regex:
+          metavariable: $CIPHER
+          regex: ^TLS_ECDHE_(RSA|ECDSA)_WITH_.*
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: ECDHE-based TLS cipher suites documented - evaluate support for hybrid key exchange and PQC cipher suites

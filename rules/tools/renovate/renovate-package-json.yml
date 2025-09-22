@@ -1,0 +1,14 @@
+rules:
+  - id: renovate-package-json
+    message: Found Renovate configuration in package.json
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern: '"renovate":'
+    paths:
+      include:
+        - package.json
+    metadata:
+      category: dependency-management
+      tool: renovate

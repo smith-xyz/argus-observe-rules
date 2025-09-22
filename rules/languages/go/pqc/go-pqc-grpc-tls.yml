@@ -1,0 +1,20 @@
+rules:
+  - id: go-pqc-grpc-tls
+    message: gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: credentials.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^New(TLS|.*TLSFrom(Cert|File))$
+          - pattern: grpc.WithTransportCredentials($CREDS)
+          - pattern: grpc.Creds($CREDS)
+          - pattern: grpc.WithInsecure()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites

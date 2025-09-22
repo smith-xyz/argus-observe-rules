@@ -1,0 +1,21 @@
+rules:
+  - id: go-pqc-oauth-jwt-saml
+    message: OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: oauth2.Config{...}
+          - pattern: $TOKEN := $CONFIG.Exchange($CTX, $CODE)
+          - pattern: $CLIENT := $CONFIG.Client($CTX, $TOKEN)
+          - pattern: saml.ServiceProvider{...}
+          - pattern: saml.IdentityProvider{...}
+          - pattern: $SP.ParseXMLResponse($DATA, $POSSIBLE_REQUEST_IDS)
+          - pattern: oidc.NewProvider($CTX, $ISSUER)
+          - pattern: $VERIFIER := $PROVIDER.Verifier($CONFIG)
+          - pattern: $TOKEN := $VERIFIER.Verify($CTX, $RAW_TOKEN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Identity protocol usage documented - verify OAuth/SAML/OIDC libraries support hybrid or PQC signature algorithms

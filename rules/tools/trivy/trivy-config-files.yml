@@ -1,0 +1,17 @@
+rules:
+  - id: trivy-config-files
+    message: Found Trivy configuration file
+    severity: INFO
+    languages:
+      - yaml
+    patterns:
+      - pattern: $...CONTENT
+    paths:
+      include:
+        - trivy.yaml
+        - .trivy.yaml
+        - trivy.yml
+        - .trivy.yml
+    metadata:
+      category: vulnerability-scanning
+      tool: trivy

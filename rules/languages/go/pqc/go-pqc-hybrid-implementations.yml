@@ -1,0 +1,34 @@
+rules:
+  - id: go-pqc-hybrid-implementations
+    message: Potential hybrid cryptographic implementation detected - verify PQC integration
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $RSA_SIG := rsa.SignPKCS1v15($RAND, $RSA_KEY, $HASH, $DIGEST)
+              ...
+              $PQC_SIG := $PQC_SIGN($PQC_KEY, $MESSAGE)
+          - pattern: |
+              type $STRUCT struct {
+                RSAKey    *rsa.PrivateKey
+                ECDSAKey  *ecdsa.PrivateKey
+                ...
+                PQCKey    $PQC_TYPE
+              }
+          - pattern: |
+              if $USE_PQC {
+                $KEY = $PQC_KEY
+              } else {
+                $KEY = $CLASSICAL_KEY
+              }
+          - pattern: |
+              $CONFIG.Certificates = []tls.Certificate{
+                $CLASSICAL_CERT,
+                $PQC_CERT,
+              }
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hybrid implementations support gradual PQC migration but need careful validation

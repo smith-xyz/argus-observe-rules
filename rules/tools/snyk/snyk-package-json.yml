@@ -1,0 +1,15 @@
+rules:
+  - id: snyk-package-json
+    message: "Found Snyk in package.json dependencies"
+    severity: INFO
+    languages: [json]
+    patterns:
+      - pattern-either:
+          - pattern: '"snyk": "$VERSION"'
+          - pattern: '"snyk"'
+    paths:
+      include:
+        - "package.json"
+    metadata:
+      category: vulnerability-scanning
+      tool: snyk

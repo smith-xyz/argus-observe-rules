@@ -1,0 +1,79 @@
+rules:
+  - id: go-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Direct TLS validation bypass
+          - pattern: $CONFIG.InsecureSkipVerify = true
+          - pattern: |
+              $VAR := true
+              ...
+              $CONFIG.InsecureSkipVerify = $VAR
+          - pattern: |
+              $VAR = true
+              ...
+              $CONFIG.InsecureSkipVerify = $VAR
+          - pattern: $CONFIG.InsecureSkipVerify = $FUNC(...)
+          # TLS Config struct initialization with bypass
+          - pattern: |
+              tls.Config{
+                ...,
+                InsecureSkipVerify: true,
+                ...
+              }
+          - pattern: |
+              &tls.Config{
+                ...,
+                InsecureSkipVerify: true,
+                ...
+              }
+          # Kubernetes/REST client bypasses
+          - pattern: $CONFIG.TLSClientConfig.Insecure = true
+          - pattern: $CONFIG.Insecure = true
+          # Conditional bypasses
+          - pattern: |
+              if $CONDITION {
+                $CONFIG.InsecureSkipVerify = true
+              }
+          # Environment variable bypasses
+          - pattern: |
+              if os.Getenv($ENV_VAR) == $VALUE {
+                $CONFIG.InsecureSkipVerify = true
+              }
+          # Reflection-based bypasses - very specific to TLS security field
+          - pattern: |
+              $FIELD := $VALUE.FieldByName("InsecureSkipVerify")
+              $FIELD.SetBool(true)
+          # Empty ServerName bypass (disables hostname verification)
+          - pattern: $CONFIG.ServerName = ""
+          # HTTP fallback patterns (bypassing HTTPS)
+          - pattern: |
+              $URL := "http://" + $HOST
+              http.Get($URL)
+          # Certificate validation bypass
+          - pattern: $CONFIG.VerifyPeerCertificate = nil
+          # Boolean TLS disable patterns
+          - pattern: $CONFIG.TLS.Enable = false
+          - pattern: $CONFIG.Net.TLS.Enable = false
+          - pattern: $CONFIG.SSL.Enable = false
+          # String-based TLS disable patterns
+          - pattern: $CONFIG.TLSConfig = "false"
+          - pattern: $CONFIG.SSLMode = "disable"
+          # DSN/connection string TLS bypasses
+          - pattern: $FUNC($DRIVER, $DSN + "?sslmode=disable")
+          - pattern: $FUNC($DRIVER, $DSN + "&tls=false")
+          - pattern: $FUNC($DRIVER, $DSN + "?ssl=false")
+    fix: |
+      Remove TLS bypasses and implement proper certificate validation:
+      - Use valid CA certificates
+      - Remove InsecureSkipVerify settings
+      - Use ConfigMaps or Secrets for TLS configuration
+      - Implement proper certificate management
+      - Use service mesh or platform TLS profiles
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

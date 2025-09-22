@@ -1,0 +1,19 @@
+rules:
+  - id: renovate-github-actions
+    message: Found Renovate in GitHub Actions workflow
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern: "uses: renovatebot/github-action"
+          - pattern: "uses: renovate/github-action"
+          - pattern: "run: renovate"
+          - pattern: "run: npx renovate"
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: dependency-management
+      tool: renovate

@@ -1,0 +1,37 @@
+rules:
+  - id: go-certificate-validation-override
+    message: Certificate validation override detected - breaks trust chain
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONFIG.VerifyPeerCertificate = func($RAW_CERTS [][]byte, $VERIFIED_CHAINS [][]*x509.Certificate) error {
+                return nil
+              }
+          - pattern: |
+              $CONFIG.VerifyConnection = func($STATE tls.ConnectionState) error {
+                return nil
+              }
+          - pattern: $CONFIG.RootCAs = nil
+          - pattern: $CONFIG.ClientCAs = nil
+          - pattern: |
+              if $CUSTOM_CERT := os.Getenv("CUSTOM_CA_CERT"); $CUSTOM_CERT != "" {
+                $CONFIG.RootCAs = $FUNC($CUSTOM_CERT)
+              }
+          - pattern: |
+              if $BYPASS := os.Getenv("BYPASS_CERT_PINNING"); $BYPASS == "true" {
+                $CONFIG.VerifyPeerCertificate = nil
+              }
+          # CA Bundle bypasses
+          - pattern: $CONFIG.CABundle = nil
+          - pattern: |
+              if $FUNC(...) {
+                $WEBHOOK.ClientConfig.CABundle = nil
+              }
+    fix: Use certificate management and trust the cluster CA bundle
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Certificate validation override breaks trust chain and enables MITM attacks

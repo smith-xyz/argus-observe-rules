@@ -1,0 +1,21 @@
+rules:
+  - id: go-pqc-certificate-transparency
+    message: Certificate Transparency operations detected - ensure PQC certificate support
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: ct.$FUNC($ARGS)
+              - metavariable-regex:
+                  metavariable: $FUNC
+                  regex: ^(AddChain|GetSTH|GetEntries|GetProofByHash)$
+          - pattern: ct.VerifySCT($PUB, $SCT, $ENTRY)
+          - pattern: ctutil.VerifySCT($LOGKEY, $SCT, $CHAIN)
+          - pattern: client.New($URL, $HTTP, $OPTS)
+          - pattern: $CLIENT.AddChain($CTX, $CHAIN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-295
+      impact: Certificate Transparency logs must support PQC certificates

@@ -1,0 +1,23 @@
+rules:
+  - id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+    severity: INFO
+    languages:
+      - generic
+    patterns:
+      - pattern-either:
+          - pattern: github/codeql-action/init
+          - pattern: github/codeql-action/init@$VERSION
+          - pattern: github/codeql-action/analyze
+          - pattern: github/codeql-action/analyze@$VERSION
+          - pattern: github/codeql-action/upload-sarif
+          - pattern: github/codeql-action/upload-sarif@$VERSION
+          - pattern: github/codeql-action/autobuild
+          - pattern: github/codeql-action/autobuild@$VERSION
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: static-analysis
+      tool: codeql

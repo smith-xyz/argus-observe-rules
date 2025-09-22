@@ -1,0 +1,20 @@
+rules:
+  - id: go-pqc-random-generation
+    message: Cryptographic random number generation detected - ensure quantum-safe entropy sources
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rand.Read($BYTES)
+          - pattern: rand.Reader
+          - pattern: rand.Int($READER, $MAX)
+          - pattern: rand.Prime($READER, $BITS)
+          - pattern: $READER := rand.Reader
+          - pattern: io.ReadFull(rand.Reader, $BYTES)
+          - pattern: $READER := &rand.Reader{}
+          - pattern: $SOURCE := entropy.NewSource()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-338
+      impact: Random number generation quality becomes more critical in PQC era

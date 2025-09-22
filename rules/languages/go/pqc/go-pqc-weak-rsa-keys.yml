@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-weak-rsa-keys
+    message: Weak RSA key size detected - immediate quantum vulnerability, urgent PQC migration required
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern: rsa.GenerateKey($RAND, $BITS)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: ^(512|1024)$
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-326
+      impact: Weak RSA keys are already breakable and will be trivial for quantum computers

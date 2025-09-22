@@ -1,0 +1,31 @@
+rules:
+  - id: go-pqc-api-security
+    message: API security implementation detected - assess hybrid authentication and signature support capability
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $APIKEY := generateAPIKey($USER)
+          - pattern: $VALID := validateAPIKey($KEY)
+          - pattern: hmac.New($HASH, []byte($SECRET))
+          - pattern: httpsig.NewSigner($KEYID, $PRIVKEY, $ALG, $HEADERS)
+          - pattern: httpsig.NewVerifier($RESOLVER)
+          - pattern: $SIGNER.Sign($REQ)
+          - pattern: $VERIFIER.Verify($REQ)
+          - pattern: token.Generate($CLAIMS, $SECRET)
+          - pattern: token.Validate($TOKEN, $SECRET)
+          - pattern: bearer.Validate($TOKEN)
+          - pattern: tls.LoadX509KeyPair($CERTFILE, $KEYFILE)
+          - pattern: $CONFIG.ClientAuth = tls.RequireAndVerifyClientCert
+          - pattern: $CONFIG.GetClientCertificate = $FUNC
+          - pattern: $CONFIG.VerifyPeerCertificate = $FUNC
+          - pattern: webhook.VerifySignature($PAYLOAD, $SIG, $SECRET)
+          - pattern: github.ValidatePayload($REQ, $SECRET)
+          - pattern: slack.VerifySignature($HEADER, $BODY, $SECRET)
+          - pattern: ratelimit.NewWithCrypto($RATE, $SECRET)
+          - pattern: ratelimit.HashKey($KEY, $SECRET)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: API security mechanisms documented - verify API systems support hybrid authentication and PQC signatures

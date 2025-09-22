@@ -1,0 +1,28 @@
+rules:
+  - id: gosec-github-actions
+    message: "Found gosec in GitHub Actions workflow"
+    severity: INFO
+    languages: [yaml]
+    patterns:
+      - pattern-either:
+          - pattern: |
+              - name: $NAME
+                run: |
+                  ...
+                  gosec $...ARGS
+                  ...
+          - pattern: |
+              run: gosec $...ARGS
+          - pattern: |
+              uses: securego/gosec-action@$VERSION
+          - pattern: securego/gosec-action
+          - pattern: gosec ./...
+          - pattern: gosec -fmt sarif -out results.sarif ./...
+          - pattern: gosec -quiet ./...
+    paths:
+      include:
+        - "**/.github/workflows/*.yml"
+        - "**/.github/workflows/*.yaml"
+    metadata:
+      category: static-analysis
+      tool: gosec
