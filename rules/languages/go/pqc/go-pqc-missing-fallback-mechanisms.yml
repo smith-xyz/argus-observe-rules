@@ -1,0 +1,49 @@
+rules:
+  - id: go-pqc-missing-fallback-mechanisms
+    message: Crypto operation without fallback mechanism detected - may fail when PQC algorithms are unsupported
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Signature verification without algorithm fallback
+          - pattern: |
+              $VALID := $PUB.Verify($MESSAGE, $SIG, $OPTS)
+              ...
+              if !$VALID {
+                return errors.New("signature verification failed")
+              }
+          # Single algorithm cipher suite without negotiation fallback
+          - pattern: |
+              $CONFIG := &tls.Config{
+                CipherSuites: []uint16{$SINGLE_CIPHER},
+              }
+          # Missing algorithm capability detection
+          - patterns:
+              - pattern-not: |
+                  if $SUPPORTS_PQC {
+                    $...PQC_PATH
+                  } else {
+                    $...FALLBACK_PATH
+                  }
+              - pattern-not: |
+                  $SUPPORTED := $CHECK_ALGORITHM_SUPPORT($ALG)
+                  if $SUPPORTED {
+                    $...USE_ALG
+                  }
+              - pattern: |
+                  $CONFIG.CipherSuites = $CIPHER_LIST
+          # Error handling that doesn't consider algorithm incompatibility
+          - pattern: |
+              if strings.Contains($ERR.Error(), "unsupported") {
+                return $ERR
+              }
+          - pattern: |
+              if strings.Contains($ERR.Error(), "unknown") {
+                return $ERR
+              }
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Missing fallback mechanisms can cause system failures when PQC algorithms are introduced and not all components support them
+      remediation: Implement graceful degradation and algorithm negotiation to handle cases where PQC algorithms are not supported by all system components

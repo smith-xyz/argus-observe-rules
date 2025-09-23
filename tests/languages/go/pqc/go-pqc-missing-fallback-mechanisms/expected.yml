@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.go
+    line: 14
+    rule_id: go-pqc-missing-fallback-mechanisms
+    message: "Crypto operation without fallback mechanism detected - may fail when PQC algorithms are unsupported"
+  - file: test_code.go
+    line: 32
+    rule_id: go-pqc-missing-fallback-mechanisms
+    message: "Crypto operation without fallback mechanism detected - may fail when PQC algorithms are unsupported"
+  - file: test_code.go
+    line: 40
+    rule_id: go-pqc-missing-fallback-mechanisms
+    message: "Crypto operation without fallback mechanism detected - may fail when PQC algorithms are unsupported"
+  - file: test_code.go
+    line: 47
+    rule_id: go-pqc-missing-fallback-mechanisms
+    message: "Crypto operation without fallback mechanism detected - may fail when PQC algorithms are unsupported"
+  - file: test_code.go
+    line: 56
+    rule_id: go-pqc-missing-fallback-mechanisms
+    message: "Crypto operation without fallback mechanism detected - may fail when PQC algorithms are unsupported"
+
+no_findings:
+  - negative_cases.go

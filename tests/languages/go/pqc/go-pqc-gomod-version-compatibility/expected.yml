@@ -1,0 +1,16 @@
+findings:
+  - file: go.mod
+    line: 4
+    rule_id: go-pqc-gomod-version-compatibility
+    message: "Go module version detected that may lack PQC support (Go 1.24+ required for ML-KEM)"
+  - file: go_very_old.mod
+    line: 4
+    rule_id: go-pqc-gomod-version-compatibility
+    message: "Go module version detected that may lack PQC support (Go 1.24+ required for ML-KEM)"
+  - file: go_1_23.mod
+    line: 4
+    rule_id: go-pqc-gomod-version-compatibility
+    message: "Go module version detected that may lack PQC support (Go 1.24+ required for ML-KEM)"
+
+no_findings:
+  - go_modern.mod

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.go
+    line: 12
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.go
+    line: 20
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.go
+    line: 21
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.go
+    line: 31
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.go
+    line: 40
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.go
+    line: 49
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.go
+    line: 57
+    rule_id: go-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+
+no_findings:
+  - negative_cases.go

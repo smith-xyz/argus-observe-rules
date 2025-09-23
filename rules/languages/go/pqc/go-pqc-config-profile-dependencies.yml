@@ -1,0 +1,24 @@
+rules:
+  - id: go-pqc-config-profile-dependencies
+    message: TLS/crypto configuration detected - verify PQC algorithm compatibility across system components
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Go FIPS environment variables that affect crypto behavior
+          - pattern: os.Getenv("GOFIPS")
+          - pattern: os.Getenv("GOFIPS140")
+          - pattern: os.Getenv("GOLANG_FIPS")
+          # Service-to-service communication that could break with PQC mismatches
+          - pattern: grpc.Dial($ADDR, grpc.WithTransportCredentials($CREDS))
+          - pattern: "http.Client{Transport: &http.Transport{TLSClientConfig: $CONFIG}}"
+          - pattern: tls.Dial($NETWORK, $ADDR, $CONFIG)
+          # Kubernetes/etcd communication patterns
+          - pattern: clientv3.New($CONFIG)
+          - pattern: "clientv3.Config{TLS: $TLS_CONFIG}"
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments
+      remediation: Ensure all system components can handle the same crypto configuration requirements and support graceful algorithm negotiation

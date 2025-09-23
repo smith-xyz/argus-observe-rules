@@ -28,6 +28,39 @@ rules:
           - pattern: pkcs12.Encode($RAND, $PRIV, $CERT, $CACERTS, $PASSWORD)
           - pattern: pkcs7.Parse($DATA)
           - pattern: pkcs7.NewSignedData($DATA)
+          # Signature algorithm validation that might be too strict for PQC
+          - pattern: |
+              if $CERT.SignatureAlgorithm != $EXPECTED_ALG {
+                $...BODY
+              }
+          - pattern: |
+              switch $CERT.SignatureAlgorithm {
+                case $CASE:
+                  $...BODY
+              }
+          # Public key type checking that might exclude PQC algorithms
+          - pattern: |
+              if $KEY := $CERT.PublicKey.(*rsa.PublicKey); $KEY != nil {
+                $...BODY
+              }
+          - pattern: |
+              if $KEY := $CERT.PublicKey.(*ecdsa.PublicKey); $KEY != nil {
+                $...BODY
+              }
+          - pattern: |
+              switch $KEY := $CERT.PublicKey.(type) {
+                case $TYPE:
+                  $...BODY
+              }
+          # Custom certificate verification that might not handle PQC
+          - pattern: |
+              $CONFIG.VerifyPeerCertificate = func($CERTS [][]byte, $CHAINS [][]*x509.Certificate) error {
+                $...BODY
+              }
+          # System certificate pool and fingerprinting
+          - pattern: x509.SystemCertPool()
+          - pattern: sha256.Sum256($CERT.Raw)
+          - pattern: sha1.Sum($CERT.Raw)
     metadata:
       category: pqc_readiness
       cwe: CWE-327

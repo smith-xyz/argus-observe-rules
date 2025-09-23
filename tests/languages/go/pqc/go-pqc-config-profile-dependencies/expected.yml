@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.go
+    line: 17
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 24
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 29
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 36
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 48
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 60
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 73
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.go
+    line: 85
+    rule_id: go-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+
+no_findings:
+  - negative_cases.go

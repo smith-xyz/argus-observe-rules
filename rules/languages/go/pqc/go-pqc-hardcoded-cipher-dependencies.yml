@@ -1,0 +1,44 @@
+rules:
+  - id: go-pqc-hardcoded-cipher-dependencies
+    message: Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Hardcoded cipher suite arrays/slices
+          - pattern: |
+              $CONFIG.CipherSuites = []uint16{$...CIPHERS}
+          - pattern: |
+              CipherSuites: []uint16{$...CIPHERS}
+          # Only match cipher-related uint16 slices (with TLS constants)
+          - patterns:
+              - pattern: |
+                  $VAR := []uint16{$...CIPHERS}
+              - metavariable-regex:
+                  metavariable: $VAR
+                  regex: .*(cipher|suite|tls).*
+          # Hardcoded TLS configuration with slice literals (not variables)
+          - pattern: |
+              &tls.Config{
+                CipherSuites: []uint16{$...HARDCODED_SUITES},
+                ...
+              }
+          # Hardcoded signature algorithms
+          - pattern: |
+              $CONFIG.SignatureSchemes = []tls.SignatureScheme{$...SCHEMES}
+          - pattern: |
+              SignatureSchemes: []tls.SignatureScheme{$...SCHEMES}
+          # Fixed curve preferences
+          - pattern: |
+              $CONFIG.CurvePreferences = []tls.CurveID{$...CURVES}
+          - pattern: |
+              CurvePreferences: []tls.CurveID{$...CURVES}
+          # Hardcoded certificate types
+          - pattern: |
+              $CONFIG.ClientCertificateTypes = []byte{$...TYPES}
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled, especially in mixed-version environments
+      remediation: Use flexible configuration mechanisms that can gracefully handle algorithm negotiation and fallback to compatible algorithms

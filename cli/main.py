@@ -188,6 +188,7 @@ def group_semgrep_results_by_rule_id(findings):
         results_by_rule[rule_id].append(
             {
                 "file": file_path,
+                "full_path": finding["path"],  # Keep full path for debugging
                 "line": line,
                 "message": finding["extra"]["message"],
             }
@@ -212,7 +213,12 @@ def load_test_expectations(rules):
                 try:
                     with open(expected_file, "r") as f:
                         expected_data = yaml.safe_load(f)
-                        rule_expectations[rule_id] = expected_data
+                        # Store both the expectations and the test directory path
+                        test_dir = expected_file.parent
+                        rule_expectations[rule_id] = {
+                            "expectations": expected_data,
+                            "test_dir": str(test_dir),
+                        }
                         break  # Only take the first match
                 except Exception as e:
                     typer.echo(f"Failed to load {expected_file}: {e}")
@@ -228,8 +234,17 @@ def execute_tests(results_by_rule, rule_expectations, total_rules_loaded):
     typer.echo("Running test validation...\n")
 
     # Check each rule that has expectations
-    for rule_id, expected in rule_expectations.items():
-        actual_findings = results_by_rule.get(rule_id, [])
+    for rule_id, rule_data in rule_expectations.items():
+        # Filter actual findings to only include those in the rule's test directory
+        rule_test_dir = rule_data["test_dir"]
+        all_actual_findings = results_by_rule.get(rule_id, [])
+        actual_findings = [
+            f
+            for f in all_actual_findings
+            if f.get("full_path", "").startswith(rule_test_dir)
+        ]
+
+        expected = rule_data["expectations"]
         expected_findings = expected.get("findings", [])
         no_findings_files = expected.get("no_findings", [])
 
@@ -267,9 +282,11 @@ def execute_tests(results_by_rule, rule_expectations, total_rules_loaded):
                     break
 
             if not found_expected:
+                full_path = actual.get("full_path", "unknown")
                 typer.echo(
-                    f"FAIL: {rule_id}: Unexpected finding at {actual_file}:{actual_line}"
+                    f"FAIL: {rule_id}: Unexpected finding at {actual_file}:{actual_line} (full path: {full_path})"
                 )
+                typer.echo(f"      Message: {actual['message']}")
                 passed = False
 
         # Check that no findings files have no actual findings

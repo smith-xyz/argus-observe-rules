@@ -1,0 +1,15 @@
+rules:
+  - id: go-pqc-version-compatibility
+    message: Go version dependency detected - verify PQC support availability (Go 1.24+ required for ML-KEM)
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Runtime version checks that might be version-sensitive
+          - pattern: runtime.Version()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Go versions prior to 1.24 lack ML-KEM support, creating potential compatibility issues when PQC is enabled in mixed-version environments
+      remediation: Ensure all components in the system support the same minimum Go version with PQC capabilities

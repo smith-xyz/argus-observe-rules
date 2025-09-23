@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.go
+    line: 16
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 21
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 27
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 32
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 51
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 58
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 94
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 98
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.go
+    line: 105
+    rule_id: go-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+
+no_findings:
+  - negative_cases.go
