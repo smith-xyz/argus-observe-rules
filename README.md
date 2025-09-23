@@ -1,28 +1,22 @@
 # Argus Observe Rules
 
-**Community-driven, battle-tested Semgrep rules for production codebases**
+**Community-driven Semgrep rules for security analysis**
 
-A collaborative collection of high-quality static analysis security rules with comprehensive test coverage and rigorous quality standards. Built by security practitioners, for security practitioners - from individual developers to large organizations.
+A collection of static analysis security rules developed by the community. We aim to provide helpful rules with good test coverage and clear guidance.
 
-## Why Argus Observe Rules?
+## About
 
-**Battle-Tested Quality**
-- **Comprehensive Testing** - Every rule includes positive/negative test cases
-- **Low False Positives** - Extensively tuned for real-world codebases
-- **Clear Remediation** - Actionable fix guidance, not just problem detection
-- **Production Validated** - Rules tested against diverse, real-world projects
+This project focuses on building useful security rules through community collaboration:
 
-**Community-Driven Excellence**
-- **Open Collaboration** - Built by security practitioners worldwide
-- **Transparent Quality** - Open metrics and confidence scoring
-- **Continuous Improvement** - Regular updates based on community feedback
-- **Peer Review** - Multiple security teams validate each rule
+- **Community-driven** - Built by security practitioners sharing knowledge
+- **Test coverage** - Rules include positive and negative test cases
+- **Clear guidance** - Actionable information, not just problem detection
+- **Open collaboration** - Transparent development and review process
 
 **Observe and Empower Philosophy**
-- **Awareness-Focused** - Observe patterns to enable informed decisions
-- **Non-Judgmental** - Provide insights without criticism
-- **Team Empowerment** - Give organizations the awareness they need to act
-- **Governance Through Insight** - Like Argus with hundred eyes, always watching to help
+- Focus on awareness to enable informed security decisions
+- Provide insights to help teams understand their codebase
+- Support security governance through better visibility
 
 ## Repository Structure
 
@@ -57,18 +51,18 @@ source .venv/bin/activate
 
 ## Quality Standards
 
-**Community-maintained quality ensures production readiness:**
+We aim for helpful, reliable rules through community collaboration:
 
-### **Accuracy Requirements**
-- **≥95% Precision** - Minimal false positives across diverse codebases
-- **≥90% Recall** - Comprehensive coverage of vulnerability patterns
-- **Real-world Validation** - Tested by multiple organizations and projects
+### **Rule Requirements**
+- Clear documentation of the security issue and remediation
+- Test cases covering both positive and negative scenarios
+- Community review and feedback
+- Stable rule IDs and consistent behavior
 
-### **Contribution Standards**
-- **Clear Documentation** - Understandable impact and remediation guidance
-- **Comprehensive Tests** - Both positive and negative test cases required
-- **Peer Review** - Community validation before acceptance
-- **Backwards Compatibility** - Stable rule IDs and behavior
+### **Goals**
+- Minimize false positives while catching real issues
+- Provide actionable guidance for developers
+- Maintain rules that work across different codebases
 
 ### **Rule Metadata**
 ```yaml
@@ -82,26 +76,23 @@ metadata:
   reviewed_by: ["org1", "org2", "org3"]
 ```
 
-## Community & Contributions
+## Contributing
 
-### **Open Collaboration**
-- **Anyone Can Contribute** - Individuals, teams, organizations welcome
-- **Transparent Process** - Open review and discussion for all contributions
-- **Diverse Perspectives** - Rules validated across different environments
-- **Knowledge Sharing** - Learn from security practitioners worldwide
+We welcome contributions from security practitioners and developers:
 
 ### **How to Contribute**
-1. **Identify Need** - Find a security pattern not currently covered
-2. **Write Rule** - Follow our quality standards and testing requirements
-3. **Add Tests** - Include comprehensive positive/negative test cases
-4. **Submit PR** - Community review and validation process
-5. **Iterate** - Collaborate with reviewers to refine quality
+1. Find a security pattern that needs coverage
+2. Write a rule following our standards
+3. Add test cases (positive and negative scenarios)
+4. Submit a pull request for community review
+5. Work with reviewers to improve the rule
 
 ### **Contribution Guidelines**
-- **Quality First** - Rules must meet accuracy and testing standards
-- **Clear Communication** - Explain the security impact and fix guidance
-- **Test Coverage** - Validate against real-world code patterns
-- **Documentation** - Help others understand and use your rules
+- Follow our quality standards and testing requirements
+- Clearly explain the security issue and how to fix it
+- Include test cases that validate the rule works correctly
+- Help others understand when and how to use the rule
+- Responsible use of AI tools is welcomed to help with rule development and testing
 
 ## Resources
 
@@ -119,4 +110,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Security is a community effort.** Join security practitioners worldwide in building the most comprehensive, battle-tested collection of security rules for modern development.
+**Security is a community effort.** Help us build useful security rules that make codebases safer and more secure.
