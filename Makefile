@@ -75,6 +75,4 @@ dev: dev-install lint format
 	@echo "Development environment ready!"
 
 # CI/CD targets
-ci-lint: install lint
-
-ci-test: install validate test
+ci: install lint validate test

@@ -6,64 +6,44 @@ rules:
       - go
     patterns:
       - pattern-either:
+          # Direct HTTP bypass patterns - specific service mesh bypasses
           - pattern: |
               $URL := "http://" + $SERVICE_IP + ":" + $PORT
-              http.Get($URL)
+              ...
+              http.$METHOD($URL)
+          - pattern: |
+              $URL := "http://" + $SERVICE_IP + ":" + $PORT
+              ...
+              http.$METHOD($URL, ...)
+          - pattern: |
+              $URL := "http://" + $ENDPOINT
+              ...
+              http.$METHOD($URL)
+          - pattern: |
+              $URL := "http://" + $ENDPOINT
+              ...
+              http.$METHOD($URL, ...)
+
+          # HTTP client with proxy bypass - service mesh specific
           - pattern: |
               $CLIENT := &http.Client{
                 Transport: &http.Transport{
                   Proxy: http.ProxyFromEnvironment,
                 },
               }
+
+          # Service discovery bypass loop - the complete pattern
           - pattern: |
-              $ENDPOINTS := $FUNC($SERVICE_NAME)
               for _, $ENDPOINT := range $ENDPOINTS {
                 $URL := "http://" + $ENDPOINT
-                http.Get($URL)
+                http.$METHOD($URL)
               }
           - pattern: |
-              if os.Getenv("BYPASS_SIDECAR") == "true" {
-                return &http.Client{
-                  Transport: &http.Transport{
-                    TLSClientConfig: &tls.Config{
-                      InsecureSkipVerify: true,
-                    },
-                  },
-                }
+              for _, $ENDPOINT := range $ENDPOINTS {
+                $URL := "http://" + $ENDPOINT
+                http.$METHOD($URL, ...)
               }
-          - pattern: $CONFIG.ServerName = ""
-          - pattern: $CONFIG.ServerName = $CUSTOM_SNI
-          - pattern: |
-              if $FUNC(...) {
-                $URL := $FUNC2(...)
-                http.Get($URL)
-              }
-          - pattern: |
-              $BYPASS := $OBJ.$FIELD
-              if $BYPASS {
-                return $FUNC(...)
-              }
-          - pattern: |
-              $CLIENT := $FUNC(...)
-              if $CLIENT.$METHOD(...) {
-                $CLIENT.$METHOD2(...)
-              }
-          - pattern: |
-              $CLIENT := func() $TYPE {
-                if $FUNC(...) {
-                  return &http.Client{Transport: $FUNC2(...)}
-                }
-                return $FUNC3(...)
-              }()
-          - pattern: |
-              if $OBJ.$METHOD(...) {
-                $CONFIG.ServerName = ""
-              }
-          - pattern: |
-              $DIRECT_CONNECT := $FUNC(...)
-              if $DIRECT_CONNECT {
-                $CONFIG.InsecureSkipVerify = true
-              }
+
     fix: Use service mesh routing and let the mesh handle service-to-service communication
     metadata:
       category: tls_runtime_security
