@@ -4,34 +4,174 @@ rules:
     severity: INFO
     languages:
       - go
+    # ========================================================================
+    # METHODOLOGY:
+    # This rule detects dynamic method invocation via Go's reflect package.
+    # Dynamic method calls can bypass authentication, authorization, and input
+    # validation, especially when method names come from untrusted input.
+    #
+    # CHALLENGE - Single-line vs Multi-line Patterns:
+    # Real-world code rarely chains reflect operations on a single line.
+    # Developers typically break up chains into multiple steps for:
+    # - Readability and maintainability
+    # - Error handling and validation (checking IsValid())
+    # - Use in loops or conditional logic
+    #
+    # APPROACH:
+    # For each operation chain, we provide 2-3 pattern variants:
+    # 1. Direct chain: reflect.ValueOf(obj).MethodByName(name).Call(args)
+    #    - Detects inline chaining (less common but possible)
+    # 2. Partial breakup: Store intermediate references
+    #    Example: method := reflect.ValueOf(obj).MethodByName(name)
+    #             method.Call(args)
+    # 3. Full breakup: Store all intermediate steps
+    #    Example: val := reflect.ValueOf(obj)
+    #             method := val.MethodByName(name)
+    #             method.Call(args)
+    #
+    # The "..." (ellipsis) operator matches 0+ intervening statements,
+    # allowing us to catch patterns regardless of code organization.
+    #
+    # COVERAGE:
+    # - Direct method invocation (MethodByName)
+    # - Method invocation by index (Method)
+    # - Field-then-method chains (FieldByName -> MethodByName)
+    # - Pointer handling (Elem, Indirect)
+    # - Both Call() and CallSlice() variants
+    # - IsValid() guard patterns (defensive programming)
+    # ========================================================================
     patterns:
       - pattern-either:
-          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)
-          - pattern: reflect.TypeOf($OBJ).MethodByName($NAME).Call($ARGS)
-          - pattern: |
-              $VAL := reflect.ValueOf($OBJ)
-              ...
-              $METHOD := $VAL.MethodByName($NAME)
-              ...
-              $METHOD.Call($ARGS)
-          - pattern: |
-              $TYPE := reflect.TypeOf($OBJ)
-              ...
-              $METHOD := $TYPE.MethodByName($NAME)
-              ...
-              $METHOD.Call($ARGS)
-          - pattern: |
-              $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME)
-              if $METHOD.IsValid() {
-                ...
-                $METHOD.Call($ARGS)
-              }
-          - pattern: |
-              if $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME); $METHOD.IsValid() {
-                ...
-                $METHOD.Call($ARGS)
-              }
-          - pattern: reflect.ValueOf($OBJ).FieldByName($FIELD).MethodByName($METHOD).Call($ARGS)
+          # Attempting to find dynamic method invocation
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Invocations deferred to later in the file
+          - patterns:
+              - pattern: |
+                  $VAL := reflect.ValueOf($OBJ)
+                  ...
+                  $M := $VAL.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Stored method with IsValid guard
+          - patterns:
+              - pattern: |
+                  $M := reflect.ValueOf($OBJ).MethodByName($NAME)
+                  if $M.IsValid() {
+                    ...
+                    $M.$METHOD($ARGS)
+                  }
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Inline if with IsValid guard
+          - patterns:
+              - pattern: |
+                  if $M := reflect.ValueOf($OBJ).MethodByName($NAME); $M.IsValid() {
+                    ...
+                    $M.$METHOD($ARGS)
+                  }
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Method invocation on field (direct chain)
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).FieldByName($FIELD).MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Method invocation on field (stored field reference)
+          - patterns:
+              - pattern: |
+                  $FIELD := reflect.ValueOf($OBJ).FieldByName($NAME)
+                  ...
+                  $M := $FIELD.MethodByName($MNAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Method invocation on field (fully broken up)
+          - patterns:
+              - pattern: |
+                  $VAL := reflect.ValueOf($OBJ)
+                  ...
+                  $FIELD := $VAL.FieldByName($FNAME)
+                  ...
+                  $M := $FIELD.MethodByName($MNAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Method by index (less common but valid)
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).Method($IDX).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Deferred method by index
+          - patterns:
+              - pattern: |
+                  $M := reflect.ValueOf($OBJ).Method($IDX)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Elem invocation (direct chain)
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).Elem().MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Elem invocation (stored elem reference)
+          - patterns:
+              - pattern: |
+                  $ELEM := reflect.ValueOf($OBJ).Elem()
+                  ...
+                  $M := $ELEM.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Elem invocation (fully broken up)
+          - patterns:
+              - pattern: |
+                  $VAL := reflect.ValueOf($OBJ)
+                  ...
+                  $ELEM := $VAL.Elem()
+                  ...
+                  $M := $ELEM.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Indirect invocation (direct chain)
+          - patterns:
+              - pattern: reflect.Indirect($VALUE).MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          # Indirect invocation (stored indirect reference)
+          - patterns:
+              - pattern: |
+                  $IND := reflect.Indirect($VALUE)
+                  ...
+                  $M := $IND.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
     metadata:
       category: reflection
       cwe: CWE-470

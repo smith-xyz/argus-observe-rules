@@ -1,0 +1,100 @@
+findings:
+  - file: test_code.go
+    line: 37
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 41
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 51
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 58
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 71
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 77
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 88
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 93
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 103
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 106
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 116
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 120
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 129
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 132
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 141
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 144
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 155
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 169
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 207
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 218
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 223
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 234
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 239
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.go
+    line: 251
+    rule_id: go-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+
+no_findings:
+  - negative_cases.go
