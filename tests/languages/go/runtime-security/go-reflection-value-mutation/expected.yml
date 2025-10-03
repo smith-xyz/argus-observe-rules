@@ -1,0 +1,136 @@
+findings:
+  - file: test_code.go
+    line: 20
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 23
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 33
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 36
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 39
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 42
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 51
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 56
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 61
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 65
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 73
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 76
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 79
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 82
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 85
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 89
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 93
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 101
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 104
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 107
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 110
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 114
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 123
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 126
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 129
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 134
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 143
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 146
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 149
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 152
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 160
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 166
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.go
+    line: 169
+    rule_id: go-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+
+no_findings:
+  - negative_cases.go

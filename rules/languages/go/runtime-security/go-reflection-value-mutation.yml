@@ -1,0 +1,55 @@
+rules:
+  - id: go-reflection-value-mutation
+    message: Reflection-based value mutation detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # Value creation (no Set methods involved)
+          - pattern: reflect.NewAt($TYPE, $PTR)
+          - pattern: reflect.New($TYPE)
+          # All Set method patterns
+          - patterns:
+              - pattern-either:
+                  # Direct Set operations on ValueOf
+                  - pattern: reflect.ValueOf($EXPR).$METHOD($VALUE)
+                  # Deferred Set operations (stored value)
+                  - pattern: |
+                      $VAL := reflect.ValueOf($EXPR)
+                      ...
+                      $VAL.$METHOD($VALUE)
+                  # FieldByName Set operations
+                  - pattern: reflect.ValueOf($EXPR).FieldByName($NAME).$METHOD($VALUE)
+                  - pattern: |
+                      $FIELD := reflect.ValueOf($EXPR).FieldByName($NAME)
+                      ...
+                      $FIELD.$METHOD($VALUE)
+                  # Elem Set operations
+                  - pattern: reflect.ValueOf($EXPR).Elem().$METHOD($VALUE)
+                  - pattern: |
+                      $ELEM := reflect.ValueOf($EXPR).Elem()
+                      ...
+                      $ELEM.$METHOD($VALUE)
+                  # Elem + FieldByName combinations
+                  - pattern: reflect.ValueOf($EXPR).Elem().FieldByName($NAME).$METHOD($VALUE)
+                  - pattern: |
+                      $FIELD := reflect.ValueOf($EXPR).Elem().FieldByName($NAME)
+                      ...
+                      $FIELD.$METHOD($VALUE)
+                  # Indirect operations
+                  - pattern: reflect.Indirect($VALUE).$METHOD($NEWVAL)
+                  - pattern: reflect.Indirect($VALUE).FieldByName($NAME).$METHOD($NEWVAL)
+                  # Index-based Set operations (arrays/slices)
+                  - pattern: reflect.ValueOf($EXPR).Index($IDX).$METHOD($VALUE)
+                  - pattern: |
+                      $ELEM := reflect.ValueOf($EXPR).Index($IDX)
+                      ...
+                      $ELEM.$METHOD($VALUE)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^Set(Bool|Int|Uint|Float|String|Bytes|Complex|Pointer)?$
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Reflection-based value mutation bypasses compile-time type safety, obscures data flow, and complicates static analysis and CVE impact assessment
