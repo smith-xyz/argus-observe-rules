@@ -1,0 +1,41 @@
+findings:
+  - file: test_code.go
+    line: 10
+    rule_id: rules.languages.go.runtime-security.go-tls-max-version-blocks-tls13
+    message: "TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 13
+    rule_id: rules.languages.go.runtime-security.go-tls-max-version-blocks-tls13
+    message: "TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 18
+    rule_id: rules.languages.go.runtime-security.go-tls-max-version-blocks-tls13
+    message: "TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 23
+    rule_id: rules.languages.go.runtime-security.go-tls-max-version-blocks-tls13
+    message: "TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 28
+    rule_id: rules.languages.go.runtime-security.go-tls-max-version-blocks-tls13
+    message: "TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 35
+    rule_id: rules.languages.go.runtime-security.go-tls-min-version-tls12-only
+    message: "TLS MinVersion set to TLS 1.2 without MaxVersion - May allow TLS 1.3 but worth reviewing for OpenShift profile compliance"
+  - file: test_code.go
+    line: 41
+    rule_id: rules.languages.go.runtime-security.go-tls-min-version-tls12-only
+    message: "TLS MinVersion set to TLS 1.2 without MaxVersion - May allow TLS 1.3 but worth reviewing for OpenShift profile compliance"
+  - file: test_code.go
+    line: 44
+    rule_id: rules.languages.go.runtime-security.go-tls-min-version-tls12-only
+    message: "TLS MinVersion set to TLS 1.2 without MaxVersion - May allow TLS 1.3 but worth reviewing for OpenShift profile compliance"
+  - file: test_code.go
+    line: 50
+    rule_id: rules.languages.go.runtime-security.go-tls-min-version-tls12-only
+    message: "TLS MinVersion set to TLS 1.2 without MaxVersion - May allow TLS 1.3 but worth reviewing for OpenShift profile compliance"
+
+no_findings:
+  - negative_cases.go
+

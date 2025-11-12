@@ -1,0 +1,49 @@
+rules:
+  - id: go-http-client-tls-override
+    message: HTTP client with custom TLS config detected - May override OpenShift TLS profile settings
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # HTTP Client with TLS config override
+          - pattern: |
+              $CLIENT := &http.Client{
+                ...,
+                Transport: &http.Transport{
+                  ...,
+                  TLSClientConfig: $TLS_CONFIG,
+                  ...
+                },
+                ...
+              }
+          # HTTP Transport with TLS config
+          - pattern: |
+              $TRANSPORT := &http.Transport{
+                ...,
+                TLSClientConfig: $TLS_CONFIG,
+                ...
+              }
+          # Direct Transport TLS config assignment
+          - pattern: |
+              $TRANSPORT := &http.Transport{...}
+              ...
+              $TRANSPORT.TLSClientConfig = $TLS_CONFIG
+          # HTTP Client creation with Transport
+          - pattern: |
+              $CLIENT := &http.Client{
+                Transport: $TRANSPORT,
+                ...
+              }
+              ...
+              $TRANSPORT.TLSClientConfig = $TLS_CONFIG
+    fix: |
+      Review TLS configuration to ensure it doesn't override OpenShift TLS profile:
+      - Remove MaxVersion restrictions that block TLS 1.3
+      - Use platform TLS profiles when available
+      - Ensure MinVersion allows TLS 1.3 if required by profile
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP clients may override platform TLS profiles (e.g., OpenShift TLS profile)
+

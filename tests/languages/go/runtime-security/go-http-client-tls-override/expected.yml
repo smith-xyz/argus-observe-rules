@@ -1,0 +1,41 @@
+findings:
+  - file: test_code.go
+    line: 13
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 20
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 27
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 33
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 34
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 42
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 52
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 60
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+  - file: test_code.go
+    line: 63
+    rule_id: go-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - May override OpenShift TLS profile settings"
+
+no_findings:
+  - negative_cases.go
+
