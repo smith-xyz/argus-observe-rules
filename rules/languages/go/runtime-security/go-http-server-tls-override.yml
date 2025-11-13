@@ -1,0 +1,48 @@
+rules:
+  - id: go-http-server-tls-override
+    message: HTTP server with custom TLS config detected - May override OpenShift TLS profile settings
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          # HTTP Server with TLS config override
+          - pattern: |
+              $SERVER := &http.Server{
+                ...,
+                TLSConfig: $TLS_CONFIG,
+                ...
+              }
+          - pattern: |
+              http.Server{
+                ...,
+                TLSConfig: $TLS_CONFIG,
+                ...
+              }
+          # Direct Server TLS config assignment
+          - pattern: |
+              $SERVER := &http.Server{...}
+              ...
+              $SERVER.TLSConfig = $TLS_CONFIG
+          - pattern: |
+              $SERVER := http.Server{...}
+              ...
+              $SERVER.TLSConfig = $TLS_CONFIG
+          # Server creation with TLS config
+          - pattern: |
+              $SERVER := &http.Server{
+                ...,
+                TLSConfig: &tls.Config{...},
+                ...
+              }
+    fix: |
+      Review TLS configuration to ensure it doesn't override OpenShift TLS profile:
+      - Remove MaxVersion restrictions that block TLS 1.3
+      - Use platform TLS profiles when available
+      - Ensure MinVersion allows TLS 1.3 if required by profile
+      - Fetch TLS configuration from API Server, Ingress, or Kubelet configuration
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP servers may override platform TLS profiles (e.g., OpenShift TLS profile)
+
