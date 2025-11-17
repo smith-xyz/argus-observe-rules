@@ -1,0 +1,73 @@
+rules:
+  - id: java-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SSLContext.getInstance("TLSv1")
+          - pattern: SSLContext.getInstance("TLSv1.1")
+          - pattern: SSLContext.getInstance("TLSv1.2")
+          - pattern: SSLContext.getInstance("TLSv1.3")
+          - pattern: SSLContext.getInstance("SSL")
+          - pattern: SSLContext.getInstance("SSLv3")
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLSv1.2");
+              $CONTEXT.init($KEY_MANAGERS, $TRUST_MANAGERS, $RAND);
+          - patterns:
+              - pattern: SSLContext.getInstance($PROTOCOL)
+              - metavariable-regex:
+                  metavariable: $PROTOCOL
+                  regex: '"(TLSv1(\.[0-3])?|SSLv3|SSL)"'
+              - focus-metavariable: $PROTOCOL
+          - pattern: System.setProperty("https.protocols", "TLSv1.2")
+          - patterns:
+              - pattern: System.setProperty("https.protocols", $PROTOCOLS)
+              - metavariable-regex:
+                  metavariable: $PROTOCOLS
+                  regex: '"[^"]*"'
+              - focus-metavariable: $PROTOCOLS
+          - pattern: |
+              System.setProperty("https.protocols", "TLSv1.2");
+              ...
+              $CONNECTION = new java.net.URL("https://example.com").openConnection();
+          - pattern: |
+              $FACTORY = SSLSocketFactory.getDefault();
+              $SOCKET = $FACTORY.createSocket($HOST, $PORT);
+              $SSL_SOCKET = (SSLSocket) $SOCKET;
+              $SSL_SOCKET.setEnabledProtocols($PROTOCOLS);
+          - pattern: |
+              $SOCKET = $FACTORY.createSocket($HOST, $PORT);
+              if ($SOCKET instanceof SSLSocket) {
+                  ((SSLSocket) $SOCKET).setEnabledProtocols($PROTOCOLS);
+              }
+          - patterns:
+              - pattern: $SSL_SOCKET.setEnabledProtocols($PROTOCOLS)
+              - metavariable-regex:
+                  metavariable: $PROTOCOLS
+                  regex: 'new String\[\] \{.*\}'
+              - focus-metavariable: $PROTOCOLS
+          - pattern: SSLSocket.setEnabledProtocols($PROTOCOLS)
+          - pattern: SSLServerSocket.setEnabledProtocols($PROTOCOLS)
+          - pattern: |
+              $SERVER_SOCKET = $FACTORY.createServerSocket($PORT);
+              if ($SERVER_SOCKET instanceof SSLServerSocket) {
+                  ((SSLServerSocket) $SERVER_SOCKET).setEnabledProtocols($PROTOCOLS);
+              }
+          - pattern: |
+              $CONNECTION = (HttpsURLConnection) $URL.openConnection();
+              $CONNECTION.setSSLSocketFactory($FACTORY);
+          - pattern: |
+              $PARAMS = $CONTEXT.getDefaultSSLParameters();
+              $PARAMS.setProtocols($PROTOCOLS);
+          - patterns:
+              - pattern: SSLParameters.setProtocols($PROTOCOLS)
+              - metavariable-regex:
+                  metavariable: $PROTOCOLS
+                  regex: 'new String\[\] \{.*\}'
+              - focus-metavariable: $PROTOCOLS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

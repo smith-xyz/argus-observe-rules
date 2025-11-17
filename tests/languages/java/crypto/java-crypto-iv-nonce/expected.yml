@@ -1,0 +1,27 @@
+findings:
+- file: test_code.java
+  line: 11
+  rule_id: java-crypto-iv-nonce
+  message: Initialization vector (IV) or nonce usage detected
+- file: test_code.java
+  line: 16
+  rule_id: java-crypto-iv-nonce
+  message: Initialization vector (IV) or nonce usage detected
+- file: test_code.java
+  line: 26
+  rule_id: java-crypto-iv-nonce
+  message: Initialization vector (IV) or nonce usage detected
+- file: test_code.java
+  line: 36
+  rule_id: java-crypto-iv-nonce
+  message: Initialization vector (IV) or nonce usage detected
+- file: test_code.java
+  line: 48
+  rule_id: java-crypto-iv-nonce
+  message: Initialization vector (IV) or nonce usage detected
+- file: test_code.java
+  line: 57
+  rule_id: java-crypto-iv-nonce
+  message: Initialization vector (IV) or nonce usage detected
+no_findings:
+- negative_cases.java

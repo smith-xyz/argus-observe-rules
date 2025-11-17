@@ -1,0 +1,34 @@
+rules:
+  - id: java-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("MD5")
+          - pattern: MessageDigest.getInstance("md5")
+          - pattern: MessageDigest.getInstance("MD5", $PROVIDER)
+          - pattern: MessageDigest.getInstance("md5", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(MD5|md5)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("MD5");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("MD5");
+              ...
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("MD5", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"

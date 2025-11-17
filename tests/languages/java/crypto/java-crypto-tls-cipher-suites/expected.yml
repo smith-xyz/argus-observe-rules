@@ -1,0 +1,15 @@
+findings:
+- file: test_code.java
+  line: 17
+  rule_id: java-crypto-tls-cipher-suites
+  message: TLS cipher suite configuration detected
+- file: test_code.java
+  line: 21
+  rule_id: java-crypto-tls-cipher-suites
+  message: TLS cipher suite configuration detected
+- file: test_code.java
+  line: 23
+  rule_id: java-crypto-tls-cipher-suites
+  message: TLS cipher suite configuration detected
+no_findings:
+- negative_cases.java

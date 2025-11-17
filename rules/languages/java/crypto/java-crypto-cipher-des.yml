@@ -1,0 +1,21 @@
+rules:
+  - id: java-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("DES")
+          - pattern: Cipher.getInstance("DES/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("DES/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede")
+          - pattern: Cipher.getInstance("TripleDES")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("DES");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"

@@ -1,0 +1,46 @@
+rules:
+  - id: java-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - java
+    taint-mode:
+      source:
+        - pattern-either:
+            - pattern: $KEY = "$VALUE"
+            - pattern: $KEY = '$VALUE'
+            - pattern: private static final String $KEY = "$VALUE"
+            - pattern: private static final String $KEY = '$VALUE'
+            - pattern: final String $KEY = "$VALUE"
+            - pattern: final String $KEY = '$VALUE'
+            - pattern: private static final byte[] $KEY = {$BYTES}
+            - pattern: final byte[] $KEY = {$BYTES}
+      sink:
+        - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
+        - pattern: new SecretKeySpec($KEY, $ALGO)
+        - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
+        - pattern: new SecretKeySpec(new byte[] {$KEY}, $ALGO)
+    patterns:
+      - pattern-either:
+          - pattern: new SecretKeySpec("$KEY".getBytes(), "AES")
+          - pattern: new SecretKeySpec($KEY.getBytes(), "AES")
+          - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
+          - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
+          - pattern: new SecretKeySpec(new byte[] {$BYTES}, "AES")
+          - pattern: new SecretKeySpec(new byte[] {$BYTES}, $ALGO)
+          - pattern: |
+              private static final String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), "AES");
+          - pattern: |
+              private static final byte[] $KEY = {$BYTES};
+              ...
+              new SecretKeySpec($KEY, "AES");
+          - pattern: |
+              final String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), "AES");
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"

@@ -1,0 +1,30 @@
+rules:
+  - id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("DESede")
+          - pattern: Cipher.getInstance("TripleDES")
+          - pattern: Cipher.getInstance("DESede/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede/CFB/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede/OFB/PKCS5Padding")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("DESede");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("TripleDES");
+              $CIPHER.init(Cipher.DECRYPT_MODE, $KEY);
+              $PLAINTEXT = $CIPHER.doFinal($CIPHERTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: 3DES cipher usage detected in codebase"

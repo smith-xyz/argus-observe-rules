@@ -1,0 +1,43 @@
+findings:
+- file: test_code.java
+  line: 9
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 9
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 13
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 13
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 17
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 17
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 24
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 24
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 33
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.java
+  line: 33
+  rule_id: java-crypto-blake2
+  message: BLAKE2 hash function usage detected
+no_findings:
+- negative_cases.java

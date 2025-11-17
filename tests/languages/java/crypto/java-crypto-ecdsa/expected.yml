@@ -1,0 +1,43 @@
+findings:
+- file: test_code.java
+  line: 10
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 11
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 15
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 16
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 21
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 22
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 27
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 28
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 32
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.java
+  line: 32
+  rule_id: java-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+no_findings:
+- negative_cases.java

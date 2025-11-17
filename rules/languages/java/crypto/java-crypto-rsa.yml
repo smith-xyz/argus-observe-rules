@@ -1,0 +1,26 @@
+rules:
+  - id: java-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("RSA")
+          - pattern: Cipher.getInstance("RSA")
+          - pattern: Cipher.getInstance("RSA/ECB/PKCS1Padding")
+          - pattern: Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("RSA");
+              $GEN.initialize($BITS);
+              $PAIR = $GEN.generateKeyPair();
+          - patterns:
+              - pattern: $GEN.initialize($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+              - focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

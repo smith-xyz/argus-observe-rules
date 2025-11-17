@@ -1,0 +1,39 @@
+findings:
+- file: test_code.java
+  line: 8
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 8
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 9
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 14
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 15
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 16
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 20
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 20
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+- file: test_code.java
+  line: 21
+  rule_id: java-crypto-rsa
+  message: RSA cryptographic operations detected
+no_findings:
+- negative_cases.java

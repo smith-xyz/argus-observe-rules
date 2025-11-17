@@ -1,0 +1,43 @@
+rules:
+  - id: java-crypto-iv-nonce
+    message: Initialization vector (IV) or nonce usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: new IvParameterSpec($IV)
+          - pattern: new GCMParameterSpec($TAG_LEN, $NONCE)
+          - pattern: new AlgorithmParameterSpec()
+          - pattern: |
+              $IV = new byte[$SIZE];
+              ...
+              $IV_PARAMS = new IvParameterSpec($IV);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $IV = "static_iv_value".getBytes();
+              ...
+              $IV_PARAMS = new IvParameterSpec($IV);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $NONCE = new byte[12];
+              ...
+              $GCM_PARAMS = new GCMParameterSpec(128, $NONCE);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $GCM_PARAMS);
+          - pattern: |
+              $IV = new byte[16];
+              $RAND.nextBytes($IV);
+              $IV_PARAMS = new IvParameterSpec($IV);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $NONCE = new byte[12];
+              $RAND.nextBytes($NONCE);
+              $GCM_PARAMS = new GCMParameterSpec(128, $NONCE);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $GCM_PARAMS);
+          - pattern: |
+              $IV_PARAMS = new IvParameterSpec("static".getBytes());
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Initialization vector (IV) or nonce usage detected in codebase"

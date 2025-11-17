@@ -1,0 +1,33 @@
+rules:
+  - id: java-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA384")
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
+          - pattern: |
+              $FACTORY = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+              $SPEC = new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN);
+              $KEY = $FACTORY.generateSecret($SPEC);
+          - pattern: |
+              $FACTORY = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+              $SPEC = new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN);
+              $KEY = $FACTORY.generateSecret($SPEC);
+          - patterns:
+              - pattern: new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+              - focus-metavariable: $ITER
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"

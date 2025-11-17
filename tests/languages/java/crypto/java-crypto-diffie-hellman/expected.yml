@@ -1,0 +1,55 @@
+findings:
+- file: test_code.java
+  line: 10
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 17
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 17
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 22
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 22
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 29
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 29
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 34
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 34
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 41
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 41
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 46
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+- file: test_code.java
+  line: 46
+  rule_id: java-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+no_findings:
+- negative_cases.java

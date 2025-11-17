@@ -1,0 +1,41 @@
+rules:
+  - id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance(".../ECB/...")
+          - pattern: Cipher.getInstance(".../CBC/...")
+          - pattern: Cipher.getInstance(".../CFB/...")
+          - pattern: Cipher.getInstance(".../OFB/...")
+          - pattern: Cipher.getInstance(".../CTR/...")
+          - pattern: Cipher.getInstance(".../GCM/...")
+          - pattern: Cipher.getInstance(".../CCM/...")
+          - pattern: Cipher.getInstance(".../XTS/...")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CBC/PKCS5Padding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/GCM/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $GCM_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CFB/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/OFB/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CTR/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CCM/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $CCM_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/XTS/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"

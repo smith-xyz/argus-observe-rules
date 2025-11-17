@@ -1,0 +1,35 @@
+findings:
+- file: test_code.java
+  line: 8
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 9
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 10
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 14
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 14
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 20
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 26
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.java
+  line: 27
+  rule_id: java-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+no_findings:
+- negative_cases.java

@@ -1,0 +1,47 @@
+findings:
+- file: test_code.java
+  line: 11
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 11
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 15
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 15
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 19
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 23
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 27
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 31
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 35
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 39
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+- file: test_code.java
+  line: 43
+  rule_id: java-crypto-bouncycastle
+  message: BouncyCastle cryptographic library usage detected
+no_findings:
+- negative_cases.java

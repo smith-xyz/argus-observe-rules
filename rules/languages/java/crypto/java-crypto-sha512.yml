@@ -1,0 +1,46 @@
+rules:
+  - id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("SHA-512")
+          - pattern: MessageDigest.getInstance("SHA512")
+          - pattern: MessageDigest.getInstance("SHA512/224")
+          - pattern: MessageDigest.getInstance("SHA512/256")
+          - pattern: MessageDigest.getInstance("SHA-512", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA512", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(SHA-512|SHA512|SHA512/224|SHA512/256)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA512");
+              ...
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512");
+              $DIGEST.update($DATA);
+              $BYTES = $DIGEST.digest();
+              $HEX = DatatypeConverter.printHexBinary($BYTES);
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512");
+              $DIGEST.update($DATA);
+              $BYTES = $DIGEST.digest();
+              $BASE64 = Base64.getEncoder().encodeToString($BYTES);
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"

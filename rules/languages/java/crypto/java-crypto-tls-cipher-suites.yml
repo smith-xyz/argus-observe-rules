@@ -1,0 +1,24 @@
+rules:
+  - id: java-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SSLContext.getInstance("TLS").getDefaultSSLParameters().setCipherSuites($SUITES)
+          - pattern: $SSL_PARAMS.setCipherSuites($SUITES)
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLS");
+              $PARAMS = $CONTEXT.getDefaultSSLParameters();
+              $PARAMS.setCipherSuites($SUITES);
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLS");
+              $ENGINE = $CONTEXT.createSSLEngine();
+              $ENGINE.setEnabledCipherSuites($SUITES);
+          - pattern: "$CONTEXT = SSLContext.getInstance(\"TLS\");\n$SOCKET_FACTORY = $CONTEXT.getSocketFactory();\n$SOCKET = $SOCKET_FACTORY.createSocket($HOST, $PORT);\n$SSL_SOCKET = ($SOCKET instanceof SSLSocket) ? (SSLSocket) $SOCKET : null;\nif ($SSL_SOCKET != null) {\n    $SSL_SOCKET.setEnabledCipherSuites($SUITES);\n}\n"
+          - pattern: "$SERVER_SOCKET_FACTORY = $CONTEXT.getServerSocketFactory();\n$SERVER_SOCKET = $SERVER_SOCKET_FACTORY.createServerSocket($PORT);\nif ($SERVER_SOCKET instanceof SSLServerSocket) {\n    ((SSLServerSocket) $SERVER_SOCKET).setEnabledCipherSuites($SUITES);\n}\n"
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

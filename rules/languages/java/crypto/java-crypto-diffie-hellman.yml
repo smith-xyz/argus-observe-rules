@@ -1,0 +1,34 @@
+rules:
+  - id: java-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("DH")
+          - pattern: KeyAgreement.getInstance("DH")
+          - pattern: KeyAgreement.getInstance("DiffieHellman")
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("DH");
+              $GEN.initialize($PARAMS);
+              $PAIR = $GEN.generateKeyPair();
+          - pattern: |
+              $AGREEMENT = KeyAgreement.getInstance("DH");
+              $AGREEMENT.init($PRIV_KEY);
+              $AGREEMENT.doPhase($PUB_KEY, true);
+              $SECRET = $AGREEMENT.generateSecret();
+          - pattern: |
+              $AGREEMENT = KeyAgreement.getInstance("DiffieHellman");
+              $AGREEMENT.init($PRIV_KEY);
+              $AGREEMENT.doPhase($PUB_KEY, true);
+              $SECRET = $AGREEMENT.generateSecret($ALGO);
+          - pattern: |
+              $AGREEMENT = KeyAgreement.getInstance("DH");
+              $AGREEMENT.init($PRIV_KEY);
+              $AGREEMENT.doPhase($PUB_KEY, true);
+              $SECRET_KEY = $AGREEMENT.generateSecret($ALGO);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

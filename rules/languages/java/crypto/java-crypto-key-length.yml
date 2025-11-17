@@ -1,0 +1,50 @@
+rules:
+  - id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $GEN = KeyGenerator.getInstance("AES");
+              $GEN.init($BITS);
+              $KEY = $GEN.generateKey();
+          - pattern: |
+              $GEN = KeyGenerator.getInstance("DES");
+              $GEN.init($BITS);
+              $KEY = $GEN.generateKey();
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("RSA");
+              $GEN.initialize($BITS);
+              $PAIR = $GEN.generateKeyPair();
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("EC");
+              $GEN.initialize($BITS);
+              $PAIR = $GEN.generateKeyPair();
+          - patterns:
+              - pattern: $GEN.init($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: $GEN.initialize($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+              - focus-metavariable: $BITS
+          - pattern: |
+              $KEY = new SecretKeySpec($BYTES, "AES");
+              ...
+              $LEN = $BYTES.length;
+          - patterns:
+              - pattern: new SecretKeySpec(new byte[$SIZE], "AES")
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: '\d+'
+              - focus-metavariable: $SIZE
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"

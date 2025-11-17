@@ -1,0 +1,20 @@
+rules:
+  - id: java-crypto-certificate-validation
+    message: Certificate validation configuration detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $TRUST_MANAGER.checkClientTrusted($CHAIN, $AUTH_TYPE)
+          - pattern: $TRUST_MANAGER.checkServerTrusted($CHAIN, $AUTH_TYPE)
+          - pattern: "class $CLASS implements X509TrustManager {\n    public void checkClientTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {\n        ...\n    }\n    public void checkServerTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {\n        ...\n    }\n}\n"
+          - pattern: "$TRUST_MANAGER = new X509TrustManager() {\n    public void checkClientTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {\n        ...\n    }\n    public void checkServerTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {\n        ...\n    }\n};\n"
+          - pattern: "$TRUST_MANAGER = new X509TrustManager() {\n    public void checkClientTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) throws CertificateException {\n        ...\n    }\n    public void checkServerTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) throws CertificateException {\n        ...\n    }\n};\n"
+          - pattern: "$HOSTNAME_VERIFIER = new HostnameVerifier() {\n    public boolean verify(String $HOSTNAME, SSLSession $SESSION) {\n        return true;\n    }\n};\n"
+          - pattern: HttpsURLConnection.setDefaultHostnameVerifier($VERIFIER)
+          - pattern: $CONNECTION.setHostnameVerifier($VERIFIER)
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: Certificate validation configuration detected in codebase"

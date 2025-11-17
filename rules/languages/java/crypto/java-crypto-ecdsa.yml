@@ -1,0 +1,27 @@
+rules:
+  - id: java-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("EC")
+          - pattern: KeyPairGenerator.getInstance("ECDSA")
+          - pattern: Signature.getInstance("SHA256withECDSA")
+          - pattern: Signature.getInstance("SHA512withECDSA")
+          - patterns:
+              - pattern: |
+                  $GEN = KeyPairGenerator.getInstance("EC");
+                  $GEN.initialize($CURVE_PARAMS);
+                  $PAIR = $GEN.generateKeyPair();
+              - focus-metavariable: $CURVE_PARAMS
+          - pattern: |
+              $SIG = Signature.getInstance("SHA256withECDSA");
+              $SIG.initSign($PRIV_KEY);
+              $SIG.update($DATA);
+              $SIGNATURE = $SIG.sign();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

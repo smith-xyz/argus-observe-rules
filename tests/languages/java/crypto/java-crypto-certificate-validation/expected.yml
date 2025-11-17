@@ -1,0 +1,23 @@
+findings:
+- file: test_code.java
+  line: 54
+  rule_id: java-crypto-certificate-validation
+  message: Certificate validation configuration detected
+- file: test_code.java
+  line: 62
+  rule_id: java-crypto-certificate-validation
+  message: Certificate validation configuration detected
+- file: test_code.java
+  line: 67
+  rule_id: java-crypto-certificate-validation
+  message: Certificate validation configuration detected
+- file: test_code.java
+  line: 73
+  rule_id: java-crypto-certificate-validation
+  message: Certificate validation configuration detected
+- file: test_code.java
+  line: 78
+  rule_id: java-crypto-certificate-validation
+  message: Certificate validation configuration detected
+no_findings:
+- negative_cases.java

@@ -1,0 +1,79 @@
+rules:
+  - id: java-crypto-bouncycastle
+    message: BouncyCastle cryptographic library usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Security.addProvider(new BouncyCastleProvider())
+          - pattern: Security.insertProviderAt(new BouncyCastleProvider(), $POSITION)
+          - pattern: Security.addProvider($PROVIDER)
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.addProvider($PROVIDER);
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.insertProviderAt($PROVIDER, $POSITION);
+          - pattern: MessageDigest.getInstance("MD4")
+          - pattern: MessageDigest.getInstance("MD4", $PROVIDER)
+          - pattern: MessageDigest.getInstance("MD2")
+          - pattern: MessageDigest.getInstance("MD2", $PROVIDER)
+          - pattern: Cipher.getInstance("Twofish")
+          - pattern: Cipher.getInstance("Twofish/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("Camellia")
+          - pattern: Cipher.getInstance("Camellia/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("ChaCha20")
+          - pattern: Cipher.getInstance("ChaCha20-Poly1305")
+          - pattern: Cipher.getInstance("Salsa20")
+          - pattern: KeyPairGenerator.getInstance("ElGamal")
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.addProvider($PROVIDER);
+              $CIPHER = Cipher.getInstance("Twofish", $PROVIDER);
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.addProvider($PROVIDER);
+              $DIGEST = MessageDigest.getInstance("MD4", $PROVIDER);
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(MD4|MD2)$
+          - patterns:
+              - pattern: Cipher.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(Twofish|Camellia|ChaCha20|Salsa20|ChaCha20-Poly1305)
+          - patterns:
+              - pattern: KeyPairGenerator.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(ElGamal)$
+          - pattern: org.bouncycastle.jce.provider.BouncyCastleProvider
+          - pattern: new org.bouncycastle.jce.provider.BouncyCastleProvider()
+          - pattern: org.bouncycastle.crypto.digests.MD4Digest
+          - pattern: org.bouncycastle.crypto.digests.MD2Digest
+          - pattern: org.bouncycastle.crypto.digests.SHA3Digest
+          - pattern: org.bouncycastle.crypto.engines.TwofishEngine
+          - pattern: org.bouncycastle.crypto.engines.CamelliaEngine
+          - pattern: org.bouncycastle.crypto.engines.ChaCha7539Engine
+          - pattern: org.bouncycastle.crypto.engines.Salsa20Engine
+          - pattern: org.bouncycastle.crypto.engines.ElGamalEngine
+          - pattern: org.bouncycastle.crypto.generators.Argon2BytesGenerator
+          - pattern: org.bouncycastle.crypto.generators.SCrypt
+          - pattern: org.bouncycastle.crypto.macs.HMac
+          - pattern: org.bouncycastle.crypto.prng.DigestRandomGenerator
+          - pattern: |
+              $DIGEST = new org.bouncycastle.crypto.digests.MD4Digest();
+              $DIGEST.update($DATA, 0, $DATA.length);
+              $HASH = new byte[$DIGEST.getDigestSize()];
+              $DIGEST.doFinal($HASH, 0);
+          - pattern: |
+              $ENGINE = new org.bouncycastle.crypto.engines.TwofishEngine();
+              $CIPHER = new org.bouncycastle.crypto.modes.CBCBlockCipher($ENGINE);
+              $CIPHER.init(true, $PARAMS);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BouncyCastle cryptographic library usage detected in codebase"

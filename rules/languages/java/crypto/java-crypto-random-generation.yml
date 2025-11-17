@@ -1,0 +1,39 @@
+rules:
+  - id: java-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SecureRandom.getInstance($ALGO)
+          - pattern: SecureRandom.getInstanceStrong()
+          - pattern: new SecureRandom()
+          - pattern: |
+              $RAND = SecureRandom.getInstance("SHA1PRNG");
+              $BYTES = new byte[$LENGTH];
+              $RAND.nextBytes($BYTES);
+          - pattern: |
+              $RAND = new SecureRandom();
+              $RAND.nextBytes($BYTES);
+          - pattern: |
+              $RAND = SecureRandom.getInstance($ALGO);
+              $RAND.setSeed($SEED);
+          - pattern: |
+              $RAND = new SecureRandom();
+              $RAND.setSeed($SEED);
+          - pattern: SecureRandom.generateSeed($LENGTH)
+          - pattern: |
+              $RAND = SecureRandom.getInstance($ALGO);
+              $SEED = $RAND.generateSeed($LENGTH);
+          - patterns:
+              - pattern: SecureRandom.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)(SHA1PRNG|NativePRNG|Windows-PRNG|DRBG|PKCS11)
+          - pattern: new Random()
+          - pattern: Math.random()
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"

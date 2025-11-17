@@ -1,0 +1,29 @@
+rules:
+  - id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("Blowfish")
+          - pattern: Cipher.getInstance("Blowfish/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("Blowfish/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("Blowfish/CFB/PKCS5Padding")
+          - pattern: Cipher.getInstance("Blowfish/OFB/PKCS5Padding")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("Blowfish");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("Blowfish/CBC/PKCS5Padding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+              $CIPHER.init(Cipher.DECRYPT_MODE, $KEY);
+              $PLAINTEXT = $CIPHER.doFinal($CIPHERTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"

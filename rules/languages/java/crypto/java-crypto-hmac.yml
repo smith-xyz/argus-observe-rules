@@ -1,0 +1,38 @@
+rules:
+  - id: java-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Mac.getInstance("HmacMD5")
+          - pattern: Mac.getInstance("HmacSHA1")
+          - pattern: Mac.getInstance("HmacSHA256")
+          - pattern: Mac.getInstance("HmacSHA384")
+          - pattern: Mac.getInstance("HmacSHA512")
+          - pattern: Mac.getInstance("HmacSHA3-224")
+          - pattern: Mac.getInstance("HmacSHA3-256")
+          - pattern: Mac.getInstance("HmacSHA3-384")
+          - pattern: Mac.getInstance("HmacSHA3-512")
+          - pattern: |
+              $MAC = Mac.getInstance("HmacSHA256");
+              $KEYSPEC = new SecretKeySpec($KEY, "HmacSHA256");
+              $MAC.init($KEYSPEC);
+              $MAC.update($DATA);
+              $RESULT = $MAC.doFinal();
+          - pattern: |
+              $MAC = Mac.getInstance("HmacSHA512");
+              $KEYSPEC = new SecretKeySpec($KEY, "HmacSHA512");
+              $MAC.init($KEYSPEC);
+              $RESULT = $MAC.doFinal($DATA);
+          - pattern: |
+              $MAC = Mac.getInstance("HmacSHA256");
+              $KEYSPEC = new SecretKeySpec($KEY.getBytes(), "HmacSHA256");
+              $MAC.init($KEYSPEC);
+              $MAC.update($DATA);
+              $RESULT = $MAC.doFinal();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"
