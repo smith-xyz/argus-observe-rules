@@ -1,0 +1,31 @@
+rules:
+  - id: c-crypto-windows-cng
+    message: Windows CNG (Cryptography Next Generation) usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: BCryptOpenAlgorithmProvider($ALG_HANDLE, $ALG_ID, $IMPL, $FLAGS)
+          - pattern: BCryptCloseAlgorithmProvider($ALG_HANDLE, $FLAGS)
+          - pattern: BCryptGenerateSymmetricKey($ALG_HANDLE, $KEY_HANDLE, $KEY_OBJECT, $KEY_OBJECT_LEN, $SECRET, $SECRET_LEN, $FLAGS)
+          - pattern: BCryptGenerateKeyPair($ALG_HANDLE, $KEY_HANDLE, $KEY_LENGTH, $FLAGS)
+          - pattern: BCryptFinalizeKeyPair($KEY_HANDLE, $FLAGS)
+          - pattern: BCryptImportKeyPair($ALG_HANDLE, $NULL, $BLOB_TYPE, $KEY_HANDLE, $KEY_BLOB, $KEY_BLOB_LEN, $FLAGS)
+          - pattern: BCryptExportKey($KEY_HANDLE, $NULL, $BLOB_TYPE, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
+          - pattern: BCryptEncrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV, $IV_LEN, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
+          - pattern: BCryptDecrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV, $IV_LEN, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
+          - pattern: BCryptGenRandom($PROV_HANDLE, $BUFFER, $BUFFER_LEN, $FLAGS)
+          - pattern: BCryptCreateHash($ALG_HANDLE, $HASH_HANDLE, $HASH_OBJECT, $HASH_OBJECT_LEN, $SECRET, $SECRET_LEN, $FLAGS)
+          - pattern: BCryptHashData($HASH_HANDLE, $INPUT, $INPUT_LEN, $FLAGS)
+          - pattern: BCryptFinishHash($HASH_HANDLE, $OUTPUT, $OUTPUT_LEN, $FLAGS)
+          - pattern: BCryptDestroyHash($HASH_HANDLE)
+          - pattern: BCryptDestroyKey($KEY_HANDLE)
+          - pattern: BCryptSignHash($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN, $SIGNATURE, $SIGNATURE_LEN, $RESULT_LEN, $FLAGS)
+          - pattern: BCryptVerifySignature($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN, $SIGNATURE, $SIGNATURE_LEN, $FLAGS)
+          - pattern: BCryptDeriveKey($SECRET_HANDLE, $PARAM_LIST, $DERIVED_KEY, $DERIVED_KEY_LEN, $RESULT_LEN, $FLAGS)
+          - pattern: BCryptDeriveKeyPBKDF2($ALG_HANDLE, $PASSWORD, $PASSWORD_LEN, $SALT, $SALT_LEN, $ITERATIONS, $DERIVED_KEY, $DERIVED_KEY_LEN, $FLAGS)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Windows CNG (Cryptography Next Generation) usage detected in codebase"

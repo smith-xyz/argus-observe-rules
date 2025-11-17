@@ -1,0 +1,22 @@
+rules:
+  - id: c-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SHA256_Init($CTX)
+          - pattern: SHA256_Update($CTX, $DATA, $LEN)
+          - pattern: SHA256_Final($HASH, $CTX)
+          - pattern: |
+              SHA256_CTX $CTX;
+              SHA256_Init(&$CTX);
+              SHA256_Update(&$CTX, $DATA, $LEN);
+              SHA256_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha256(), $ENGINE)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"

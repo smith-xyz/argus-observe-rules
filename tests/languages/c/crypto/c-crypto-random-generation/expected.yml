@@ -1,0 +1,71 @@
+findings:
+- file: test_code.c
+  line: 11
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 12
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 17
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 22
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 27
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 31
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 32
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 41
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 47
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 51
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 53
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 54
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 61
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 67
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 68
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.c
+  line: 69
+  rule_id: c-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+no_findings:
+- negative_cases.c

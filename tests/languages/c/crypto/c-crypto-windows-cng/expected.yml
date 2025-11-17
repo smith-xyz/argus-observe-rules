@@ -1,0 +1,135 @@
+findings:
+- file: test_code.c
+  line: 6
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 7
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 18
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 19
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 20
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 21
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 28
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 29
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 30
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 31
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 32
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 42
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 43
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 44
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 45
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 46
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 59
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 60
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 68
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 69
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 70
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 79
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 80
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 81
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 82
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 90
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 98
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 109
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 110
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 119
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 132
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 133
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+- file: test_code.c
+  line: 134
+  rule_id: c-crypto-windows-cng
+  message: Windows CNG (Cryptography Next Generation) usage detected
+no_findings:
+- negative_cases.c

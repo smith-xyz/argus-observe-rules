@@ -1,0 +1,91 @@
+findings:
+- file: test_code.c
+  line: 5
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 10
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 13
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 19
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 20
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 25
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 29
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 35
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 41
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 43
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 48
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 53
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 54
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 59
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 61
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 66
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 69
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 74
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 78
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 83
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+- file: test_code.c
+  line: 85
+  rule_id: c-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange detected
+no_findings:
+- negative_cases.c

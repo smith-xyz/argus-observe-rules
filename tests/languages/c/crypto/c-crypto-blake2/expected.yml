@@ -1,0 +1,43 @@
+findings:
+- file: test_code.c
+  line: 11
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 12
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 24
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 25
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 35
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 37
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 46
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 47
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+- file: test_code.c
+  line: 48
+  rule_id: c-crypto-blake2
+  message: BLAKE2 hash function usage detected
+no_findings:
+- negative_cases.c

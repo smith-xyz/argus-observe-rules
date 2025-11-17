@@ -1,0 +1,23 @@
+rules:
+  - id: c-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: HMAC($EVPTYPE, $KEY, $KEYLEN, $DATA, $DATALEN, $HASH, $HASHLEN)
+          - pattern: HMAC_Init_ex($CTX, $KEY, $KEYLEN, $EVPTYPE, $ENGINE)
+          - pattern: HMAC_Update($CTX, $DATA, $DATALEN)
+          - pattern: HMAC_Final($CTX, $HASH, $HASHLEN)
+          - pattern: |
+              HMAC_CTX *$CTX;
+              HMAC_Init_ex($CTX, $KEY, $KEYLEN, $EVPTYPE, $ENGINE);
+              HMAC_Update($CTX, $DATA, $DATALEN);
+              HMAC_Final($CTX, $HASH, $HASHLEN);
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, $EVPTYPE, $ENGINE, $KEY)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $EVPTYPE, $ENGINE, $KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

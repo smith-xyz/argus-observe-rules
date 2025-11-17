@@ -1,0 +1,27 @@
+rules:
+  - id: c-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: EC_KEY_new()
+          - pattern: EC_KEY_new_by_curve_name($NID)
+          - pattern: EC_KEY_generate_key($KEY)
+          - pattern: ECDSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
+          - pattern: ECDSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
+          - pattern: ECDSA_do_sign($DGST, $DGSTLEN, $ECKEY)
+          - pattern: ECDSA_do_verify($DGST, $DGSTLEN, $SIG, $ECKEY)
+          - pattern: EVP_PKEY_new_EC_KEY($ECKEY)
+          - pattern: EVP_PKEY_assign_EC_KEY($PKEY, $ECKEY)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_EC, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ECDSA, $ENGINE)
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
+          - pattern: EC_GROUP_new_by_curve_name($NID)
+          - pattern: EC_GROUP_get_curve_name($GROUP)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

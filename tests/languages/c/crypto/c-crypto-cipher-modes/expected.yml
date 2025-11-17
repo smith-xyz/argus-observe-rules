@@ -1,0 +1,79 @@
+findings:
+- file: test_code.c
+  line: 10
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 11
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 21
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 22
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 32
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 33
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 43
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 44
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 54
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 55
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 65
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 66
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 76
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 77
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 87
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 88
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 99
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 110
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.c
+  line: 120
+  rule_id: c-crypto-cipher-modes
+  message: Cipher mode usage detected
+no_findings:
+- negative_cases.c

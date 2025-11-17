@@ -1,0 +1,22 @@
+rules:
+  - id: c-crypto-openssl-provider
+    message: OpenSSL 3.0 provider API usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: OSSL_PROVIDER_load($LIBCTX, $NAME)
+          - pattern: OSSL_PROVIDER_unload($PROV)
+          - pattern: OSSL_PROVIDER_available($LIBCTX, $NAME)
+          - pattern: EVP_CIPHER_fetch($CTX, $ALGORITHM, $PROPERTIES)
+          - pattern: EVP_CIPHER_free($CIPHER)
+          - pattern: EVP_MD_fetch($CTX, $ALGORITHM, $PROPERTIES)
+          - pattern: EVP_MD_free($MD)
+          - pattern: EVP_PKEY_sign($CTX, $SIG, $SIGLEN, $TBS, $TBSLEN)
+          - pattern: EVP_PKEY_verify($CTX, $SIG, $SIGLEN, $TBS, $TBSLEN)
+          - pattern: EVP_PKEY_verify_recover($CTX, $RMSG, $RMSGLEN, $SIG, $SIGLEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: OpenSSL 3.0 provider API usage detected in codebase"

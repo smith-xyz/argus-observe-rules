@@ -1,0 +1,35 @@
+findings:
+- file: test_code.c
+  line: 11
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 12
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 24
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 25
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 37
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 38
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 50
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+- file: test_code.c
+  line: 51
+  rule_id: c-crypto-sha3
+  message: SHA3 hash function usage detected
+no_findings:
+- negative_cases.c

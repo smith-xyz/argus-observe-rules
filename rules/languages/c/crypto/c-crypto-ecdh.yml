@@ -1,0 +1,17 @@
+rules:
+  - id: c-crypto-ecdh
+    message: ECDH key agreement detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: ECDH_compute_key($OUT, $OUTLEN, $PUBKEY, $ECKEY)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_EC, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X25519, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X448, $ENGINE)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDH key agreement detected in codebase"

@@ -1,0 +1,22 @@
+rules:
+  - id: c-crypto-md2
+    message: MD2 hash function usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: MD2_Init($CTX)
+          - pattern: MD2_Update($CTX, $DATA, $LEN)
+          - pattern: MD2_Final($HASH, $CTX)
+          - pattern: |
+              MD2_CTX $CTX;
+              MD2_Init(&$CTX);
+              MD2_Update(&$CTX, $DATA, $LEN);
+              MD2_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_md2(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_md2(), $ENGINE)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD2 hash function usage detected in codebase"

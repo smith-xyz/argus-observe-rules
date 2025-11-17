@@ -1,0 +1,16 @@
+rules:
+  - id: c-crypto-cipher-rc4
+    message: RC4 cipher usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: RC4_set_key($KEY, $LEN, $DATA)
+          - pattern: RC4($KEY, $LEN, $INPUT, $OUTPUT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_rc4(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_rc4_40(), $ENGINE, $KEY, $IV, $ENCRYPT)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 cipher usage detected in codebase"

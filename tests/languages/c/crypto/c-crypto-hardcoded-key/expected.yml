@@ -1,0 +1,15 @@
+findings:
+- file: test_code.c
+  line: 2
+  rule_id: c-crypto-hardcoded-key
+  message: Hardcoded cryptographic key detected
+- file: test_code.c
+  line: 3
+  rule_id: c-crypto-hardcoded-key
+  message: Hardcoded cryptographic key detected
+- file: test_code.c
+  line: 4
+  rule_id: c-crypto-hardcoded-key
+  message: Hardcoded cryptographic key detected
+no_findings:
+- negative_cases.c

@@ -1,0 +1,43 @@
+findings:
+- file: test_code.c
+  line: 10
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 11
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 12
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 23
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 24
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 30
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 37
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 43
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+- file: test_code.c
+  line: 44
+  rule_id: c-crypto-sha256
+  message: SHA256 hash function usage detected
+no_findings:
+- negative_cases.c

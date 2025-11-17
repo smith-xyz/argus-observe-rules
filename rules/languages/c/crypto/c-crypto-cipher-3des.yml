@@ -1,0 +1,19 @@
+rules:
+  - id: c-crypto-cipher-3des
+    message: 3DES cipher usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: DES_set_key_checked($KEY, $SCHEDULE)
+          - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
+          - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
+          - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: 3DES cipher usage detected in codebase"

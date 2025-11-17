@@ -1,0 +1,30 @@
+rules:
+  - id: c-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: RAND_bytes($BUF, $NUM)
+          - pattern: RAND_pseudo_bytes($BUF, $NUM)
+          - pattern: RAND_seed($BUF, $NUM)
+          - pattern: RAND_add($BUF, $NUM, $ENTROPY)
+          - pattern: |
+              unsigned char $BUF[$LEN];
+              RAND_bytes($BUF, $LEN);
+              ...
+          - pattern: open("/dev/random", $FLAGS)
+          - pattern: open("/dev/urandom", $FLAGS)
+          - pattern: getrandom($BUF, $BUFLEN, $FLAGS)
+          - pattern: arc4random()
+          - pattern: arc4random_buf($BUF, $BUFLEN)
+          - pattern: arc4random_uniform($UPPER_BOUND)
+          - pattern: BCryptGenRandom($PROV, $BUF, $LEN, $FLAGS)
+          - pattern: randombytes_buf($BUF, $BUFLEN)
+          - pattern: randombytes_random()
+          - pattern: randombytes_uniform($UPPER_BOUND)
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"

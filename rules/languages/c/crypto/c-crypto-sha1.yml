@@ -1,0 +1,22 @@
+rules:
+  - id: c-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SHA1_Init($CTX)
+          - pattern: SHA1_Update($CTX, $DATA, $LEN)
+          - pattern: SHA1_Final($HASH, $CTX)
+          - pattern: |
+              SHA_CTX $CTX;
+              SHA1_Init(&$CTX);
+              SHA1_Update(&$CTX, $DATA, $LEN);
+              SHA1_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha1(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha1(), $ENGINE)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"

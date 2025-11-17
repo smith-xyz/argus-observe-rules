@@ -1,0 +1,79 @@
+findings:
+- file: test_code.c
+  line: 6
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 7
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 8
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 9
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 10
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 11
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 12
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 13
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 14
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 19
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 20
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 25
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 26
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 32
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 33
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 34
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 35
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+- file: test_code.c
+  line: 37
+  rule_id: c-crypto-tls-version
+  message: TLS/SSL version configuration detected
+no_findings:
+- negative_cases.c

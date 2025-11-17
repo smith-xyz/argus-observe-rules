@@ -1,0 +1,19 @@
+rules:
+  - id: c-crypto-secure-memory
+    message: Secure memory operations detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: OPENSSL_cleanse($PTR, $LEN)
+          - pattern: CRYPTO_secure_malloc($NUM, $FILE, $LINE)
+          - pattern: CRYPTO_secure_free($PTR, $FILE, $LINE)
+          - pattern: OPENSSL_secure_malloc($NUM)
+          - pattern: OPENSSL_secure_free($PTR)
+          - pattern: OPENSSL_secure_clear_free($PTR, $SIZE)
+          - pattern: CRYPTO_secure_allocated($PTR)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Secure memory operations detected in codebase"

@@ -1,0 +1,28 @@
+rules:
+  - id: c-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: AES_set_encrypt_key($KEY, $BITS, $SCHEDULE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: "(128|192|256)"
+          - patterns:
+              - pattern: AES_set_decrypt_key($KEY, $BITS, $SCHEDULE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: "(128|192|256)"
+          - pattern: AES_encrypt($INPUT, $OUTPUT, $SCHEDULE)
+          - pattern: AES_decrypt($INPUT, $OUTPUT, $SCHEDULE)
+          - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+    focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"

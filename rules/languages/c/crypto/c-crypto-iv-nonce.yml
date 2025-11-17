@@ -1,0 +1,18 @@
+rules:
+  - id: c-crypto-iv-nonce
+    message: Initialization vector or nonce configuration detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_SET_IVLEN, $IVLEN, $NULL)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_IVLEN, $IVLEN, $NULL)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_GET_TAG, $TAGLEN, $TAG)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_TAG, $TAGLEN, $TAG)
+          - pattern: RAND_bytes($IV, $IVLEN)
+          - pattern: RAND_pseudo_bytes($IV, $IVLEN)
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: Initialization vector or nonce configuration detected in codebase"

@@ -1,0 +1,22 @@
+rules:
+  - id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SSL_library_init()
+          - pattern: OPENSSL_init_crypto($OPTS, $SETTINGS)
+          - pattern: OPENSSL_init_ssl($OPTS, $SETTINGS)
+          - pattern: OpenSSL_add_all_algorithms()
+          - pattern: OpenSSL_add_all_ciphers()
+          - pattern: OpenSSL_add_all_digests()
+          - pattern: EVP_add_cipher($CIPHER)
+          - pattern: EVP_add_digest($DIGEST)
+          - pattern: ENGINE_load_builtin_engines()
+          - pattern: ENGINE_register_all_complete()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: OpenSSL library initialization detected in codebase"

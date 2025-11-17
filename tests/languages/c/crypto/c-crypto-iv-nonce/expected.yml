@@ -1,0 +1,27 @@
+findings:
+- file: test_code.c
+  line: 8
+  rule_id: c-crypto-iv-nonce
+  message: Initialization vector or nonce configuration detected
+- file: test_code.c
+  line: 14
+  rule_id: c-crypto-iv-nonce
+  message: Initialization vector or nonce configuration detected
+- file: test_code.c
+  line: 21
+  rule_id: c-crypto-iv-nonce
+  message: Initialization vector or nonce configuration detected
+- file: test_code.c
+  line: 28
+  rule_id: c-crypto-iv-nonce
+  message: Initialization vector or nonce configuration detected
+- file: test_code.c
+  line: 76
+  rule_id: c-crypto-iv-nonce
+  message: Initialization vector or nonce configuration detected
+- file: test_code.c
+  line: 81
+  rule_id: c-crypto-iv-nonce
+  message: Initialization vector or nonce configuration detected
+no_findings:
+- negative_cases.c

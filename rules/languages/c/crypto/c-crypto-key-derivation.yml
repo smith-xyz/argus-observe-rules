@@ -1,0 +1,35 @@
+rules:
+  - id: c-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST, $KEYLEN, $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: '\d+'
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN, $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: '\d+'
+          - patterns:
+              - pattern: EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY, $IV)
+              - metavariable-regex:
+                  metavariable: $COUNT
+                  regex: '\d+'
+          - patterns:
+              - pattern: EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM, $KEY, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: '\d+'
+          - pattern: EVP_PKEY_derive_init($CTX)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+    focus-metavariable: $ITER
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Key derivation function usage detected in codebase"

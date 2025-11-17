@@ -1,0 +1,14 @@
+rules:
+  - id: c-crypto-whirlpool
+    message: Whirlpool hash function usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: EVP_DigestInit_ex($CTX, EVP_whirlpool(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_whirlpool(), $ENGINE)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Whirlpool hash function usage detected in codebase"

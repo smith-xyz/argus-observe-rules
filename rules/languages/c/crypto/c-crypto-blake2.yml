@@ -1,0 +1,28 @@
+rules:
+  - id: c-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          # OpenSSL EVP API (OpenSSL 1.1.0+)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_blake2b512(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_blake2s256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2b512(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2s256(), $ENGINE)
+          # Standalone BLAKE2 API (libsodium or standalone implementations)
+          # Note: These functions are not part of standard OpenSSL
+          - pattern: blake2b_init($STATE, $OUTLEN)
+          - pattern: blake2b_update($STATE, $DATA, $DATALEN)
+          - pattern: blake2b_final($STATE, $OUT, $OUTLEN)
+          - pattern: blake2s_init($STATE, $OUTLEN)
+          - pattern: blake2s_update($STATE, $DATA, $DATALEN)
+          - pattern: blake2s_final($STATE, $OUT, $OUTLEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"
+      libraries:
+        - OpenSSL (EVP_blake2b512, EVP_blake2s256)
+        - libsodium/standalone (blake2b_*, blake2s_*)

@@ -1,0 +1,41 @@
+rules:
+  - id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: RSA_new()
+          - patterns:
+              - pattern: RSA_generate_key_ex($RSA, $BITS, $E, $BN)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - patterns:
+              - pattern: RSA_generate_key($BITS, $E, $CALLBACK, $CALLBACKARG)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - pattern: RSA_public_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_private_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_private_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_public_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_sign($TYPE, $M, $MLEN, $SIGRET, $SIGLEN, $RSA)
+          - pattern: RSA_verify($TYPE, $M, $MLEN, $SIGBUF, $SIGLEN, $RSA)
+          - pattern: EVP_PKEY_new_RSA($RSA)
+          - pattern: EVP_PKEY_assign_RSA($PKEY, $RSA)
+          - pattern: EVP_SignInit_ex($CTX, $TYPE, $ENGINE)
+          - pattern: EVP_VerifyInit_ex($CTX, $TYPE, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, $ENGINE)
+          - pattern: EVP_PKEY_keygen_init($CTX)
+          - pattern: EVP_PKEY_keygen($CTX, $PKEY)
+          - pattern: RSA_size($RSA)
+          - pattern: RSA_get0_key($RSA, $N, $E, $D)
+          - pattern: RSA_set0_key($RSA, $N, $E, $D)
+          - pattern: RSA_check_key($RSA)
+    focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

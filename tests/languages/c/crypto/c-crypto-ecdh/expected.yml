@@ -1,0 +1,31 @@
+findings:
+- file: test_code.c
+  line: 9
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+- file: test_code.c
+  line: 15
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+- file: test_code.c
+  line: 18
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+- file: test_code.c
+  line: 23
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+- file: test_code.c
+  line: 26
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+- file: test_code.c
+  line: 31
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+- file: test_code.c
+  line: 34
+  rule_id: c-crypto-ecdh
+  message: ECDH key agreement detected
+no_findings:
+- negative_cases.c

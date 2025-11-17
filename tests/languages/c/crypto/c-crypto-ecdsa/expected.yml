@@ -1,0 +1,87 @@
+findings:
+- file: test_code.c
+  line: 5
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 10
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 15
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 16
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 21
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 26
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 27
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 32
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 37
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 43
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 44
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 49
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 51
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 56
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 61
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 71
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 72
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 77
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 82
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+- file: test_code.c
+  line: 83
+  rule_id: c-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+no_findings:
+- negative_cases.c

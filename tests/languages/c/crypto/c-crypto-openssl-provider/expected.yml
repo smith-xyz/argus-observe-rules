@@ -1,0 +1,43 @@
+findings:
+- file: test_code.c
+  line: 6
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 7
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 13
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 19
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 20
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 26
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 27
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 36
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 37
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+- file: test_code.c
+  line: 46
+  rule_id: c-crypto-openssl-provider
+  message: OpenSSL 3.0 provider API usage detected
+no_findings:
+- negative_cases.c

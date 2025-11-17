@@ -1,0 +1,27 @@
+rules:
+  - id: c-crypto-windows-cryptoapi
+    message: Windows CryptoAPI usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: CryptAcquireContext($HPROV, $CONTAINER, $PROVIDER, $PROVTYPE, $FLAGS)
+          - pattern: CryptReleaseContext($HPROV, $FLAGS)
+          - pattern: CryptGenKey($HPROV, $ALGID, $FLAGS, $HPROVKEY)
+          - pattern: CryptDeriveKey($HPROV, $ALGID, $HHASH, $FLAGS, $HPROVKEY)
+          - pattern: CryptImportKey($HPROV, $PBDATA, $DWDLEN, $HPROVKEY, $DWFLAGS, $HPROVKEYOUT)
+          - pattern: CryptExportKey($HPROVKEY, $HPROVKEYEXP, $DWFLAGS, $DWPARAM, $PBDATA, $PDWLEN)
+          - pattern: CryptEncrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN, $DWBUFLEN)
+          - pattern: CryptDecrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN)
+          - pattern: CryptCreateHash($HPROV, $ALGID, $HPROVKEY, $DWFLAGS, $HPROVHASH)
+          - pattern: CryptHashData($HPROVHASH, $PBDATA, $DWDLEN, $DWFLAGS)
+          - pattern: CryptHashSessionKey($HPROVHASH, $HPROVKEY, $DWFLAGS)
+          - pattern: CryptGetHashParam($HPROVHASH, $DWPARAM, $PBDATA, $PDWLEN, $DWFLAGS)
+          - pattern: CryptSignHash($HPROVHASH, $DWKEYSPEC, $DESCRIPTION, $DWFLAGS, $PBSIGNATURE, $PDSIGLEN)
+          - pattern: CryptVerifySignature($HPROVHASH, $PBSIGNATURE, $DWSIGLEN, $HPROVKEY, $DESCRIPTION, $DWFLAGS)
+          - pattern: CryptGenRandom($HPROV, $DWDLEN, $PBBUFFER)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Windows CryptoAPI usage detected in codebase"

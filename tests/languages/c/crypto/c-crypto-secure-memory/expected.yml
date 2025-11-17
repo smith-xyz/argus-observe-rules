@@ -1,0 +1,43 @@
+findings:
+- file: test_code.c
+  line: 5
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 9
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 10
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 14
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 15
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 19
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 20
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 24
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 25
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+- file: test_code.c
+  line: 26
+  rule_id: c-crypto-secure-memory
+  message: Secure memory operations detected
+no_findings:
+- negative_cases.c

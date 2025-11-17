@@ -1,0 +1,55 @@
+findings:
+  - file: test_code.c
+    line: 6
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 10
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 14
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 18
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 22
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 26
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 30
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 34
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 38
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: test_code.c
+    line: 42
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: cross_library_test.c
+    line: 9
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: cross_library_test.c
+    line: 16
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+  - file: cross_library_test.c
+    line: 23
+    rule_id: c-crypto-openssl
+    message: OpenSSL library initialization detected
+no_findings:
+  - negative_cases.c

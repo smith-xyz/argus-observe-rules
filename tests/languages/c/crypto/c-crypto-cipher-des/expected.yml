@@ -1,0 +1,43 @@
+findings:
+- file: test_code.c
+  line: 7
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 16
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 17
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 18
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 28
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 29
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 40
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 41
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 50
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+- file: test_code.c
+  line: 60
+  rule_id: c-crypto-cipher-des
+  message: DES cipher usage detected
+no_findings:
+- negative_cases.c

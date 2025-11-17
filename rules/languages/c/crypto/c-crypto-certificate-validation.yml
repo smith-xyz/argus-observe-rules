@@ -1,0 +1,21 @@
+rules:
+  - id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_verify($CTX, $MODE, $CALLBACK)
+          - pattern: SSL_set_verify($SSL, $MODE, $CALLBACK)
+          - pattern: SSL_CTX_set_verify_depth($CTX, $DEPTH)
+          - pattern: SSL_CTX_set_cert_verify_callback($CTX, $CALLBACK, $ARG)
+          - pattern: SSL_get_verify_result($SSL)
+          - pattern: SSL_CTX_load_verify_locations($CTX, $CAFILE, $CAPATH)
+          - pattern: SSL_CTX_set_default_verify_paths($CTX)
+          - pattern: X509_STORE_CTX_get_error($CTX)
+          - pattern: X509_verify_cert($CTX)
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"

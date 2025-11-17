@@ -1,0 +1,30 @@
+rules:
+  - id: c-crypto-libgcrypt
+    message: Libgcrypt cryptographic library usage detected
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: gcry_cipher_open($HANDLE, $ALGO, $MODE, $FLAGS)
+          - pattern: gcry_cipher_close($HANDLE)
+          - pattern: gcry_cipher_setkey($HANDLE, $KEY, $KEYLEN)
+          - pattern: gcry_cipher_setiv($HANDLE, $IV, $IVLEN)
+          - pattern: gcry_cipher_encrypt($HANDLE, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: gcry_cipher_decrypt($HANDLE, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: gcry_md_open($HANDLE, $ALGO, $FLAGS)
+          - pattern: gcry_md_close($HANDLE)
+          - pattern: gcry_md_write($HANDLE, $BUFFER, $LENGTH)
+          - pattern: gcry_md_read($HANDLE, $ALGO)
+          - pattern: gcry_md_hash_buffer($ALGO, $RESULT, $BUFFER, $LENGTH)
+          - pattern: gcry_pk_generate($KEY, $ALGO, $NALGO, $PARAMS)
+          - pattern: gcry_pk_encrypt($KEY, $DATA, $RESULT)
+          - pattern: gcry_pk_decrypt($KEY, $DATA, $RESULT)
+          - pattern: gcry_pk_sign($KEY, $SIG, $DATA)
+          - pattern: gcry_pk_verify($KEY, $SIG, $DATA)
+          - pattern: gcry_randomize($BUFFER, $LENGTH, $LEVEL)
+          - pattern: gcry_create_nonce($BUFFER, $LENGTH)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Libgcrypt cryptographic library usage detected in codebase"
