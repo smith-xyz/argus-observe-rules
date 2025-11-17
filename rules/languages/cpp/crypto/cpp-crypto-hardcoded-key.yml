@@ -1,62 +1,56 @@
 rules:
-  - id: cpp-crypto-hardcoded-key
-    message: Hardcoded cryptographic key detected
-    severity: INFO
-    languages:
-      - cpp
-    patterns:
-      - pattern-either:
-          - pattern: |
-              unsigned char $KEY[] = "$STRING";
-          - pattern: |
-              char $KEY[] = "$STRING";
-          - pattern: |
-              const unsigned char $KEY[] = "$STRING";
-          - pattern: |
-              const char $KEY[] = "$STRING";
-          - pattern: |
-              static unsigned char $KEY[] = "$STRING";
-          - pattern: |
-              static char $KEY[] = "$STRING";
-          - pattern: |
-              constexpr unsigned char $KEY[] = "$STRING";
-          - pattern: |
-              constexpr char $KEY[] = "$STRING";
-          - pattern: |
-              #define $KEY "$STRING"
-          - pattern: |
-              unsigned char $KEY[$LEN] = {$BYTES};
-          - pattern: |
-              const unsigned char $KEY[$LEN] = {$BYTES};
-          - pattern: |
-              static unsigned char $KEY[$LEN] = {$BYTES};
-          - pattern: |
-              constexpr unsigned char $KEY[$LEN] = {$BYTES};
-          - pattern: |
-              std::string $KEY = "$STRING";
-          - pattern: |
-              const std::string $KEY = "$STRING";
-          - pattern: |
-              static std::string $KEY = "$STRING";
-          - pattern: |
-              constexpr std::string $KEY = "$STRING";
-          - pattern: |
-              std::vector<unsigned char> $KEY = {$BYTES};
-          - pattern: |
-              const std::vector<unsigned char> $KEY = {$BYTES};
-          - pattern: |
-              std::array<unsigned char, $SIZE> $KEY = {$BYTES};
-          - pattern: |
-              const std::array<unsigned char, $SIZE> $KEY = {$BYTES};
-          - pattern: |
-              constexpr std::array<unsigned char, $SIZE> $KEY = {$BYTES};
-      - pattern-not-inside: |
-          namespace test { ... }
-      - pattern-not-inside: |
-          namespace tests { ... }
-      - pattern-not-inside: |
-          class Test$CLASS { ... }
-    metadata:
-      category: crypto
-      cwe: CWE-798
-      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+    - id: cpp-crypto-hardcoded-key
+      message: Hardcoded cryptographic key detected
+      severity: INFO
+      languages:
+          - cpp
+      patterns:
+          - pattern-either:
+                - pattern: |
+                      unsigned char $KEY[] = "$STRING";
+                - pattern: |
+                      char $KEY[] = "$STRING";
+                - pattern: |
+                      const unsigned char $KEY[] = "$STRING";
+                - pattern: |
+                      const char $KEY[] = "$STRING";
+                - pattern: |
+                      static unsigned char $KEY[] = "$STRING";
+                - pattern: |
+                      static char $KEY[] = "$STRING";
+                - pattern: |
+                      constexpr unsigned char $KEY[] = "$STRING";
+                - pattern: |
+                      constexpr char $KEY[] = "$STRING";
+                - pattern: |
+                      #define $KEY "$STRING"
+                - pattern: |
+                      unsigned char $KEY[$LEN] = {$BYTES};
+                - pattern: |
+                      const unsigned char $KEY[$LEN] = {$BYTES};
+                - pattern: |
+                      static unsigned char $KEY[$LEN] = {$BYTES};
+                - pattern: |
+                      constexpr unsigned char $KEY[$LEN] = {$BYTES};
+                - pattern: |
+                      std::string $KEY = "$STRING";
+                - pattern: |
+                      const std::string $KEY = "$STRING";
+                - pattern: |
+                      static std::string $KEY = "$STRING";
+                - pattern: |
+                      constexpr std::string $KEY = "$STRING";
+                - pattern: |
+                      std::vector<unsigned char> $KEY = {$BYTES};
+                - pattern: |
+                      const std::vector<unsigned char> $KEY = {$BYTES};
+                - pattern: |
+                      std::array<unsigned char, $SIZE> $KEY = {$BYTES};
+                - pattern: |
+                      const std::array<unsigned char, $SIZE> $KEY = {$BYTES};
+                - pattern: |
+                      constexpr std::array<unsigned char, $SIZE> $KEY = {$BYTES};
+      metadata:
+          category: crypto
+          cwe: CWE-798
+          impact: "Inventory: Hardcoded cryptographic key detected in codebase"
