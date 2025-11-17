@@ -1,0 +1,55 @@
+rules:
+  - id: cpp-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_DigestInit_ex($CTX, EVP_blake2b512(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_blake2s256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2b512(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2s256(), $ENGINE)
+          - pattern: blake2b_init($STATE, $OUTLEN)
+          - pattern: blake2b_update($STATE, $DATA, $DATALEN)
+          - pattern: blake2b_final($STATE, $OUT, $OUTLEN)
+          - pattern: blake2s_init($STATE, $OUTLEN)
+          - pattern: blake2s_update($STATE, $DATA, $DATALEN)
+          - pattern: blake2s_final($STATE, $OUT, $OUTLEN)
+          - pattern: CryptoPP::BLAKE2b()
+          - pattern: CryptoPP::BLAKE2s()
+          - pattern: EVP_MD_fetch($ENGINE, "BLAKE2b512", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "BLAKE2s256", $PROPS)
+          - pattern: Botan::HashFunction::create("BLAKE2b(512)")
+          - pattern: Botan::HashFunction::create("BLAKE2s(256)")
+          - pattern: Botan::HashFunction::create("BLAKE2b(256)")
+          - pattern: Botan::HashFunction::create("BLAKE2b(384)")
+          - pattern: Botan::HashFunction::create("BLAKE2s(128)")
+          - pattern: Botan::HashFunction::create("BLAKE2s(224)")
+          - pattern: Botan::BLAKE2b($OUTLEN)
+          - pattern: Botan::BLAKE2s($OUTLEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::BLAKE2b()
+                    - pattern: CryptoPP::BLAKE2s()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::BLAKE2b()
+                    - pattern: CryptoPP::BLAKE2s()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::BLAKE2b()
+                    - pattern: CryptoPP::BLAKE2s()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"

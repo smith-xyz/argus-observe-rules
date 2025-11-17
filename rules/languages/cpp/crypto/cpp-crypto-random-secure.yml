@@ -1,0 +1,26 @@
+rules:
+  - id: cpp-crypto-random-secure
+    message: Cryptographically secure random number generation detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RAND_bytes($BUF, $NUM)
+          - pattern: |
+              unsigned char $BUF[$LEN];
+              RAND_bytes($BUF, $LEN);
+              ...
+          - pattern: RAND_pseudo_bytes($BUF, $NUM)
+          - pattern: RAND_add($BUF, $NUM, $ENTROPY)
+          - pattern: RAND_seed($BUF, $NUM)
+          - pattern: CryptoPP::AutoSeededRandomPool()
+          - pattern: CryptoPP::RandomNumberGenerator()
+          - pattern: Botan::RandomNumberGenerator::create("system")
+          - pattern: Botan::RandomNumberGenerator::create("user")
+          - pattern: getentropy($BUF, $SIZE)
+          - pattern: getrandom($BUF, $SIZE, $FLAGS)
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Cryptographically secure random number generation detected in codebase"

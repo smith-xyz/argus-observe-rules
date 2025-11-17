@@ -1,0 +1,29 @@
+rules:
+  - id: cpp-crypto-cipher-rc4
+    message: RC4 cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RC4_set_key($KEY, $LEN, $DATA)
+          - pattern: RC4($KEY, $LEN, $INPUT, $OUTPUT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_rc4(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_rc4_40(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "RC4", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "RC4-40", $PROPS)
+          - pattern: CryptoPP::ARC4 $VAR;
+          - pattern: CryptoPP::ARC4 $VAR($KEY, $KEYLEN);
+          - pattern: CryptoPP::ARC4::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::ARC4::Decryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Weak::ARC4 $VAR;
+          - pattern: CryptoPP::Weak::ARC4 $VAR($KEY, $KEYLEN);
+          - pattern: CryptoPP::Weak::ARC4::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Weak::ARC4::Decryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::ARCFour $VAR;
+          - pattern: CryptoPP::ARCFour $VAR($KEY, $KEYLEN);
+          - pattern: Botan::StreamCipher::create("RC4")
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 cipher usage detected in codebase"

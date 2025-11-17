@@ -1,0 +1,63 @@
+rules:
+  - id: cpp-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_224(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_256(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_384(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_512(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_224(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_384(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_512(), $ENGINE)
+          - pattern: CryptoPP::SHA3_224()
+          - pattern: CryptoPP::SHA3_256()
+          - pattern: CryptoPP::SHA3_384()
+          - pattern: CryptoPP::SHA3_512()
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-224", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-256", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-384", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-512", $PROPS)
+          - pattern: Botan::HashFunction::create("SHA-3(224)")
+          - pattern: Botan::HashFunction::create("SHA-3(256)")
+          - pattern: Botan::HashFunction::create("SHA-3(384)")
+          - pattern: Botan::HashFunction::create("SHA-3(512)")
+          - pattern: Botan::SHA3_224()
+          - pattern: Botan::SHA3_256()
+          - pattern: Botan::SHA3_384()
+          - pattern: Botan::SHA3_512()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA3_224()
+                    - pattern: CryptoPP::SHA3_256()
+                    - pattern: CryptoPP::SHA3_384()
+                    - pattern: CryptoPP::SHA3_512()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA3_224()
+                    - pattern: CryptoPP::SHA3_256()
+                    - pattern: CryptoPP::SHA3_384()
+                    - pattern: CryptoPP::SHA3_512()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA3_224()
+                    - pattern: CryptoPP::SHA3_256()
+                    - pattern: CryptoPP::SHA3_384()
+                    - pattern: CryptoPP::SHA3_512()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"

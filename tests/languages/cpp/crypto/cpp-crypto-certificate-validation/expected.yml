@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.cpp
+    line: 6
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 16
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 21
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 26
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 31
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 36
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 41
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cpp
+    line: 46
+    rule_id: cpp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+
+no_findings:
+  - negative_cases.cpp

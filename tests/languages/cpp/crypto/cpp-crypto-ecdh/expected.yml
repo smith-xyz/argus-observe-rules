@@ -1,0 +1,56 @@
+findings:
+  - file: test_code.cpp
+    line: 15
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 20
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 30
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 35
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 39
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 43
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 47
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 48
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 52
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 54
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 58
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+  - file: test_code.cpp
+    line: 61
+    rule_id: cpp-crypto-ecdh
+    message: "ECDH key exchange operations detected"
+
+no_findings:
+  - negative_cases.cpp

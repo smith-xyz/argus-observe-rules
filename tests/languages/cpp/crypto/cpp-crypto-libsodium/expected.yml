@@ -1,0 +1,76 @@
+findings:
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 20
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 29
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 37
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 45
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 53
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 60
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 66
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 72
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 79
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 86
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 92
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 98
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 105
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 112
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 117
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 122
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+  - file: test_code.cpp
+    line: 126
+    rule_id: cpp-crypto-libsodium
+    message: "libsodium cryptographic library usage detected"
+
+no_findings:
+  - negative_cases.cpp

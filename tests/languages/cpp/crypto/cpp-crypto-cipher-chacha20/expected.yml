@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.cpp
+    line: 17
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.cpp
+    line: 22
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.cpp
+    line: 26
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.cpp
+    line: 54
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.cpp
+    line: 58
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.cpp
+    line: 62
+    rule_id: cpp-crypto-cipher-chacha20
+    message: "ChaCha20 cipher usage detected"
+
+no_findings:
+  - negative_cases.cpp

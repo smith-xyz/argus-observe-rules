@@ -1,0 +1,19 @@
+rules:
+  - id: cpp-crypto-cryptopp
+    message: Crypto++ library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: CryptoPP::AES::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::AES::Decryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::SHA256()
+          - pattern: CryptoPP::SHA512()
+          - pattern: CryptoPP::RSA::PrivateKey()
+          - pattern: CryptoPP::RSA::PublicKey()
+          - pattern: CryptoPP::AutoSeededRandomPool()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Crypto++ library usage detected in codebase"

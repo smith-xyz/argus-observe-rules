@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cpp
+    line: 18
+    rule_id: cpp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cpp
+    line: 44
+    rule_id: cpp-crypto-password-hashing
+    message: "Password hashing operations detected"
+
+no_findings:
+  - negative_cases.cpp

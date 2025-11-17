@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.cpp
+    line: 17
+    rule_id: cpp-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.cpp
+    line: 18
+    rule_id: cpp-crypto-cipher-aes
+    message: "AES cipher usage detected"
+
+no_findings:
+  - negative_cases.cpp

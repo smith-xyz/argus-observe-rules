@@ -1,0 +1,28 @@
+rules:
+  - id: cpp-crypto-eddsa
+    message: EdDSA signature operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_ED25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_ED25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_ED448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_ED448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ED25519, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ED448, $ENGINE)
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, NULL, $ENGINE, $PKEY)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, NULL, $ENGINE, $PKEY)
+          - pattern: CryptoPP::ed25519::Signer($PRIVKEY)
+          - pattern: CryptoPP::ed25519::Verifier($PUBKEY)
+          - pattern: CryptoPP::ed448::Signer($PRIVKEY)
+          - pattern: CryptoPP::ed448::Verifier($PUBKEY)
+          - pattern: Botan::Ed25519_PrivateKey($RNG)
+          - pattern: Botan::Ed25519_PublicKey($PUBKEY)
+          - pattern: Botan::Ed448_PrivateKey($RNG)
+          - pattern: Botan::Ed448_PublicKey($PUBKEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: EdDSA signature operations detected in codebase"

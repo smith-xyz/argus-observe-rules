@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cpp
+    line: 8
+    rule_id: cpp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cpp
+    line: 12
+    rule_id: cpp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cpp
+    line: 13
+    rule_id: cpp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,68 @@
+findings:
+  - file: test_code.cpp
+    line: 12
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 13
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 14
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 19
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 26
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 32
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 33
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 44
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 45
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 46
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 56
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 60
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 65
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 74
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.cpp
+    line: 78
+    rule_id: cpp-crypto-sha224
+    message: "SHA224 hash function usage detected"
+
+no_findings:
+  - negative_cases.cpp

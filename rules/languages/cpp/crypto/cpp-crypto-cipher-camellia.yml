@@ -1,0 +1,28 @@
+rules:
+  - id: cpp-crypto-cipher-camellia
+    message: Camellia cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_192_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-192-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-256-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-256-GCM", $PROPS)
+          - pattern: CryptoPP::Camellia::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Camellia::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("Camellia-128/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Camellia-256/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Camellia-128/GCM", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Camellia-256/GCM", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Camellia cipher usage detected in codebase"

@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cpp
+    line: 5
+    rule_id: cpp-crypto-random-insecure
+    message: "Random Insecure detected"
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-crypto-random-insecure
+    message: "Random Insecure detected"
+  - file: test_code.cpp
+    line: 13
+    rule_id: cpp-crypto-random-insecure
+    message: "Random Insecure detected"
+  - file: test_code.cpp
+    line: 17
+    rule_id: cpp-crypto-random-insecure
+    message: "Random Insecure detected"
+
+no_findings:
+  - negative_cases.cpp

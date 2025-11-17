@@ -1,0 +1,60 @@
+findings:
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 19
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 28
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 37
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 46
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 51
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 56
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 61
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 66
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 71
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 86
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 90
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 94
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+  - file: test_code.cpp
+    line: 98
+    rule_id: cpp-crypto-cipher-camellia
+    message: "Camellia cipher usage detected"
+
+no_findings:
+  - negative_cases.cpp

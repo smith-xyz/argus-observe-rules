@@ -1,0 +1,31 @@
+rules:
+  - id: cpp-crypto-ecdh
+    message: ECDH key exchange operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: ECDH_compute_key($KEY, $KEYLEN, $PUBKEY, $ECKEY, $KDF)
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_X25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_X25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_X448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_X448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X25519, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X448, $ENGINE)
+          - pattern: EVP_PKEY_derive_init($CTX)
+          - pattern: EVP_PKEY_derive_set_peer($CTX, $PEER)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+          - pattern: CryptoPP::ECDH<CryptoPP::ECP>::Domain($GROUP)
+          - pattern: CryptoPP::X25519::Domain()
+          - pattern: CryptoPP::X448::Domain()
+          - pattern: Botan::ECDH_PrivateKey($RNG, $GROUP)
+          - pattern: Botan::ECDH_PublicKey($GROUP, $PUBKEY)
+          - pattern: Botan::X25519_PrivateKey($RNG)
+          - pattern: Botan::X25519_PublicKey($PUBKEY)
+          - pattern: Botan::X448_PrivateKey($RNG)
+          - pattern: Botan::X448_PublicKey($PUBKEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDH key exchange operations detected in codebase"

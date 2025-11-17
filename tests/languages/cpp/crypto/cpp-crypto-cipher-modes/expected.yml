@@ -1,0 +1,176 @@
+findings:
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 18
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 26
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 34
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 42
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 50
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 58
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 66
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 74
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 82
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 90
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 98
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 106
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 114
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 122
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 130
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 140
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 150
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 160
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 179
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 183
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 184
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 188
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 189
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 193
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 194
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 198
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 199
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 203
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 204
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 208
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 209
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 213
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 214
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 218
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 219
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 246
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 250
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 254
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 258
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 259
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 263
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.cpp
+    line: 264
+    rule_id: cpp-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+
+no_findings:
+  - negative_cases.cpp

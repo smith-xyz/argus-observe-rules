@@ -1,0 +1,26 @@
+rules:
+  - id: cpp-crypto-iv-nonce
+    message: Initialization vector or nonce usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_SET_IVLEN, $IVLEN, $NULL)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_IVLEN, $IVLEN, $NULL)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_GET_TAG, $TAGLEN, $TAG)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_TAG, $TAGLEN, $TAG)
+          - pattern: EVP_EncryptInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV)
+          - pattern: EVP_DecryptInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV)
+          - pattern: EVP_CipherInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: DES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: RAND_bytes($IV, $IVLEN)
+          - pattern: RAND_pseudo_bytes($IV, $IVLEN)
+          - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::GCM<$CIPHER>::Encryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("AES-256/GCM", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: Initialization vector or nonce usage detected in codebase"

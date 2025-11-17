@@ -1,0 +1,65 @@
+rules:
+  - id: cpp-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST, $KEYLEN, $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: '\d+'
+              - focus-metavariable: $ITER
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN, $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: '\d+'
+              - focus-metavariable: $ITER
+          - pattern: EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY, $IV)
+          - pattern: EVP_PKEY_derive_init($CTX)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+          - pattern: EVP_KDF_fetch($ENGINE, "HKDF", $PROPS)
+          - pattern: EVP_PKEY_CTX_set_hkdf_md($CTX, $MD)
+          - pattern: EVP_PKEY_CTX_set1_hkdf_salt($CTX, $SALT, $SALTLEN)
+          - pattern: EVP_PKEY_CTX_set1_hkdf_key($CTX, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_CTX_add1_hkdf_info($CTX, $INFO, $INFOLEN)
+          - pattern: CryptoPP::HKDF<$HASH> $HKDF;
+          - pattern: CryptoPP::HKDF<$HASH>($SALT, $SALTLEN, $INFO, $INFOLEN)
+          - pattern: CryptoPP::HKDF<$HASH>::DeriveKey($KEY, $KEYLEN, $SECRET, $SECRETLEN, $SALT, $SALTLEN, $INFO, $INFOLEN)
+          - patterns:
+              - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: '\d+'
+          - patterns:
+              - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: '\d+'
+          - patterns:
+              - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: '\d+'
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Key derivation function usage detected in codebase"

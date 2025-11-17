@@ -1,0 +1,60 @@
+findings:
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 15
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 21
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 29
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 36
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 44
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 52
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 57
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 58
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 59
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 68
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 77
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 91
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+  - file: test_code.cpp
+    line: 95
+    rule_id: cpp-crypto-cipher-3des
+    message: "3DES cipher usage detected"
+
+no_findings:
+  - negative_cases.cpp

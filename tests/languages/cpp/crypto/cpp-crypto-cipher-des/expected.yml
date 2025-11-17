@@ -1,0 +1,72 @@
+findings:
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 16
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 17
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 24
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 33
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 34
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 43
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 44
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 51
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 59
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 64
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 74
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 75
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 80
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 94
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.cpp
+    line: 98
+    rule_id: cpp-crypto-cipher-des
+    message: "DES cipher usage detected"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.cpp
+    line: 15
+    rule_id: cpp-crypto-cipher-twofish
+    message: "Twofish cipher usage detected"
+  - file: test_code.cpp
+    line: 19
+    rule_id: cpp-crypto-cipher-twofish
+    message: "Twofish cipher usage detected"
+
+no_findings:
+  - negative_cases.cpp

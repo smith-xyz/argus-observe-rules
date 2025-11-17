@@ -1,0 +1,23 @@
+rules:
+  - id: cpp-crypto-cipher-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20_poly1305(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20-Poly1305", $PROPS)
+          - pattern: CryptoPP::ChaCha20::Encryption($KEY, $KEYLEN, $IV, $COUNTER)
+          - pattern: CryptoPP::ChaCha20::Decryption($KEY, $KEYLEN, $IV, $COUNTER)
+          - pattern: CryptoPP::ChaCha20Poly1305::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::ChaCha20Poly1305::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("ChaCha20", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("ChaCha20Poly1305", Botan::ENCRYPTION)
+          - pattern: Botan::StreamCipher::create("ChaCha(20)")
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"

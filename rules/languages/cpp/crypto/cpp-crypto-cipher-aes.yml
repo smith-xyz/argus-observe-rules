@@ -1,0 +1,52 @@
+rules:
+  - id: cpp-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: AES_set_encrypt_key($KEY, $BITS, $SCHEDULE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: "(128|192|256)"
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: AES_set_decrypt_key($KEY, $BITS, $SCHEDULE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: "(128|192|256)"
+              - focus-metavariable: $BITS
+          - pattern: AES_encrypt($INPUT, $OUTPUT, $SCHEDULE)
+          - pattern: AES_decrypt($INPUT, $OUTPUT, $SCHEDULE)
+          - pattern: AES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-192-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CCM", $PROPS)
+          - patterns:
+              - pattern: CryptoPP::AES::Encryption($KEY, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+              - focus-metavariable: $KEYLEN
+          - patterns:
+              - pattern: CryptoPP::AES::Decryption($KEY, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+              - focus-metavariable: $KEYLEN
+          - patterns:
+              - pattern: EVP_CIPHER_fetch($ENGINE, $ALGO, $PROPS)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"AES-[0-9]+-[A-Z]+"'
+              - focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"

@@ -1,0 +1,92 @@
+findings:
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 12
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 16
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 17
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 21
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 29
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 30
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 34
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 36
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 40
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 44
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 45
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 49
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 51
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 55
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 58
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 62
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 64
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 68
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+  - file: test_code.cpp
+    line: 70
+    rule_id: cpp-crypto-diffie-hellman
+    message: "Diffie Hellman detected"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,21 @@
+rules:
+  - id: cpp-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_cipher_list($CTX, $LIST)
+          - pattern: SSL_set_cipher_list($SSL, $LIST)
+          - pattern: SSL_CTX_set_ciphersuites($CTX, $LIST)
+          - pattern: SSL_set_ciphersuites($SSL, $LIST)
+          - pattern: SSL_CTX_get_ciphers($CTX)
+          - pattern: SSL_get_cipher_list($SSL, $PRIORITY)
+          - pattern: SSL_get_current_cipher($SSL)
+          - pattern: SSL_CIPHER_get_name($CIPHER)
+          - pattern: SSL_CIPHER_get_bits($CIPHER, $ALG_BITS)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

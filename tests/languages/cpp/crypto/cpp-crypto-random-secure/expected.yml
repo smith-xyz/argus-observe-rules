@@ -1,0 +1,48 @@
+findings:
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 8
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 12
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 13
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 19
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 24
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 29
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 41
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 45
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 50
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+  - file: test_code.cpp
+    line: 55
+    rule_id: cpp-crypto-random-secure
+    message: "Random Secure detected"
+
+no_findings:
+  - negative_cases.cpp

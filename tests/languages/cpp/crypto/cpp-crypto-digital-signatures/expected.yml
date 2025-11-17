@@ -1,0 +1,100 @@
+findings:
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 17
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 18
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 27
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 28
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 34
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 41
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 42
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 50
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 51
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 59
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 68
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 69
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 79
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 80
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 88
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 97
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 98
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 107
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 108
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 117
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 124
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 132
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cpp
+    line: 139
+    rule_id: cpp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,38 @@
+rules:
+  - id: cpp-crypto-libsodium
+    message: libsodium cryptographic library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: sodium_init()
+          - pattern: crypto_box_easy($C, $M, $MLEN, $N, $PK, $SK)
+          - pattern: crypto_box_open_easy($M, $C, $CLEN, $N, $PK, $SK)
+          - pattern: crypto_secretbox_easy($C, $M, $MLEN, $N, $K)
+          - pattern: crypto_secretbox_open_easy($M, $C, $CLEN, $N, $K)
+          - pattern: crypto_sign_detached($SIG, $SIGLEN, $M, $MLEN, $SK)
+          - pattern: crypto_sign_verify_detached($SIG, $M, $MLEN, $PK)
+          - pattern: crypto_hash_sha256($OUT, $IN, $INLEN)
+          - pattern: crypto_hash_sha512($OUT, $IN, $INLEN)
+          - pattern: crypto_generichash($OUT, $OUTLEN, $IN, $INLEN, $KEY, $KEYLEN)
+          - pattern: crypto_pwhash($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT, $ALG)
+          - pattern: crypto_pwhash_str($OUT, $PASSWD, $PASSLEN, $OPSLIMIT, $MEMLIMIT)
+          - pattern: crypto_pwhash_str_verify($STR, $PASSWD, $PASSLEN)
+          - pattern: crypto_pwhash_argon2i($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT, $ALG)
+          - pattern: crypto_pwhash_argon2id($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT, $ALG)
+          - pattern: randombytes($BUF, $SIZE)
+          - pattern: randombytes_buf($BUF, $SIZE)
+          - pattern: randombytes_random()
+          - pattern: crypto_aead_chacha20poly1305_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN, $NPUB, $K)
+          - pattern: crypto_aead_chacha20poly1305_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD, $ADLEN, $K)
+          - pattern: crypto_aead_aes256gcm_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN, $NPUB, $K)
+          - pattern: crypto_aead_aes256gcm_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD, $ADLEN, $K)
+          - pattern: crypto_box_keypair($PK, $SK)
+          - pattern: crypto_sign_keypair($PK, $SK)
+          - pattern: crypto_secretbox_keygen($K)
+          - pattern: crypto_generichash_blake2b_salt_personal($OUT, $OUTLEN, $IN, $INLEN, $KEY, $KEYLEN, $SALT, $PERSONAL)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: libsodium cryptographic library usage detected in codebase"

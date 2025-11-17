@@ -1,0 +1,28 @@
+rules:
+  - id: cpp-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: DES_set_key($KEY, $SCHEDULE)
+          - pattern: DES_encrypt($DATA, $SCHEDULE, $ENCRYPT)
+          - pattern: DES_decrypt($DATA, $SCHEDULE, $DECRYPT)
+          - pattern: DES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
+          - pattern: DES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-CBC", $PROPS)
+          - pattern: DES_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM, $ENCRYPT)
+          - pattern: DES_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
+          - pattern: DES_set_odd_parity($KEY)
+          - pattern: CryptoPP::DES::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::DES::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("DES/ECB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("DES/CBC", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"

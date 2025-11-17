@@ -1,0 +1,50 @@
+rules:
+  - id: cpp-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: MD5_Init($CTX)
+          - pattern: MD5_Update($CTX, $DATA, $LEN)
+          - pattern: MD5_Final($HASH, $CTX)
+          - pattern: |
+              MD5_CTX $CTX;
+              MD5_Init(&$CTX);
+              MD5_Update(&$CTX, $DATA, $LEN);
+              MD5_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_md5(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_md5(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "MD5", $PROPS)
+          - pattern: CryptoPP::Weak::MD5()
+          - pattern: CryptoPP::MD5()
+          - pattern: Botan::HashFunction::create("MD5")
+          - pattern: Botan::MD5()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::MD5()
+                    - pattern: CryptoPP::Weak::MD5()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::MD5()
+                    - pattern: CryptoPP::Weak::MD5()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::MD5()
+                    - pattern: CryptoPP::Weak::MD5()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"

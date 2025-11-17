@@ -1,0 +1,30 @@
+rules:
+  - id: cpp-crypto-sha224
+    message: SHA224 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SHA224_Init($CTX)
+          - pattern: SHA224_Update($CTX, $DATA, $LEN)
+          - pattern: SHA224_Final($HASH, $CTX)
+          - pattern: |
+              SHA256_CTX $CTX;
+              SHA224_Init(&$CTX);
+              SHA224_Update(&$CTX, $DATA, $LEN);
+              SHA224_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha224(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha224(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA-224", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA224", $PROPS)
+          - pattern: CryptoPP::SHA224()
+          - pattern: Botan::HashFunction::create("SHA-224")
+          - pattern: Botan::HashFunction::create("SHA224")
+          - pattern: Botan::SHA_224()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA224 hash function usage detected in codebase"

@@ -1,0 +1,24 @@
+rules:
+  - id: cpp-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-CFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-OFB", $PROPS)
+          - pattern: CryptoPP::Blowfish::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Blowfish::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("Blowfish/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Blowfish/ECB", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"

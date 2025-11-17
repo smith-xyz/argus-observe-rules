@@ -1,0 +1,48 @@
+findings:
+  - file: test_code.cpp
+    line: 5
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 15
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 20
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 25
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 30
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 35
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 40
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 41
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 46
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cpp
+    line: 48
+    rule_id: cpp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+
+no_findings:
+  - negative_cases.cpp

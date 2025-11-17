@@ -1,0 +1,96 @@
+findings:
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 15
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 16
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 20
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 24
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 28
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 31
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 35
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 37
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 41
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 44
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 48
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 49
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 53
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 55
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 59
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 63
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 70
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 74
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 78
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 81
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cpp
+    line: 82
+    rule_id: cpp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,66 @@
+rules:
+  - id: cpp-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ctr(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ctr(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ccm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ccm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM, $ENCRYPT)
+          - pattern: AES_ofb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
+          - pattern: AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT, $BUFFER, $NUM)
+          - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::CBC_Mode<$CIPHER>::Decryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::CTR_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::GCM<$CIPHER>::Encryption($KEY, $KEYLEN)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-OFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-OFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CTR", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CTR", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-XTS", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-XTS", $PROPS)
+          - pattern: AES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
+          - pattern: Botan::Cipher_Mode::create("AES-128/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-256/GCM", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-128/CTR", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-128/OCB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-256/OCB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-128/EAX", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-256/EAX", Botan::ENCRYPTION)
+          - pattern: EVP_CipherUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: EVP_CipherFinal_ex($CTX, $OUT, $OUTLEN)
+          - pattern: EVP_EncryptUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: EVP_EncryptFinal_ex($CTX, $OUT, $OUTLEN)
+          - pattern: EVP_DecryptUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: EVP_DecryptFinal_ex($CTX, $OUT, $OUTLEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"

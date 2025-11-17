@@ -1,0 +1,52 @@
+findings:
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 16
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 23
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 30
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 38
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 46
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 54
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 64
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 73
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 78
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 83
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.cpp
+    line: 98
+    rule_id: cpp-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+
+no_findings:
+  - negative_cases.cpp

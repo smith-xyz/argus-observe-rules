@@ -1,0 +1,32 @@
+rules:
+  - id: cpp-crypto-botan
+    message: Botan cryptographic library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: Botan::HashFunction::create($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"[A-Z0-9_-]+"'
+              - focus-metavariable: $ALGO
+          - patterns:
+              - pattern: Botan::Cipher_Mode::create($ALGO, Botan::ENCRYPTION)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"[A-Z0-9_/-]+"'
+              - focus-metavariable: $ALGO
+          - patterns:
+              - pattern: Botan::Cipher_Mode::create($ALGO, Botan::DECRYPTION)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"[A-Z0-9_/-]+"'
+              - focus-metavariable: $ALGO
+          - pattern: Botan::RandomNumberGenerator::create($SOURCE)
+          - pattern: Botan::PKCS11::PKCS11_RNG($SESSION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Botan cryptographic library usage detected in codebase"

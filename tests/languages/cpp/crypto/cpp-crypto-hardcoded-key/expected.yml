@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.cpp
+    line: 2
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 6
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 14
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 18
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 43
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 47
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cpp
+    line: 51
+    rule_id: cpp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+
+no_findings:
+  - negative_cases.cpp

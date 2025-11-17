@@ -1,0 +1,26 @@
+rules:
+  - id: cpp-crypto-random-insecure
+    message: Non-cryptographic random number generator detected in cryptographic context
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: rand()
+          - pattern: random()
+          - pattern: srand($SEED)
+          - pattern: srandom($SEED)
+          - pattern: std::mt19937()
+          - pattern: std::mt19937_64()
+          - pattern: std::linear_congruential_engine<$A, $C, $M>()
+          - pattern: std::mersenne_twister_engine<$A, $B, $C, $D>()
+          - pattern: |
+              std::random_device $RD;
+              std::mt19937 $GEN($RD());
+          - pattern: |
+              std::random_device $RD;
+              std::mt19937_64 $GEN($RD());
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Non-cryptographic random number generator detected (may be used in cryptographic context)"

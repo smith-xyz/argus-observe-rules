@@ -1,0 +1,44 @@
+rules:
+  - id: cpp-crypto-mbedtls
+    message: mbedTLS cryptographic library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: mbedtls_md5_init($CTX)
+          - pattern: mbedtls_md5_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_md5_finish($CTX, $HASH)
+          - pattern: mbedtls_sha1_init($CTX)
+          - pattern: mbedtls_sha1_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_sha1_finish($CTX, $HASH)
+          - pattern: mbedtls_sha256_init($CTX)
+          - pattern: mbedtls_sha256_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_sha256_finish($CTX, $HASH)
+          - pattern: mbedtls_sha512_init($CTX)
+          - pattern: mbedtls_sha512_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_sha512_finish($CTX, $HASH)
+          - pattern: mbedtls_aes_setkey_enc($CTX, $KEY, $BITS)
+          - pattern: mbedtls_aes_setkey_dec($CTX, $KEY, $BITS)
+          - pattern: mbedtls_aes_crypt_ecb($CTX, $MODE, $INPUT, $OUTPUT)
+          - pattern: mbedtls_aes_crypt_cbc($CTX, $MODE, $LENGTH, $IV, $INPUT, $OUTPUT)
+          - pattern: mbedtls_rsa_gen_key($RSA, $F_RNG, $PRNG, $N_BITS, $EXPONENT)
+          - pattern: mbedtls_rsa_public($RSA, $INPUT, $OUTPUT)
+          - pattern: mbedtls_rsa_private($RSA, $F_RNG, $PRNG, $INPUT, $OUTPUT)
+          - pattern: mbedtls_rsa_pkcs1_sign($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN, $HASH, $SIG)
+          - pattern: mbedtls_rsa_pkcs1_verify($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN, $HASH, $SIG)
+          - pattern: mbedtls_ecdsa_sign($GRP, $R, $S, $D, $BUF, $BLEN, $F_RNG, $PRNG)
+          - pattern: mbedtls_ecdsa_verify($GRP, $BUF, $BLEN, $Q, $R, $S)
+          - pattern: mbedtls_entropy_init($CTX)
+          - pattern: mbedtls_ctr_drbg_init($CTX)
+          - pattern: mbedtls_ctr_drbg_seed($CTX, $F_ENTROPY, $P_ENTROPY, $CUSTOM, $LEN)
+          - pattern: mbedtls_ctr_drbg_random($P_RNG, $OUTPUT, $OUTPUT_LEN)
+          - pattern: mbedtls_hmac_drbg_init($CTX)
+          - pattern: mbedtls_hmac_drbg_seed($CTX, $MD, $F_ENTROPY, $P_ENTROPY, $CUSTOM, $LEN)
+          - pattern: mbedtls_gcm_init($CTX)
+          - pattern: mbedtls_gcm_setkey($CTX, $CIPHER, $KEY, $KEYLEN)
+          - pattern: mbedtls_gcm_crypt_and_tag($CTX, $MODE, $LENGTH, $IV, $IVLEN, $ADD, $ADDLEN, $INPUT, $OUTPUT, $TAGLEN, $TAG)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: mbedTLS cryptographic library usage detected in codebase"

@@ -1,0 +1,16 @@
+rules:
+  - id: cpp-crypto-cipher-twofish
+    message: Twofish cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: CryptoPP::Twofish::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Twofish::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("Twofish/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Twofish/GCM", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Twofish cipher usage detected in codebase"

@@ -1,0 +1,28 @@
+rules:
+  - id: cpp-crypto-cipher-3des
+    message: 3DES cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: DES_set_key_checked($KEY, $SCHEDULE)
+          - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
+          - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
+          - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-ECB", $PROPS)
+          - pattern: DES_ede3_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV, $NUM, $ENCRYPT)
+          - pattern: DES_ede3_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV, $NUM)
+          - pattern: CryptoPP::DES_EDE3::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::DES_EDE3::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("3DES/ECB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("3DES/CBC", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: 3DES cipher usage detected in codebase"

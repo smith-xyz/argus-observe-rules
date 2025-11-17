@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 14
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 19
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 24
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 28
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 32
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 39
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+  - file: test_code.cpp
+    line: 46
+    rule_id: cpp-crypto-eddsa
+    message: "EdDSA signature operations detected"
+
+no_findings:
+  - negative_cases.cpp

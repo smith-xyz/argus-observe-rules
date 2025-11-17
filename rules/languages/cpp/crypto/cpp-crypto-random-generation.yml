@@ -1,0 +1,22 @@
+rules:
+  - id: cpp-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RAND_bytes($BUF, $NUM)
+          - pattern: |
+              unsigned char $BUF[$LEN];
+              RAND_bytes($BUF, $LEN);
+              ...
+          - pattern: CryptoPP::AutoSeededRandomPool()
+          - pattern: CryptoPP::RandomNumberGenerator()
+          - pattern: Botan::RandomNumberGenerator::create("system")
+          - pattern: std::random_device()
+          - pattern: std::mt19937()
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"
