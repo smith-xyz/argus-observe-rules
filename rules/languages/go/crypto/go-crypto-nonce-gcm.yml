@@ -1,0 +1,26 @@
+rules:
+  - id: go-crypto-nonce-gcm
+    message: Nonce usage in GCM mode detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $NONCE := []byte("$STATIC_VALUE")
+              ...
+              $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: |
+              $NONCE := make([]byte, $SIZE)
+              ...
+              $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: $GCM.Seal($DST, []byte("$STATIC_NONCE"), $PLAINTEXT, $DATA)
+          - pattern: |
+              for $I := 0; $I < $N; $I++ {
+                ...
+                $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Nonce usage in GCM mode detected in codebase"

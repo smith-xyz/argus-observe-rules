@@ -1,0 +1,52 @@
+findings:
+  - file: test_code.go
+    line: 15
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 17
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 19
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 23
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 33
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 35
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 44
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 46
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 53
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 55
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 62
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+  - file: test_code.go
+    line: 64
+    rule_id: go-crypto-blake2
+    message: "BLAKE2 hash function usage detected"
+
+no_findings:
+  - negative_cases.go

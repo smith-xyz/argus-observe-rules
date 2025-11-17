@@ -1,0 +1,35 @@
+rules:
+  - id: go-crypto-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: aes.NewCipher($KEY)
+          - pattern: $CIPHER := aes.NewCipher($KEY)
+          - pattern: cipher.NewCBCDecrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCBCEncrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewGCM(aes.NewCipher($KEY))
+          - pattern: cipher.NewCFBDecrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCFBEncrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCTR(aes.NewCipher($KEY), $IV)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewGCM($BLOCK)
+          - pattern: var $CIPHER cipher.Block = aes.NewCipher($KEY)
+          - pattern: $CIPHER := cipher.Block(aes.NewCipher($KEY))
+          - patterns:
+              - pattern: aes.NewCipher(make([]byte, $SIZE))
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: '\d+'
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"

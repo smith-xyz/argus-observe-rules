@@ -1,0 +1,20 @@
+rules:
+  - id: go-crypto-cipher-rc2
+    message: RC2 cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rc2.NewCipher($KEY)
+          - pattern: $CIPHER := rc2.NewCipher($KEY)
+          - pattern: cipher.NewCBCEncrypter(rc2.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCBCDecrypter(rc2.NewCipher($KEY), $IV)
+          - pattern: |
+              $BLOCK := rc2.NewCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC2 cipher usage detected in codebase"

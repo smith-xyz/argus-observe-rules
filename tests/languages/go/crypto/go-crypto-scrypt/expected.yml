@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.go
+    line: 15
+    rule_id: go-crypto-scrypt
+    message: "scrypt key derivation function usage detected"
+  - file: test_code.go
+    line: 28
+    rule_id: go-crypto-scrypt
+    message: "scrypt key derivation function usage detected"
+  - file: test_code.go
+    line: 39
+    rule_id: go-crypto-scrypt
+    message: "scrypt key derivation function usage detected"
+  - file: test_code.go
+    line: 41
+    rule_id: go-crypto-scrypt
+    message: "scrypt key derivation function usage detected"
+  - file: test_code.go
+    line: 43
+    rule_id: go-crypto-scrypt
+    message: "scrypt key derivation function usage detected"
+
+no_findings:
+  - negative_cases.go

@@ -1,0 +1,76 @@
+findings:
+  - file: test_code.go
+    line: 8
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 10
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 12
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 14
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 16
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 18
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 20
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 22
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 24
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 26
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 28
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 30
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 32
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 34
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 36
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 38
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 40
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+  - file: test_code.go
+    line: 42
+    rule_id: go-crypto-cipher-suites
+    message: "TLS cipher suite usage detected"
+
+no_findings:
+  - negative_cases.go

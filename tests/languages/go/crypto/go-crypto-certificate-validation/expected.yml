@@ -1,0 +1,48 @@
+findings:
+  - file: test_code.go
+    line: 11
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 15
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 23
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 32
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 36
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 45
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 49
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 55
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 56
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 65
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.go
+    line: 66
+    rule_id: go-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+
+no_findings:
+  - negative_cases.go

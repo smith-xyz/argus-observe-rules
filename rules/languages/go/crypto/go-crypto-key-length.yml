@@ -1,0 +1,26 @@
+rules:
+  - id: go-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := make([]byte, 8)
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              $KEY := make([]byte, 16)
+              ...
+              aes.NewCipher($KEY)
+          - pattern: aes.NewCipher([]byte("$KEY"))
+          - patterns:
+              - pattern: aes.NewCipher($KEY)
+              - metavariable-pattern:
+                  metavariable: $KEY
+                  pattern: make([]byte, $SIZE)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"

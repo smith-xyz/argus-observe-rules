@@ -1,0 +1,22 @@
+rules:
+  - id: go-crypto-aes-ecb-mode
+    message: AES ECB cipher mode usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: cipher.NewECBDecrypter($BLOCK)
+          - pattern: cipher.NewECBEncrypter($BLOCK)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewECBDecrypter($BLOCK)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewECBEncrypter($BLOCK)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES ECB cipher mode usage detected in codebase"

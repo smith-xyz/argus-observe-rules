@@ -1,0 +1,44 @@
+findings:
+  - file: test_code.go
+    line: 19
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 22
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 24
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 26
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 35
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 37
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 50
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 52
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 61
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.go
+    line: 63
+    rule_id: go-crypto-digital-signatures
+    message: "Digital signature operations detected"
+
+no_findings:
+  - negative_cases.go

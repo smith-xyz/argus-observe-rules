@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.go
+    line: 9
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.go
+    line: 10
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.go
+    line: 16
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.go
+    line: 24
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.go
+    line: 26
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.go
+    line: 32
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.go
+    line: 33
+    rule_id: go-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+
+no_findings:
+  - negative_cases.go

@@ -1,0 +1,64 @@
+findings:
+  - file: test_code.go
+    line: 12
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 14
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 16
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 23
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 34
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 44
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 54
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 64
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 74
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 85
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 87
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 95
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 104
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 113
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.go
+    line: 127
+    rule_id: go-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+
+no_findings:
+  - negative_cases.go

@@ -1,0 +1,39 @@
+rules:
+  - id: go-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: cipher.NewOFB($BLOCK, $IV)
+          - pattern: cipher.NewCFB($BLOCK, $IV)
+          - pattern: cipher.NewCFBEncrypter($BLOCK, $IV)
+          - pattern: cipher.NewCFBDecrypter($BLOCK, $IV)
+          - pattern: cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: cipher.NewCBCDecrypter($BLOCK, $IV)
+          - pattern: cipher.NewGCM($BLOCK)
+          - pattern: |
+              $GCM := cipher.NewGCM($BLOCK)
+              ...
+              $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: |
+              $GCM := cipher.NewGCM($BLOCK)
+              ...
+              $GCM.Open($DST, $NONCE, $CIPHERTEXT, $DATA)
+          - pattern: |
+              $STREAM := cipher.NewCTR($BLOCK, $IV)
+              ...
+              $STREAM.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $MODE := cipher.NewCBCEncrypter($BLOCK, $IV)
+              ...
+              $MODE.CryptBlocks($DST, $SRC)
+          - pattern: |
+              $MODE := cipher.NewCBCDecrypter($BLOCK, $IV)
+              ...
+              $MODE.CryptBlocks($DST, $SRC)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase (OFB, CFB, CTR, CBC, GCM)"

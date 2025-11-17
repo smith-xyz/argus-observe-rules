@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.go
+    line: 12
+    rule_id: go-crypto-aes-ecb-mode
+    message: "AES ECB cipher mode usage detected"
+  - file: test_code.go
+    line: 21
+    rule_id: go-crypto-aes-ecb-mode
+    message: "AES ECB cipher mode usage detected"
+  - file: test_code.go
+    line: 29
+    rule_id: go-crypto-aes-ecb-mode
+    message: "AES ECB cipher mode usage detected"
+  - file: test_code.go
+    line: 37
+    rule_id: go-crypto-aes-ecb-mode
+    message: "AES ECB cipher mode usage detected"
+
+no_findings:
+  - negative_cases.go

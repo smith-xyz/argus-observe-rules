@@ -1,0 +1,27 @@
+rules:
+  - id: go-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: ecdsa.GenerateKey($CURVE, $RAND)
+          - pattern: ecdsa.Sign($RAND, $PRIV, $HASH)
+          - pattern: ecdsa.Verify($PUB, $HASH, $R, $S)
+          - pattern: |
+              $PRIV, $ERR := ecdsa.GenerateKey($CURVE, $RAND)
+              ...
+              $PRIV.PublicKey
+          - pattern: |
+              $R, $S, $ERR := ecdsa.Sign($RAND, $PRIV, $HASH)
+              ...
+              ecdsa.Verify(&$PRIV.PublicKey, $HASH, $R, $S)
+          - pattern: elliptic.P256()
+          - pattern: elliptic.P384()
+          - pattern: elliptic.P521()
+          - pattern: elliptic.Secp256k1()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

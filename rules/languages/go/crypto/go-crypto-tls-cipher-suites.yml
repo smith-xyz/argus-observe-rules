@@ -1,0 +1,27 @@
+rules:
+  - id: go-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: tls.CipherSuites()
+          - pattern: tls.InsecureCipherSuites()
+          - pattern: |
+              &tls.Config{CipherSuites: $SUITES}
+          - pattern: |
+              $CONFIG := &tls.Config{
+                CipherSuites: $SUITES,
+                ...
+              }
+          - pattern: tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - pattern: tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+          - pattern: tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          - pattern: tls.TLS_AES_256_GCM_SHA384
+          - pattern: tls.TLS_AES_128_GCM_SHA256
+          - pattern: tls.TLS_CHACHA20_POLY1305_SHA256
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

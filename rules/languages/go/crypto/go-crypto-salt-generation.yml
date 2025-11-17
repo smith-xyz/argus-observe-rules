@@ -1,0 +1,60 @@
+rules:
+  - id: go-crypto-salt-generation
+    message: Salt generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              bcrypt.GenerateFromPassword($PASSWORD, $COST)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $SALT := []byte("$STATIC_SALT")
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              const $SALT = "$STATIC_SALT"
+              ...
+              pbkdf2.Key($PASSWORD, []byte($SALT), $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              var $SALT = []byte("$STATIC_SALT")
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              io.ReadFull(rand.Reader, $SALT)
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+    metadata:
+      category: crypto
+      cwe: CWE-759
+      impact: "Inventory: Salt generation for cryptographic use detected in codebase"

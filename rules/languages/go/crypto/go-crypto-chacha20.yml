@@ -1,0 +1,23 @@
+rules:
+  - id: go-crypto-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: chacha20.NewUnauthenticatedCipher($KEY, $NONCE)
+          - pattern: chacha20poly1305.New($KEY)
+          - pattern: |
+              $CIPHER, $ERR := chacha20.NewUnauthenticatedCipher($KEY, $NONCE)
+              $CIPHER.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $AEAD, $ERR := chacha20poly1305.New($KEY)
+              $AEAD.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: |
+              $AEAD, $ERR := chacha20poly1305.New($KEY)
+              $AEAD.Open($DST, $NONCE, $CIPHERTEXT, $DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"

@@ -1,0 +1,45 @@
+rules:
+  - id: go-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha512.New()
+          - pattern: sha512.Sum512($DATA)
+          - pattern: |
+              $HASHER := sha512.New()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha512.New()
+              ...
+              $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA512.New()
+          - pattern: |
+              $HASH := crypto.SHA512
+              $HASHER := $HASH.New()
+          - pattern: var $HASHER hash.Hash = sha512.New()
+          - pattern: $HASHER := hash.Hash(sha512.New())
+          - pattern: hex.EncodeToString(sha512.Sum512($DATA))
+          - pattern: base64.StdEncoding.EncodeToString(sha512.Sum512($DATA))
+          - pattern: fmt.Sprintf("%x", sha512.Sum512($DATA))
+          - pattern: fmt.Sprintf("%X", sha512.Sum512($DATA))
+          - pattern: io.WriteString(sha512.New(), $DATA)
+          - pattern: |
+              $HASHER := sha512.New()
+              io.Copy($HASHER, $READER)
+          - pattern: hmac.New(sha512.New, $KEY)
+          - pattern: hmac.New(crypto.SHA512.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha512.New)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA512.New)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, crypto.SHA512, $HASHED)
+          - pattern: rsa.VerifyPKCS1v15($PUB, crypto.SHA512, $HASHED, $SIG)
+          - pattern: ecdsa.Sign($RAND, $PRIV, sha512.Sum512($DATA))
+          - pattern: $HASH := sha512.Sum512($DATA)
+          - pattern: $CHECKSUM := sha512.Sum512($DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"

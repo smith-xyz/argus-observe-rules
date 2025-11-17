@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.go
+    line: 16
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 27
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 37
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 50
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 63
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 76
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 86
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 96
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+  - file: test_code.go
+    line: 106
+    rule_id: go-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.go

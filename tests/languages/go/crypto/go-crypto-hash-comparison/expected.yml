@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.go
+    line: 14
+    rule_id: go-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.go
+    line: 25
+    rule_id: go-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.go
+    line: 36
+    rule_id: go-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.go
+    line: 47
+    rule_id: go-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.go
+    line: 58
+    rule_id: go-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.go
+    line: 67
+    rule_id: go-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+
+no_findings:
+  - negative_cases.go

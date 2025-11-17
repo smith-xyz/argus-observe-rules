@@ -1,0 +1,26 @@
+rules:
+  - id: go-crypto-bcrypt
+    message: bcrypt password hashing usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: bcrypt.GenerateFromPassword($PASSWORD, $COST)
+          - pattern: bcrypt.CompareHashAndPassword($HASH, $PASSWORD)
+          - pattern: |
+              $HASH, $ERR := bcrypt.GenerateFromPassword($PASSWORD, $COST)
+              ...
+              $HASH
+          - pattern: |
+              $ERR := bcrypt.CompareHashAndPassword($HASH, $PASSWORD)
+              ...
+          - patterns:
+              - pattern: bcrypt.GenerateFromPassword($PASSWORD, $COST)
+              - metavariable-regex:
+                  metavariable: $COST
+                  regex: '\d+'
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: bcrypt password hashing usage detected in codebase"

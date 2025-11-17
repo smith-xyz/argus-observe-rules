@@ -1,0 +1,110 @@
+rules:
+  - id: go-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := "$VALUE"
+              ...
+              aes.NewCipher($KEY)
+          - pattern: aes.NewCipher("$KEY")
+          - pattern: aes.NewCipher([]byte("$KEY"))
+          - pattern: |
+              const $KEY = "$VALUE"
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              var $KEY = "$VALUE"
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              var $KEY = []byte("$VALUE")
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              var $KEY string = "$VALUE"
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              var $KEY []byte = []byte("$VALUE")
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              type $CONFIG struct {
+                $FIELD string
+              }
+              ...
+              $CONFIG{$FIELD: "$KEY"}
+              ...
+              aes.NewCipher([]byte($CONFIG.$FIELD))
+          - pattern: |
+              type $CONFIG struct {
+                $FIELD []byte
+              }
+              ...
+              $CONFIG{$FIELD: []byte("$KEY")}
+              ...
+              aes.NewCipher($CONFIG.$FIELD)
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if len($KEY) == 0 {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              des.NewCipher([]byte($KEY))
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              rc4.NewCipher([]byte($KEY))
+          - pattern: cipher.NewCFBDecrypter($BLOCK, "$IV")
+          - pattern: cipher.NewCFBEncrypter($BLOCK, []byte("$IV"))
+          - pattern: cipher.NewCBCEncrypter($BLOCK, []byte("$IV"))
+          - pattern: cipher.NewCBCDecrypter($BLOCK, []byte("$IV"))
+          - pattern: cipher.NewOFB($BLOCK, []byte("$IV"))
+          - pattern: |
+              $IV := "$STATIC_IV"
+              ...
+              cipher.NewCFBDecrypter($BLOCK, []byte($IV))
+          - pattern: |
+              $IV := "$STATIC_IV"
+              ...
+              cipher.NewCFBEncrypter($BLOCK, []byte($IV))
+          - pattern: |
+              const $IV = "$STATIC_IV"
+              ...
+              cipher.NewCFBDecrypter($BLOCK, []byte($IV))
+          - pattern: |
+              var $IV = "$STATIC_IV"
+              ...
+              cipher.NewCFBDecrypter($BLOCK, []byte($IV))
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"

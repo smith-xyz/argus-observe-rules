@@ -1,0 +1,68 @@
+findings:
+  - file: test_code.go
+    line: 11
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 13
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 15
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 17
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 23
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 26
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 32
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 38
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 44
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 51
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 54
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 55
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 61
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 63
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 65
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.go
+    line: 67
+    rule_id: go-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.go

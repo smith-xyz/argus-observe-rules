@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.go
+    line: 11
+    rule_id: go-crypto-hash-legacy
+    message: "Legacy hash function usage detected"
+  - file: test_code.go
+    line: 13
+    rule_id: go-crypto-hash-legacy
+    message: "Legacy hash function usage detected"
+  - file: test_code.go
+    line: 15
+    rule_id: go-crypto-hash-legacy
+    message: "Legacy hash function usage detected"
+  - file: test_code.go
+    line: 25
+    rule_id: go-crypto-hash-legacy
+    message: "Legacy hash function usage detected"
+  - file: test_code.go
+    line: 27
+    rule_id: go-crypto-hash-legacy
+    message: "Legacy hash function usage detected"
+  - file: test_code.go
+    line: 37
+    rule_id: go-crypto-hash-legacy
+    message: "Legacy hash function usage detected"
+
+no_findings:
+  - negative_cases.go

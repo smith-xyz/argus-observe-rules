@@ -1,0 +1,88 @@
+findings:
+  - file: test_code.go
+    line: 17
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 18
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 19
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 20
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 21
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 28
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 29
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 30
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 31
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 32
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 40
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 50
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 59
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 60
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 67
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 68
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 75
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 76
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 84
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 94
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.go
+    line: 104
+    rule_id: go-crypto-hmac
+    message: "HMAC usage detected"
+
+no_findings:
+  - negative_cases.go

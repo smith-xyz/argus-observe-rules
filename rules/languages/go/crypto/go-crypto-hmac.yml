@@ -1,0 +1,60 @@
+rules:
+  - id: go-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: hmac.New($HASH, $KEY)
+          - pattern: |
+              $HMAC := hmac.New($HASH, $KEY)
+              ...
+              $HMAC.Write($DATA)
+              ...
+              $RESULT := $HMAC.Sum($SUFFIX)
+          - pattern: |
+              $HMAC := hmac.New($HASH, $KEY)
+              ...
+              $HMAC.Write($DATA)
+              ...
+              $RESULT := $HMAC.Sum(nil)
+          - pattern: hmac.New(md5.New, $KEY)
+          - pattern: hmac.New(sha1.New, $KEY)
+          - pattern: hmac.New(sha256.New, $KEY)
+          - pattern: hmac.New(sha512.New, $KEY)
+          - pattern: hmac.New(sha512.New384, $KEY)
+          - pattern: hmac.New(crypto.MD5.New, $KEY)
+          - pattern: hmac.New(crypto.SHA1.New, $KEY)
+          - pattern: hmac.New(crypto.SHA256.New, $KEY)
+          - pattern: hmac.New(crypto.SHA512.New, $KEY)
+          - pattern: hmac.New(crypto.SHA384.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_224.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_256.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_384.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_512.New, $KEY)
+          - pattern: |
+              $HASH := crypto.MD5
+              $HMAC := hmac.New($HASH.New, $KEY)
+          - pattern: |
+              $HASH := crypto.SHA256
+              $HMAC := hmac.New($HASH.New, $KEY)
+          - pattern: |
+              $HASH := crypto.SHA512
+              $HMAC := hmac.New($HASH.New, $KEY)
+          - pattern: |
+              $HMAC := hmac.New($HASH.New, $KEY)
+              ...
+              hex.EncodeToString($HMAC.Sum(nil))
+          - pattern: |
+              $HMAC := hmac.New($HASH.New, $KEY)
+              ...
+              base64.StdEncoding.EncodeToString($HMAC.Sum(nil))
+          - pattern: |
+              $HMAC := hmac.New($HASH.New, $KEY)
+              ...
+              hmac.Equal($HMAC.Sum(nil), $EXPECTED)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

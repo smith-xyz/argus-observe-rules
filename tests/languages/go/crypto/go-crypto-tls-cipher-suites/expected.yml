@@ -1,0 +1,72 @@
+findings:
+  - file: test_code.go
+    line: 8
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 10
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 17
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 18
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 21
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 25
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 27
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 35
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 37
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 38
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 39
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 47
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 49
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 51
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 53
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 55
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.go
+    line: 57
+    rule_id: go-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+
+no_findings:
+  - negative_cases.go

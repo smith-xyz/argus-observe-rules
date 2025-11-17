@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.go
+    line: 15
+    rule_id: go-crypto-argon2
+    message: "Argon2 key derivation function usage detected"
+  - file: test_code.go
+    line: 17
+    rule_id: go-crypto-argon2
+    message: "Argon2 key derivation function usage detected"
+  - file: test_code.go
+    line: 30
+    rule_id: go-crypto-argon2
+    message: "Argon2 key derivation function usage detected"
+  - file: test_code.go
+    line: 41
+    rule_id: go-crypto-argon2
+    message: "Argon2 key derivation function usage detected"
+  - file: test_code.go
+    line: 43
+    rule_id: go-crypto-argon2
+    message: "Argon2 key derivation function usage detected"
+  - file: test_code.go
+    line: 45
+    rule_id: go-crypto-argon2
+    message: "Argon2 key derivation function usage detected"
+
+no_findings:
+  - negative_cases.go

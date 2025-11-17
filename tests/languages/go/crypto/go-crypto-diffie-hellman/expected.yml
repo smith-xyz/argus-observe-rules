@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.go
+    line: 10
+    rule_id: go-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.go
+    line: 17
+    rule_id: go-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.go
+    line: 20
+    rule_id: go-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.go
+    line: 27
+    rule_id: go-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.go
+    line: 29
+    rule_id: go-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+
+no_findings:
+  - negative_cases.go

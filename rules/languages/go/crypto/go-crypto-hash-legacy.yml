@@ -1,0 +1,21 @@
+rules:
+  - id: go-crypto-hash-legacy
+    message: Legacy hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: md4.New()
+          - pattern: md4.Sum($DATA)
+          - pattern: ripemd160.New()
+          - pattern: |
+              hasher := md4.New()
+              ...
+              hasher.Write($DATA)
+              ...
+              $HASH := hasher.Sum(nil)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Legacy hash function usage detected in codebase"

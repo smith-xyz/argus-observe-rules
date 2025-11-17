@@ -1,0 +1,51 @@
+rules:
+  - id: go-crypto-cipher-rc4
+    message: RC4 stream cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rc4.NewCipher($KEY)
+          - pattern: $CIPHER := rc4.NewCipher($KEY)
+          - pattern: $STREAM := rc4.NewCipher($KEY)
+          - pattern: "cipher.StreamReader{S: rc4.NewCipher($KEY), R: $READER}"
+          - pattern: "cipher.StreamWriter{S: rc4.NewCipher($KEY), W: $WRITER}"
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              $CIPHER.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              ...
+              $CIPHER.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              $READER := cipher.StreamReader{S: $CIPHER, R: $INPUT}
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              $WRITER := cipher.StreamWriter{S: $CIPHER, W: $OUTPUT}
+          - pattern: var $STREAM cipher.Stream = rc4.NewCipher($KEY)
+          - pattern: $STREAM := cipher.Stream(rc4.NewCipher($KEY))
+          - pattern: |
+              func $FNAME($STREAM cipher.Stream) {
+                ...
+              }
+              ...
+              $FNAME(rc4.NewCipher($KEY))
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              io.Copy($WRITER, &cipher.StreamReader{S: $CIPHER, R: $READER})
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              for $I := 0; $I < len($DATA); $I++ {
+                $DATA[$I] ^= $CIPHER.XORKeyStream($DST, $SRC)
+              }
+          - pattern: |
+              $CIPHER, $ERR := rc4.NewCipher($KEY)
+              if $ERR == nil {
+                $CIPHER.XORKeyStream($DST, $SRC)
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 stream cipher usage detected in codebase"

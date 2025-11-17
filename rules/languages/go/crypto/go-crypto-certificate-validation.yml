@@ -1,0 +1,26 @@
+rules:
+  - id: go-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              &tls.Config{InsecureSkipVerify: $BOOL}
+          - pattern: |
+              $CONFIG := &tls.Config{
+                InsecureSkipVerify: $BOOL,
+                ...
+              }
+          - pattern: tls.DialWithDialer($DIALER, $NETWORK, $ADDR, $CONFIG)
+          - pattern: tls.Dial($NETWORK, $ADDR, $CONFIG)
+          - pattern: |
+              $TRANSPORT := &http.Transport{
+                TLSClientConfig: &tls.Config{InsecureSkipVerify: $BOOL},
+                ...
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"

@@ -1,0 +1,46 @@
+rules:
+  - id: go-crypto-argon2
+    message: Argon2 key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $KEY := argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              ...
+              $KEY
+          - patterns:
+              - pattern: argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $TIME
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $THREADS
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+          - patterns:
+              - pattern: argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $TIME
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $THREADS
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Argon2 key derivation function usage detected in codebase"

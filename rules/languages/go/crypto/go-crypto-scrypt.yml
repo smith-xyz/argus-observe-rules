@@ -1,0 +1,31 @@
+rules:
+  - id: go-crypto-scrypt
+    message: scrypt key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+          - pattern: |
+              $KEY, $ERR := scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+              ...
+              $KEY
+          - patterns:
+              - pattern: scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: scrypt key derivation function usage detected in codebase"

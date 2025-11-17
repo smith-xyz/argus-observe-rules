@@ -1,0 +1,22 @@
+rules:
+  - id: go-crypto-hkdf
+    message: HKDF key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: hkdf.New($HASH, $SECRET, $SALT, $INFO)
+          - pattern: hkdf.Extract($HASH, $SECRET, $SALT)
+          - pattern: hkdf.Expand($HASH, $PRK, $INFO)
+          - pattern: |
+              $HKDF := hkdf.New($HASH, $SECRET, $SALT, $INFO)
+              $HKDF.Read($KEY)
+          - pattern: |
+              $PRK := hkdf.Extract($HASH, $SECRET, $SALT)
+              ...
+              hkdf.Expand($HASH, $PRK, $INFO)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: HKDF key derivation function usage detected in codebase"

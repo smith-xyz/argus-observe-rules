@@ -1,0 +1,59 @@
+rules:
+  - id: go-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $KEY := []byte($PASSWORD)
+          - pattern: $KEY := md5.Sum([]byte($PASSWORD))
+          - pattern: $KEY := sha1.Sum([]byte($PASSWORD))
+          - pattern: $KEY := sha256.Sum256([]byte($PASSWORD))
+          - pattern: $KEY := sha512.Sum512([]byte($PASSWORD))
+          - pattern: |
+              hasher := md5.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha1.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha256.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha512.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - patterns:
+              - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: '\d+'
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: '\d+'
+          - pattern: pbkdf2.Key($PASSWORD, nil, $ITER, $KEYLEN, $HASH)
+          - pattern: pbkdf2.Key($PASSWORD, []byte("$STATIC_SALT"), $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              $KEY := pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              $KEY := pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+              ...
+              des.NewCipher($KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"

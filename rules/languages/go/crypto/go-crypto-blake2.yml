@@ -1,0 +1,30 @@
+rules:
+  - id: go-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: blake2b.New256($KEY)
+          - pattern: blake2b.New512($KEY)
+          - pattern: blake2s.New256($KEY)
+          - pattern: |
+              $HASHER, $ERR := blake2b.New256($KEY)
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER, $ERR := blake2b.New512($KEY)
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER, $ERR := blake2s.New256($KEY)
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: var $HASHER hash.Hash = $BLAKE2_HASHER
+          - pattern: hex.EncodeToString($HASHER.Sum(nil))
+          - pattern: hmac.New($BLAKE2_HASHER, $KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"

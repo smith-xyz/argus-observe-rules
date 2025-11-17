@@ -1,0 +1,43 @@
+rules:
+  - id: go-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha3.New224()
+          - pattern: sha3.New256()
+          - pattern: sha3.New384()
+          - pattern: sha3.New512()
+          - pattern: |
+              $HASHER := sha3.New224()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha3.New256()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha3.New384()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha3.New512()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA3_224.New()
+          - pattern: crypto.SHA3_256.New()
+          - pattern: crypto.SHA3_384.New()
+          - pattern: crypto.SHA3_512.New()
+          - pattern: var $HASHER hash.Hash = sha3.New256()
+          - pattern: $HASHER := hash.Hash(sha3.New512())
+          - pattern: hex.EncodeToString($HASHER.Sum(nil))
+          - pattern: hmac.New(sha3.New256, $KEY)
+          - pattern: hmac.New(crypto.SHA3_256.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha3.New256)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA3_256.New)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"

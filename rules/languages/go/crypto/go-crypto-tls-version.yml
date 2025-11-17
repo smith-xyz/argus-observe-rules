@@ -1,0 +1,58 @@
+rules:
+  - id: go-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: tls.$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+          - patterns:
+              - pattern: $CONFIG.MinVersion = tls.$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+          - patterns:
+              - pattern: $CONFIG.MaxVersion = tls.$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+          - patterns:
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    MinVersion: tls.$VERSION,
+                    ...
+                  }
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+          - patterns:
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    MaxVersion: tls.$VERSION,
+                    ...
+                  }
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+          - patterns:
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    MinVersion: tls.$MIN_VERSION,
+                    MaxVersion: tls.$MAX_VERSION,
+                    ...
+                  }
+              - metavariable-regex:
+                  metavariable: $MIN_VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+              - metavariable-regex:
+                  metavariable: $MAX_VERSION
+                  regex: 'Version(SSL30|TLS10|TLS11|TLS12|TLS13)'
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

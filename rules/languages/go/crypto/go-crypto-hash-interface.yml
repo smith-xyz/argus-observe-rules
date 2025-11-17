@@ -1,0 +1,44 @@
+rules:
+  - id: go-crypto-hash-interface
+    message: Hash algorithm used via generic hash.Hash interface detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              func $FNAME($HASHER hash.Hash) {
+                ...
+              }
+              ...
+              $FNAME(md5.New())
+          - pattern: |
+              func $FNAME($HASHER hash.Hash) {
+                ...
+              }
+              ...
+              $FNAME(sha1.New())
+          - pattern: |
+              func $FNAME() hash.Hash {
+                return md5.New()
+              }
+          - pattern: |
+              func $FNAME() hash.Hash {
+                return sha1.New()
+              }
+          - pattern: |
+              $HASHERS := map[$KEY]hash.Hash{
+                ...,
+                $ENTRY: md5.New(),
+                ...
+              }
+          - pattern: |
+              $HASHERS := []hash.Hash{
+                ...,
+                md5.New(),
+                ...
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Hash algorithm used via generic hash.Hash interface detected in codebase"

@@ -1,0 +1,31 @@
+rules:
+  - id: go-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rsa.GenerateKey($RAND, $BITS)
+          - pattern: rsa.GenerateMultiPrimeKey($RAND, $PRIMES, $BITS)
+          - pattern: rsa.EncryptPKCS1v15($RAND, $PUB, $MSG)
+          - pattern: rsa.EncryptOAEP($HASH, $RAND, $PUB, $MSG, $LABEL)
+          - pattern: rsa.DecryptPKCS1v15($RAND, $PRIV, $CIPHERTEXT)
+          - pattern: rsa.DecryptOAEP($HASH, $RAND, $PRIV, $CIPHERTEXT, $LABEL)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, $HASH, $HASHED)
+          - pattern: rsa.SignPSS($RAND, $PRIV, $HASH, $HASHED, $OPTS)
+          - pattern: rsa.VerifyPKCS1v15($PUB, $HASH, $HASHED, $SIG)
+          - pattern: rsa.VerifyPSS($PUB, $HASH, $HASHED, $SIG, $OPTS)
+          - pattern: |
+              $PRIV, $ERR := rsa.GenerateKey($RAND, $BITS)
+              ...
+              $PRIV.PublicKey
+          - patterns:
+              - pattern: rsa.GenerateKey($RAND, $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

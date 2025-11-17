@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.go
+    line: 16
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 18
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 27
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 28
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 39
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 52
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 65
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.go
+    line: 67
+    rule_id: go-crypto-password-hashing
+    message: "Password hashing operations detected"
+
+no_findings:
+  - negative_cases.go

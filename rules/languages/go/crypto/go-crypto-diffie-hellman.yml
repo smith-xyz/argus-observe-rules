@@ -1,0 +1,18 @@
+rules:
+  - id: go-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: dh.GenerateKey($GROUP)
+          - pattern: dh.ComputeSecret($PRIV, $PUB)
+          - pattern: |
+              $PRIV, $PUB, $ERR := dh.GenerateKey($GROUP)
+              ...
+              $SECRET := dh.ComputeSecret($PRIV, $PEER_PUB)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

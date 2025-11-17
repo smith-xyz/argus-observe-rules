@@ -1,0 +1,46 @@
+rules:
+  - id: go-crypto-dynamic-cipher
+    message: Dynamic cipher selection detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              switch $ALGO {
+              case "des":
+                $CIPHER = des.NewCipher($KEY)
+              ...
+              }
+          - pattern: |
+              if $ALGO == "rc4" {
+                $CIPHER = rc4.NewCipher($KEY)
+              }
+          - pattern: |
+              if $ALGO == "des" {
+                $CIPHER = des.NewCipher($KEY)
+              }
+          - pattern: |
+              $CIPHERS := map[string]func([]byte) (cipher.Block, error){
+                ...,
+                "des": des.NewCipher,
+                ...
+              }
+          - pattern: |
+              $CIPHERS := map[string]func([]byte) (cipher.Stream, error){
+                ...,
+                "rc4": rc4.NewCipher,
+                ...
+              }
+          - pattern: |
+              func getCipher($TYPE string, $KEY []byte) cipher.Block {
+                ...
+                return des.NewCipher($KEY)
+                ...
+              }
+          - pattern: |
+              $CIPHER := getCipherByName($CONFIG.Algorithm, $KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Dynamic cipher selection detected in codebase"

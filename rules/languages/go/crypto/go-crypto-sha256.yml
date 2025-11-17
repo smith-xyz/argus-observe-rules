@@ -1,0 +1,45 @@
+rules:
+  - id: go-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha256.New()
+          - pattern: sha256.Sum256($DATA)
+          - pattern: |
+              $HASHER := sha256.New()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha256.New()
+              ...
+              $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA256.New()
+          - pattern: |
+              $HASH := crypto.SHA256
+              $HASHER := $HASH.New()
+          - pattern: var $HASHER hash.Hash = sha256.New()
+          - pattern: $HASHER := hash.Hash(sha256.New())
+          - pattern: hex.EncodeToString(sha256.Sum256($DATA))
+          - pattern: base64.StdEncoding.EncodeToString(sha256.Sum256($DATA))
+          - pattern: fmt.Sprintf("%x", sha256.Sum256($DATA))
+          - pattern: fmt.Sprintf("%X", sha256.Sum256($DATA))
+          - pattern: io.WriteString(sha256.New(), $DATA)
+          - pattern: |
+              $HASHER := sha256.New()
+              io.Copy($HASHER, $READER)
+          - pattern: hmac.New(sha256.New, $KEY)
+          - pattern: hmac.New(crypto.SHA256.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha256.New)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA256.New)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, crypto.SHA256, $HASHED)
+          - pattern: rsa.VerifyPKCS1v15($PUB, crypto.SHA256, $HASHED, $SIG)
+          - pattern: ecdsa.Sign($RAND, $PRIV, sha256.Sum256($DATA))
+          - pattern: $HASH := sha256.Sum256($DATA)
+          - pattern: $CHECKSUM := sha256.Sum256($DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"

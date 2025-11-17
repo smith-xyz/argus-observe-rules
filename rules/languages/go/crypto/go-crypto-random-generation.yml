@@ -1,0 +1,42 @@
+rules:
+  - id: go-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := make([]byte, $SIZE)
+              ...
+              rand.Read($KEY)
+          - pattern: |
+              $IV := make([]byte, $SIZE)
+              ...
+              rand.Read($IV)
+          - pattern: rand.Read($BYTES)
+          - pattern: rand.Int($RANDOM, $MAX)
+          - pattern: rand.Prime($RANDOM, $BITS)
+          - pattern: io.ReadFull(rand.Reader, $BUFFER)
+          - pattern: |
+              $BUFFER := make([]byte, $SIZE)
+              ...
+              io.ReadFull(rand.Reader, $BUFFER)
+          - pattern: math/rand.Read($BYTES)
+          - pattern: mathrand.Read($BYTES)
+          - pattern: |
+              rand.Seed($SEED)
+              ...
+              rand.Intn($MAX)
+          - pattern: |
+              mathrand.Seed($SEED)
+              ...
+              mathrand.Intn($MAX)
+          - pattern: math/rand.New($SOURCE)
+          - pattern: mathrand.New($SOURCE)
+          - pattern: math/rand.NewSource($SEED)
+          - pattern: mathrand.NewSource($SEED)
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"

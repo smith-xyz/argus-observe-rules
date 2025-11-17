@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.go
+    line: 16
+    rule_id: go-crypto-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.go
+    line: 31
+    rule_id: go-crypto-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.go
+    line: 43
+    rule_id: go-crypto-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.go
+    line: 60
+    rule_id: go-crypto-chacha20
+    message: "ChaCha20 cipher usage detected"
+  - file: test_code.go
+    line: 77
+    rule_id: go-crypto-chacha20
+    message: "ChaCha20 cipher usage detected"
+
+no_findings:
+  - negative_cases.go
