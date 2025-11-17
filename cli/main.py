@@ -238,15 +238,20 @@ def execute_tests(results_by_rule, rule_expectations, total_rules_loaded):
         # Filter actual findings to only include those in the rule's test directory
         rule_test_dir = rule_data["test_dir"]
         all_actual_findings = results_by_rule.get(rule_id, [])
+        # Use precise path matching to avoid matching subdirectories with similar names
+        # e.g., go-crypto-aes should not match go-crypto-aes-ecb-mode
         actual_findings = [
             f
             for f in all_actual_findings
-            if f.get("full_path", "").startswith(rule_test_dir)
+            if f.get("full_path", "").startswith(rule_test_dir + "/")
+            and not f.get("full_path", "")
+            .replace(rule_test_dir + "/", "")
+            .startswith("../")
         ]
 
         expected = rule_data["expectations"]
-        expected_findings = expected.get("findings", [])
-        no_findings_files = expected.get("no_findings", [])
+        expected_findings = expected.get("findings") or []
+        no_findings_files = expected.get("no_findings") or []
 
         # Validate expected findings
         passed = True
