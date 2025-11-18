@@ -1,0 +1,111 @@
+findings:
+- file: test_code.py
+  line: 8
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 10
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 12
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 14
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 16
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 18
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 20
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 22
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 24
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 27
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 29
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 31
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 34
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 37
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 39
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 42
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 45
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 46
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 49
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 51
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 53
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 56
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 59
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 64
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 68
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 70
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+- file: test_code.py
+  line: 72
+  rule_id: python-crypto-cipher-modes
+  message: Cipher mode usage detected
+no_findings:
+- negative_cases.py

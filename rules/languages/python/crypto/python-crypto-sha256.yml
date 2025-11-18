@@ -1,0 +1,45 @@
+rules:
+  - id: python-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha256($DATA)
+          - pattern: hashlib.sha256()
+          - pattern: |
+              $HASHER = hashlib.sha256()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.sha256()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.sha256($DATA).hexdigest()
+          - pattern: hashlib.sha256($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha256)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha256)
+          - pattern: pbkdf2_hmac("sha256", $PASSWORD, $SALT, $ITER)
+          - patterns:
+              - pattern: pbkdf2_hmac("sha256", $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"

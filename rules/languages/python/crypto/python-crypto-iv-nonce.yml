@@ -1,0 +1,103 @@
+rules:
+  - id: python-crypto-iv-nonce
+    message: IV or nonce generation and usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $IV
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: os.urandom($LENGTH)
+          - pattern: secrets.token_bytes($LENGTH)
+          - patterns:
+              - pattern: os.urandom($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: "(8|12|16|24|32|64)"
+          - patterns:
+              - pattern-inside: |
+                  $IV = os.urandom($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $IV
+                  patterns:
+                    - pattern: AES.new($KEY, AES.MODE_CBC, $IV)
+                    - pattern: Cipher(algorithms.AES($KEY), modes.CBC($IV), $BACKEND)
+          - patterns:
+              - pattern-inside: |
+                  $NONCE = os.urandom($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $NONCE
+                  patterns:
+                    - pattern: AES.new($KEY, AES.MODE_GCM, $NONCE)
+                    - pattern: Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
+          - pattern: |
+              $IV = os.urandom($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              $NONCE = os.urandom($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $IV = secrets.token_bytes($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              $NONCE = secrets.token_bytes($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $IV = os.urandom(16)
+              $MODE = modes.CBC($IV)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $NONCE = os.urandom(12)
+              $MODE = modes.GCM($NONCE)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $IV = os.urandom(16)
+              $CIPHER = AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $NONCE = os.urandom(12)
+              $CIPHER = AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $IV = b"$STATIC_IV"
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              $NONCE = b"$STATIC_NONCE"
+              ...
+              AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $IV = "$STATIC_IV"
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV.encode())
+          - pattern: |
+              $IV = [0x00] * $LENGTH
+              ...
+              AES.new($KEY, AES.MODE_CBC, bytes($IV))
+          - pattern: |
+              $IV = b"\x00" * $LENGTH
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: IV or nonce generation and usage detected in codebase"

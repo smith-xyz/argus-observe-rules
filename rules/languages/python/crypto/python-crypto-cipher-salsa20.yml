@@ -1,0 +1,33 @@
+rules:
+  - id: python-crypto-cipher-salsa20
+    message: Salsa20 cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Salsa20.new($KEY, $NONCE)
+          - pattern: |
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Salsa20
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Salsa20
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Salsa20 cipher usage detected in codebase"

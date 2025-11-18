@@ -1,0 +1,54 @@
+rules:
+  - id: python-crypto-pycryptodome
+    message: PyCryptodome library usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: |
+              from Crypto.Cipher import $CIPHER
+          - pattern: |
+              from Crypto.PublicKey import $KEY_TYPE
+          - pattern: |
+              from Crypto.Hash import $HASH_TYPE
+          - pattern: |
+              from Crypto.Signature import $SIGNATURE_TYPE
+          - pattern: |
+              from Crypto.Random import $RANDOM_TYPE
+          - pattern: |
+              from Crypto.Protocol import $PROTOCOL_TYPE
+          - pattern: |
+              from Crypto.Util import $UTIL_TYPE
+          - pattern: |
+              from Crypto.Cipher import AES, DES, DES3, ARC4, ChaCha20, Salsa20
+          - pattern: |
+              from Crypto.PublicKey import RSA, DSA, ECC
+          - pattern: |
+              from Crypto.Hash import MD5, SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2b
+          - pattern: |
+              from Crypto.Signature import pkcs1_15, DSS, eddsa
+          - pattern: |
+              from Crypto.Random import get_random_bytes
+          - pattern: |
+              from Crypto.Protocol.KDF import PBKDF2, HKDF, scrypt
+          - pattern: |
+              from Crypto.Util.Padding import pad, unpad
+          - pattern: |
+              import Crypto.Cipher
+          - pattern: |
+              import Crypto.PublicKey
+          - pattern: |
+              import Crypto.Hash
+          - pattern: |
+              import Crypto.Signature
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: PyCryptodome library usage detected in codebase"

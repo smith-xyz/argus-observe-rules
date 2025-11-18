@@ -1,0 +1,54 @@
+rules:
+  - id: python-crypto-cipher-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: ChaCha20.new($KEY, $NONCE)
+          - pattern: |
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20_Poly1305
+              $CIPHER = ChaCha20_Poly1305.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt_and_digest($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20_Poly1305
+              $CIPHER = ChaCha20_Poly1305.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt_and_verify($CIPHERTEXT, $TAG)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.ChaCha20($KEY)
+          - pattern: Cipher(algorithms.ChaCha20($KEY), $MODE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.ChaCha20($KEY), modes.ChaCha20Poly1305($NONCE), $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
+              $CIPHER = ChaCha20Poly1305($KEY)
+              $CIPHERTEXT = $CIPHER.encrypt($NONCE, $PLAINTEXT, $ASSOCIATED_DATA)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
+              $CIPHER = ChaCha20Poly1305($KEY)
+              $PLAINTEXT = $CIPHER.decrypt($NONCE, $CIPHERTEXT, $ASSOCIATED_DATA)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"

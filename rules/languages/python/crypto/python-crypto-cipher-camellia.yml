@@ -1,0 +1,44 @@
+rules:
+  - id: python-crypto-cipher-camellia
+    message: Camellia cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Camellia.new($KEY, $MODE)
+          - pattern: Camellia.new($KEY, Camellia.MODE_ECB)
+          - pattern: Camellia.new($KEY, Camellia.MODE_CBC, $IV)
+          - pattern: Camellia.new($KEY, Camellia.MODE_CFB, $IV)
+          - pattern: Camellia.new($KEY, Camellia.MODE_OFB, $IV)
+          - pattern: Camellia.new($KEY, Camellia.MODE_CTR, $COUNTER)
+          - pattern: Camellia.new($KEY, Camellia.MODE_GCM, $NONCE)
+          - pattern: |
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Camellia
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Camellia
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.Camellia($KEY)
+          - pattern: Cipher(algorithms.Camellia($KEY), $MODE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.Camellia($KEY), $MODE, $BACKEND)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Camellia cipher usage detected in codebase"

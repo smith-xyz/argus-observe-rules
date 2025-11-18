@@ -1,0 +1,41 @@
+rules:
+  - id: python-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha512($DATA)
+          - pattern: hashlib.sha512()
+          - pattern: |
+              $HASHER = hashlib.sha512()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.sha512()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.sha512($DATA).hexdigest()
+          - pattern: hashlib.sha512($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
+          - pattern: pbkdf2_hmac("sha512", $PASSWORD, $SALT, $ITER)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"

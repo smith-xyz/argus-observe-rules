@@ -1,0 +1,51 @@
+rules:
+  - id: python-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
+          - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER, dklen=$KEYLEN)
+          - patterns:
+              - pattern: hashlib.pbkdf2_hmac("$HASH", $PASSWORD, $SALT, $ITER)
+              - metavariable-regex:
+                  metavariable: $HASH
+                  regex: "(md5|sha1|sha224|sha256|sha384|sha512|sha3_224|sha3_256|sha3_384|sha3_512)"
+          - patterns:
+              - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+          - patterns:
+              - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
+              - metavariable-comparison:
+                  metavariable: $N
+                  comparison: $N < 16384
+          - pattern: |
+              $KEY = hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
+              ...
+              $KEY
+          - pattern: argon2.hash_password($PASSWORD, $SALT)
+          - pattern: argon2.verify_password($HASH, $PASSWORD)
+          - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
+          - pattern: scrypt.verify($HASH, $PASSWORD)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"

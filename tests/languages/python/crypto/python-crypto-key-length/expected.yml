@@ -1,0 +1,23 @@
+findings:
+- file: test_code.py
+  line: 10
+  rule_id: python-crypto-key-length
+  message: Cryptographic key length configuration detected
+- file: test_code.py
+  line: 12
+  rule_id: python-crypto-key-length
+  message: Cryptographic key length configuration detected
+- file: test_code.py
+  line: 14
+  rule_id: python-crypto-key-length
+  message: Cryptographic key length configuration detected
+- file: test_code.py
+  line: 19
+  rule_id: python-crypto-key-length
+  message: Cryptographic key length configuration detected
+- file: test_code.py
+  line: 26
+  rule_id: python-crypto-key-length
+  message: Cryptographic key length configuration detected
+no_findings:
+- negative_cases.py

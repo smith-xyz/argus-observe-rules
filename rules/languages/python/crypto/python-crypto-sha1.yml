@@ -1,0 +1,51 @@
+rules:
+  - id: python-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha1($DATA)
+          - pattern: hashlib.sha1()
+          - pattern: |
+              $HASHER = hashlib.sha1()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.sha1()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.sha1($DATA).hexdigest()
+          - pattern: hashlib.sha1($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha1)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha1)
+          - pattern: pbkdf2_hmac("sha1", $PASSWORD, $SALT, $ITER)
+          - patterns:
+              - pattern: pbkdf2_hmac("sha1", $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+          - patterns:
+              - pattern: hashlib.sha1($DATA)
+              - metavariable-regex:
+                  metavariable: $DATA
+                  regex: '.+'
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"

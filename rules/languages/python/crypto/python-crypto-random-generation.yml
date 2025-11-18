@@ -1,0 +1,51 @@
+rules:
+  - id: python-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $LENGTH
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: secrets.token_bytes($LENGTH)
+          - pattern: secrets.token_hex($LENGTH)
+          - pattern: secrets.token_urlsafe($LENGTH)
+          - pattern: os.urandom($LENGTH)
+          - patterns:
+              - pattern: secrets.token_bytes($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: "(8|12|16|24|32|64|128|256|512|1024|2048|4096)"
+          - patterns:
+              - pattern: os.urandom($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: "(8|12|16|24|32|64|128|256|512|1024|2048|4096)"
+          - pattern: random.getrandbits($BITS)
+          - pattern: random.randint($MIN, $MAX)
+          - pattern: random.random()
+          - pattern: |
+              $KEY = secrets.token_bytes($LENGTH)
+              ...
+              $KEY
+          - pattern: |
+              $IV = os.urandom($LENGTH)
+              ...
+              $IV
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"

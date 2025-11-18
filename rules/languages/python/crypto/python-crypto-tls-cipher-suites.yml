@@ -1,0 +1,56 @@
+rules:
+  - id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $SUITE
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.set_ciphers($CIPHER_STRING)
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.set_ciphers($CIPHER_STRING)
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.ciphers()
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.ciphers()
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.set_ciphers("$CIPHER_LIST")
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.set_ciphers("$CIPHER_LIST")
+          - pattern: |
+              from urllib3.util.ssl_ import create_urllib3_context
+              $CONTEXT = create_urllib3_context()
+              $CONTEXT.set_ciphers($CIPHER_STRING)
+          - pattern: |
+              import requests
+              $SESSION = requests.Session()
+              $SESSION.mount("https://", $ADAPTER)
+              ...
+              $ADAPTER.init_poolmanager(ciphers=$CIPHER_STRING)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

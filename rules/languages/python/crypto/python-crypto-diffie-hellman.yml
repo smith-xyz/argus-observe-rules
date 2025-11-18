@@ -1,0 +1,56 @@
+rules:
+  - id: python-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: dh.generate_parameters($GENERATOR, $KEY_SIZE, $BACKEND)
+          - pattern: |
+              $PARAMETERS = dh.generate_parameters($GENERATOR, $KEY_SIZE, $BACKEND)
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+          - pattern: dh.generate_private_key($PARAMETERS, $BACKEND)
+          - pattern: |
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+          - pattern: |
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              ...
+              $SHARED_KEY = $PRIVATE_KEY.exchange($PUBLIC_KEY)
+          - pattern: |
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              ...
+              $SHARED_KEY = dh.derive_shared_key($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: dh.DHParameterNumbers($P, $G)
+          - pattern: dh.DHPrivateNumbers($PRIVATE_VALUE, $PUBLIC_NUMBERS)
+          - pattern: dh.DHPublicNumbers($Y, $PARAMETER_NUMBERS)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PARAMETERS = dh.generate_parameters($GENERATOR, $KEY_SIZE, $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              $SHARED_KEY = $PRIVATE_KEY.exchange($PUBLIC_KEY)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PARAM_NUMS = dh.DHParameterNumbers($P, $G)
+              $PARAMETERS = $PARAM_NUMS.parameters($BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PRIV_NUMS = dh.DHPrivateNumbers($PRIVATE_VALUE, $PUBLIC_NUMS)
+              $PRIVATE_KEY = $PRIV_NUMS.private_key($BACKEND)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

@@ -1,0 +1,105 @@
+rules:
+  - id: python-crypto-key-length
+    message: Cryptographic key length configuration detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    focus-metavariable: $KEY_SIZE
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+          - patterns:
+              - pattern: |
+                  $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              - metavariable-regex:
+                  metavariable: $KEY_SIZE
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              - metavariable-comparison:
+                  metavariable: $KEY_SIZE
+                  comparison: $KEY_SIZE < 2048
+          - pattern: |
+              from Crypto.PublicKey import RSA
+              $KEY = RSA.generate($BITS)
+          - patterns:
+              - pattern: |
+                  from Crypto.PublicKey import RSA
+                  $KEY = RSA.generate($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  from Crypto.PublicKey import RSA
+                  $KEY = RSA.generate($BITS)
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - pattern: |
+              from Crypto.Cipher import AES
+              $KEY = os.urandom($KEY_LENGTH)
+              $CIPHER = AES.new($KEY, $MODE)
+          - patterns:
+              - pattern: |
+                  from Crypto.Cipher import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = AES.new($KEY, $MODE)
+              - metavariable-regex:
+                  metavariable: $KEY_LENGTH
+                  regex: '\d+'
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers.algorithms import AES
+              $KEY = os.urandom($KEY_LENGTH)
+              $CIPHER = Cipher(AES($KEY), $MODE, $BACKEND)
+          - patterns:
+              - pattern: |
+                  from cryptography.hazmat.primitives.ciphers.algorithms import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = Cipher(AES($KEY), $MODE, $BACKEND)
+              - metavariable-regex:
+                  metavariable: $KEY_LENGTH
+                  regex: "(8|12|16|24|32|64|128|256|512|1024|2048|4096)"
+          - patterns:
+              - pattern: |
+                  from Crypto.Cipher import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = AES.new($KEY, $MODE)
+              - metavariable-comparison:
+                  metavariable: $KEY_LENGTH
+                  comparison: $KEY_LENGTH < 16
+          - patterns:
+              - pattern: |
+                  from Crypto.Cipher import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = AES.new($KEY, $MODE)
+              - metavariable-regex:
+                  metavariable: $KEY_LENGTH
+                  regex: "(8|12|16|24|32|64|128|256|512|1024|2048|4096)"
+          - patterns:
+              - pattern: |
+                  from cryptography.hazmat.primitives.ciphers.algorithms import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = Cipher(AES($KEY), $MODE, $BACKEND)
+              - metavariable-comparison:
+                  metavariable: $KEY_LENGTH
+                  comparison: $KEY_LENGTH < 16
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length configuration detected in codebase"

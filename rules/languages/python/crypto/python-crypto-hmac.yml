@@ -1,0 +1,82 @@
+rules:
+  - id: python-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hmac.new($KEY, $MSG, $DIGEST)
+          - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, $DIGEST)
+              $HMAC.update($DATA)
+              $RESULT = $HMAC.digest()
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              $RESULT = $HMAC.hexdigest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.md5)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha1)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha256)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha3_256)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha3_512)
+          - pattern: hmac.new($KEY, $MSG, hashlib.blake2b)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.md5)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha1)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha256)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha3_256)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha3_512)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.blake2b)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, $DIGEST)
+              ...
+              hmac.compare_digest($HMAC.digest(), $EXPECTED)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              base64.b64encode($HMAC.digest())
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              $HMAC.hexdigest()
+          - pattern: hmac.digest($KEY, $MSG, $DIGEST)
+          - pattern: hmac.digest($KEY, $MSG, digest=$DIGEST)
+          - pattern: hmac.compare_digest($DIGEST1, $DIGEST2)
+          - patterns:
+              - pattern: hmac.new($KEY, $MSG, digestmod="$ALG")
+              - metavariable-regex:
+                  metavariable: $ALG
+                  regex: "(md5|sha1|sha224|sha256|sha384|sha512|sha3_224|sha3_256|sha3_384|sha3_512|blake2b|blake2s)"
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              hmac.compare_digest($HMAC.digest(), $EXPECTED)
+          - patterns:
+              - pattern-inside: |
+                  $KEY = secrets.token_bytes($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $KEY
+                  patterns:
+                    - pattern: hmac.new($KEY, $MSG, $DIGEST)
+                    - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

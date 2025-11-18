@@ -1,0 +1,71 @@
+rules:
+  - id: python-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.blake2b($DATA)
+          - pattern: hashlib.blake2s($DATA)
+          - pattern: hashlib.blake2b($DATA, digest_size=$SIZE)
+          - pattern: hashlib.blake2s($DATA, digest_size=$SIZE)
+          - pattern: hashlib.blake2b($DATA, key=$KEY)
+          - pattern: hashlib.blake2b($DATA, salt=$SALT)
+          - pattern: hashlib.blake2b($DATA, person=$PERSON)
+          - pattern: hashlib.blake2b($DATA, key=$KEY, salt=$SALT)
+          - pattern: hashlib.blake2b($DATA, key=$KEY, salt=$SALT, person=$PERSON)
+          - pattern: hashlib.blake2b($DATA, key=$KEY, salt=$SALT, person=$PERSON, digest_size=$SIZE)
+          - pattern: hashlib.blake2s($DATA, key=$KEY)
+          - pattern: hashlib.blake2s($DATA, salt=$SALT)
+          - pattern: hashlib.blake2s($DATA, person=$PERSON)
+          - pattern: hashlib.blake2s($DATA, key=$KEY, salt=$SALT)
+          - pattern: hashlib.blake2s($DATA, key=$KEY, salt=$SALT, person=$PERSON)
+          - pattern: hashlib.blake2s($DATA, key=$KEY, salt=$SALT, person=$PERSON, digest_size=$SIZE)
+          - pattern: |
+              $HASHER = hashlib.blake2b($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.blake2b($DATA, key=$KEY)
+              $HASHER.update($MORE_DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.blake2b($DATA, key=$KEY, salt=$SALT)
+              $HASHER.update($MORE_DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.blake2s($DATA, key=$KEY)
+              $HASHER.update($MORE_DATA)
+              $HASH = $HASHER.digest()
+          - pattern: hashlib.blake2b($DATA).hexdigest()
+          - pattern: hashlib.blake2s($DATA).hexdigest()
+          - pattern: hashlib.blake2b($DATA, key=$KEY).hexdigest()
+          - pattern: hashlib.blake2s($DATA, key=$KEY).hexdigest()
+          - patterns:
+              - pattern: hashlib.blake2b($DATA, digest_size=$SIZE)
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: "(16|20|28|32|48|64)"
+          - patterns:
+              - pattern: hashlib.blake2s($DATA, digest_size=$SIZE)
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: "(16|20|28|32)"
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"

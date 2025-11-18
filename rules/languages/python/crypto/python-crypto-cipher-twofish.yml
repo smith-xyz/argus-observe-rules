@@ -1,0 +1,38 @@
+rules:
+  - id: python-crypto-cipher-twofish
+    message: Twofish cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Twofish.new($KEY, $MODE)
+          - pattern: Twofish.new($KEY, Twofish.MODE_ECB)
+          - pattern: Twofish.new($KEY, Twofish.MODE_CBC, $IV)
+          - pattern: Twofish.new($KEY, Twofish.MODE_CFB, $IV)
+          - pattern: Twofish.new($KEY, Twofish.MODE_OFB, $IV)
+          - pattern: Twofish.new($KEY, Twofish.MODE_CTR, $COUNTER)
+          - pattern: |
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Twofish
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Twofish
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Twofish cipher usage detected in codebase"

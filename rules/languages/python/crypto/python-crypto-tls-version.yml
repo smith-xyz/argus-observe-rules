@@ -1,0 +1,39 @@
+rules:
+  - id: python-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $VERSION
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: ssl.PROTOCOL_SSLv2
+          - pattern: ssl.PROTOCOL_SSLv3
+          - pattern: ssl.PROTOCOL_TLSv1
+          - pattern: ssl.PROTOCOL_TLSv1_1
+          - pattern: ssl.PROTOCOL_TLSv1_2
+          - pattern: ssl.PROTOCOL_TLSv1_3
+          - pattern: ssl.create_default_context(ssl.PROTOCOL_TLSv1)
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.minimum_version = ssl.TLSVersion.$VERSION
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              ...
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

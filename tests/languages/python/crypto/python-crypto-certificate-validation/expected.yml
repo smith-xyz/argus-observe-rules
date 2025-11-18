@@ -1,0 +1,59 @@
+findings:
+- file: test_code.py
+  line: 6
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 9
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 12
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 15
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 18
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 21
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 24
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 27
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 30
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 33
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 37
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 41
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 44
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+- file: test_code.py
+  line: 47
+  rule_id: python-crypto-certificate-validation
+  message: SSL/TLS certificate validation configuration detected
+no_findings:
+- negative_cases.py

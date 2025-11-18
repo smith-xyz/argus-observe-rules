@@ -1,0 +1,81 @@
+rules:
+  - id: python-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    focus-metavariable: $PRIVATE_KEY
+    patterns:
+      - pattern-either:
+          - pattern: ec.generate_private_key($CURVE, $BACKEND)
+          - pattern: |
+              $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+          - pattern: ec.SECP256R1()
+          - pattern: ec.SECP384R1()
+          - pattern: ec.SECP521R1()
+          - pattern: ec.SECP256K1()
+          - pattern: ec.BrainpoolP256R1()
+          - pattern: ec.BrainpoolP384R1()
+          - pattern: ec.BrainpoolP512R1()
+          - pattern: |
+              $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+              ...
+              $PRIVATE_KEY.sign($DATA, $ALGORITHM)
+          - patterns:
+              - pattern-inside: |
+                  $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $PRIVATE_KEY
+                  patterns:
+                    - pattern: $PRIVATE_KEY.sign($DATA, $ALGORITHM)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, $ALGORITHM)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.generate(curve=$CURVE)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.from_string($KEY_DATA, curve=$CURVE)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.generate(curve=$CURVE)
+              ...
+              $SIGNATURE = $KEY.sign($DATA)
+          - pattern: |
+              from ecdsa import VerifyingKey
+              $KEY = VerifyingKey.from_string($KEY_DATA, curve=$CURVE)
+              ...
+              $KEY.verify($SIGNATURE, $DATA)
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.SECP256k1
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.NIST256p
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.NIST384p
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.NIST521p
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

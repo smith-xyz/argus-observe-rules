@@ -1,0 +1,63 @@
+rules:
+  - id: python-crypto-fernet
+    message: Fernet symmetric encryption usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: Fernet($KEY)
+          - pattern: |
+              $FERNET = Fernet($KEY)
+              $TOKEN = $FERNET.encrypt($DATA)
+          - pattern: |
+              $FERNET = Fernet($KEY)
+              $DATA = $FERNET.decrypt($TOKEN)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              $TOKEN = $FERNET.encrypt($DATA)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              $DATA = $FERNET.decrypt($TOKEN)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $KEY = Fernet.generate_key()
+              $FERNET = Fernet($KEY)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              ...
+              $FERNET.encrypt($DATA)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              ...
+              $FERNET.decrypt($TOKEN)
+          - pattern: |
+              from cryptography.fernet import MultiFernet
+              $FERNET = MultiFernet([$FERNET1, $FERNET2])
+              $TOKEN = $FERNET.encrypt($DATA)
+          - pattern: |
+              from cryptography.fernet import MultiFernet
+              $FERNET = MultiFernet([$FERNET1, $FERNET2])
+              $DATA = $FERNET.decrypt($TOKEN)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Fernet symmetric encryption usage detected in codebase"

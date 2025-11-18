@@ -1,0 +1,72 @@
+rules:
+  - id: python-crypto-certificate-validation
+    message: SSL/TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $CONTEXT
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.check_hostname = False
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.check_hostname = False
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.verify_mode = ssl.CERT_NONE
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.verify_mode = ssl.CERT_NONE
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.verify_mode = ssl.CERT_OPTIONAL
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.verify_mode = ssl.CERT_OPTIONAL
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.verify_mode = ssl.CERT_REQUIRED
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.verify_mode = ssl.CERT_REQUIRED
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl._create_unverified_context()
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.load_verify_locations($CAFILE)
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.load_cert_chain($CERTFILE, $KEYFILE)
+          - pattern: |
+              import requests
+              requests.get($URL, verify=False)
+          - pattern: |
+              import requests
+              requests.post($URL, verify=False, data=$DATA)
+          - pattern: |
+              import urllib3
+              urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+              ...
+              requests.get($URL, verify=False)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: SSL/TLS certificate validation configuration detected in codebase"

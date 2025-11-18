@@ -1,0 +1,35 @@
+rules:
+  - id: python-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: DES.new($KEY, $MODE)
+          - pattern: DES3.new($KEY, $MODE)
+          - pattern: |
+              $CIPHER = DES.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = DES3.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.TripleDES($KEY)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"

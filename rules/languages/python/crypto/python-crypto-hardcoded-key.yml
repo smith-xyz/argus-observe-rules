@@ -1,0 +1,80 @@
+rules:
+  - id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    mode: taint
+    pattern-sources:
+      - pattern: $KEY = "$VALUE"
+      - pattern: $KEY = '$VALUE'
+      - pattern: $KEY = b"$VALUE"
+      - pattern: $KEY = b'$VALUE'
+      - pattern: KEY = "$VALUE"
+      - pattern: KEY = '$VALUE'
+      - pattern: KEY = b"$VALUE"
+      - pattern: KEY = b'$VALUE'
+      - pattern: '"$VALUE"'
+      - pattern: "'$VALUE'"
+      - pattern: 'b"$VALUE"'
+      - pattern: "b'$VALUE'"
+      - pattern: |
+          $KEY = os.getenv("$ENV_VAR", "$DEFAULT_KEY")
+      - pattern: |
+          $KEY = os.getenv("$ENV_VAR") or "$DEFAULT_KEY"
+      - pattern: |
+          $KEY = os.getenv("$ENV_VAR")
+          if not $KEY:
+              $KEY = "$DEFAULT_KEY"
+      - pattern: |
+          $KEY = os.environ.get("$ENV_VAR", "$DEFAULT_KEY")
+      - pattern: |
+          $CONFIG = {"key": "$VALUE"}
+      - pattern: |
+          $CONFIG = {"key": b"$VALUE"}
+      - pattern: |
+          class $CONFIG:
+              $FIELD = "$VALUE"
+      - pattern: |
+          class $CONFIG:
+              $FIELD = b"$VALUE"
+    pattern-sinks:
+      - pattern: AES.new($KEY, $MODE)
+      - pattern: DES.new($KEY, $MODE)
+      - pattern: DES3.new($KEY, $MODE)
+      - pattern: TripleDES.new($KEY, $MODE)
+      - pattern: ARC4.new($KEY)
+      - pattern: Blowfish.new($KEY, $MODE)
+      - pattern: Twofish.new($KEY, $MODE)
+      - pattern: Camellia.new($KEY, $MODE)
+      - pattern: ChaCha20.new($KEY, $NONCE)
+      - pattern: Salsa20.new($KEY, $NONCE)
+      - pattern: Fernet($KEY)
+      - pattern: MultiFernet([$KEY, ...])
+      - pattern: Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.DES($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.TripleDES($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.Camellia($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.ChaCha20($KEY), $MODE, $BACKEND)
+      - pattern: rsa.generate_private_key($PUBLIC_EXPONENT, $KEY, $BACKEND)
+      - pattern: ec.generate_private_key($CURVE, $BACKEND)
+      - pattern: hmac.new($KEY, $MSG, $DIGEST)
+      - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"

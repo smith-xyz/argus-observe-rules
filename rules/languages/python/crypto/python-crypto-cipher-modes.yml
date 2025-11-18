@@ -1,0 +1,77 @@
+rules:
+  - id: python-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $MODE
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: AES.MODE_ECB
+          - pattern: AES.MODE_CBC
+          - pattern: AES.MODE_CFB
+          - pattern: AES.MODE_OFB
+          - pattern: AES.MODE_CTR
+          - pattern: AES.MODE_GCM
+          - pattern: AES.MODE_CCM
+          - pattern: AES.MODE_XTS
+          - pattern: AES.new($KEY, AES.MODE_ECB)
+          - pattern: AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: AES.new($KEY, AES.MODE_CFB, $IV)
+          - pattern: AES.new($KEY, AES.MODE_OFB, $IV)
+          - pattern: AES.new($KEY, AES.MODE_CTR, $COUNTER)
+          - pattern: AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: AES.new($KEY, AES.MODE_CCM, $NONCE)
+          - pattern: AES.new($KEY, AES.MODE_XTS, $TWEAK)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, AES.MODE_ECB)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: modes.ECB()
+          - pattern: modes.CBC($IV)
+          - pattern: modes.CFB($IV)
+          - pattern: modes.OFB($IV)
+          - pattern: modes.CTR($COUNTER)
+          - pattern: modes.GCM($NONCE)
+          - pattern: modes.CCM($NONCE, $TAG_LENGTH)
+          - pattern: modes.XTS($TWEAK)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $MODE = modes.ECB()
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $MODE = modes.CBC($IV)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $MODE = modes.GCM($NONCE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), modes.ECB(), $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), modes.CBC($IV), $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"

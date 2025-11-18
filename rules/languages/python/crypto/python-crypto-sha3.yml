@@ -1,0 +1,66 @@
+rules:
+  - id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha3_224($DATA)
+          - pattern: hashlib.sha3_256($DATA)
+          - pattern: hashlib.sha3_384($DATA)
+          - pattern: hashlib.sha3_512($DATA)
+          - pattern: hashlib.sha3_224()
+          - pattern: hashlib.sha3_256()
+          - pattern: hashlib.sha3_384()
+          - pattern: hashlib.sha3_512()
+          - pattern: hashlib.shake_128($DATA)
+          - pattern: hashlib.shake_256($DATA)
+          - pattern: hashlib.shake_128()
+          - pattern: hashlib.shake_256()
+          - pattern: |
+              $HASHER = hashlib.sha3_256()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.shake_128()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest($LENGTH)
+          - pattern: |
+              $HASHER = hashlib.shake_256()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest($LENGTH)
+          - pattern: hashlib.sha3_256($DATA).hexdigest()
+          - pattern: hashlib.sha3_512($DATA).hexdigest()
+          - pattern: hashlib.shake_128($DATA).hexdigest($LENGTH)
+          - pattern: hashlib.shake_256($DATA).hexdigest($LENGTH)
+          - pattern: hashlib.shake_128($DATA).digest($LENGTH)
+          - pattern: hashlib.shake_256($DATA).digest($LENGTH)
+          - patterns:
+              - pattern: hashlib.shake_128($DATA).digest($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: '\d+'
+          - patterns:
+              - pattern: hashlib.shake_256($DATA).digest($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: '\d+'
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"

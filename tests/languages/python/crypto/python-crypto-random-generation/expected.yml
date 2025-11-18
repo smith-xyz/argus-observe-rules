@@ -1,0 +1,39 @@
+findings:
+- file: test_code.py
+  line: 6
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 8
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 10
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 12
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 14
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 16
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 18
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 21
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+- file: test_code.py
+  line: 24
+  rule_id: python-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+no_findings:
+- negative_cases.py

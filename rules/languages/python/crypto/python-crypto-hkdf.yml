@@ -1,0 +1,49 @@
+rules:
+  - id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+          - pattern: |
+              $HKDF = HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: |
+              $HKDF = HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: HKDF.extract($SALT, $INPUT_MATERIAL)
+          - pattern: HKDF.expand($PRK, $INFO, $LENGTH)
+          - pattern: |
+              from Crypto.Protocol.KDF import HKDF
+              $KEY = HKDF($LENGTH, $SALT, $INFO, $HASH)
+          - pattern: |
+              from Crypto.Protocol.KDF import HKDF
+              $KEY = HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+              $HKDF = HKDF($ALGORITHM, $LENGTH, $SALT, $INFO, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+              $HKDF = HKDF($ALGORITHM, $LENGTH, $SALT, $INFO, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDFExpand
+              $HKDF = HKDFExpand($ALGORITHM, $LENGTH, $INFO, $BACKEND)
+              $KEY = $HKDF.derive($PRK)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDFExtract
+              $HKDF = HKDFExtract($ALGORITHM, $SALT, $BACKEND)
+              $PRK = $HKDF.extract($INPUT_MATERIAL)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: HKDF key derivation function usage detected in codebase"

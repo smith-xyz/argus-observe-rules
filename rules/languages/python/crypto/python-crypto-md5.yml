@@ -1,0 +1,46 @@
+rules:
+  - id: python-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5($DATA)
+          - pattern: hashlib.md5()
+          - pattern: |
+              $HASHER = hashlib.md5()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.md5()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.md5($DATA).hexdigest()
+          - pattern: hashlib.md5($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.md5)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.md5)
+          - pattern: hashlib.pbkdf2_hmac("md5", $PASSWORD, $SALT, $ITER)
+          - pattern: hashlib.pbkdf2_hmac("md5", $PASSWORD, $SALT, $ITER, dklen=$KEYLEN)
+          - patterns:
+              - pattern: hashlib.pbkdf2_hmac("md5", $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"

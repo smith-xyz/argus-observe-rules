@@ -1,0 +1,100 @@
+rules:
+  - id: python-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+          - pattern: rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+          - pattern: rsa.RSAPrivateKey.generate($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+          - pattern: rsa.RSAPublicKey.from_encoded($DATA, $BACKEND)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.encrypt($PLAINTEXT, $PADDING)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.decrypt($CIPHERTEXT, $PADDING)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.encrypt($PLAINTEXT, $PADDING)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.sign($DATA, $PADDING, $ALGORITHM)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, $PADDING, $ALGORITHM)
+          - pattern: serialization.load_pem_private_key($DATA, $PASSWORD, $BACKEND)
+          - pattern: serialization.load_pem_public_key($DATA, $BACKEND)
+          - pattern: serialization.load_der_private_key($DATA, $PASSWORD, $BACKEND)
+          - pattern: serialization.load_der_public_key($DATA, $BACKEND)
+          - pattern: serialization.load_ssh_private_key($DATA, $PASSWORD, $BACKEND)
+          - pattern: serialization.load_ssh_public_key($DATA, $BACKEND)
+          - pattern: serialization.load_pem_parameters($DATA, $BACKEND)
+          - pattern: serialization.load_der_parameters($DATA, $BACKEND)
+          - pattern: padding.PKCS1v15()
+          - pattern: padding.OAEP($MGF, $ALGORITHM, $LABEL)
+          - pattern: padding.PSS($MGF, $SALT_LENGTH)
+          - pattern: padding.PKCS1v15()
+          - pattern: |
+              from Crypto.PublicKey import RSA
+              $KEY = RSA.generate($BITS)
+          - pattern: |
+              from Crypto.PublicKey import RSA
+              $KEY = RSA.importKey($KEY_DATA)
+          - pattern: |
+              from Crypto.Cipher import PKCS1_v1_5
+              $CIPHER = PKCS1_v1_5.new($PUBLIC_KEY)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import PKCS1_v1_5
+              $CIPHER = PKCS1_v1_5.new($PRIVATE_KEY)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT, $SENTINEL)
+          - pattern: |
+              from Crypto.Signature import pkcs1_15
+              $SIGNER = pkcs1_15.new($PRIVATE_KEY)
+              $SIGNATURE = $SIGNER.sign($HASH)
+          - pattern: |
+              from Crypto.Signature import pkcs1_15
+              $VERIFIER = pkcs1_15.new($PUBLIC_KEY)
+              $VERIFIER.verify($HASH, $SIGNATURE)
+          - patterns:
+              - pattern-inside: |
+                  $PRIVATE_KEY = rsa.generate_private_key(...)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $PRIVATE_KEY
+                  patterns:
+                    - pattern: $PRIVATE_KEY.encrypt(...)
+                    - pattern: $PRIVATE_KEY.decrypt(...)
+                    - pattern: $PRIVATE_KEY.sign(...)
+          - patterns:
+              - pattern-inside: |
+                  $PRIVATE_KEY = rsa.generate_private_key(...)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $PRIVATE_KEY
+                  patterns:
+                    - pattern: $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+                    - pattern-either:
+                        - pattern: $PUBLIC_KEY.encrypt(...)
+                        - pattern: $PUBLIC_KEY.verify(...)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

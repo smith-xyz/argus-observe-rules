@@ -1,0 +1,43 @@
+rules:
+  - id: python-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Blowfish.new($KEY, $MODE)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_ECB)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_CBC, $IV)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_CFB, $IV)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_OFB, $IV)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_CTR, $COUNTER)
+          - pattern: |
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Blowfish
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Blowfish
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.Blowfish($KEY)
+          - pattern: Cipher(algorithms.Blowfish($KEY), $MODE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"
