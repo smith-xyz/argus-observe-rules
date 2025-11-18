@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 11
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 31
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 34
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 38
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+  - file: test_code.rs
+    line: 41
+    rule_id: rust-crypto-sha224
+    message: "SHA224 hash function usage detected"
+
+no_findings:
+  - negative_cases.rs

@@ -1,0 +1,69 @@
+rules:
+  - id: rust-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::digest::digest(&ring::digest::SHA256, $DATA)
+          - pattern: ring::digest::SHA256
+          - pattern: ring::digest::SHA384
+          - pattern: ring::digest::SHA512
+          - pattern: sha2::Sha256::new()
+          - pattern: sha2::Sha256::default()
+          - pattern: sha2::Sha256::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha2::Sha256::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              let mut $HASHER = sha2::Sha256::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize_into($OUTPUT);
+          - pattern: |
+              use sha2::{Sha256, Digest};
+              let mut $HASHER = Sha256::new();
+              $HASHER.update($DATA);
+          - pattern: crypto::sha2::Sha256::new()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha256(), $DATA)
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha384(), $DATA)
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha512(), $DATA)
+          - pattern: |
+              let $MD = openssl::hash::MessageDigest::sha256();
+              openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha256())
+          - pattern: |
+              let mut $HASHER = openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha256());
+              $HASHER.update($DATA);
+              $HASHER.finish()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha2::Sha256::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha2::Sha256::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $DATA
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"

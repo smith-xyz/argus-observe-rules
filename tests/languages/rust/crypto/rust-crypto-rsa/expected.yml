@@ -1,0 +1,92 @@
+findings:
+  - file: test_code.rs
+    line: 7
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 10
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 18
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 21
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 24
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 33
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 37
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 43
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 49
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 52
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 55
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 59
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 64
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 66
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 69
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 76
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 79
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 94
+    rule_id: rust-crypto-rsa
+    message: "RSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.rs

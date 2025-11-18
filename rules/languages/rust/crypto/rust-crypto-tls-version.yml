@@ -1,0 +1,72 @@
+rules:
+  - id: rust-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: rustls::ProtocolVersion::$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLSv1_[0-3]|TLSv1\.[0-3])
+          - pattern: rustls::ProtocolVersion::TLSv1_0
+          - pattern: rustls::ProtocolVersion::TLSv1_1
+          - pattern: rustls::ProtocolVersion::TLSv1_2
+          - pattern: rustls::ProtocolVersion::TLSv1_3
+          - pattern: |
+              let $CONFIG = rustls::ClientConfig::builder()
+                .with_safe_defaults()
+                .with_protocol_versions(&[rustls::ProtocolVersion::TLSv1_2])
+                .unwrap();
+          - pattern: |
+              let $CONFIG = rustls::ServerConfig::builder()
+                .with_safe_defaults()
+                .with_protocol_versions(&[rustls::ProtocolVersion::TLSv1_2])
+                .unwrap();
+          - pattern: rustls::ClientConfig::builder().with_protocol_versions($VERSIONS)
+          - pattern: rustls::ServerConfig::builder().with_protocol_versions($VERSIONS)
+          - patterns:
+              - pattern: native_tls::Protocol::$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (Tlsv10|Tlsv11|Tlsv12|Tlsv13)
+          - pattern: native_tls::TlsConnector::builder().min_protocol_version($VERSION)
+          - pattern: native_tls::TlsConnector::builder().max_protocol_version($VERSION)
+          - pattern: native_tls::TlsAcceptor::builder().min_protocol_version($VERSION)
+          - pattern: native_tls::TlsAcceptor::builder().max_protocol_version($VERSION)
+          - pattern: native_tls::Protocol::Tlsv10
+          - pattern: native_tls::Protocol::Tlsv11
+          - pattern: native_tls::Protocol::Tlsv12
+          - pattern: native_tls::Protocol::Tlsv13
+          - pattern: |
+              let $CONNECTOR = native_tls::TlsConnector::builder()
+                .min_protocol_version(Some(native_tls::Protocol::Tlsv12))
+                .build();
+          - pattern: openssl::ssl::SslMethod::tls()
+          - pattern: openssl::ssl::SslMethod::tlsv1()
+          - pattern: openssl::ssl::SslMethod::tlsv1_1()
+          - pattern: openssl::ssl::SslMethod::tlsv1_2()
+          - pattern: openssl::ssl::SslMethod::tlsv1_3()
+          - pattern: openssl::ssl::SslConnector::builder($METHOD)
+          - pattern: openssl::ssl::SslAcceptor::builder($METHOD)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $VERSION
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

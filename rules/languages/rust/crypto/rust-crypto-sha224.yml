@@ -1,0 +1,54 @@
+rules:
+  - id: rust-crypto-sha224
+    message: SHA224 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sha2::Sha224::new()
+          - pattern: sha2::Sha224::default()
+          - pattern: sha2::Sha224::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha2::Sha224::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use sha2::{Sha224, Digest};
+              let mut $HASHER = Sha224::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha224(), $DATA)
+          - pattern: |
+              let $MD = openssl::hash::MessageDigest::sha224();
+              openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha224())
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha2::Sha224::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha2::Sha224::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA224 hash function usage detected in codebase"

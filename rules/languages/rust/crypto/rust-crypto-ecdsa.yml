@@ -1,0 +1,62 @@
+rules:
+  - id: rust-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::ECDSA_P256_SHA256_ASN1_SIGNING
+          - pattern: ring::signature::ECDSA_P384_SHA384_ASN1_SIGNING
+          - pattern: ring::signature::ECDSA_P256_SHA256_FIXED_SIGNING
+          - pattern: ring::signature::ECDSA_P384_SHA384_FIXED_SIGNING
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: ring::signature::UnparsedPublicKey::new($ALGO, $PUBLIC_KEY)
+          - pattern: |
+              let $ALGO = &ring::signature::ECDSA_P256_SHA256_ASN1_SIGNING;
+              let $SIGNATURE = ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE);
+          - pattern: |
+              let $PUBLIC_KEY = ring::signature::UnparsedPublicKey::new(&ring::signature::ECDSA_P256_SHA256_ASN1_SIGNING, $PUBLIC_KEY_BYTES);
+              ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - pattern: openssl::ec::EcGroup::from_curve_name($CURVE)
+              - metavariable-regex:
+                  metavariable: $CURVE
+                  regex: (X9_62_PRIME256V1|SECP384R1|SECP521R1|SECP224R1|SECP256K1)
+          - pattern: openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1)
+          - pattern: openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::SECP384R1)
+          - pattern: openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::SECP521R1)
+          - pattern: openssl::ec::EcKey::generate($GROUP)
+          - pattern: openssl::ec::EcKey::from_private_components($GROUP, $PRIVATE_KEY)
+          - pattern: openssl::ec::EcKey::from_public_key($GROUP, $PUBLIC_KEY)
+          - pattern: |
+              let $GROUP = openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1);
+              let $KEY = openssl::ec::EcKey::generate(&$GROUP);
+          - pattern: openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(), $EC_KEY)
+          - pattern: openssl::sign::Verifier::new(openssl::hash::MessageDigest::sha256(), $EC_KEY)
+          - pattern: openssl::ecdsa::EcdsaSig::sign($MESSAGE, $PRIVATE_KEY)
+          - pattern: openssl::ecdsa::EcdsaSig::verify($MESSAGE, $PUBLIC_KEY)
+          - pattern: |
+              async fn $FUNC() {
+                  ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $CURVE
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

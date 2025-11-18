@@ -1,0 +1,44 @@
+rules:
+  - id: rust-crypto-openssl
+    message: OpenSSL cryptographic library usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new($MD)
+          - pattern: openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: openssl::rsa::Rsa::generate($BITS)
+          - pattern: openssl::rsa::Rsa::public_encrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::private_decrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::ec::EcKey::generate($GROUP)
+          - pattern: openssl::sign::Signer::new($MD, $KEY)
+          - pattern: openssl::sign::Verifier::new($MD, $KEY)
+          - pattern: openssl::ssl::SslConnector::builder($METHOD)
+          - pattern: openssl::ssl::SslAcceptor::builder($METHOD)
+          - pattern: |
+              use openssl::hash;
+              hash::hash(hash::MessageDigest::sha256(), $DATA)
+          - pattern: |
+              use openssl::symm;
+              symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: OpenSSL cryptographic library usage detected in codebase"

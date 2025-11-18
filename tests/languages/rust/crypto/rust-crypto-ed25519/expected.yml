@@ -1,0 +1,64 @@
+findings:
+  - file: test_code.rs
+    line: 11
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 18
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 21
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 31
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 34
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 37
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 43
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 49
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 52
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.rs
+    line: 56
+    rule_id: rust-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+
+no_findings:
+  - negative_cases.rs

@@ -1,0 +1,46 @@
+rules:
+  - id: rust-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: native_tls::TlsConnector::builder().danger_accept_invalid_certs(true)
+          - pattern: native_tls::TlsAcceptor::builder().danger_accept_invalid_certs(true)
+          - pattern: |
+              let $CONNECTOR = native_tls::TlsConnector::builder()
+                .danger_accept_invalid_certs(true)
+                .build();
+          - pattern: |
+              let $ACCEPTOR = native_tls::TlsAcceptor::builder()
+                .danger_accept_invalid_certs(true)
+                .build();
+          - pattern: rustls::ClientConfig::builder().with_safe_defaults().dangerous()
+          - pattern: rustls::ServerConfig::builder().with_safe_defaults().dangerous()
+          - pattern: |
+              let $CONFIG = rustls::ClientConfig::builder()
+                .with_safe_defaults()
+                .dangerous()
+                .set_certificate_verifier($VERIFIER);
+          - pattern: rustls::client::DangerousClientConfig::set_certificate_verifier($VERIFIER)
+          - pattern: openssl::ssl::SslConnector::builder($METHOD).unwrap().set_verify(openssl::ssl::SslVerifyMode::NONE)
+          - pattern: openssl::ssl::SslAcceptor::builder($METHOD).unwrap().set_verify(openssl::ssl::SslVerifyMode::NONE)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"

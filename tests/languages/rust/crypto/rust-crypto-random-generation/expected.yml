@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.rs
+    line: 90
+    rule_id: rust-crypto-random-generation
+    message: Cryptographic random number generation detected
+  - file: test_code.rs
+    line: 94
+    rule_id: rust-crypto-random-generation
+    message: Cryptographic random number generation detected
+  - file: test_code.rs
+    line: 98
+    rule_id: rust-crypto-random-generation
+    message: Cryptographic random number generation detected
+
+no_findings:
+  - negative_cases.rs

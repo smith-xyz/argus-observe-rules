@@ -1,0 +1,59 @@
+rules:
+  - id: rust-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sha1::Sha1::new()
+          - pattern: sha1::Sha1::default()
+          - pattern: sha1::Sha1::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha1::Sha1::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use sha1::{Sha1, Digest};
+              let mut $HASHER = Sha1::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: sha1::Sha1::digest($DATA)
+          - pattern: sha1::digest($DATA)
+          - pattern: crypto::sha1::Sha1::new()
+          - pattern: |
+              use crypto::digest::Digest;
+              let mut $HASHER = crypto::sha1::Sha1::new();
+              $HASHER.input($DATA);
+              $HASHER.result_str()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha1(), $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha1())
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha1::Sha1::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha1::Sha1::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"

@@ -1,0 +1,74 @@
+rules:
+  - id: rust-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: argon2::hash_encoded($PASSWORD, $SALT, &$CONFIG, $ALGO)
+          - pattern: argon2::verify_encoded($HASH, $PASSWORD)
+          - pattern: argon2::Argon2::new($ALGO, $VERSION, $PARAMS)
+          - pattern: argon2::Argon2::default()
+          - pattern: argon2::Argon2::new_with_secret($SECRET, $ALGO, $VERSION, $PARAMS)
+          - pattern: |
+              use argon2::{Argon2, PasswordHasher, PasswordVerifier};
+              let $ARGON2 = Argon2::default();
+              $ARGON2.hash_password($PASSWORD, $SALT)
+          - patterns:
+              - pattern: argon2::Argon2::new($ALGO, $VERSION, $PARAMS)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: \d+
+          - pattern: scrypt::scrypt($PASSWORD, $SALT, &$PARAMS, $OUTPUT)
+          - patterns:
+              - pattern: scrypt::ScryptParams::new($LOG_N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $LOG_N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+          - pattern: scrypt::ScryptParams::recommended()
+          - pattern: |
+              let $PARAMS = scrypt::ScryptParams::new($LOG_N, $R, $P);
+              scrypt::scrypt($PASSWORD, $SALT, &$PARAMS, $OUTPUT)
+          - pattern: pbkdf2::pbkdf2($PASSWORD, $SALT, $ITERATIONS, $OUTPUT)
+          - patterns:
+              - pattern: pbkdf2::pbkdf2_hmac($ALGO, $PASSWORD, $SALT, $ITERATIONS, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: \d+
+          - patterns:
+              - pattern: |
+                  use pbkdf2::{pbkdf2_hmac, Algorithm};
+                  pbkdf2_hmac(Algorithm::Sha256, $PASSWORD, $SALT, $ITERATIONS, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: \d+
+          - pattern: |
+              async fn $FUNC() {
+                  argon2::hash_encoded($PASSWORD, $SALT, &$CONFIG, $ALGO)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $VERSION
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Key derivation function usage detected in codebase"

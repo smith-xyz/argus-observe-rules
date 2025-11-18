@@ -1,0 +1,66 @@
+rules:
+  - id: rust-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::dh::Dh::from_params($P, $G)
+          - pattern: openssl::dh::Dh::from_pqg($P, $Q, $G)
+          - pattern: openssl::dh::Dh::get_2048_256()
+          - pattern: openssl::dh::Dh::get_3072_256()
+          - pattern: openssl::dh::DhParams::get_2048_256()
+          - pattern: openssl::dh::DhParams::get_3072_256()
+          - pattern: |
+              let $DH = openssl::dh::Dh::get_2048_256();
+              let $PUBLIC_KEY = $DH.generate_key();
+          - pattern: |
+              let $DH = openssl::dh::Dh::get_3072_256();
+              let $PUBLIC_KEY = $DH.generate_key();
+          - pattern: |
+              let $DH = openssl::dh::Dh::get_2048_256();
+              let $PUBLIC_KEY = $DH.generate_key();
+              let $SHARED_SECRET = $DH.compute_key($PEER_PUBLIC_KEY);
+          - pattern: x25519_dalek::PublicKey::from($BYTES)
+          - pattern: x25519_dalek::StaticSecret::new($RNG)
+          - pattern: x25519_dalek::StaticSecret::from($BYTES)
+          - pattern: x25519_dalek::StaticSecret::diffie_hellman($SECRET, $PUBLIC_KEY)
+          - pattern: |
+              use x25519_dalek::{StaticSecret, PublicKey};
+              let $SECRET = StaticSecret::new($RNG);
+              let $PUBLIC_KEY = PublicKey::from(&$SECRET);
+              $SECRET.diffie_hellman(&$PEER_PUBLIC_KEY)
+          - pattern: ring::agreement::agree_ephemeral($ALGO, $PRIVATE_KEY, $PUBLIC_KEY, $OUTPUT)
+          - pattern: ring::agreement::EphemeralPrivateKey::generate($ALGO, $RNG)
+          - pattern: ring::agreement::UnparsedPublicKey::new($ALGO, $PUBLIC_KEY_BYTES)
+          - pattern: ring::agreement::X25519
+          - pattern: ring::agreement::P256
+          - pattern: ring::agreement::P384
+          - pattern: |
+              use ring::agreement;
+              let $PRIVATE_KEY = agreement::EphemeralPrivateKey::generate(&agreement::X25519, $RNG);
+              agreement::agree_ephemeral($PRIVATE_KEY, $PUBLIC_KEY, $OUTPUT)
+          - pattern: |
+              async fn $FUNC() {
+                  let ($PUBLIC_KEY, $SECRET_KEY) = x25519_dalek::StaticSecret::new($RNG);
+                  $SECRET_KEY.diffie_hellman(&$PEER_PUBLIC_KEY)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 20
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 27
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 36
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 60
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 67
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+  - file: test_code.rs
+    line: 73
+    rule_id: rust-crypto-iv-nonce
+    message: "Initialization vector or nonce usage detected"
+
+no_findings:
+  - negative_cases.rs

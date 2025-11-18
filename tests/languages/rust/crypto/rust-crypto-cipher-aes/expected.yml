@@ -1,0 +1,156 @@
+findings:
+  - file: test_code.rs
+    line: 11
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 20
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 23
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 26
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 29
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 95
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 98
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 101
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 43
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 49
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 52
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 55
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 58
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 59
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 68
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 71
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 74
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 77
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 80
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 83
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 86
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 89
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 92
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 105
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 112
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 117
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 120
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 123
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 124
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 131
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 134
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 137
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 158
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.rs
+    line: 159
+    rule_id: rust-crypto-cipher-aes
+    message: "AES cipher usage detected"
+
+no_findings:
+  - negative_cases.rs

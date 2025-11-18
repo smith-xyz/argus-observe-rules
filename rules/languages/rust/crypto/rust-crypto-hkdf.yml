@@ -1,0 +1,45 @@
+rules:
+  - id: rust-crypto-hkdf
+    message: HKDF key derivation function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: hkdf::Hkdf::<sha2::Sha256>::extract($SALT, $IKM)
+          - pattern: hkdf::Hkdf::<sha2::Sha512>::extract($SALT, $IKM)
+          - pattern: hkdf::Hkdf::<sha2::Sha256>::expand($PRK, $INFO, $OKM)
+          - pattern: hkdf::Hkdf::<sha2::Sha512>::expand($PRK, $INFO, $OKM)
+          - pattern: |
+              let $HKDF = hkdf::Hkdf::<sha2::Sha256>::extract($SALT, $IKM);
+              $HKDF.expand($INFO, $OKM)
+          - pattern: |
+              let $HKDF = hkdf::Hkdf::<sha2::Sha512>::extract($SALT, $IKM);
+              $HKDF.expand($INFO, $OKM)
+          - pattern: |
+              use hkdf::Hkdf;
+              let $HKDF = Hkdf::<sha2::Sha256>::extract($SALT, $IKM);
+              $HKDF.expand($INFO, $OKM)
+          - pattern: ring::hkdf::extract($ALGO, $SALT, $IKM)
+          - pattern: ring::hkdf::expand($ALGO, $PRK, $INFO, $OKM)
+          - pattern: ring::hkdf::HKDF_SHA256
+          - pattern: ring::hkdf::HKDF_SHA384
+          - pattern: ring::hkdf::HKDF_SHA512
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HKDF key derivation function usage detected in codebase"

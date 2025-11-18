@@ -1,0 +1,67 @@
+rules:
+- id: rust-crypto-random-generation
+  message: Cryptographic random number generation detected
+  severity: INFO
+  languages:
+  - rust
+  mode: taint
+  pattern-sources:
+    - pattern: ring::rand::SystemRandom::new()
+    - pattern: ring::rand::generate($RNG, $OUTPUT)
+    - pattern: ring::rand::SecureRandom::fill($RNG, $BUF)
+    - pattern: |
+        let $RNG = ring::rand::SystemRandom::new();
+        let $BYTES = ring::rand::generate(&$RNG);
+    - pattern: |
+        use ring::rand;
+        let $RNG = rand::SystemRandom::new();
+        rand::generate(&$RNG, $OUTPUT)
+    - pattern: openssl::rand::rand_bytes($BUF)
+    - pattern: openssl::rand::rand_priv_bytes($BUF)
+    - pattern: |
+        use openssl::rand;
+        rand::rand_bytes($BUF)
+    - pattern: getrandom::getrandom($BUF)
+    - pattern: getrandom::fill($BUF)
+    - pattern: rand::thread_rng()
+    - pattern: rand::random()
+    - pattern: rand::rngs::ThreadRng::default()
+    - pattern: |
+        use rand::RngCore;
+        let mut $RNG = rand::thread_rng();
+        $RNG.fill_bytes($BUF)
+  pattern-sinks:
+    - pattern: ring::aead::SealingKey::new($ALGO, $KEY)
+    - pattern: ring::aead::OpeningKey::new($ALGO, $KEY)
+    - pattern: openssl::rsa::Rsa::generate($BITS)
+    - pattern: rsa::RsaPrivateKey::new($RNG, $BITS)
+    - pattern: ed25519_dalek::SigningKey::generate($RNG)
+    - pattern: x25519_dalek::StaticSecret::new($RNG)
+    - pattern: ring::agreement::EphemeralPrivateKey::generate($ALGO, $RNG)
+    - pattern: |
+        let $KEY = ring::aead::SealingKey::new($ALGO, $KEY_BYTES);
+        ring::aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+    - pattern: |
+        async fn $FUNC() {
+            let $RNG = ring::rand::SystemRandom::new();
+            ring::rand::generate(&$RNG, $OUTPUT)
+        }
+  pattern-not-inside:
+    - pattern: |
+        #[test]
+        fn $TEST() {
+            ...
+        }
+    - pattern: |
+        #[cfg(test)]
+        mod $MODULE {
+            ...
+        }
+    - pattern: |
+        mod tests {
+            ...
+        }
+  metadata:
+    category: crypto
+    cwe: CWE-330
+    impact: "Inventory: Cryptographic random number generation detected in codebase"

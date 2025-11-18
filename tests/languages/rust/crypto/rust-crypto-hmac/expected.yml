@@ -1,0 +1,68 @@
+findings:
+  - file: test_code.rs
+    line: 13
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 20
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 23
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 26
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 29
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 32
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 35
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 36
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 39
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 41
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 44
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 67
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.rs
+    line: 70
+    rule_id: rust-crypto-hmac
+    message: "HMAC usage detected"
+
+no_findings:
+  - negative_cases.rs

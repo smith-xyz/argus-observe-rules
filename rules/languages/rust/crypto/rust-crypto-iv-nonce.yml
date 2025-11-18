@@ -1,0 +1,61 @@
+rules:
+  - id: rust-crypto-iv-nonce
+    message: Initialization vector or nonce usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::aead::Nonce::assume_unique_for_key($BYTES)
+          - pattern: ring::aead::Nonce::try_assume_unique_for_key($BYTES)
+          - pattern: |
+              let $NONCE = ring::aead::Nonce::assume_unique_for_key([0u8; 12]);
+              ring::aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let $IV = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, &$IV, $DATA)
+          - pattern: |
+              let $IV = [0u8; 12];
+              ring::aead::seal_in_place($KEY, ring::aead::Nonce::assume_unique_for_key($IV), $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let mut $IV = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, &$IV, $DATA)
+          - pattern: |
+              let mut $NONCE = [0u8; 12];
+              ring::aead::seal_in_place($KEY, ring::aead::Nonce::assume_unique_for_key($NONCE), $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let $IV = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+          - pattern: |
+              const $IV: [u8; 16] = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+          - pattern: |
+              let mut $IV = [0u8; 16];
+              $IV[0] = 1;
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+          - pattern: |
+              let mut $COUNTER = 0u64;
+              let $NONCE = $COUNTER.to_le_bytes();
+              ring::aead::seal_in_place($KEY, ring::aead::Nonce::assume_unique_for_key($NONCE), $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let mut $COUNTER = 0u32;
+              let $IV = $COUNTER.to_le_bytes();
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Initialization vector or nonce usage detected in codebase"

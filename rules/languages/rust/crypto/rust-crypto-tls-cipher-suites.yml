@@ -1,0 +1,42 @@
+rules:
+  - id: rust-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: rustls::cipher_suite::TLS13_AES_256_GCM_SHA384
+          - pattern: rustls::cipher_suite::TLS13_AES_128_GCM_SHA256
+          - pattern: rustls::cipher_suite::TLS13_CHACHA20_POLY1305_SHA256
+          - pattern: rustls::cipher_suite::TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - pattern: rustls::cipher_suite::TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          - pattern: rustls::cipher_suite::TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+          - pattern: |
+              rustls::ClientConfig::builder()
+                .with_safe_default_cipher_suites()
+                .with_safe_default_kx_groups()
+          - pattern: |
+              rustls::ServerConfig::builder()
+                .with_safe_default_cipher_suites()
+                .with_safe_default_kx_groups()
+          - pattern: rustls::ClientConfig::builder().with_cipher_suites($SUITES)
+          - pattern: rustls::ServerConfig::builder().with_cipher_suites($SUITES)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

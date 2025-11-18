@@ -1,0 +1,64 @@
+findings:
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 25
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 29
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 32
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 42
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 43
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 49
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 52
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 53
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 56
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 57
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 67
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.rs
+    line: 80
+    rule_id: rust-crypto-key-derivation
+    message: "Key derivation function usage detected"
+
+no_findings:
+  - negative_cases.rs

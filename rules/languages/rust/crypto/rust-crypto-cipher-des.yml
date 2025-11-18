@@ -1,0 +1,68 @@
+rules:
+  - id: rust-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::symm::Cipher::des_cbc()
+          - pattern: openssl::symm::Cipher::des_ecb()
+          - pattern: openssl::symm::Cipher::des_cfb64()
+          - pattern: openssl::symm::Cipher::des_ofb()
+          - pattern: openssl::symm::Cipher::des3_cbc()
+          - pattern: openssl::symm::Cipher::des3_ecb()
+          - pattern: openssl::symm::Cipher::des3_cfb64()
+          - pattern: openssl::symm::Cipher::des3_ofb()
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV, $DATA)
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des_cbc();
+              let $CIPHERTEXT = openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des_cbc();
+              let $PLAINTEXT = openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des3_cbc();
+              let $CIPHERTEXT = openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des3_cbc();
+              let $PLAINTEXT = openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              use openssl::symm;
+              let $CIPHER = symm::Cipher::des_cbc();
+              symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: |
+              use openssl::symm;
+              let $CIPHER = symm::Cipher::des3_cbc();
+              symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des_cbc(), $KEY, $IV)
+          - pattern: openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des3_cbc(), $KEY, $IV)
+          - pattern: |
+              async fn $FUNC() {
+                  openssl::symm::encrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV, $DATA)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"

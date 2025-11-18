@@ -1,0 +1,70 @@
+rules:
+  - id: rust-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::hmac::sign($KEY, $MESSAGE)
+          - pattern: ring::hmac::verify($KEY, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - pattern: ring::hmac::Key::new($ALGO, $KEY)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (HMAC_SHA256|HMAC_SHA384|HMAC_SHA512|HMAC_SHA1_FOR_LEGACY_USE_ONLY)
+          - pattern: ring::hmac::HMAC_SHA256
+          - pattern: ring::hmac::HMAC_SHA384
+          - pattern: ring::hmac::HMAC_SHA512
+          - pattern: ring::hmac::HMAC_SHA1_FOR_LEGACY_USE_ONLY
+          - pattern: |
+              let $HMAC_KEY = ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, $KEY);
+              let $SIGNATURE = ring::hmac::sign(&$HMAC_KEY, $MESSAGE);
+          - pattern: |
+              let $HMAC_KEY = ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, $KEY);
+              ring::hmac::verify(&$HMAC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: |
+              use ring::hmac;
+              let $KEY = hmac::Key::new(hmac::HMAC_SHA256, $KEY_BYTES);
+          - pattern: hmac::Hmac::<sha2::Sha256>::new_from_slice($KEY)
+          - pattern: hmac::Hmac::<sha2::Sha512>::new_from_slice($KEY)
+          - pattern: |
+              use hmac::{Hmac, Mac, KeyInit};
+              let mut $MAC = Hmac::<sha2::Sha256>::new_from_slice($KEY);
+              $MAC.update($MESSAGE);
+              $MAC.finalize()
+          - pattern: |
+              use hmac::{Hmac, Mac, KeyInit};
+              let mut $MAC = Hmac::<sha2::Sha256>::new(KeyInit::init($KEY));
+              $MAC.update($MESSAGE);
+              $MAC.finalize()
+          - pattern: crypto::hmac::Hmac::new($KEY)
+          - pattern: openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(), $KEY)
+          - pattern: |
+              let mut $SIGNER = openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(), $KEY);
+              $SIGNER.update($MESSAGE);
+              $SIGNER.sign_to_vec()
+          - pattern: |
+              async fn $FUNC() {
+                  let $HMAC_KEY = ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, $KEY);
+                  ring::hmac::sign(&$HMAC_KEY, $MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

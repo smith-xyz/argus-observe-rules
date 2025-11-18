@@ -1,0 +1,57 @@
+rules:
+  - id: rust-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - patterns:
+              - pattern: ring::signature::sign(&ring::signature::$ALGO, $PRIVATE_KEY, $MESSAGE)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (ECDSA_P256_SHA256|ECDSA_P384_SHA384|ED25519|RSA_PKCS1_2048_8192_SHA256|RSA_PKCS1_2048_8192_SHA512|RSA_PKCS1_3072_8192_SHA384|RSA_PSS_2048_8192_SHA256|RSA_PSS_2048_8192_SHA384|RSA_PSS_2048_8192_SHA512)
+          - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - pattern: ring::signature::verify(&ring::signature::$ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (ECDSA_P256_SHA256|ECDSA_P384_SHA384|ED25519|RSA_PKCS1_2048_8192_SHA256|RSA_PKCS1_2048_8192_SHA512|RSA_PKCS1_3072_8192_SHA384|RSA_PSS_2048_8192_SHA256|RSA_PSS_2048_8192_SHA384|RSA_PSS_2048_8192_SHA512)
+          - pattern: openssl::sign::Signer::new($MD, $KEY)
+          - pattern: openssl::sign::Verifier::new($MD, $KEY)
+          - pattern: |
+              let mut $SIGNER = openssl::sign::Signer::new($MD, $KEY);
+              $SIGNER.update($MESSAGE);
+              $SIGNER.sign_to_vec()
+          - pattern: |
+              let mut $VERIFIER = openssl::sign::Verifier::new($MD, $KEY);
+              $VERIFIER.update($MESSAGE);
+              $VERIFIER.verify($SIGNATURE)
+          - pattern: ed25519_dalek::SigningKey::sign($MESSAGE)
+          - pattern: ed25519_dalek::VerifyingKey::verify($MESSAGE, $SIGNATURE)
+          - pattern: rsa::RsaPrivateKey::sign($SCHEME, $HASH)
+          - pattern: rsa::RsaPublicKey::verify($SCHEME, $HASH, $SIGNATURE)
+          - pattern: |
+              async fn $FUNC() {
+                  ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"

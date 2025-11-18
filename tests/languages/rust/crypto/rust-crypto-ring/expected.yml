@@ -1,0 +1,52 @@
+findings:
+  - file: test_code.rs
+    line: 11
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 26
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 31
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 36
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 41
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 55
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 58
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 68
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 78
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+  - file: test_code.rs
+    line: 82
+    rule_id: rust-crypto-ring
+    message: "ring cryptographic library usage detected"
+
+no_findings:
+  - negative_cases.rs

@@ -1,0 +1,64 @@
+findings:
+  - file: test_code.rs
+    line: 9
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 15
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 18
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 21
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 24
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 27
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 30
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 33
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 36
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 43
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 50
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+  - file: test_code.rs
+    line: 54
+    rule_id: rust-crypto-cipher-des
+    message: "DES cipher usage detected"
+
+no_findings:
+  - negative_cases.rs

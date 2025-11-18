@@ -1,0 +1,65 @@
+rules:
+  - id: rust-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::digest::digest(&ring::digest::SHA512, $DATA)
+          - pattern: ring::digest::SHA512
+          - pattern: sha2::Sha512::new()
+          - pattern: sha2::Sha512::default()
+          - pattern: sha2::Sha512::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha2::Sha512::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              let mut $HASHER = sha2::Sha512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize_into($OUTPUT);
+          - pattern: |
+              use sha2::{Sha512, Digest};
+              let mut $HASHER = Sha512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: crypto::sha2::Sha512::new()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha512(), $DATA)
+          - pattern: |
+              let $MD = openssl::hash::MessageDigest::sha512();
+              openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha512())
+          - pattern: |
+              let mut $HASHER = openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha512());
+              $HASHER.update($DATA);
+              $HASHER.finish()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha2::Sha512::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha2::Sha512::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"

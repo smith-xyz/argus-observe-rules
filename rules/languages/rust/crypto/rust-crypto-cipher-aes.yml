@@ -1,0 +1,127 @@
+rules:
+  - id: rust-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: ring::aead::$ALGO
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (AES_128_GCM|AES_256_GCM|AES_128_GCM_SIV|AES_256_GCM_SIV)
+          - pattern: ring::aead::AES_256_GCM
+          - pattern: ring::aead::AES_128_GCM
+          - pattern: ring::aead::AES_128_GCM_SIV
+          - pattern: ring::aead::AES_256_GCM_SIV
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, $KEY)
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_128_GCM, $KEY)
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_128_GCM_SIV, $KEY)
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_256_GCM_SIV, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM_SIV, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM_SIV, $KEY)
+          - pattern: ring::aead::LessSafeKey::new($ALGO, $KEY)
+          - pattern: ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: $KEY.seal_in_place($NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern: $KEY.open_in_place($NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern: ring::aead::UnboundKey::new($ALGO, $KEY)
+          - pattern: ring::aead::UnboundKey::new_less_safe_key($ALGO, $KEY)
+          - pattern: ring::aead::SealingKey::new_from_unbound_key($UNBOUND_KEY)
+          - pattern: ring::aead::OpeningKey::new_from_unbound_key($UNBOUND_KEY)
+          - pattern: |
+              let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, $KEY);
+              let $CIPHERTEXT = ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT);
+          - pattern: |
+              let $OPENING_KEY = ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM, $KEY);
+              let $PLAINTEXT = ring::aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT);
+          - pattern: |
+              let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::AES_128_GCM, $KEY);
+              let $CIPHERTEXT = ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT);
+          - pattern: |
+              let $OPENING_KEY = ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM, $KEY);
+              let $PLAINTEXT = ring::aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT);
+          - pattern: openssl::symm::Cipher::aes_128_ecb()
+          - pattern: openssl::symm::Cipher::aes_256_ecb()
+          - pattern: openssl::symm::Cipher::aes_128_cbc()
+          - pattern: openssl::symm::Cipher::aes_256_cbc()
+          - pattern: openssl::symm::Cipher::aes_128_gcm()
+          - pattern: openssl::symm::Cipher::aes_192_cbc()
+          - pattern: openssl::symm::Cipher::aes_256_gcm()
+          - pattern: openssl::symm::Cipher::aes_256_ctr()
+          - pattern: openssl::symm::Cipher::aes_256_cfb128()
+          - pattern: openssl::symm::Cipher::aes_256_ofb()
+          - pattern: openssl::symm::Cipher::aes_128_ctr()
+          - pattern: openssl::symm::Cipher::aes_256_ctr()
+          - pattern: openssl::symm::Crypter::new($MODE, $CIPHER, $KEY, $IV)
+          - pattern: openssl::symm::Crypter::encrypt($CRYPTER, $DATA)
+          - pattern: openssl::symm::Crypter::decrypt($CRYPTER, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY, $IV, $DATA)
+          - pattern: aes::Aes128::new($KEY)
+          - pattern: aes::Aes192::new($KEY)
+          - pattern: aes::Aes256::new($KEY)
+          - pattern: aes_gcm::Aes128Gcm::new_from_slice($KEY)
+          - pattern: aes_gcm::Aes256Gcm::new_from_slice($KEY)
+          - pattern: |
+              use aes_gcm::{Aes256Gcm, KeyInit, Aead};
+              let $CIPHER = Aes256Gcm::new_from_slice($KEY);
+              $CIPHER.encrypt($NONCE, $PLAINTEXT)
+          - pattern: |
+              use aes_gcm::{Aes256Gcm, KeyInit, Aead};
+              let $CIPHER = Aes256Gcm::new_from_slice($KEY);
+              $CIPHER.decrypt($NONCE, $CIPHERTEXT)
+          - pattern: |
+              use aes_gcm::{Aes128Gcm, KeyInit, Aead};
+              let $CIPHER = Aes128Gcm::new_from_slice($KEY);
+              $CIPHER.encrypt($NONCE, $PLAINTEXT)
+          - pattern: |
+              use aes_gcm::{Aes128Gcm, KeyInit, Aead};
+              let $CIPHER = Aes128Gcm::new_from_slice($KEY);
+              $CIPHER.decrypt($NONCE, $CIPHERTEXT)
+          - pattern: |
+              use ring::aead;
+              let $SEALING_KEY = aead::SealingKey::new(&aead::AES_256_GCM, $KEY);
+              aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              use ring::aead;
+              let $OPENING_KEY = aead::OpeningKey::new(&aead::AES_256_GCM, $KEY);
+              aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern: aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern: aead::seal_in_place(&$SEALING_KEY, $NONCE, aead::Aad::empty(), &mut $OUT)
+          - pattern: aead::open_in_place(&$OPENING_KEY, $NONCE, aead::Aad::empty(), &mut $OUT)
+          - pattern: openssl::symm::encrypt($CIPHER, $KEY, Some($IV), $DATA)
+          - pattern: openssl::symm::decrypt($CIPHER, $KEY, Some($IV), $DATA)
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::aes_256_gcm();
+              openssl::symm::encrypt($CIPHER, $KEY, Some($IV), $DATA)
+          - pattern: |
+              async fn $FUNC() {
+                  let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, $KEY);
+                  ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"

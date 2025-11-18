@@ -1,0 +1,55 @@
+rules:
+  - id: rust-crypto-ed25519
+    message: Ed25519 signature operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::ED25519
+          - pattern: ring::signature::sign(&ring::signature::ED25519, $PRIVATE_KEY, $MESSAGE)
+          - pattern: ring::signature::verify(&ring::signature::ED25519, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: |
+              let $SIGNATURE = ring::signature::sign(&ring::signature::ED25519, $PRIVATE_KEY, $MESSAGE);
+              ring::signature::verify(&ring::signature::ED25519, $PUBLIC_KEY, $MESSAGE, &$SIGNATURE)
+          - pattern: ed25519_dalek::SigningKey::from_bytes($BYTES)
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES)
+          - pattern: ed25519_dalek::SigningKey::from_bytes($BYTES)?
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES)?
+          - pattern: ed25519_dalek::SigningKey::from_bytes($BYTES).unwrap()
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES).unwrap()
+          - pattern: ed25519_dalek::SigningKey::generate($RNG)
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES).unwrap()
+          - pattern: ed25519_dalek::SigningKey::sign($MESSAGE)
+          - pattern: ed25519_dalek::VerifyingKey::verify($MESSAGE, $SIGNATURE)
+          - pattern: |
+              use ed25519_dalek::{SigningKey, Signer};
+              let $SIGNING_KEY = SigningKey::from_bytes($BYTES);
+              $SIGNING_KEY.sign($MESSAGE)
+          - pattern: |
+              use ed25519_dalek::{VerifyingKey, Verifier};
+              let $VERIFYING_KEY = VerifyingKey::from_bytes($BYTES)?;
+              $VERIFYING_KEY.verify($MESSAGE, $SIGNATURE)
+          - pattern: |
+              async fn $FUNC() {
+                  let $SIGNING_KEY = ed25519_dalek::SigningKey::from_bytes($BYTES);
+                  $SIGNING_KEY.sign($MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Ed25519 signature operations detected in codebase"

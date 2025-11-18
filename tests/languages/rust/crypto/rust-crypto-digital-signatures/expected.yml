@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.rs
+    line: 15
+    rule_id: rust-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.rs
+    line: 31
+    rule_id: rust-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.rs
+    line: 34
+    rule_id: rust-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.rs
+    line: 39
+    rule_id: rust-crypto-digital-signatures
+    message: "Digital signature operations detected"
+
+no_findings:
+  - negative_cases.rs

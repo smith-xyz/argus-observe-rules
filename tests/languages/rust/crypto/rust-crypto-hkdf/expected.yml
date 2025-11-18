@@ -1,0 +1,48 @@
+findings:
+  - file: test_code.rs
+    line: 42
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 45
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 46
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 49
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 50
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 53
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 57
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 60
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 63
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 66
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+  - file: test_code.rs
+    line: 69
+    rule_id: rust-crypto-hkdf
+    message: "HKDF key derivation function usage detected"
+
+no_findings:
+  - negative_cases.rs

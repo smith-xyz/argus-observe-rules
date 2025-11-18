@@ -1,0 +1,19 @@
+findings:
+  - file: test_code.rs
+    line: 7
+    rule_id: rust-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.rs
+    line: 21
+    rule_id: rust-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-key-length
+    message: Cryptographic key length usage detected
+no_findings:
+  - negative_cases.rs

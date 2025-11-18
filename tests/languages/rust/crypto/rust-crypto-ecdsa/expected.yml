@@ -1,0 +1,88 @@
+findings:
+  - file: test_code.rs
+    line: 13
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 19
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 25
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 32
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 35
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 36
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 39
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 45
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 48
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 51
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 54
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 57
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 61
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 65
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 68
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 69
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 72
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.rs
+    line: 75
+    rule_id: rust-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.rs

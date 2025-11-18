@@ -1,0 +1,57 @@
+rules:
+  - id: rust-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: openssl::rsa::Rsa::generate($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+          - pattern: openssl::rsa::Rsa::generate_with_e($BITS, $E)
+          - pattern: openssl::rsa::Rsa::public_key_from_der($DATA)
+          - pattern: openssl::rsa::Rsa::public_key_from_pem($DATA)
+          - pattern: openssl::rsa::Rsa::private_key_from_der($DATA)
+          - pattern: openssl::rsa::Rsa::private_key_from_pem($DATA)
+          - pattern: openssl::rsa::Rsa::private_key_from_pem_passphrase($DATA, $PASS)
+          - pattern: openssl::rsa::Rsa::public_encrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::private_decrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::private_encrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::public_decrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Padding::PKCS1
+          - pattern: openssl::rsa::Padding::PKCS1_OAEP
+          - pattern: openssl::rsa::Padding::PKCS1_PSS
+          - pattern: |
+              let $RSA = openssl::rsa::Rsa::generate($BITS);
+              $RSA.public_key_to_der()
+          - pattern: |
+              let $RSA = openssl::rsa::Rsa::generate($BITS);
+              $RSA.public_key_to_pem()
+          - patterns:
+              - pattern: rsa::RsaPrivateKey::new($RNG, $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+          - pattern: rsa::RsaPublicKey::from($PRIVATE_KEY)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

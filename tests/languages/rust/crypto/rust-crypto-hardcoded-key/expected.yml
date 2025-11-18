@@ -1,0 +1,35 @@
+findings:
+  - file: test_code.rs
+    line: 10
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 26
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 30
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 35
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 38
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.rs
+    line: 41
+    rule_id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+no_findings:
+  - negative_cases.rs

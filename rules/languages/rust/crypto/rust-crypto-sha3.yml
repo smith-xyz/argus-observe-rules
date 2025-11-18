@@ -1,0 +1,65 @@
+rules:
+  - id: rust-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sha3::Sha3_224::new()
+          - pattern: sha3::Sha3_256::new()
+          - pattern: sha3::Sha3_384::new()
+          - pattern: sha3::Sha3_512::new()
+          - pattern: sha3::Sha3_224::default()
+          - pattern: sha3::Sha3_256::default()
+          - pattern: sha3::Sha3_384::default()
+          - pattern: sha3::Sha3_512::default()
+          - pattern: |
+              let mut $HASHER = sha3::Sha3_256::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use sha3::{Sha3_256, Digest};
+              let mut $HASHER = Sha3_256::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              let mut $HASHER = sha3::Sha3_512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: crypto::sha3::Sha3_256::new()
+          - pattern: crypto::sha3::Sha3_512::new()
+          - pattern: |
+              use crypto::digest::Digest;
+              let mut $HASHER = crypto::sha3::Sha3_256::new();
+              $HASHER.input($DATA);
+              $HASHER.result_str()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha3::Sha3_256::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha3::Sha3_256::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"

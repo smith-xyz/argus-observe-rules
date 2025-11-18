@@ -1,0 +1,52 @@
+findings:
+  - file: test_code.rs
+    line: 11
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 20
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 23
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 26
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 29
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 32
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 35
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 38
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 41
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+  - file: test_code.rs
+    line: 44
+    rule_id: rust-crypto-cipher-modes
+    message: "Cipher mode usage detected"
+
+no_findings:
+  - negative_cases.rs

@@ -1,0 +1,62 @@
+rules:
+  - id: rust-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: blake2::Blake2b::new($KEY)
+          - pattern: blake2::Blake2s::new($KEY)
+          - pattern: blake2::Blake2b::new_with_params($KEY, $SALT, $PERSONAL)
+          - pattern: blake2::Blake2s::new_with_params($KEY, $SALT, $PERSONAL)
+          - pattern: |
+              let mut $HASHER = blake2::Blake2b::new($KEY);
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use blake2::{Blake2b, Digest};
+              let mut $HASHER = Blake2b::new($KEY);
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: blake2::Blake2b512::new()
+          - pattern: blake2::Blake2b256::new()
+          - pattern: blake2::Blake2s256::new()
+          - pattern: blake2::Blake2s128::new()
+          - pattern: |
+              let mut $HASHER = blake2::Blake2b512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              let mut $HASHER = blake2::Blake2s256::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize_into($OUTPUT)
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(blake2::Blake2b::new($KEY));
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = blake2::Blake2b::new($KEY);
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"

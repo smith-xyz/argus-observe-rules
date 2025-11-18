@@ -1,0 +1,143 @@
+findings:
+  - file: test_code.rs
+    line: 5
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 11
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 15
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 19
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 25
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 29
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 36
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 40
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 41
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 42
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 43
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 47
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 51
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 54
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 57
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 62
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 61
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 65
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 68
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 71
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 76
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 77
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 78
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 81
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 84
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 90
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 91
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 47
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 85
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 86
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 92
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+  - file: test_code.rs
+    line: 95
+    rule_id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+no_findings:
+  - negative_cases.rs

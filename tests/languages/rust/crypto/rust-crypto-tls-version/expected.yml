@@ -1,0 +1,116 @@
+findings:
+  - file: test_code.rs
+    line: 7
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 10
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 13
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 21
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 34
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 52
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 53
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 58
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 59
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 64
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 65
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 70
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 71
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 76
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 79
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 82
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 85
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 88
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 89
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 96
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 99
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 102
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 105
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 108
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 111
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.rs
+    line: 114
+    rule_id: rust-crypto-tls-version
+    message: "TLS version configuration detected"
+
+no_findings:
+  - negative_cases.rs
