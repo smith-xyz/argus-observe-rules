@@ -35,17 +35,18 @@ rules:
               - metavariable-regex:
                   metavariable: $BITS
                   regex: (128|192|256)
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: AES_set_decrypt_key($KEY, $BITS, $SCHEDULE)
               - metavariable-regex:
                   metavariable: $BITS
                   regex: (128|192|256)
+              - focus-metavariable: $BITS
           - pattern: AES_encrypt($INPUT, $OUTPUT, $SCHEDULE)
           - pattern: AES_decrypt($INPUT, $OUTPUT, $SCHEDULE)
           - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-327
@@ -118,6 +119,7 @@ rules:
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
+              - focus-metavariable: $ITER
           - patterns:
               - pattern:
                   PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
@@ -125,6 +127,7 @@ rules:
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
+              - focus-metavariable: $ITER
           - patterns:
               - pattern:
                   EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY,
@@ -132,6 +135,7 @@ rules:
               - metavariable-regex:
                   metavariable: $COUNT
                   regex: \d+
+              - focus-metavariable: $COUNT
           - patterns:
               - pattern:
                   EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
@@ -139,9 +143,9 @@ rules:
               - metavariable-regex:
                   metavariable: $N
                   regex: \d+
+              - focus-metavariable: $N
           - pattern: EVP_PKEY_derive_init($CTX)
           - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
-    focus-metavariable: $ITER
     metadata:
       category: crypto
       cwe: CWE-327
@@ -735,17 +739,19 @@ rules:
       - c
     patterns:
       - pattern-either:
-          - pattern: RSA_new()
           - patterns:
               - pattern: RSA_generate_key_ex($RSA, $BITS, $E, $BN)
               - metavariable-regex:
                   metavariable: $BITS
                   regex: \d+
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: RSA_generate_key($BITS, $E, $CALLBACK, $CALLBACKARG)
               - metavariable-regex:
                   metavariable: $BITS
                   regex: \d+
+              - focus-metavariable: $BITS
+          - pattern: RSA_new()
           - pattern: RSA_public_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
           - pattern: RSA_private_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
           - pattern: RSA_private_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
@@ -763,7 +769,6 @@ rules:
           - pattern: RSA_get0_key($RSA, $N, $E, $D)
           - pattern: RSA_set0_key($RSA, $N, $E, $D)
           - pattern: RSA_check_key($RSA)
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-327
@@ -866,6 +871,30 @@ rules:
       - c
     patterns:
       - pattern-either:
+          - patterns:
+              - pattern: SSL_CTX_set_min_proto_version($CTX, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - patterns:
+              - pattern: SSL_CTX_set_max_proto_version($CTX, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - patterns:
+              - pattern: SSL_set_min_proto_version($SSL, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - patterns:
+              - pattern: SSL_set_max_proto_version($SSL, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
           - pattern: SSL_CTX_new(SSLv2_method())
           - pattern: SSL_CTX_new(SSLv3_method())
           - pattern: SSL_CTX_new(TLSv1_method())
@@ -875,33 +904,12 @@ rules:
           - pattern: SSL_CTX_new(SSLv23_method())
           - pattern: SSL_CTX_new(DTLSv1_method())
           - pattern: SSL_CTX_new(DTLSv1_2_method())
-          - patterns:
-              - pattern: SSL_CTX_set_min_proto_version($CTX, $VERSION)
-              - metavariable-regex:
-                  metavariable: $VERSION
-                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-          - patterns:
-              - pattern: SSL_CTX_set_max_proto_version($CTX, $VERSION)
-              - metavariable-regex:
-                  metavariable: $VERSION
-                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-          - patterns:
-              - pattern: SSL_set_min_proto_version($SSL, $VERSION)
-              - metavariable-regex:
-                  metavariable: $VERSION
-                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-          - patterns:
-              - pattern: SSL_set_max_proto_version($SSL, $VERSION)
-              - metavariable-regex:
-                  metavariable: $VERSION
-                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
           - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_SSLv2)
           - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_SSLv3)
           - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1)
           - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_1)
           - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_2)
           - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_3)
-    focus-metavariable: $VERSION
     metadata:
       category: crypto
       cwe: CWE-327
