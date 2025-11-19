@@ -6,22 +6,25 @@ rules:
       - c
     patterns:
       - pattern-either:
+          # Patterns with $BITS - extract the bit size
           - patterns:
               - pattern: AES_set_encrypt_key($KEY, $BITS, $SCHEDULE)
               - metavariable-regex:
                   metavariable: $BITS
                   regex: "(128|192|256)"
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: AES_set_decrypt_key($KEY, $BITS, $SCHEDULE)
               - metavariable-regex:
                   metavariable: $BITS
                   regex: "(128|192|256)"
+              - focus-metavariable: $BITS
+          # Fallback patterns without $BITS - still match but can't extract bit size
           - pattern: AES_encrypt($INPUT, $OUTPUT, $SCHEDULE)
           - pattern: AES_decrypt($INPUT, $OUTPUT, $SCHEDULE)
           - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-327
