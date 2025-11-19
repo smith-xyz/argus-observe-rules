@@ -1,0 +1,83 @@
+rules:
+  - id: javascript-crypto-ed25519
+    message: Ed25519 signature operations detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createSign("ed25519")
+          - pattern: crypto.createVerify("ed25519")
+          - pattern: |
+              $SIGN = crypto.createSign("ed25519");
+              $SIGN.update($DATA);
+              $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+          - pattern: |
+              $VERIFY = crypto.createVerify("ed25519");
+              $VERIFY.update($DATA);
+              $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+          - pattern: |
+              crypto.subtle.generateKey({ name: "Ed25519" }, $EXTRACTABLE, $USAGE)
+          - pattern: |
+              crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA)
+          - pattern: |
+              crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+          - pattern: require("@noble/ed25519").sign($MESSAGE, $PRIVATE_KEY)
+          - pattern: require("@noble/ed25519").verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+          - pattern: require("@noble/ed25519").getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").ed25519.sign($MESSAGE, $PRIVATE_KEY)
+          - pattern: require("@noble/curves").ed25519.verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").ed25519.getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").ed448.sign($MESSAGE, $PRIVATE_KEY)
+          - pattern: require("@noble/curves").ed448.verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").ed448.getPublicKey($PRIVATE_KEY)
+          - pattern: |
+              const { ed25519 } = require("@noble/curves");
+              ed25519.sign($MESSAGE, $PRIVATE_KEY)
+          - pattern: |
+              const { ed25519 } = require("@noble/curves");
+              ed25519.verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+          - pattern: require("tweetnacl").sign.detached($MESSAGE, $SECRET_KEY)
+          - pattern: require("tweetnacl").sign($MESSAGE, $SECRET_KEY)
+          - pattern: require("tweetnacl").sign.open($SIGNED_MESSAGE, $PUBLIC_KEY)
+          - pattern: require("tweetnacl").sign.detached.verify($MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: require("libsodium-wrappers").crypto_sign($MESSAGE, $SECRET_KEY)
+          - pattern: require("libsodium-wrappers").crypto_sign_open($SIGNED_MESSAGE, $PUBLIC_KEY)
+          - pattern: require("libsodium-wrappers").crypto_sign_detached($MESSAGE, $SECRET_KEY)
+          - pattern: require("libsodium-wrappers").crypto_sign_verify_detached($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+          - pattern: require("sjcl").ecc.ecdsa.generateKeys($CURVE, $PARANOIA)
+          - pattern: require("sjcl").ecc.ecdsa.secretKey($KEY)
+          - pattern: require("sjcl").ecc.ecdsa.publicKey($KEY)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Ed25519 signature operations detected in codebase"

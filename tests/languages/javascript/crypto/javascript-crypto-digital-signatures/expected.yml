@@ -1,0 +1,60 @@
+findings:
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 12
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 20
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 24
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 28
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 32
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 36
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 50
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 56
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 62
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 68
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 75
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.js
+    line: 82
+    rule_id: javascript-crypto-digital-signatures
+    message: "Digital signature operations detected"
+
+no_findings:
+  - negative_cases.js

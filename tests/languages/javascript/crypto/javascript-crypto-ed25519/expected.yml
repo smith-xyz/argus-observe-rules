@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.js
+    line: 12
+    rule_id: javascript-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.js
+    line: 20
+    rule_id: javascript-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.js
+    line: 22
+    rule_id: javascript-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+  - file: test_code.js
+    line: 24
+    rule_id: javascript-crypto-ed25519
+    message: "Ed25519 signature operations detected"
+
+no_findings:
+  - negative_cases.js

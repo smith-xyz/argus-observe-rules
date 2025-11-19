@@ -1,0 +1,151 @@
+rules:
+  - id: javascript-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $OPTIONS = {
+                secureProtocol: "TLSv1_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                secureProtocol: "TLSv1_1_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                secureProtocol: "TLSv1_2_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                minVersion: "TLSv1.2",
+                maxVersion: "TLSv1.3",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                minVersion: "TLSv1",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                minVersion: "TLSv1.1",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                minVersion: "TLSv1.2",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                minVersion: "TLSv1.3",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                maxVersion: "TLSv1",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                maxVersion: "TLSv1.1",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                maxVersion: "TLSv1.2",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                maxVersion: "TLSv1.3",
+                ...
+              };
+          - pattern: https.createServer($OPTIONS, $HANDLER)
+          - pattern: tls.createServer($OPTIONS)
+          - pattern: tls.connect($PORT, $HOST, $OPTIONS)
+          - pattern: tls.connect($OPTIONS)
+          - pattern: |
+              https.createServer({
+                secureProtocol: $PROTOCOL,
+                ...
+              }, $HANDLER)
+          - pattern: |
+              https.createServer({
+                minVersion: $VERSION,
+                ...
+              }, $HANDLER)
+          - pattern: |
+              https.createServer({
+                maxVersion: $VERSION,
+                ...
+              }, $HANDLER)
+          - pattern: |
+              tls.createServer({
+                secureProtocol: $PROTOCOL,
+                ...
+              })
+          - pattern: |
+              tls.createServer({
+                minVersion: $VERSION,
+                ...
+              })
+          - pattern: |
+              tls.createServer({
+                maxVersion: $VERSION,
+                ...
+              })
+          - pattern: |
+              tls.connect($PORT, $HOST, {
+                secureProtocol: $PROTOCOL,
+                ...
+              })
+          - pattern: |
+              tls.connect($PORT, $HOST, {
+                minVersion: $VERSION,
+                ...
+              })
+          - pattern: |
+              tls.connect($PORT, $HOST, {
+                maxVersion: $VERSION,
+                ...
+              })
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

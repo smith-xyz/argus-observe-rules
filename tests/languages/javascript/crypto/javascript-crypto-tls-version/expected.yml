@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.js
+    line: 10
+    rule_id: javascript-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.js
+    line: 22
+    rule_id: javascript-crypto-tls-version
+    message: "TLS version configuration detected"
+
+no_findings:
+  - negative_cases.js

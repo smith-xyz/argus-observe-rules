@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.js
+    line: 7
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.js
+    line: 11
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.js
+    line: 15
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.js
+    line: 19
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.js
+    line: 20
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.js
+    line: 24
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.js
+    line: 28
+    rule_id: javascript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+
+no_findings:
+  - negative_cases.js

@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.js
+    line: 7
+    rule_id: javascript-crypto-sha1
+    message: "SHA1 hash function usage detected"
+  - file: test_code.js
+    line: 11
+    rule_id: javascript-crypto-sha1
+    message: "SHA1 hash function usage detected"
+  - file: test_code.js
+    line: 17
+    rule_id: javascript-crypto-sha1
+    message: "SHA1 hash function usage detected"
+  - file: test_code.js
+    line: 18
+    rule_id: javascript-crypto-sha1
+    message: "SHA1 hash function usage detected"
+
+no_findings:
+  - negative_cases.js

@@ -1,0 +1,89 @@
+rules:
+  - id: javascript-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createDiffieHellman($PRIME, $ENCODING)
+          - pattern: crypto.createDiffieHellman($PRIME_LENGTH)
+          - pattern: crypto.createDiffieHellmanGroup("modp14")
+          - pattern: crypto.createDiffieHellmanGroup("modp15")
+          - pattern: crypto.createDiffieHellmanGroup("modp16")
+          - pattern: |
+              $DH = crypto.createDiffieHellman($PRIME_LENGTH);
+              $DH.generateKeys();
+              $SHARED = $DH.computeSecret($PUBLIC_KEY);
+          - pattern: |
+              $DH = crypto.createDiffieHellmanGroup("modp14");
+              $DH.generateKeys();
+              $SHARED = $DH.computeSecret($PUBLIC_KEY);
+          - pattern: crypto.createECDH("prime256v1")
+          - pattern: crypto.createECDH("secp256k1")
+          - pattern: |
+              $ECDH = crypto.createECDH("prime256v1");
+              $ECDH.generateKeys();
+              $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+          - pattern: |
+              crypto.subtle.generateKey({ name: "X25519" }, $EXTRACTABLE, $USAGE)
+          - pattern: |
+              crypto.subtle.deriveKey({ name: "X25519" }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+          - pattern: require("@noble/curves").x25519.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").x25519.getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").x448.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").x448.getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").secp256k1.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").secp256k1.getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").p256.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").p256.getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").p384.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").p384.getPublicKey($PRIVATE_KEY)
+          - pattern: require("@noble/curves").p521.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("@noble/curves").p521.getPublicKey($PRIVATE_KEY)
+          - pattern: |
+              const { x25519 } = require("@noble/curves");
+              x25519.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: |
+              const { secp256k1 } = require("@noble/curves");
+              secp256k1.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: require("tweetnacl").box.keyPair()
+          - pattern: require("tweetnacl").box($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: require("tweetnacl").box.open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: require("libsodium-wrappers").crypto_box_keypair()
+          - pattern: require("libsodium-wrappers").crypto_box($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: require("libsodium-wrappers").crypto_box_open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: require("sjcl").ecc.elGamal.generateKeys($CURVE, $PARANOIA)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

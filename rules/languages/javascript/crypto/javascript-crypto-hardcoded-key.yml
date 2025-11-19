@@ -1,0 +1,133 @@
+rules:
+  - id: javascript-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createCipheriv($ALGO, "$KEY", $IV)
+          - pattern: crypto.createDecipheriv($ALGO, "$KEY", $IV)
+          - pattern: crypto.createCipher($ALGO, "$KEY")
+          - pattern: crypto.createDecipher($ALGO, "$KEY")
+          - pattern: |
+              const $KEY = "$VALUE";
+              ...
+              crypto.createCipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              const $KEY = "$VALUE";
+              ...
+              crypto.createDecipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              let $KEY = "$VALUE";
+              ...
+              crypto.createCipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              let $KEY = "$VALUE";
+              ...
+              crypto.createDecipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              var $KEY = "$VALUE";
+              ...
+              crypto.createCipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              var $KEY = "$VALUE";
+              ...
+              crypto.createDecipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              const $KEY = Buffer.from("$VALUE");
+              ...
+              crypto.createCipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              const $KEY = Buffer.from("$VALUE", "hex");
+              ...
+              crypto.createCipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              const $KEY = Buffer.from("$VALUE", "base64");
+              ...
+              crypto.createCipheriv($ALGO, $KEY, $IV)
+          - pattern: |
+              const $CONFIG = {
+                key: "$VALUE",
+                ...
+              };
+              ...
+              crypto.createCipheriv($ALGO, $CONFIG.key, $IV)
+          - pattern: |
+              let $CONFIG = {
+                key: "$VALUE",
+                ...
+              };
+              ...
+              crypto.createCipheriv($ALGO, $CONFIG.key, $IV)
+          - pattern: |
+              var $CONFIG = {
+                key: "$VALUE",
+                ...
+              };
+              ...
+              crypto.createCipheriv($ALGO, $CONFIG.key, $IV)
+          - pattern: crypto.createCipheriv($ALGO, Buffer.from("$KEY"), $IV)
+          - pattern: crypto.createCipheriv($ALGO, Buffer.from("$KEY", "hex"), $IV)
+          - pattern: crypto.createCipheriv($ALGO, Buffer.from("$KEY", "base64"), $IV)
+          - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY"), $DATA)
+          - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY", "hex"), $DATA)
+          - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY", "base64"), $DATA)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    pattern-not:
+      - pattern: |
+          $KEY = process.env.$VAR
+          ...
+          crypto.createCipheriv($ALGO, $KEY, $IV)
+      - pattern: |
+          const $KEY = process.env.$VAR
+          ...
+          crypto.createCipheriv($ALGO, $KEY, $IV)
+      - pattern: |
+          $KEY = require($MODULE).$PROP
+          ...
+          crypto.createCipheriv($ALGO, $KEY, $IV)
+      - pattern: |
+          const $KEY = require($MODULE).$PROP
+          ...
+          crypto.createCipheriv($ALGO, $KEY, $IV)
+      - pattern: |
+          $KEY = $CONFIG.$PROP
+          ...
+          crypto.createCipheriv($ALGO, $KEY, $IV)
+      - pattern: |
+          const $KEY = $CONFIG.$PROP
+          ...
+          crypto.createCipheriv($ALGO, $KEY, $IV)
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"

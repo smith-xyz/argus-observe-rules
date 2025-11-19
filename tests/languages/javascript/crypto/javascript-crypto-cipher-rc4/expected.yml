@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 9
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 10
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 12
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 13
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 21
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+  - file: test_code.js
+    line: 22
+    rule_id: javascript-crypto-cipher-rc4
+    message: "RC4 stream cipher usage detected"
+
+no_findings:
+  - negative_cases.js

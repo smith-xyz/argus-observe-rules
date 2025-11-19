@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.js
+    line: 20
+    rule_id: javascript-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.js
+    line: 26
+    rule_id: javascript-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.js
+    line: 32
+    rule_id: javascript-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+  - file: test_code.js
+    line: 38
+    rule_id: javascript-crypto-hash-comparison
+    message: "Hash function used in comparison or verification detected"
+
+no_findings:
+  - negative_cases.js

@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.js
+    line: 12
+    rule_id: javascript-crypto-static-salt
+    message: "Static salt value usage detected"
+  - file: test_code.js
+    line: 13
+    rule_id: javascript-crypto-static-salt
+    message: "Static salt value usage detected"
+
+no_findings:
+  - negative_cases.js

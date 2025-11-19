@@ -1,0 +1,66 @@
+rules:
+  - id: javascript-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createHash("blake2b512")
+          - pattern: crypto.createHash("blake2s256")
+          - pattern: crypto.createHash('blake2b512')
+          - pattern: crypto.createHash('blake2s256')
+          - pattern: |
+              $HASHER = crypto.createHash("blake2b512");
+              $HASHER.update($DATA);
+              $HASH = $HASHER.digest();
+          - pattern: |
+              $HASHER = crypto.createHash("blake2s256");
+              $HASHER.update($DATA);
+              $HASH = $HASHER.digest();
+          - pattern: crypto.createHash("blake2b512").update($DATA).digest()
+          - pattern: crypto.createHash("blake2s256").update($DATA).digest()
+          - pattern: require("@noble/hashes").blake2b($DATA)
+          - pattern: require("@noble/hashes").blake2s($DATA)
+          - pattern: require("@noble/hashes").blake2b512($DATA)
+          - pattern: require("@noble/hashes").blake2s256($DATA)
+          - pattern: |
+              const { blake2b } = require("@noble/hashes");
+              blake2b($DATA)
+          - pattern: |
+              const { blake2s } = require("@noble/hashes");
+              blake2s($DATA)
+    focus-metavariable: $DATA
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"

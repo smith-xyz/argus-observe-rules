@@ -1,0 +1,52 @@
+findings:
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 12
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 13
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 15
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 17
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 24
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 25
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 27
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 28
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 30
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+  - file: test_code.js
+    line: 31
+    rule_id: javascript-crypto-hmac
+    message: "HMAC usage detected"
+
+no_findings:
+  - negative_cases.js

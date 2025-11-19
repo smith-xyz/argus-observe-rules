@@ -1,0 +1,108 @@
+rules:
+  - id: javascript-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "ECDSA", namedCurve: $CURVE }, $EXTRACTABLE, $USAGE)
+              - metavariable-regex:
+                  metavariable: $CURVE
+                  regex: '"(P-224|P-256|P-384|P-521|secp160k1|secp256k1|prime256v1)"'
+          - pattern: crypto.createECDH($CURVE)
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "AES-GCM", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "AES-GCM", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+              - metavariable-comparison:
+                  metavariable: $LENGTH
+                  comparison: $LENGTH < 128
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+              - metavariable-comparison:
+                  metavariable: $LENGTH
+                  comparison: $LENGTH < 128
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+              - metavariable-comparison:
+                  metavariable: $LENGTH
+                  comparison: $LENGTH < 128
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"

@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-scrypt
+    message: "Scrypt key derivation function usage detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-scrypt
+    message: "Scrypt key derivation function usage detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-scrypt
+    message: "Scrypt key derivation function usage detected"
+
+no_findings:
+  - negative_cases.js

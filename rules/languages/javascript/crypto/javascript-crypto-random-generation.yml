@@ -1,0 +1,50 @@
+rules:
+  - id: javascript-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.randomBytes($LENGTH)
+          - pattern: crypto.getRandomValues($ARRAY)
+          - pattern: |
+              $BYTES = crypto.randomBytes($LENGTH);
+              ...
+              $BYTES
+          - pattern: Math.random()
+          - pattern: Math.floor(Math.random() * $MAX)
+    focus-metavariable: $LENGTH
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"

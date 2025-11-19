@@ -1,0 +1,74 @@
+rules:
+  - id: javascript-crypto-cipher-modes
+    message: Cryptographic cipher mode usage detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-ecb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-cfb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-ofb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-ctr", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-gcm", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-cbc", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-ecb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-cfb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-ofb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-ctr", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-gcm", $KEY, $IV)
+          - pattern: |
+              crypto.subtle.encrypt({ name: "ChaCha20-Poly1305", iv: $IV }, $KEY, $DATA)
+          - pattern: |
+              crypto.subtle.decrypt({ name: "ChaCha20-Poly1305", iv: $IV }, $KEY, $DATA)
+          - pattern: require("@noble/ciphers").chacha20poly1305($KEY, $NONCE)
+          - pattern: require("tweetnacl").secretbox($MESSAGE, $NONCE, $KEY)
+          - pattern: require("tweetnacl").secretbox.open($CIPHERTEXT, $NONCE, $KEY)
+          - pattern: require("libsodium-wrappers").crypto_secretbox($MESSAGE, $NONCE, $KEY)
+          - pattern: require("libsodium-wrappers").crypto_secretbox_open($CIPHERTEXT, $NONCE, $KEY)
+          - pattern: require("sjcl").mode.ocb2.encrypt($CIPHER, $PLAINTEXT, $IV)
+          - pattern: require("sjcl").mode.ocb2.decrypt($CIPHER, $CIPHERTEXT, $IV)
+          - pattern: require("sjcl").mode.gcm.encrypt($CIPHER, $PLAINTEXT, $IV)
+          - pattern: require("sjcl").mode.gcm.decrypt($CIPHER, $CIPHERTEXT, $IV)
+          - pattern: |
+              $CIPHER = crypto.createCipheriv("aes-256-$MODE", $KEY, $IV);
+              $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
+              $CIPHERTEXT += $CIPHER.final();
+          - pattern: |
+              $DECIPHER = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
+              $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
+              $PLAINTEXT += $DECIPHER.final();
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cryptographic cipher mode usage detected in codebase"

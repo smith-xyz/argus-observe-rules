@@ -1,0 +1,92 @@
+rules:
+  - id: javascript-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - javascript
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createHmac("sha256", $KEY)
+          - pattern: crypto.createHmac("sha512", $KEY)
+          - pattern: crypto.createHmac("sha1", $KEY)
+          - pattern: crypto.createHmac("md5", $KEY)
+          - pattern: crypto.createHmac("sha384", $KEY)
+          - pattern: |
+              $HMAC = crypto.createHmac("sha256", $KEY);
+              $HMAC.update($DATA);
+              $RESULT = $HMAC.digest();
+          - pattern: crypto.createHmac("sha256", $KEY).update($DATA).digest()
+          - pattern: require("crypto-js").HmacSHA256($DATA, $KEY)
+          - pattern: require("crypto-js").HmacSHA512($DATA, $KEY)
+          - pattern: require("crypto-js").HmacSHA1($DATA, $KEY)
+          - pattern: CryptoJS.HmacSHA256($DATA, $KEY)
+          - pattern: CryptoJS.HmacSHA512($DATA, $KEY)
+          - pattern: CryptoJS.HmacSHA1($DATA, $KEY)
+          - pattern: |
+              $HMAC1 = crypto.createHmac("sha256", $KEY);
+              $HMAC1.update($DATA);
+              $HMAC2 = crypto.createHmac("sha256", $KEY);
+              $HMAC2.update($DATA);
+              crypto.timingSafeEqual($HMAC1.digest(), $HMAC2.digest())
+          - pattern: |
+              $HMAC1 = crypto.createHmac("sha256", $KEY);
+              $HMAC1.update($DATA);
+              $HMAC2 = crypto.createHmac("sha256", $KEY);
+              $HMAC2.update($DATA);
+              $HMAC1.digest() === $HMAC2.digest()
+          - pattern: |
+              $HMAC = crypto.createHmac("sha256", $KEY);
+              $HMAC.update($DATA);
+              $EXPECTED = Buffer.from($EXPECTED_STRING, "hex");
+              crypto.timingSafeEqual($HMAC.digest(), $EXPECTED)
+          - patterns:
+              - pattern: crypto.createHmac($ALGO, $KEY)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"(sha256|sha512|sha1|md5|sha384)"'
+          - patterns:
+              - pattern: |
+                  $HMAC = crypto.createHmac($ALGO, $KEY);
+                  $HMAC.update($DATA);
+                  $RESULT = $HMAC.digest();
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"(sha256|sha512|sha1|md5|sha384)"'
+          - pattern: |
+              crypto.subtle.sign({ name: "HMAC", hash: $HASH }, $KEY, $DATA)
+          - pattern: |
+              crypto.subtle.verify({ name: "HMAC", hash: $HASH }, $KEY, $SIG, $DATA)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

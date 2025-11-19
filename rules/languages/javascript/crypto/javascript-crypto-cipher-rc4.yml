@@ -1,0 +1,49 @@
+rules:
+  - id: javascript-crypto-cipher-rc4
+    message: RC4 stream cipher usage detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createCipher("rc4", $KEY)
+          - pattern: crypto.createCipher("rc4-40", $KEY)
+          - pattern: crypto.createCipher("rc4-hmac-md5", $KEY)
+          - pattern: crypto.createDecipher("rc4", $KEY)
+          - pattern: crypto.createDecipher("rc4-40", $KEY)
+          - pattern: crypto.createDecipher("rc4-hmac-md5", $KEY)
+          - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
+          - pattern: CryptoJS.RC4.encrypt($DATA, $KEY)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 stream cipher usage detected in codebase"

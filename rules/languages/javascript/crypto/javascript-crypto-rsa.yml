@@ -1,0 +1,64 @@
+rules:
+  - id: javascript-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.publicEncrypt($KEY, $DATA)
+          - pattern: crypto.privateDecrypt($KEY, $DATA)
+          - pattern: crypto.privateEncrypt($KEY, $DATA)
+          - pattern: crypto.publicDecrypt($KEY, $DATA)
+          - pattern: |
+              $CIPHERTEXT = crypto.publicEncrypt($PUBLIC_KEY, $PLAINTEXT);
+          - pattern: |
+              $PLAINTEXT = crypto.privateDecrypt($PRIVATE_KEY, $CIPHERTEXT);
+          - pattern: crypto.createSign("RSA-SHA256")
+          - pattern: crypto.createSign("RSA-SHA512")
+          - pattern: crypto.createVerify("RSA-SHA256")
+          - pattern: crypto.createVerify("RSA-SHA512")
+          - pattern: |
+              $SIGN = crypto.createSign("RSA-SHA256");
+              $SIGN.update($DATA);
+              $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+          - pattern: |
+              $VERIFY = crypto.createVerify("RSA-SHA256");
+              $VERIFY.update($DATA);
+              $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+          - pattern: require("node-forge").pki.rsa.generateKeyPair($BITS)
+          - pattern: require("node-forge").pki.rsa.encrypt($DATA, $PUBLIC_KEY)
+          - pattern: require("node-forge").pki.rsa.decrypt($DATA, $PRIVATE_KEY)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

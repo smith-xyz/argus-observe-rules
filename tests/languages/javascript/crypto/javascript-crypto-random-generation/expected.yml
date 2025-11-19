@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.js
+    line: 5
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.js
+    line: 7
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.js
+    line: 12
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.js
+    line: 13
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.js

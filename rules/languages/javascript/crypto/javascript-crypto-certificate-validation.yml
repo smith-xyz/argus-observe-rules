@@ -1,0 +1,79 @@
+rules:
+  - id: javascript-crypto-certificate-validation
+    message: Certificate validation configuration detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $OPTIONS = {
+                rejectUnauthorized: true,
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                rejectUnauthorized: false,
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                ca: $CA_CERT,
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                cert: $CERT,
+                key: $KEY,
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                checkServerIdentity: function($HOSTNAME, $CERT) {
+                  ...
+                },
+                ...
+              };
+          - pattern: |
+              $AGENT = new https.Agent({
+                rejectUnauthorized: $VALUE,
+                ...
+              });
+          - pattern: |
+              $AGENT = new https.Agent({
+                ca: $CA_CERT,
+                ...
+              });
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: Certificate validation configuration detected in codebase"

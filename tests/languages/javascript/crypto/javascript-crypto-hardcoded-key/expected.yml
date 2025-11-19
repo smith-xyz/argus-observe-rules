@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.js
+    line: 6
+    rule_id: javascript-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.js
+    line: 10
+    rule_id: javascript-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+
+no_findings:
+  - negative_cases.js

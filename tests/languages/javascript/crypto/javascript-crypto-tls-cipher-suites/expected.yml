@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.js
+    line: 5
+    rule_id: javascript-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.js
+    line: 11
+    rule_id: javascript-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.js
+    line: 17
+    rule_id: javascript-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.js
+    line: 24
+    rule_id: javascript-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+
+no_findings:
+  - negative_cases.js

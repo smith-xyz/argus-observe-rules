@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.js
+    line: 15
+    rule_id: javascript-crypto-static-iv-nonce
+    message: "Static IV or nonce value usage detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-static-iv-nonce
+    message: "Static IV or nonce value usage detected"
+
+no_findings:
+  - negative_cases.js

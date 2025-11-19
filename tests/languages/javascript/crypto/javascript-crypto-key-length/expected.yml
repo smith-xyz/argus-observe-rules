@@ -1,0 +1,76 @@
+findings:
+  - file: test_code.js
+    line: 2
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 14
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 20
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 26
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 32
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 38
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 44
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 50
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 56
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 57
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 59
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 65
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 71
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 77
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 83
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 89
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.js
+    line: 95
+    rule_id: javascript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+
+no_findings:
+  - negative_cases.js

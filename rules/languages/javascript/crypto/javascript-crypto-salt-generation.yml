@@ -1,0 +1,59 @@
+rules:
+  - id: javascript-crypto-salt-generation
+    message: Salt generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.randomBytes($LENGTH)
+          - pattern: crypto.getRandomValues($ARRAY)
+          - pattern: |
+              $SALT = crypto.randomBytes(16);
+              ...
+              crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+          - pattern: |
+              $SALT = crypto.randomBytes(32);
+              ...
+              crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS);
+          - pattern: |
+              $SALT = crypto.getRandomValues(new Uint8Array(16));
+              ...
+              crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+          - pattern: |
+              $SALT = crypto.randomBytes($SALT_LENGTH);
+              ...
+              require("bcrypt").hashSync($PASSWORD, $ROUNDS);
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: Salt generation for cryptographic use detected in codebase"

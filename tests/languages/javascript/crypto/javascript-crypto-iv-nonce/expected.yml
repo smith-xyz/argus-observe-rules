@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.js
+    line: 6
+    rule_id: javascript-crypto-iv-nonce
+    message: "IV or nonce generation for cryptographic use detected"
+  - file: test_code.js
+    line: 9
+    rule_id: javascript-crypto-iv-nonce
+    message: "IV or nonce generation for cryptographic use detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-iv-nonce
+    message: "IV or nonce generation for cryptographic use detected"
+  - file: test_code.js
+    line: 19
+    rule_id: javascript-crypto-iv-nonce
+    message: "IV or nonce generation for cryptographic use detected"
+  - file: test_code.js
+    line: 30
+    rule_id: javascript-crypto-iv-nonce
+    message: "IV or nonce generation for cryptographic use detected"
+  - file: test_code.js
+    line: 38
+    rule_id: javascript-crypto-iv-nonce
+    message: "IV or nonce generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.js

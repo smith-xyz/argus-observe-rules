@@ -1,0 +1,99 @@
+rules:
+  - id: javascript-crypto-static-iv-nonce
+    message: Static IV or nonce value usage detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              const IV = Buffer.from("$STATIC_VALUE");
+              ...
+              crypto.createCipheriv("aes-256-cbc", $KEY, IV);
+          - pattern: |
+              const IV = Buffer.from("$STATIC_VALUE");
+              ...
+              crypto.createCipheriv("aes-256-gcm", $KEY, IV);
+          - pattern: |
+              const NONCE = Buffer.from("$STATIC_VALUE");
+              ...
+              crypto.createCipheriv("aes-256-gcm", $KEY, NONCE);
+          - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, Buffer.from("$STATIC_IV"))
+          - pattern: crypto.createCipheriv("aes-256-gcm", $KEY, Buffer.from("$STATIC_NONCE"))
+          - pattern: |
+              const IV = new Uint8Array([$STATIC_VALUES]);
+              ...
+              crypto.subtle.encrypt({ name: "AES-CBC", iv: IV }, $KEY, $DATA);
+          - pattern: |
+              const NONCE = new Uint8Array([$STATIC_VALUES]);
+              ...
+              crypto.subtle.encrypt({ name: "AES-GCM", iv: NONCE }, $KEY, $DATA);
+          - pattern: |
+              const IV = Buffer.from("$STATIC_VALUE", "hex");
+              ...
+              crypto.createCipheriv("aes-256-cbc", $KEY, IV);
+          - pattern: |
+              const IV = Buffer.from("$STATIC_VALUE", "base64");
+              ...
+              crypto.createCipheriv("aes-256-cbc", $KEY, IV)
+          - pattern: |
+              const STATIC_IV = "$VALUE";
+              ...
+              crypto.createCipheriv("aes-256-cbc", $KEY, Buffer.from(STATIC_IV))
+          - pattern: |
+              const STATIC_NONCE = "$VALUE";
+              ...
+              crypto.createCipheriv("aes-256-gcm", $KEY, Buffer.from(STATIC_NONCE))
+          - pattern: |
+              const STATIC_IV = "$VALUE";
+              ...
+              crypto.subtle.encrypt({ name: "AES-CBC", iv: Buffer.from(STATIC_IV) }, $KEY, $DATA)
+          - patterns:
+              - pattern: |
+                  const IV = Buffer.from("$STATIC_VALUE");
+                  ...
+                  crypto.createCipheriv("aes-256-cbc", $KEY, IV);
+              - metavariable-regex:
+                  metavariable: $STATIC_VALUE
+                  regex: '^(?!.*randomBytes|.*getRandomValues|.*random).*$'
+          - patterns:
+              - pattern: |
+                  const IV = Buffer.from("$STATIC_VALUE");
+                  ...
+                  crypto.createCipheriv("aes-256-gcm", $KEY, IV);
+              - metavariable-regex:
+                  metavariable: $STATIC_VALUE
+                  regex: '^(?!.*randomBytes|.*getRandomValues|.*random).*$'
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Static IV or nonce value usage detected in codebase"

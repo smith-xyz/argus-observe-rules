@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.js
+    line: 6
+    rule_id: javascript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.js
+    line: 17
+    rule_id: javascript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.js
+    line: 32
+    rule_id: javascript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.js
+    line: 45
+    rule_id: javascript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+
+no_findings:
+  - negative_cases.js

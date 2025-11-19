@@ -1,0 +1,85 @@
+rules:
+  - id: javascript-crypto-hash-comparison
+    message: Hash function used in comparison or verification detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $HASH1 = crypto.createHash("md5");
+              $HASH1.update($DATA1);
+              $HASH2 = crypto.createHash("md5");
+              $HASH2.update($DATA2);
+              $HASH1.digest("hex") === $HASH2.digest("hex")
+          - pattern: |
+              $HASH1 = crypto.createHash("sha1");
+              $HASH1.update($DATA1);
+              $HASH2 = crypto.createHash("sha1");
+              $HASH2.update($DATA2);
+              $HASH1.digest("hex") === $HASH2.digest("hex")
+          - pattern: |
+              $HASH1 = crypto.createHash("sha256");
+              $HASH1.update($DATA1);
+              $HASH2 = crypto.createHash("sha256");
+              $HASH2.update($DATA2);
+              $HASH1.digest("hex") === $HASH2.digest("hex")
+          - pattern: |
+              $HASH = crypto.createHash("md5");
+              $HASH.update($DATA);
+              if ($HASH.digest("hex") === $EXPECTED) {
+                ...
+              }
+          - pattern: |
+              $HASH = crypto.createHash("sha1");
+              $HASH.update($DATA);
+              if ($HASH.digest("hex") === $EXPECTED) {
+                ...
+              }
+          - pattern: |
+              $HASH = crypto.createHash("sha256");
+              $HASH.update($DATA);
+              if ($HASH.digest("hex") === $EXPECTED) {
+                ...
+              }
+          - pattern: |
+              $HASH = crypto.createHash("md5");
+              $HASH.update($DATA);
+              crypto.timingSafeEqual($HASH.digest(), $EXPECTED)
+          - pattern: |
+              $HASH = crypto.createHash("sha256");
+              $HASH.update($DATA);
+              crypto.timingSafeEqual($HASH.digest(), $EXPECTED)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Hash function used in comparison or verification detected in codebase"

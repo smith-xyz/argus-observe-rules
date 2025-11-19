@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 10
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 16
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 22
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 29
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 37
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 41
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+  - file: test_code.js
+    line: 45
+    rule_id: javascript-crypto-certificate-validation
+    message: "Certificate validation configuration detected"
+
+no_findings:
+  - negative_cases.js

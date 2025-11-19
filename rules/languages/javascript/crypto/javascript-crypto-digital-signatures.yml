@@ -1,0 +1,69 @@
+rules:
+  - id: javascript-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createSign("RSA-SHA256")
+          - pattern: crypto.createSign("RSA-SHA512")
+          - pattern: crypto.createSign("ecdsa-with-SHA256")
+          - pattern: crypto.createSign("ecdsa-with-SHA512")
+          - pattern: crypto.createVerify("RSA-SHA256")
+          - pattern: crypto.createVerify("RSA-SHA512")
+          - pattern: crypto.createVerify("ecdsa-with-SHA256")
+          - pattern: crypto.createVerify("ecdsa-with-SHA512")
+          - pattern: |
+              $SIGN = crypto.createSign("RSA-SHA256");
+              $SIGN.update($DATA);
+              $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+          - pattern: |
+              $VERIFY = crypto.createVerify("RSA-SHA256");
+              $VERIFY.update($DATA);
+              $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+          - pattern: |
+              crypto.subtle.sign({ name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+          - pattern: |
+              crypto.subtle.sign({ name: "RSA-PSS", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+          - pattern: |
+              crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+          - pattern: |
+              crypto.subtle.verify({ name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+          - pattern: |
+              crypto.subtle.verify({ name: "RSA-PSS", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+          - pattern: |
+              crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, function() {
+            ...
+          })
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, function() {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, function() {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
