@@ -1,0 +1,1591 @@
+rules:
+  - id: csharp-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: DES.Create()
+          - pattern: TripleDES.Create()
+          - pattern: new DESCryptoServiceProvider()
+          - pattern: new TripleDESCryptoServiceProvider()
+          - pattern: |
+              using ($CIPHER = DES.Create()) {
+                $CIPHER.Key = $KEY;
+                $CIPHER.IV = $IV;
+                $ENCRYPTOR = $CIPHER.CreateEncryptor();
+                $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
+              }
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"
+  - id: csharp-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA1.Create()
+          - pattern: new SHA1CryptoServiceProvider()
+          - pattern: SHA1Managed()
+          - pattern: new SHA1Managed()
+          - pattern: SHA1Cng()
+          - pattern: new SHA1Cng()
+          - pattern: |
+              using ($HASHER = SHA1.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA1.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA1 $HASHER = SHA1.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"
+  - id: csharp-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA3_256.Create()
+          - pattern: SHA3_384.Create()
+          - pattern: SHA3_512.Create()
+          - pattern: new SHA3_256()
+          - pattern: new SHA3_384()
+          - pattern: new SHA3_512()
+          - pattern: |
+              using ($HASHER = SHA3_256.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              using ($HASHER = SHA3_384.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              using ($HASHER = SHA3_512.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA3_256.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA3_256 $HASHER = SHA3_256.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"
+  - id: csharp-crypto-pbkdf2
+    message: PBKDF2 key derivation function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER, HashAlgorithmName.$ALGO)
+          - pattern: |
+              using ($KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)) {
+                $KEY = $KDF.GetBytes($KEYLEN);
+              }
+          - pattern: |
+              $KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER);
+              $KEY = $KDF.GetBytes($KEYLEN);
+          - patterns:
+              - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+          - patterns:
+              - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+          - patterns:
+              - pattern: |
+                  $KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER);
+                  $KEY = $KDF.GetBytes($KEYLEN);
+              - metavariable-comparison:
+                  metavariable: $KEYLEN
+                  comparison: $KEYLEN < 32
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: PBKDF2 key derivation function usage detected in codebase"
+  - id: csharp-crypto-password-hashing
+    message: Password hashing operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: BCrypt.Net.BCrypt.HashPassword($PASSWORD, $WORK_FACTOR)
+          - pattern: BCrypt.Net.BCrypt.HashPassword($PASSWORD)
+          - pattern: BCrypt.Net.BCrypt.Verify($PASSWORD, $HASH)
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
+          - pattern: |
+              $HASH = BCrypt.Net.BCrypt.HashPassword($PASSWORD);
+              ...
+              BCrypt.Net.BCrypt.Verify($INPUT, $HASH);
+          - patterns:
+              - pattern: BCrypt.Net.BCrypt.HashPassword($PASSWORD, $WORK_FACTOR)
+              - metavariable-comparison:
+                  metavariable: $WORK_FACTOR
+                  comparison: $WORK_FACTOR < 10
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Password hashing operations detected in codebase"
+  - id: csharp-crypto-aes-gcm
+    message: AES-GCM AEAD mode usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: new AesGcm($KEY)
+          - pattern: |
+              using ($AESGCM = new AesGcm($KEY)) {
+                $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $AESGCM = new AesGcm($KEY);
+              $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+          - pattern: |
+              using ($AESGCM = new AesGcm($KEY)) {
+                $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $AESGCM = new AesGcm($KEY);
+              $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+          - pattern: $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
+          - pattern: $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES-GCM AEAD mode usage detected in codebase"
+  - id: csharp-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $BYTES
+    patterns:
+      - pattern-either:
+          - pattern: RandomNumberGenerator.Create()
+          - pattern: new RNGCryptoServiceProvider()
+          - pattern: |
+              using ($RNG = RandomNumberGenerator.Create()) {
+                $BYTES = new byte[$LENGTH];
+                $RNG.GetBytes($BYTES);
+              }
+          - pattern: RandomNumberGenerator.Fill($BYTES)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact:
+        "Inventory: Random number generation for cryptographic use detected in
+        codebase"
+  - id: csharp-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $SIZE
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY = new byte[$SIZE];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[8];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[16];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[24];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[32];
+              $CIPHER.Key = $KEY;
+          - pattern: $CIPHER.KeySize = $SIZE
+          - patterns:
+              - pattern: $CIPHER.Key = new byte[$SIZE]
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: \d+
+          - patterns:
+              - pattern: $CIPHER.Key = new byte[$SIZE]
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 16
+          - patterns:
+              - pattern: $CIPHER.KeySize = $SIZE
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 128
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"
+  - id: csharp-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: Aes.Create()
+          - pattern: Aes.Create($ALGORITHM_NAME)
+          - pattern: new AesCryptoServiceProvider()
+          - pattern: AesManaged()
+          - pattern: new AesManaged()
+          - pattern: AesCng()
+          - pattern: new AesCng()
+          - pattern: |
+              using ($CIPHER = Aes.Create()) {
+                $CIPHER.Key = $KEY;
+                $CIPHER.Mode = CipherMode.$MODE;
+                $ENCRYPTOR = $CIPHER.CreateEncryptor();
+                $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
+              }
+          - pattern: |
+              $CIPHER = Aes.Create();
+              $CIPHER.KeySize = 128;
+          - pattern: |
+              $CIPHER = Aes.Create();
+              $CIPHER.KeySize = 192;
+          - pattern: |
+              $CIPHER = Aes.Create();
+              $CIPHER.KeySize = 256;
+          - pattern: $CIPHER.KeySize = 128
+          - pattern: $CIPHER.KeySize = 192
+          - pattern: $CIPHER.KeySize = 256
+          - patterns:
+              - pattern: $CIPHER.KeySize = $SIZE
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 128
+          - pattern: await $CIPHER.EncryptAsync($DATA)
+          - pattern: await $CIPHER.DecryptAsync($CIPHERTEXT)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
+  - id: csharp-crypto-sp800108
+    message: SP800108DeriveBytes key derivation function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)
+          - pattern: |
+              using ($KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)) {
+                $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
+              }
+          - pattern: |
+              $KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM);
+              $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact:
+        "Inventory: SP800108DeriveBytes key derivation function usage detected
+        in codebase"
+  - id: csharp-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $BITS
+    patterns:
+      - pattern-either:
+          - pattern: RSA.Create($BITS)
+          - pattern: new RSACryptoServiceProvider($BITS)
+          - pattern: |
+              using ($RSA = RSA.Create($BITS)) {
+                $PUBLIC_KEY = $RSA.ExportParameters(false);
+                $PRIVATE_KEY = $RSA.ExportParameters(true);
+              }
+          - patterns:
+              - pattern: RSA.Create($BITS)
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - pattern: $RSA.Encrypt($DATA, $PADDING)
+          - pattern: $RSA.Decrypt($CIPHERTEXT, $PADDING)
+          - pattern: $RSA.ExportParameters($INCLUDE_PRIVATE)
+          - pattern: $RSA.ImportParameters($PARAMETERS)
+          - pattern: $RSA.ExportRSAPublicKey()
+          - pattern: $RSA.ExportRSAPrivateKey()
+          - pattern: $RSA.ImportRSAPublicKey($KEY_DATA)
+          - pattern: $RSA.ImportRSAPrivateKey($KEY_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"
+  - id: csharp-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA512.Create()
+          - pattern: new SHA512CryptoServiceProvider()
+          - pattern: SHA512Managed()
+          - pattern: new SHA512Managed()
+          - pattern: SHA512Cng()
+          - pattern: new SHA512Cng()
+          - pattern: |
+              using ($HASHER = SHA512.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA512.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA512 $HASHER = SHA512.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"
+  - id: csharp-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $VERSION
+    patterns:
+      - pattern-either:
+          - pattern: SecurityProtocolType.Ssl3
+          - pattern: SecurityProtocolType.Tls
+          - pattern: SecurityProtocolType.Tls11
+          - pattern: SecurityProtocolType.Tls12
+          - pattern: SecurityProtocolType.Tls13
+          - pattern: ServicePointManager.SecurityProtocol = SecurityProtocolType.$VERSION
+          - pattern: |
+              ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+          - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK, $SELECTION_CALLBACK)
+          - pattern: new SslStream($STREAM, false, $VALIDATION_CALLBACK)
+          - pattern: $HANDLER.SslProtocols = SslProtocols.$PROTOCOL
+          - pattern: HttpClientHandler.SslProtocols
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"
+  - id: csharp-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: MD5.Create()
+          - pattern: new MD5CryptoServiceProvider()
+          - pattern: MD5Managed()
+          - pattern: new MD5Managed()
+          - pattern: MD5Cng()
+          - pattern: new MD5Cng()
+          - pattern: |
+              using ($HASHER = MD5.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = MD5.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              MD5 $HASHER = MD5.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: await $HASHER.ComputeHashAsync($DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: csharp-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: ECDsa.Create($CURVE)
+          - pattern: new ECDsaCng($CURVE)
+          - pattern: |
+              using ($ECDSA = ECDsa.Create($CURVE)) {
+                $SIGNATURE = $ECDSA.SignData($DATA, $HASH_ALGORITHM);
+              }
+          - pattern: |
+              $ECDSA = ECDsa.Create($CURVE);
+              $SIGNATURE = $ECDSA.SignData($DATA, $HASH_ALGORITHM);
+              $VERIFIED = $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM);
+          - pattern: $ECDSA.SignData($DATA, $HASH_ALGORITHM)
+          - pattern: $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM)
+          - pattern: ECCurve.NamedCurves.nistP256
+          - pattern: ECCurve.NamedCurves.nistP384
+          - pattern: ECCurve.NamedCurves.nistP521
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"
+  - id: csharp-crypto-iv-nonce
+    message: Initialization vector (IV) or nonce usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $IV
+    patterns:
+      - pattern-either:
+          - pattern: $CIPHER.IV = $IV
+          - pattern: $CIPHER.IV = Encoding.UTF8.GetBytes("$STATIC_IV")
+          - pattern: |
+              $CIPHER.IV = new byte[$SIZE];
+              $CIPHER.CreateEncryptor();
+          - pattern: |
+              $CIPHER.IV = Encoding.UTF8.GetBytes("$STATIC_VALUE");
+              $ENCRYPTOR = $CIPHER.CreateEncryptor();
+          - pattern: |
+              using ($CIPHER = Aes.Create()) {
+                $CIPHER.IV = $IV;
+                $ENCRYPTOR = $CIPHER.CreateEncryptor();
+              }
+          - pattern: $GCM.Encrypt($NONCE, $PLAINTEXT, $ADDITIONAL_DATA)
+          - pattern: $GCM.Decrypt($NONCE, $CIPHERTEXT, $ADDITIONAL_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Initialization vector (IV) or nonce usage detected in codebase"
+  - id: csharp-crypto-chacha20poly1305
+    message: ChaCha20-Poly1305 AEAD mode usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: new ChaCha20Poly1305($KEY)
+          - pattern: |
+              using ($CHACHA = new ChaCha20Poly1305($KEY)) {
+                $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $CHACHA = new ChaCha20Poly1305($KEY);
+              $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+          - pattern: |
+              using ($CHACHA = new ChaCha20Poly1305($KEY)) {
+                $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $CHACHA = new ChaCha20Poly1305($KEY);
+              $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+          - pattern: $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
+          - pattern: $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20-Poly1305 AEAD mode usage detected in codebase"
+  - id: csharp-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER, HashAlgorithmName.$ALGO)
+          - pattern: |
+              using ($KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)) {
+                $KEY = $KDF.GetBytes($KEYLEN);
+              }
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"
+  - id: csharp-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING)
+          - pattern: $RSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
+          - pattern: $ECDSA.SignData($DATA, $HASH_ALGORITHM)
+          - pattern: $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM)
+          - pattern: $DSA.CreateSignature($HASH)
+          - pattern: $DSA.VerifySignature($HASH, $SIGNATURE)
+          - pattern: |
+              using ($RSA = RSA.Create($BITS)) {
+                $SIGNATURE = $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING);
+              }
+          - pattern: |
+              using ($ECDSA = ECDsa.Create($CURVE)) {
+                $SIGNATURE = $ECDSA.SignData($DATA, $HASH_ALGORITHM);
+              }
+          - pattern: $RSA.SignHash($HASH, $HASH_ALGORITHM, $PADDING)
+          - pattern: $RSA.VerifyHash($HASH, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
+          - pattern: $ECDSA.SignHash($HASH)
+          - pattern: $ECDSA.VerifyHash($HASH, $SIGNATURE)
+          - pattern: $DSA.SignHash($HASH)
+          - pattern: $DSA.VerifyHash($HASH, $SIGNATURE)
+          - pattern: await $RSA.SignDataAsync($DATA, $HASH_ALGORITHM, $PADDING)
+          - pattern: await $RSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
+          - pattern: await $ECDSA.SignDataAsync($DATA, $HASH_ALGORITHM)
+          - pattern: await $ECDSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
+  - id: csharp-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA256.Create()
+          - pattern: new SHA256CryptoServiceProvider()
+          - pattern: SHA256Managed()
+          - pattern: new SHA256Managed()
+          - pattern: SHA256Cng()
+          - pattern: new SHA256Cng()
+          - pattern: |
+              using ($HASHER = SHA256.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA256.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA256 $HASHER = SHA256.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: await $HASHER.ComputeHashAsync($DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"
+  - id: csharp-crypto-ripemd160
+    message: RIPEMD160 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: RIPEMD160.Create()
+          - pattern: RIPEMD160Managed()
+          - pattern: new RIPEMD160Managed()
+          - pattern: |
+              using ($HASHER = RIPEMD160.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = RIPEMD160.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RIPEMD160 hash function usage detected in codebase"
+  - id: csharp-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $PUBLIC_KEY
+    patterns:
+      - pattern-either:
+          - pattern: ECDiffieHellman.Create($CURVE)
+          - pattern: new ECDiffieHellmanCng($CURVE)
+          - pattern: |
+              using ($ALICE = ECDiffieHellman.Create($CURVE)) {
+                $PUBLIC_KEY = $ALICE.PublicKey;
+              }
+          - pattern: |
+              $ALICE = ECDiffieHellman.Create($CURVE);
+              $BOB = ECDiffieHellman.Create($CURVE);
+              $SHARED_SECRET = $ALICE.DeriveKeyMaterial($BOB.PublicKey);
+          - pattern: $ECDH.DeriveKeyMaterial($PUBLIC_KEY)
+          - pattern: ECDiffieHellmanCng()
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"
+  - id: csharp-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - csharp
+    mode: taint
+    pattern-sources:
+      - pattern: |
+          string $KEY = "$VALUE";
+      - pattern: |
+          private static readonly byte[] $KEY = Encoding.UTF8.GetBytes("$VALUE");
+      - pattern: |
+          const string $KEY = "$VALUE";
+      - pattern: |
+          private byte[] $KEY = Encoding.UTF8.GetBytes("$VALUE");
+      - pattern: |
+          $KEY = "$VALUE";
+      - pattern: |
+          $KEY = Encoding.UTF8.GetBytes("$VALUE");
+    pattern-sinks:
+      - pattern: $CIPHER.Key = Encoding.UTF8.GetBytes($KEY)
+      - pattern: $CIPHER.Key = $KEY
+      - pattern: new AesGcm($KEY)
+      - pattern: new ChaCha20Poly1305($KEY)
+      - pattern: new HMACSHA256($KEY)
+      - pattern: new HMACSHA1($KEY)
+      - pattern: new HMACSHA512($KEY)
+      - pattern: new HMACMD5($KEY)
+      - pattern: $HMAC.Key = $KEY
+      - pattern: $CIPHER.Key = new byte[$SIZE]
+    metavariable-propagator:
+      metavariable: $KEY
+      from: $KEY = $VALUE
+      to: $KEY
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+  - id: csharp-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $MODE
+    patterns:
+      - pattern-either:
+          - pattern: CipherMode.CBC
+          - pattern: CipherMode.CFB
+          - pattern: CipherMode.CTS
+          - pattern: CipherMode.ECB
+          - pattern: CipherMode.OFB
+          - pattern: CipherMode.CTS
+          - pattern: |
+              $CIPHER.Mode = CipherMode.CBC;
+              $ENCRYPTOR = $CIPHER.CreateEncryptor();
+          - pattern: |
+              $CIPHER.Mode = CipherMode.CFB;
+              $ENCRYPTOR = $CIPHER.CreateEncryptor();
+          - pattern: |
+              $CIPHER.Mode = CipherMode.ECB;
+              $ENCRYPTOR = $CIPHER.CreateEncryptor();
+          - pattern: |
+              $CIPHER.Mode = CipherMode.OFB;
+              $ENCRYPTOR = $CIPHER.CreateEncryptor();
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact:
+        "Inventory: Cipher mode usage detected in codebase (CBC, CFB, ECB, OFB,
+        CTS)"
+  - id: csharp-crypto-sha384
+    message: SHA384 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA384.Create()
+          - pattern: new SHA384CryptoServiceProvider()
+          - pattern: |
+              using ($HASHER = SHA384.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA384.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: SHA384Managed()
+          - pattern: new SHA384Managed()
+          - pattern: SHA384Cng()
+          - pattern: new SHA384Cng()
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA384 hash function usage detected in codebase"
+  - id: csharp-crypto-cipher-rc4
+    message: RC4 stream cipher usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: RC4CryptoServiceProvider()
+          - pattern: new RC4CryptoServiceProvider()
+          - pattern: |
+              using ($RC4 = new RC4CryptoServiceProvider()) {
+                $RC4.Key = $KEY;
+                $ENCRYPTOR = $RC4.CreateEncryptor();
+              }
+          - pattern: |
+              $RC4 = new RC4CryptoServiceProvider();
+              $RC4.Key = $KEY;
+              $CIPHERTEXT = $RC4.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 stream cipher usage detected in codebase"
+  - id: csharp-crypto-salt-generation
+    message: Salt generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $SALT
+    patterns:
+      - pattern-either:
+          - pattern: RandomNumberGenerator.Fill($SALT)
+          - pattern: |
+              $SALT = new byte[$SIZE];
+              RandomNumberGenerator.Fill($SALT);
+          - pattern: |
+              RandomNumberGenerator $RNG = RandomNumberGenerator.Create();
+              $SALT = new byte[$SIZE];
+              $RNG.GetBytes($SALT);
+          - pattern: |
+              using (RandomNumberGenerator $RNG = RandomNumberGenerator.Create()) {
+                $SALT = new byte[$SIZE];
+                $RNG.GetBytes($SALT);
+              }
+          - patterns:
+              - pattern: |
+                  $SALT = new byte[$SIZE];
+                  RandomNumberGenerator.Fill($SALT);
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 16
+          - patterns:
+              - pattern: |
+                  RandomNumberGenerator $RNG = RandomNumberGenerator.Create();
+                  $SALT = new byte[$SIZE];
+                  $RNG.GetBytes($SALT);
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 16
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-759
+      impact: "Inventory: Salt generation for cryptographic use detected in codebase"
+  - id: csharp-crypto-rc2
+    message: RC2 cipher usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: RC2.Create()
+          - pattern: new RC2CryptoServiceProvider()
+          - pattern: RC2Managed()
+          - pattern: new RC2Managed()
+          - pattern: |
+              using ($CIPHER = RC2.Create()) {
+                $CIPHER.Key = $KEY;
+                $CIPHER.IV = $IV;
+                $ENCRYPTOR = $CIPHER.CreateEncryptor();
+                $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
+              }
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC2 cipher usage detected in codebase"
+  - id: csharp-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $SUITES
+    patterns:
+      - pattern-either:
+          - pattern: CipherSuitesPolicy($SUITES)
+          - pattern: new CipherSuitesPolicy($SUITES)
+          - pattern: |
+              $CONFIG.CipherSuitesPolicy = new CipherSuitesPolicy($SUITES);
+          - pattern: TlsCipherSuite.TLS_AES_256_GCM_SHA384
+          - pattern: TlsCipherSuite.TLS_AES_128_GCM_SHA256
+          - pattern: TlsCipherSuite.TLS_CHACHA20_POLY1305_SHA256
+          - pattern: TlsCipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - pattern: TlsCipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"
+  - id: csharp-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $CALLBACK
+    patterns:
+      - pattern-either:
+          - pattern: ServicePointManager.ServerCertificateValidationCallback = $CALLBACK
+          - pattern: ServicePointManager.ServerCertificateValidationCallback = null
+          - pattern: |
+              ServicePointManager.ServerCertificateValidationCallback =
+                delegate { return true; };
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => true;
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => { return true; };
+          - pattern: $HANDLER.ServerCertificateCustomValidationCallback
+          - pattern: X509Certificate2.Verify()
+          - pattern: $CERT.Verify()
+          - pattern: $CHAIN.Build($CERT)
+          - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"
+  - id: csharp-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: HMAC.Create($ALGORITHM)
+          - pattern: new HMACSHA1($KEY)
+          - pattern: new HMACSHA256($KEY)
+          - pattern: new HMACSHA384($KEY)
+          - pattern: new HMACSHA512($KEY)
+          - pattern: new HMACMD5($KEY)
+          - pattern: |
+              using ($HMAC = new HMACSHA256($KEY)) {
+                $BYTES = $HMAC.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HMAC = new HMACSHA256($KEY);
+              $HMAC.Key = $KEY;
+              $RESULT = $HMAC.ComputeHash($DATA);
+          - pattern: |
+              $HMAC = HMAC.Create($ALGORITHM);
+              $HMAC.Key = $KEY;
+              $RESULT = $HMAC.ComputeHash($DATA);
+          - pattern: |
+              using ($HMAC = new HMACSHA512($KEY)) {
+                $BYTES = $HMAC.ComputeHash($DATA);
+              }
+          - pattern: new HMACSHA3_256($KEY)
+          - pattern: new HMACSHA3_512($KEY)
+          - pattern: HMAC.Create("SHA3-256")
+          - pattern: HMAC.Create("SHA3-512")
+          - pattern: |
+              $HMAC = HMAC.Create("SHA3-256");
+              $HMAC.Key = $KEY;
+              $RESULT = $HMAC.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

@@ -1,7 +1,7 @@
 # Argus Observe Rules - Makefile
 # Simple commands for development and usage
 
-.PHONY: help install dev-install clean lint format test validate run list
+.PHONY: help install dev-install clean lint format format-yaml test validate run generate-config
 
 # Default target
 help:
@@ -15,16 +15,18 @@ help:
 	@echo "Development:"
 	@echo "  lint         Run ruff linting"
 	@echo "  format       Format code with ruff"
+	@echo "  format-yaml  Format YAML files (requires PATH=)"
 	@echo "  clean        Clean up temporary files"
 	@echo ""
 	@echo "Rule Management:"
 	@echo "  validate     Validate all rules with semgrep"
-	@echo "  test         Run test suite against test cases"
-	@echo "  list         List available rules"
+	@echo "  test         Run test suite against test cases (all rules)"
+	@echo "  generate-config  Generate unified Semgrep config files"
 	@echo ""
 	@echo "Usage Examples:"
-	@echo "  run DIR=<path>    Run rules against directory"
-	@echo "  run DIR=<path> RULES=crypto  Run specific category"
+	@echo "  run DIR=<path>              Run all rules against directory"
+	@echo "  run DIR=<path> PATTERN=crypto  Run rules matching pattern"
+	@echo "  run DIR=<path> PATTERN=md5     Run rules matching pattern"
 	@echo ""
 
 # Installation
@@ -40,6 +42,15 @@ lint:
 
 format:
 	uv run ruff format .
+
+format-yaml:
+ifndef PATH
+	@echo "Error: PATH parameter required"
+	@echo "Usage: make format-yaml PATH=configs/go-runtime-security.yml"
+	@echo "       make format-yaml PATH=configs/"
+	@exit 1
+endif
+	uv run observe format-yaml $(PATH)
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
@@ -61,14 +72,19 @@ run:
 ifndef DIR
 	@echo "Error: DIR parameter required"
 	@echo "Usage: make run DIR=/path/to/code"
-	@echo "       make run DIR=/path/to/code RULES=crypto"
+	@echo "       make run DIR=/path/to/code PATTERN=crypto"
+	@echo "       make run DIR=/path/to/code PATTERN=md5"
 	@exit 1
 endif
-ifdef RULES
-	uv run observe run $(DIR) --rules rules/languages/go/$(RULES)
+ifdef PATTERN
+	uv run observe run $(DIR) $(PATTERN)
 else
-	uv run observe run $(DIR)
+	uv run observe run $(DIR) --all
 endif
+
+# Generate config files
+generate-config:
+	uv run observe generate-config
 
 # Quick development workflow
 dev: dev-install lint format

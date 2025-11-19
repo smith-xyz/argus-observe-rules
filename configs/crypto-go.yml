@@ -1,0 +1,1445 @@
+rules:
+  - id: go-crypto-password-hashing
+    message: Password hashing operations detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: bcrypt.GenerateFromPassword($PASSWORD, $COST)
+          - pattern: bcrypt.CompareHashAndPassword($HASH, $PASSWORD)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+          - pattern: argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $HASH, $ERR := bcrypt.GenerateFromPassword($PASSWORD, $COST)
+              ...
+              bcrypt.CompareHashAndPassword($HASH, $INPUT)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Password hashing operations detected in codebase"
+  - id: go-crypto-iv-reuse
+    message: Initialization vector (IV) usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $IV := []byte("$STATIC_VALUE")
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: |
+              $IV := make([]byte, $SIZE)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: |
+              var $IV = []byte("$STATIC_VALUE")
+              ...
+              cipher.NewGCM($BLOCK).Seal($DST, $IV, $PLAINTEXT, $DATA)
+          - pattern: cipher.NewCBCEncrypter($BLOCK, []byte("$STATIC_IV"))
+          - pattern: cipher.NewCBCDecrypter($BLOCK, []byte("$STATIC_IV"))
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Initialization vector (IV) usage detected in codebase"
+  - id: go-crypto-nonce-gcm
+    message: Nonce usage in GCM mode detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $NONCE := []byte("$STATIC_VALUE")
+              ...
+              $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: |
+              $NONCE := make([]byte, $SIZE)
+              ...
+              $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: $GCM.Seal($DST, []byte("$STATIC_NONCE"), $PLAINTEXT, $DATA)
+          - pattern: |
+              for $I := 0; $I < $N; $I++ {
+                ...
+                $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Nonce usage in GCM mode detected in codebase"
+  - id: go-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: tls.CipherSuites()
+          - pattern: tls.InsecureCipherSuites()
+          - pattern: |
+              &tls.Config{CipherSuites: $SUITES}
+          - pattern: |
+              $CONFIG := &tls.Config{
+                CipherSuites: $SUITES,
+                ...
+              }
+          - pattern: tls.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - pattern: tls.TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
+          - pattern: tls.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          - pattern: tls.TLS_AES_256_GCM_SHA384
+          - pattern: tls.TLS_AES_128_GCM_SHA256
+          - pattern: tls.TLS_CHACHA20_POLY1305_SHA256
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"
+  - id: go-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: hmac.New($HASH, $KEY)
+          - pattern: |
+              $HMAC := hmac.New($HASH, $KEY)
+              ...
+              $HMAC.Write($DATA)
+              ...
+              $RESULT := $HMAC.Sum($SUFFIX)
+          - pattern: |
+              $HMAC := hmac.New($HASH, $KEY)
+              ...
+              $HMAC.Write($DATA)
+              ...
+              $RESULT := $HMAC.Sum(nil)
+          - pattern: hmac.New(md5.New, $KEY)
+          - pattern: hmac.New(sha1.New, $KEY)
+          - pattern: hmac.New(sha256.New, $KEY)
+          - pattern: hmac.New(sha512.New, $KEY)
+          - pattern: hmac.New(sha512.New384, $KEY)
+          - pattern: hmac.New(crypto.MD5.New, $KEY)
+          - pattern: hmac.New(crypto.SHA1.New, $KEY)
+          - pattern: hmac.New(crypto.SHA256.New, $KEY)
+          - pattern: hmac.New(crypto.SHA512.New, $KEY)
+          - pattern: hmac.New(crypto.SHA384.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_224.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_256.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_384.New, $KEY)
+          - pattern: hmac.New(crypto.SHA3_512.New, $KEY)
+          - pattern: |
+              $HASH := crypto.MD5
+              $HMAC := hmac.New($HASH.New, $KEY)
+          - pattern: |
+              $HASH := crypto.SHA256
+              $HMAC := hmac.New($HASH.New, $KEY)
+          - pattern: |
+              $HASH := crypto.SHA512
+              $HMAC := hmac.New($HASH.New, $KEY)
+          - pattern: |
+              $HMAC := hmac.New($HASH.New, $KEY)
+              ...
+              hex.EncodeToString($HMAC.Sum(nil))
+          - pattern: |
+              $HMAC := hmac.New($HASH.New, $KEY)
+              ...
+              base64.StdEncoding.EncodeToString($HMAC.Sum(nil))
+          - pattern: |
+              $HMAC := hmac.New($HASH.New, $KEY)
+              ...
+              hmac.Equal($HMAC.Sum(nil), $EXPECTED)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"
+  - id: go-crypto-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: chacha20.NewUnauthenticatedCipher($KEY, $NONCE)
+          - pattern: chacha20poly1305.New($KEY)
+          - pattern: |
+              $CIPHER, $ERR := chacha20.NewUnauthenticatedCipher($KEY, $NONCE)
+              $CIPHER.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $AEAD, $ERR := chacha20poly1305.New($KEY)
+              $AEAD.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: |
+              $AEAD, $ERR := chacha20poly1305.New($KEY)
+              $AEAD.Open($DST, $NONCE, $CIPHERTEXT, $DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"
+  - id: go-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: tls.$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+          - patterns:
+              - pattern: $CONFIG.MinVersion = tls.$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+          - patterns:
+              - pattern: $CONFIG.MaxVersion = tls.$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+          - patterns:
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    MinVersion: tls.$VERSION,
+                    ...
+                  }
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+          - patterns:
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    MaxVersion: tls.$VERSION,
+                    ...
+                  }
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+          - patterns:
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    MinVersion: tls.$MIN_VERSION,
+                    MaxVersion: tls.$MAX_VERSION,
+                    ...
+                  }
+              - metavariable-regex:
+                  metavariable: $MIN_VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+              - metavariable-regex:
+                  metavariable: $MAX_VERSION
+                  regex: Version(SSL30|TLS10|TLS11|TLS12|TLS13)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"
+  - id: go-crypto-dynamic-cipher
+    message: Dynamic cipher selection detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              switch $ALGO {
+              case "des":
+                $CIPHER = des.NewCipher($KEY)
+              ...
+              }
+          - pattern: |
+              if $ALGO == "rc4" {
+                $CIPHER = rc4.NewCipher($KEY)
+              }
+          - pattern: |
+              if $ALGO == "des" {
+                $CIPHER = des.NewCipher($KEY)
+              }
+          - pattern: |
+              $CIPHERS := map[string]func([]byte) (cipher.Block, error){
+                ...,
+                "des": des.NewCipher,
+                ...
+              }
+          - pattern: |
+              $CIPHERS := map[string]func([]byte) (cipher.Stream, error){
+                ...,
+                "rc4": rc4.NewCipher,
+                ...
+              }
+          - pattern: |
+              func getCipher($TYPE string, $KEY []byte) cipher.Block {
+                ...
+                return des.NewCipher($KEY)
+                ...
+              }
+          - pattern: |
+              $CIPHER := getCipherByName($CONFIG.Algorithm, $KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Dynamic cipher selection detected in codebase"
+  - id: go-crypto-argon2
+    message: Argon2 key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $KEY := argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              ...
+              $KEY
+          - patterns:
+              - pattern: argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $TIME
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $THREADS
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+          - patterns:
+              - pattern: argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $TIME
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $THREADS
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Argon2 key derivation function usage detected in codebase"
+  - id: go-crypto-bcrypt
+    message: bcrypt password hashing usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: bcrypt.GenerateFromPassword($PASSWORD, $COST)
+          - pattern: bcrypt.CompareHashAndPassword($HASH, $PASSWORD)
+          - pattern: |
+              $HASH, $ERR := bcrypt.GenerateFromPassword($PASSWORD, $COST)
+              ...
+              $HASH
+          - pattern: |
+              $ERR := bcrypt.CompareHashAndPassword($HASH, $PASSWORD)
+              ...
+          - patterns:
+              - pattern: bcrypt.GenerateFromPassword($PASSWORD, $COST)
+              - metavariable-regex:
+                  metavariable: $COST
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: bcrypt password hashing usage detected in codebase"
+  - id: go-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: dh.GenerateKey($GROUP)
+          - pattern: dh.ComputeSecret($PRIV, $PUB)
+          - pattern: |
+              $PRIV, $PUB, $ERR := dh.GenerateKey($GROUP)
+              ...
+              $SECRET := dh.ComputeSecret($PRIV, $PEER_PUB)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"
+  - id: go-crypto-cipher-rc2
+    message: RC2 cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rc2.NewCipher($KEY)
+          - pattern: $CIPHER := rc2.NewCipher($KEY)
+          - pattern: cipher.NewCBCEncrypter(rc2.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCBCDecrypter(rc2.NewCipher($KEY), $IV)
+          - pattern: |
+              $BLOCK := rc2.NewCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC2 cipher usage detected in codebase"
+  - id: go-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $KEY := []byte($PASSWORD)
+          - pattern: $KEY := md5.Sum([]byte($PASSWORD))
+          - pattern: $KEY := sha1.Sum([]byte($PASSWORD))
+          - pattern: $KEY := sha256.Sum256([]byte($PASSWORD))
+          - pattern: $KEY := sha512.Sum512([]byte($PASSWORD))
+          - pattern: |
+              hasher := md5.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha1.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha256.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - pattern: |
+              hasher := sha512.New()
+              ...
+              hasher.Write([]byte($PASSWORD))
+              ...
+              $KEY := hasher.Sum(nil)
+          - patterns:
+              - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+          - pattern: pbkdf2.Key($PASSWORD, nil, $ITER, $KEYLEN, $HASH)
+          - pattern: pbkdf2.Key($PASSWORD, []byte("$STATIC_SALT"), $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              $KEY := pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              $KEY := pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+              ...
+              des.NewCipher($KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"
+  - id: go-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: md5.New()
+          - pattern: md5.Sum($DATA)
+          - pattern: |
+              $HASHER := md5.New()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := md5.New()
+              ...
+              $HASHER.Sum($SUFFIX)
+          - pattern: crypto.MD5.New()
+          - pattern: |
+              $HASH := crypto.MD5
+              $HASHER := $HASH.New()
+          - pattern: var $HASHER hash.Hash = md5.New()
+          - pattern: $HASHER := hash.Hash(md5.New())
+          - pattern: hex.EncodeToString(md5.Sum($DATA))
+          - pattern: base64.StdEncoding.EncodeToString(md5.Sum($DATA))
+          - pattern: fmt.Sprintf("%x", md5.Sum($DATA))
+          - pattern: fmt.Sprintf("%X", md5.Sum($DATA))
+          - pattern: io.WriteString(md5.New(), $DATA)
+          - pattern: |
+              $HASHER := md5.New()
+              io.Copy($HASHER, $READER)
+          - pattern: hmac.New(md5.New, $KEY)
+          - pattern: hmac.New(crypto.MD5.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, md5.New)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.MD5.New)
+          - pattern: $HASH := md5.Sum($DATA)
+          - pattern: $CHECKSUM := md5.Sum($DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: go-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: blowfish.NewCipher($KEY)
+          - pattern: blowfish.NewSaltedCipher($KEY, $SALT)
+          - pattern: $CIPHER := blowfish.NewCipher($KEY)
+          - pattern: $CIPHER := blowfish.NewSaltedCipher($KEY, $SALT)
+          - pattern: cipher.NewCBCDecrypter(blowfish.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCBCEncrypter(blowfish.NewCipher($KEY), $IV)
+          - pattern: cipher.NewOFB(blowfish.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCFBDecrypter(blowfish.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCFBEncrypter(blowfish.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCTR(blowfish.NewCipher($KEY), $IV)
+          - pattern: |
+              $BLOCK := blowfish.NewCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: |
+              $BLOCK := blowfish.NewSaltedCipher($KEY, $SALT)
+              ...
+              cipher.NewCBCDecrypter($BLOCK, $IV)
+          - pattern: var $CIPHER cipher.Block = blowfish.NewCipher($KEY)
+          - pattern: $CIPHER := cipher.Block(blowfish.NewCipher($KEY))
+          - pattern: |
+              func $FNAME($CIPHER cipher.Block) {
+                ...
+              }
+              ...
+              $FNAME(blowfish.NewCipher($KEY))
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"
+  - id: go-crypto-cipher-rc4
+    message: RC4 stream cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rc4.NewCipher($KEY)
+          - pattern: $CIPHER := rc4.NewCipher($KEY)
+          - pattern: $STREAM := rc4.NewCipher($KEY)
+          - pattern: "cipher.StreamReader{S: rc4.NewCipher($KEY), R: $READER}"
+          - pattern: "cipher.StreamWriter{S: rc4.NewCipher($KEY), W: $WRITER}"
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              $CIPHER.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              ...
+              $CIPHER.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              $READER := cipher.StreamReader{S: $CIPHER, R: $INPUT}
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              $WRITER := cipher.StreamWriter{S: $CIPHER, W: $OUTPUT}
+          - pattern: var $STREAM cipher.Stream = rc4.NewCipher($KEY)
+          - pattern: $STREAM := cipher.Stream(rc4.NewCipher($KEY))
+          - pattern: |
+              func $FNAME($STREAM cipher.Stream) {
+                ...
+              }
+              ...
+              $FNAME(rc4.NewCipher($KEY))
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              io.Copy($WRITER, &cipher.StreamReader{S: $CIPHER, R: $READER})
+          - pattern: |
+              $CIPHER := rc4.NewCipher($KEY)
+              for $I := 0; $I < len($DATA); $I++ {
+                $DATA[$I] ^= $CIPHER.XORKeyStream($DST, $SRC)
+              }
+          - pattern: |
+              $CIPHER, $ERR := rc4.NewCipher($KEY)
+              if $ERR == nil {
+                $CIPHER.XORKeyStream($DST, $SRC)
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 stream cipher usage detected in codebase"
+  - id: go-crypto-hash-legacy
+    message: Legacy hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: md4.New()
+          - pattern: md4.Sum($DATA)
+          - pattern: ripemd160.New()
+          - pattern: |
+              hasher := md4.New()
+              ...
+              hasher.Write($DATA)
+              ...
+              $HASH := hasher.Sum(nil)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Legacy hash function usage detected in codebase"
+  - id: go-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: cipher.NewOFB($BLOCK, $IV)
+          - pattern: cipher.NewCFB($BLOCK, $IV)
+          - pattern: cipher.NewCFBEncrypter($BLOCK, $IV)
+          - pattern: cipher.NewCFBDecrypter($BLOCK, $IV)
+          - pattern: cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: cipher.NewCBCDecrypter($BLOCK, $IV)
+          - pattern: cipher.NewGCM($BLOCK)
+          - pattern: |
+              $GCM := cipher.NewGCM($BLOCK)
+              ...
+              $GCM.Seal($DST, $NONCE, $PLAINTEXT, $DATA)
+          - pattern: |
+              $GCM := cipher.NewGCM($BLOCK)
+              ...
+              $GCM.Open($DST, $NONCE, $CIPHERTEXT, $DATA)
+          - pattern: |
+              $STREAM := cipher.NewCTR($BLOCK, $IV)
+              ...
+              $STREAM.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $MODE := cipher.NewCBCEncrypter($BLOCK, $IV)
+              ...
+              $MODE.CryptBlocks($DST, $SRC)
+          - pattern: |
+              $MODE := cipher.NewCBCDecrypter($BLOCK, $IV)
+              ...
+              $MODE.CryptBlocks($DST, $SRC)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact:
+        "Inventory: Cipher mode usage detected in codebase (OFB, CFB, CTR, CBC,
+        GCM)"
+  - id: go-crypto-hash-comparison
+    message: Hash function used in comparison or verification detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $EXPECTED := md5.Sum($DATA)
+              ...
+              $ACTUAL := md5.Sum($OTHER)
+              ...
+              bytes.Equal($EXPECTED[:], $ACTUAL[:])
+          - pattern: |
+              $EXPECTED := sha1.Sum($DATA)
+              ...
+              $ACTUAL := sha1.Sum($OTHER)
+              ...
+              bytes.Equal($EXPECTED[:], $ACTUAL[:])
+          - pattern: |
+              $HASH1 := hex.EncodeToString(md5.Sum($DATA1))
+              $HASH2 := hex.EncodeToString(md5.Sum($DATA2))
+              ...
+              $HASH1 == $HASH2
+          - pattern: |
+              $HASH1 := hex.EncodeToString(sha1.Sum($DATA1))
+              $HASH2 := hex.EncodeToString(sha1.Sum($DATA2))
+              ...
+              $HASH1 == $HASH2
+          - pattern: |
+              if hex.EncodeToString(md5.Sum($DATA)) == $EXPECTED {
+                ...
+              }
+          - pattern: |
+              if hex.EncodeToString(sha1.Sum($DATA)) == $EXPECTED {
+                ...
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact:
+        "Inventory: Hash function used in comparison or verification detected
+        in codebase"
+  - id: go-crypto-salt-generation
+    message: Salt generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              bcrypt.GenerateFromPassword($PASSWORD, $COST)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              argon2.IDKey($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              rand.Read($SALT)
+              ...
+              argon2.Key($PASSWORD, $SALT, $TIME, $MEMORY, $THREADS, $KEYLEN)
+          - pattern: |
+              $SALT := []byte("$STATIC_SALT")
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              const $SALT = "$STATIC_SALT"
+              ...
+              pbkdf2.Key($PASSWORD, []byte($SALT), $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              var $SALT = []byte("$STATIC_SALT")
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+          - pattern: |
+              $SALT := make([]byte, $SIZE)
+              ...
+              io.ReadFull(rand.Reader, $SALT)
+              ...
+              pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, $HASH)
+    metadata:
+      category: crypto
+      cwe: CWE-759
+      impact: "Inventory: Salt generation for cryptographic use detected in codebase"
+  - id: go-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha512.New()
+          - pattern: sha512.Sum512($DATA)
+          - pattern: |
+              $HASHER := sha512.New()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha512.New()
+              ...
+              $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA512.New()
+          - pattern: |
+              $HASH := crypto.SHA512
+              $HASHER := $HASH.New()
+          - pattern: var $HASHER hash.Hash = sha512.New()
+          - pattern: $HASHER := hash.Hash(sha512.New())
+          - pattern: hex.EncodeToString(sha512.Sum512($DATA))
+          - pattern: base64.StdEncoding.EncodeToString(sha512.Sum512($DATA))
+          - pattern: fmt.Sprintf("%x", sha512.Sum512($DATA))
+          - pattern: fmt.Sprintf("%X", sha512.Sum512($DATA))
+          - pattern: io.WriteString(sha512.New(), $DATA)
+          - pattern: |
+              $HASHER := sha512.New()
+              io.Copy($HASHER, $READER)
+          - pattern: hmac.New(sha512.New, $KEY)
+          - pattern: hmac.New(crypto.SHA512.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha512.New)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA512.New)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, crypto.SHA512, $HASHED)
+          - pattern: rsa.VerifyPKCS1v15($PUB, crypto.SHA512, $HASHED, $SIG)
+          - pattern: ecdsa.Sign($RAND, $PRIV, sha512.Sum512($DATA))
+          - pattern: $HASH := sha512.Sum512($DATA)
+          - pattern: $CHECKSUM := sha512.Sum512($DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"
+  - id: go-crypto-cipher-suites
+    message: TLS cipher suite usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: tls.TLS_RSA_WITH_NULL_MD5
+          - pattern: tls.TLS_RSA_WITH_NULL_SHA
+          - pattern: tls.TLS_NULL_WITH_NULL_NULL
+          - pattern: tls.TLS_RSA_EXPORT_WITH_RC4_40_MD5
+          - pattern: tls.TLS_RSA_EXPORT_WITH_RC2_CBC_40_MD5
+          - pattern: tls.TLS_DH_anon_EXPORT_WITH_RC4_40_MD5
+          - pattern: tls.TLS_DH_anon_WITH_RC4_128_MD5
+          - pattern: tls.TLS_DH_anon_WITH_3DES_EDE_CBC_SHA
+          - pattern: tls.TLS_DH_anon_WITH_AES_128_CBC_SHA
+          - pattern: tls.TLS_DH_anon_WITH_AES_256_CBC_SHA
+          - pattern: tls.TLS_RSA_WITH_RC4_128_MD5
+          - pattern: tls.TLS_RSA_WITH_RC4_128_SHA
+          - pattern: tls.TLS_ECDHE_RSA_WITH_RC4_128_SHA
+          - pattern: tls.TLS_ECDHE_ECDSA_WITH_RC4_128_SHA
+          - pattern: tls.TLS_RSA_WITH_DES_CBC_SHA
+          - pattern: tls.TLS_DHE_RSA_WITH_DES_CBC_SHA
+          - pattern: tls.TLS_RSA_WITH_3DES_EDE_CBC_SHA
+          - pattern: tls.TLS_DHE_RSA_WITH_3DES_EDE_CBC_SHA
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite usage detected in codebase"
+  - id: go-crypto-aes-ecb-mode
+    message: AES ECB cipher mode usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: cipher.NewECBDecrypter($BLOCK)
+          - pattern: cipher.NewECBEncrypter($BLOCK)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewECBDecrypter($BLOCK)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewECBEncrypter($BLOCK)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES ECB cipher mode usage detected in codebase"
+  - id: go-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, $HASH, $HASHED)
+          - pattern: rsa.SignPSS($RAND, $PRIV, $HASH, $HASHED, $OPTS)
+          - pattern: rsa.VerifyPKCS1v15($PUB, $HASH, $HASHED, $SIG)
+          - pattern: rsa.VerifyPSS($PUB, $HASH, $HASHED, $SIG, $OPTS)
+          - pattern: ecdsa.Sign($RAND, $PRIV, $HASH)
+          - pattern: ecdsa.Verify($PUB, $HASH, $R, $S)
+          - pattern: dsa.Sign($RAND, $PRIV, $HASH)
+          - pattern: dsa.Verify($PUB, $HASH, $R, $S)
+          - pattern: ed25519.Sign($PRIV, $MSG)
+          - pattern: ed25519.Verify($PUB, $MSG, $SIG)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
+  - id: go-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: des.NewCipher($KEY)
+          - pattern: des.NewTripleDESCipher($KEY)
+          - pattern: $CIPHER := des.NewCipher($KEY)
+          - pattern: $CIPHER := des.NewTripleDESCipher($KEY)
+          - pattern: cipher.NewCBCDecrypter(des.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCBCEncrypter(des.NewCipher($KEY), $IV)
+          - pattern: cipher.NewOFB(des.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCFBDecrypter(des.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCFBEncrypter(des.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCTR(des.NewCipher($KEY), $IV)
+          - pattern: |
+              $BLOCK := des.NewCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: |
+              $BLOCK := des.NewCipher($KEY)
+              ...
+              cipher.NewCBCDecrypter($BLOCK, $IV)
+          - pattern: |
+              $BLOCK := des.NewTripleDESCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: var $CIPHER cipher.Block = des.NewCipher($KEY)
+          - pattern: $CIPHER := cipher.Block(des.NewCipher($KEY))
+          - pattern: |
+              func $FNAME($CIPHER cipher.Block) {
+                ...
+              }
+              ...
+              $FNAME(des.NewCipher($KEY))
+          - pattern: |
+              $STREAM := cipher.NewOFB(des.NewCipher($KEY), $IV)
+              $STREAM.XORKeyStream($DST, $SRC)
+          - pattern: |
+              $KEY24 := append($KEY8, $KEY8...)
+              ...
+              des.NewTripleDESCipher($KEY24)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"
+  - id: go-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha256.New()
+          - pattern: sha256.Sum256($DATA)
+          - pattern: |
+              $HASHER := sha256.New()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha256.New()
+              ...
+              $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA256.New()
+          - pattern: |
+              $HASH := crypto.SHA256
+              $HASHER := $HASH.New()
+          - pattern: var $HASHER hash.Hash = sha256.New()
+          - pattern: $HASHER := hash.Hash(sha256.New())
+          - pattern: hex.EncodeToString(sha256.Sum256($DATA))
+          - pattern: base64.StdEncoding.EncodeToString(sha256.Sum256($DATA))
+          - pattern: fmt.Sprintf("%x", sha256.Sum256($DATA))
+          - pattern: fmt.Sprintf("%X", sha256.Sum256($DATA))
+          - pattern: io.WriteString(sha256.New(), $DATA)
+          - pattern: |
+              $HASHER := sha256.New()
+              io.Copy($HASHER, $READER)
+          - pattern: hmac.New(sha256.New, $KEY)
+          - pattern: hmac.New(crypto.SHA256.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha256.New)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA256.New)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, crypto.SHA256, $HASHED)
+          - pattern: rsa.VerifyPKCS1v15($PUB, crypto.SHA256, $HASHED, $SIG)
+          - pattern: ecdsa.Sign($RAND, $PRIV, sha256.Sum256($DATA))
+          - pattern: $HASH := sha256.Sum256($DATA)
+          - pattern: $CHECKSUM := sha256.Sum256($DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"
+  - id: go-crypto-hash-interface
+    message: Hash algorithm used via generic hash.Hash interface detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              func $FNAME($HASHER hash.Hash) {
+                ...
+              }
+              ...
+              $FNAME(md5.New())
+          - pattern: |
+              func $FNAME($HASHER hash.Hash) {
+                ...
+              }
+              ...
+              $FNAME(sha1.New())
+          - pattern: |
+              func $FNAME() hash.Hash {
+                return md5.New()
+              }
+          - pattern: |
+              func $FNAME() hash.Hash {
+                return sha1.New()
+              }
+          - pattern: |
+              $HASHERS := map[$KEY]hash.Hash{
+                ...,
+                $ENTRY: md5.New(),
+                ...
+              }
+          - pattern: |
+              $HASHERS := []hash.Hash{
+                ...,
+                md5.New(),
+                ...
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact:
+        "Inventory: Hash algorithm used via generic hash.Hash interface detected
+        in codebase"
+  - id: go-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := "$VALUE"
+              ...
+              aes.NewCipher($KEY)
+          - pattern: aes.NewCipher("$KEY")
+          - pattern: aes.NewCipher([]byte("$KEY"))
+          - pattern: |
+              const $KEY = "$VALUE"
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              var $KEY = "$VALUE"
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              var $KEY = []byte("$VALUE")
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              var $KEY string = "$VALUE"
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              var $KEY []byte = []byte("$VALUE")
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              type $CONFIG struct {
+                $FIELD string
+              }
+              ...
+              $CONFIG{$FIELD: "$KEY"}
+              ...
+              aes.NewCipher([]byte($CONFIG.$FIELD))
+          - pattern: |
+              type $CONFIG struct {
+                $FIELD []byte
+              }
+              ...
+              $CONFIG{$FIELD: []byte("$KEY")}
+              ...
+              aes.NewCipher($CONFIG.$FIELD)
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if len($KEY) == 0 {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              aes.NewCipher([]byte($KEY))
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              des.NewCipher([]byte($KEY))
+          - pattern: |
+              $KEY := os.Getenv("$ENV_VAR")
+              if $KEY == "" {
+                $KEY = "$DEFAULT_KEY"
+              }
+              ...
+              rc4.NewCipher([]byte($KEY))
+          - pattern: cipher.NewCFBDecrypter($BLOCK, "$IV")
+          - pattern: cipher.NewCFBEncrypter($BLOCK, []byte("$IV"))
+          - pattern: cipher.NewCBCEncrypter($BLOCK, []byte("$IV"))
+          - pattern: cipher.NewCBCDecrypter($BLOCK, []byte("$IV"))
+          - pattern: cipher.NewOFB($BLOCK, []byte("$IV"))
+          - pattern: |
+              $IV := "$STATIC_IV"
+              ...
+              cipher.NewCFBDecrypter($BLOCK, []byte($IV))
+          - pattern: |
+              $IV := "$STATIC_IV"
+              ...
+              cipher.NewCFBEncrypter($BLOCK, []byte($IV))
+          - pattern: |
+              const $IV = "$STATIC_IV"
+              ...
+              cipher.NewCFBDecrypter($BLOCK, []byte($IV))
+          - pattern: |
+              var $IV = "$STATIC_IV"
+              ...
+              cipher.NewCFBDecrypter($BLOCK, []byte($IV))
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+  - id: go-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: rsa.GenerateKey($RAND, $BITS)
+          - pattern: rsa.GenerateMultiPrimeKey($RAND, $PRIMES, $BITS)
+          - pattern: rsa.EncryptPKCS1v15($RAND, $PUB, $MSG)
+          - pattern: rsa.EncryptOAEP($HASH, $RAND, $PUB, $MSG, $LABEL)
+          - pattern: rsa.DecryptPKCS1v15($RAND, $PRIV, $CIPHERTEXT)
+          - pattern: rsa.DecryptOAEP($HASH, $RAND, $PRIV, $CIPHERTEXT, $LABEL)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, $HASH, $HASHED)
+          - pattern: rsa.SignPSS($RAND, $PRIV, $HASH, $HASHED, $OPTS)
+          - pattern: rsa.VerifyPKCS1v15($PUB, $HASH, $HASHED, $SIG)
+          - pattern: rsa.VerifyPSS($PUB, $HASH, $HASHED, $SIG, $OPTS)
+          - pattern: |
+              $PRIV, $ERR := rsa.GenerateKey($RAND, $BITS)
+              ...
+              $PRIV.PublicKey
+          - patterns:
+              - pattern: rsa.GenerateKey($RAND, $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"
+  - id: go-crypto-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: aes.NewCipher($KEY)
+          - pattern: $CIPHER := aes.NewCipher($KEY)
+          - pattern: cipher.NewCBCDecrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCBCEncrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewGCM(aes.NewCipher($KEY))
+          - pattern: cipher.NewCFBDecrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCFBEncrypter(aes.NewCipher($KEY), $IV)
+          - pattern: cipher.NewCTR(aes.NewCipher($KEY), $IV)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewCBCEncrypter($BLOCK, $IV)
+          - pattern: |
+              $BLOCK := aes.NewCipher($KEY)
+              ...
+              cipher.NewGCM($BLOCK)
+          - pattern: var $CIPHER cipher.Block = aes.NewCipher($KEY)
+          - pattern: $CIPHER := cipher.Block(aes.NewCipher($KEY))
+          - patterns:
+              - pattern: aes.NewCipher(make([]byte, $SIZE))
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
+  - id: go-crypto-hkdf
+    message: HKDF key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: hkdf.New($HASH, $SECRET, $SALT, $INFO)
+          - pattern: hkdf.Extract($HASH, $SECRET, $SALT)
+          - pattern: hkdf.Expand($HASH, $PRK, $INFO)
+          - pattern: |
+              $HKDF := hkdf.New($HASH, $SECRET, $SALT, $INFO)
+              $HKDF.Read($KEY)
+          - pattern: |
+              $PRK := hkdf.Extract($HASH, $SECRET, $SALT)
+              ...
+              hkdf.Expand($HASH, $PRK, $INFO)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: HKDF key derivation function usage detected in codebase"
+  - id: go-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := make([]byte, $SIZE)
+              ...
+              rand.Read($KEY)
+          - pattern: |
+              $IV := make([]byte, $SIZE)
+              ...
+              rand.Read($IV)
+          - pattern: rand.Read($BYTES)
+          - pattern: rand.Int($RANDOM, $MAX)
+          - pattern: rand.Prime($RANDOM, $BITS)
+          - pattern: io.ReadFull(rand.Reader, $BUFFER)
+          - pattern: |
+              $BUFFER := make([]byte, $SIZE)
+              ...
+              io.ReadFull(rand.Reader, $BUFFER)
+          - pattern: math/rand.Read($BYTES)
+          - pattern: mathrand.Read($BYTES)
+          - pattern: |
+              rand.Seed($SEED)
+              ...
+              rand.Intn($MAX)
+          - pattern: |
+              mathrand.Seed($SEED)
+              ...
+              mathrand.Intn($MAX)
+          - pattern: math/rand.New($SOURCE)
+          - pattern: mathrand.New($SOURCE)
+          - pattern: math/rand.NewSource($SEED)
+          - pattern: mathrand.NewSource($SEED)
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact:
+        "Inventory: Random number generation for cryptographic use detected in
+        codebase"
+  - id: go-crypto-scrypt
+    message: scrypt key derivation function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+          - pattern: |
+              $KEY, $ERR := scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+              ...
+              $KEY
+          - patterns:
+              - pattern: scrypt.Key($PASSWORD, $SALT, $N, $R, $P, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: scrypt key derivation function usage detected in codebase"
+  - id: go-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY := make([]byte, 8)
+              ...
+              aes.NewCipher($KEY)
+          - pattern: |
+              $KEY := make([]byte, 16)
+              ...
+              aes.NewCipher($KEY)
+          - pattern: aes.NewCipher([]byte("$KEY"))
+          - patterns:
+              - pattern: aes.NewCipher($KEY)
+              - metavariable-pattern:
+                  metavariable: $KEY
+                  pattern: make([]byte, $SIZE)
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"
+  - id: go-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha3.New224()
+          - pattern: sha3.New256()
+          - pattern: sha3.New384()
+          - pattern: sha3.New512()
+          - pattern: |
+              $HASHER := sha3.New224()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha3.New256()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha3.New384()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha3.New512()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA3_224.New()
+          - pattern: crypto.SHA3_256.New()
+          - pattern: crypto.SHA3_384.New()
+          - pattern: crypto.SHA3_512.New()
+          - pattern: var $HASHER hash.Hash = sha3.New256()
+          - pattern: $HASHER := hash.Hash(sha3.New512())
+          - pattern: hex.EncodeToString($HASHER.Sum(nil))
+          - pattern: hmac.New(sha3.New256, $KEY)
+          - pattern: hmac.New(crypto.SHA3_256.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha3.New256)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA3_256.New)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"
+  - id: go-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              &tls.Config{InsecureSkipVerify: $BOOL}
+          - pattern: |
+              $CONFIG := &tls.Config{
+                InsecureSkipVerify: $BOOL,
+                ...
+              }
+          - pattern: tls.DialWithDialer($DIALER, $NETWORK, $ADDR, $CONFIG)
+          - pattern: tls.Dial($NETWORK, $ADDR, $CONFIG)
+          - pattern: |
+              $TRANSPORT := &http.Transport{
+                TLSClientConfig: &tls.Config{InsecureSkipVerify: $BOOL},
+                ...
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"
+  - id: go-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: ecdsa.GenerateKey($CURVE, $RAND)
+          - pattern: ecdsa.Sign($RAND, $PRIV, $HASH)
+          - pattern: ecdsa.Verify($PUB, $HASH, $R, $S)
+          - pattern: |
+              $PRIV, $ERR := ecdsa.GenerateKey($CURVE, $RAND)
+              ...
+              $PRIV.PublicKey
+          - pattern: |
+              $R, $S, $ERR := ecdsa.Sign($RAND, $PRIV, $HASH)
+              ...
+              ecdsa.Verify(&$PRIV.PublicKey, $HASH, $R, $S)
+          - pattern: elliptic.P256()
+          - pattern: elliptic.P384()
+          - pattern: elliptic.P521()
+          - pattern: elliptic.Secp256k1()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"
+  - id: go-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: blake2b.New256($KEY)
+          - pattern: blake2b.New512($KEY)
+          - pattern: blake2s.New256($KEY)
+          - pattern: |
+              $HASHER, $ERR := blake2b.New256($KEY)
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER, $ERR := blake2b.New512($KEY)
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER, $ERR := blake2s.New256($KEY)
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: var $HASHER hash.Hash = $BLAKE2_HASHER
+          - pattern: hex.EncodeToString($HASHER.Sum(nil))
+          - pattern: hmac.New($BLAKE2_HASHER, $KEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"
+  - id: go-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: sha1.New()
+          - pattern: sha1.Sum($DATA)
+          - pattern: |
+              $HASHER := sha1.New()
+              $HASHER.Write($DATA)
+              $HASH := $HASHER.Sum($SUFFIX)
+          - pattern: |
+              $HASHER := sha1.New()
+              ...
+              $HASHER.Sum($SUFFIX)
+          - pattern: crypto.SHA1.New()
+          - pattern: |
+              $HASH := crypto.SHA1
+              $HASHER := $HASH.New()
+          - pattern: var $HASHER hash.Hash = sha1.New()
+          - pattern: $HASHER := hash.Hash(sha1.New())
+          - pattern: hex.EncodeToString(sha1.Sum($DATA))
+          - pattern: base64.StdEncoding.EncodeToString(sha1.Sum($DATA))
+          - pattern: fmt.Sprintf("%x", sha1.Sum($DATA))
+          - pattern: fmt.Sprintf("%X", sha1.Sum($DATA))
+          - pattern: io.WriteString(sha1.New(), $DATA)
+          - pattern: |
+              $HASHER := sha1.New()
+              io.Copy($HASHER, $READER)
+          - pattern: hmac.New(sha1.New, $KEY)
+          - pattern: hmac.New(crypto.SHA1.New, $KEY)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, sha1.New)
+          - pattern: pbkdf2.Key($PASSWORD, $SALT, $ITER, $KEYLEN, crypto.SHA1.New)
+          - pattern: rsa.SignPKCS1v15($RAND, $PRIV, crypto.SHA1, $HASHED)
+          - pattern: rsa.VerifyPKCS1v15($PUB, crypto.SHA1, $HASHED, $SIG)
+          - pattern: ecdsa.Sign($RAND, $PRIV, sha1.Sum($DATA))
+          - pattern: $HASH := sha1.Sum($DATA)
+          - pattern: $CHECKSUM := sha1.Sum($DATA)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"

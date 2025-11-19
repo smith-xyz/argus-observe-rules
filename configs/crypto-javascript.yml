@@ -1,0 +1,2741 @@
+rules:
+- id: javascript-crypto-pbkdf2
+  message: PBKDF2 key derivation function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
+    - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: |
+        crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, "sha256", function($ERR, $KEY) {
+          ...
+        });
+    - pattern: |
+        $KEY = crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, "sha256");
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-regex:
+          metavariable: $ITER
+          regex: \d+
+      - metavariable-regex:
+          metavariable: $KEYLEN
+          regex: \d+
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-comparison:
+          metavariable: $ITER
+          comparison: $ITER < 100000
+    - patterns:
+      - pattern: |
+          crypto.subtle.deriveKey({ name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $ITER
+          comparison: $ITER < 100000
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: PBKDF2 key derivation function usage detected in codebase'
+- id: javascript-crypto-argon2
+  message: Argon2 key derivation function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: require("argon2").hash($PASSWORD, $OPTIONS)
+    - pattern: require("argon2").verify($HASH, $PASSWORD)
+    - pattern: require("argon2").hashSync($PASSWORD, $OPTIONS)
+    - pattern: require("argon2").verifySync($HASH, $PASSWORD)
+    - pattern: require("argon2-browser").hash($PASSWORD, $OPTIONS)
+    - pattern: require("argon2-browser").verify($HASH, $PASSWORD)
+    - pattern: require("argon2-wasm").hash($PASSWORD, $OPTIONS)
+    - pattern: require("argon2-wasm").verify($HASH, $PASSWORD)
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, $OPTIONS)
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, {
+          type: argon2.argon2i,
+          ...
+        })
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, {
+          type: argon2.argon2d,
+          ...
+        })
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, {
+          type: argon2.argon2id,
+          ...
+        })
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, {
+          type: argon2.argon2i,
+          memoryCost: $MEMORY,
+          timeCost: $TIME,
+          parallelism: $PARALLELISM
+        })
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, {
+          type: argon2.argon2d,
+          memoryCost: $MEMORY,
+          timeCost: $TIME,
+          parallelism: $PARALLELISM
+        })
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, {
+          type: argon2.argon2id,
+          memoryCost: $MEMORY,
+          timeCost: $TIME,
+          parallelism: $PARALLELISM
+        })
+    - patterns:
+      - pattern: |
+          $HASH = await argon2.hash($PASSWORD, {
+            type: argon2.argon2i,
+            memoryCost: $MEMORY,
+            timeCost: $TIME,
+            parallelism: $PARALLELISM
+          })
+      - metavariable-comparison:
+          metavariable: $MEMORY
+          comparison: $MEMORY < 65536
+    - patterns:
+      - pattern: |
+          $HASH = await argon2.hash($PASSWORD, {
+            type: argon2.argon2i,
+            memoryCost: $MEMORY,
+            timeCost: $TIME,
+            parallelism: $PARALLELISM
+          })
+      - metavariable-comparison:
+          metavariable: $TIME
+          comparison: $TIME < 3
+    - patterns:
+      - pattern: |
+          $HASH = await argon2.hash($PASSWORD, {
+            type: argon2.argon2d,
+            memoryCost: $MEMORY,
+            timeCost: $TIME,
+            parallelism: $PARALLELISM
+          })
+      - metavariable-comparison:
+          metavariable: $MEMORY
+          comparison: $MEMORY < 65536
+    - patterns:
+      - pattern: |
+          $HASH = await argon2.hash($PASSWORD, {
+            type: argon2.argon2d,
+            memoryCost: $MEMORY,
+            timeCost: $TIME,
+            parallelism: $PARALLELISM
+          })
+      - metavariable-comparison:
+          metavariable: $TIME
+          comparison: $TIME < 3
+    - patterns:
+      - pattern: |
+          $HASH = await argon2.hash($PASSWORD, {
+            type: argon2.argon2id,
+            memoryCost: $MEMORY,
+            timeCost: $TIME,
+            parallelism: $PARALLELISM
+          })
+      - metavariable-comparison:
+          metavariable: $MEMORY
+          comparison: $MEMORY < 65536
+    - patterns:
+      - pattern: |
+          $HASH = await argon2.hash($PASSWORD, {
+            type: argon2.argon2id,
+            memoryCost: $MEMORY,
+            timeCost: $TIME,
+            parallelism: $PARALLELISM
+          })
+      - metavariable-comparison:
+          metavariable: $TIME
+          comparison: $TIME < 3
+    - pattern: |
+        $HASH = await argon2Browser.hash($PASSWORD, $OPTIONS)
+    - pattern: |
+        $HASH = await argon2Wasm.hash($PASSWORD, $OPTIONS)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Argon2 key derivation function usage detected in codebase'
+- id: javascript-crypto-static-iv-nonce
+  message: Static IV or nonce value usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: |
+        const IV = Buffer.from("$STATIC_VALUE");
+        ...
+        crypto.createCipheriv("aes-256-cbc", $KEY, IV);
+    - pattern: |
+        const IV = Buffer.from("$STATIC_VALUE");
+        ...
+        crypto.createCipheriv("aes-256-gcm", $KEY, IV);
+    - pattern: |
+        const NONCE = Buffer.from("$STATIC_VALUE");
+        ...
+        crypto.createCipheriv("aes-256-gcm", $KEY, NONCE);
+    - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, Buffer.from("$STATIC_IV"))
+    - pattern: crypto.createCipheriv("aes-256-gcm", $KEY, Buffer.from("$STATIC_NONCE"))
+    - pattern: |
+        const IV = new Uint8Array([$STATIC_VALUES]);
+        ...
+        crypto.subtle.encrypt({ name: "AES-CBC", iv: IV }, $KEY, $DATA);
+    - pattern: |
+        const NONCE = new Uint8Array([$STATIC_VALUES]);
+        ...
+        crypto.subtle.encrypt({ name: "AES-GCM", iv: NONCE }, $KEY, $DATA);
+    - pattern: |
+        const IV = Buffer.from("$STATIC_VALUE", "hex");
+        ...
+        crypto.createCipheriv("aes-256-cbc", $KEY, IV);
+    - pattern: |
+        const IV = Buffer.from("$STATIC_VALUE", "base64");
+        ...
+        crypto.createCipheriv("aes-256-cbc", $KEY, IV)
+    - pattern: |
+        const STATIC_IV = "$VALUE";
+        ...
+        crypto.createCipheriv("aes-256-cbc", $KEY, Buffer.from(STATIC_IV))
+    - pattern: |
+        const STATIC_NONCE = "$VALUE";
+        ...
+        crypto.createCipheriv("aes-256-gcm", $KEY, Buffer.from(STATIC_NONCE))
+    - pattern: |
+        const STATIC_IV = "$VALUE";
+        ...
+        crypto.subtle.encrypt({ name: "AES-CBC", iv: Buffer.from(STATIC_IV) }, $KEY, $DATA)
+    - patterns:
+      - pattern: |
+          const IV = Buffer.from("$STATIC_VALUE");
+          ...
+          crypto.createCipheriv("aes-256-cbc", $KEY, IV);
+      - metavariable-regex:
+          metavariable: $STATIC_VALUE
+          regex: ^(?!.*randomBytes|.*getRandomValues|.*random).*$
+    - patterns:
+      - pattern: |
+          const IV = Buffer.from("$STATIC_VALUE");
+          ...
+          crypto.createCipheriv("aes-256-gcm", $KEY, IV);
+      - metavariable-regex:
+          metavariable: $STATIC_VALUE
+          regex: ^(?!.*randomBytes|.*getRandomValues|.*random).*$
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-329
+    impact: 'Inventory: Static IV or nonce value usage detected in codebase'
+- id: javascript-crypto-iv-nonce
+  message: IV or nonce generation for cryptographic use detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.randomBytes($LENGTH)
+    - pattern: crypto.getRandomValues($ARRAY)
+    - pattern: |
+        $IV = crypto.randomBytes(16);
+        ...
+        crypto.createCipheriv("aes-256-cbc", $KEY, $IV);
+    - pattern: |
+        $NONCE = crypto.randomBytes(12);
+        ...
+        crypto.createCipheriv("aes-256-gcm", $KEY, $NONCE);
+    - pattern: |
+        $IV = crypto.getRandomValues(new Uint8Array(16));
+        ...
+        crypto.subtle.encrypt({ name: "AES-CBC", iv: $IV }, $KEY, $DATA);
+    - pattern: |
+        $NONCE = crypto.getRandomValues(new Uint8Array(12));
+        ...
+        crypto.subtle.encrypt({ name: "AES-GCM", iv: $NONCE }, $KEY, $DATA);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-330
+    impact: 'Inventory: IV or nonce generation for cryptographic use detected in codebase'
+- id: javascript-crypto-tls-cipher-suites
+  message: TLS cipher suite configuration detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $OPTIONS = {
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          ciphers: "$CIPHER_LIST",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          honorCipherOrder: true,
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          secureOptions: $FLAGS,
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+    - pattern: |
+        https.createServer({
+          ciphers: "$CIPHER_SUITE",
+          ...
+        }, $HANDLER)
+    - pattern: |
+        tls.createServer({
+          ciphers: "$CIPHER_SUITE",
+          ...
+        })
+    - pattern: |
+        tls.connect($PORT, $HOST, {
+          ciphers: "$CIPHER_SUITE",
+          ...
+        })
+    - pattern: |
+        tls.connect({
+          ciphers: "$CIPHER_SUITE",
+          ...
+        })
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: TLS cipher suite configuration detected in codebase'
+- id: javascript-crypto-certificate-validation
+  message: Certificate validation configuration detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $OPTIONS = {
+          rejectUnauthorized: true,
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          rejectUnauthorized: false,
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          ca: $CA_CERT,
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          cert: $CERT,
+          key: $KEY,
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          checkServerIdentity: function($HOSTNAME, $CERT) {
+            ...
+          },
+          ...
+        };
+    - pattern: |
+        $AGENT = new https.Agent({
+          rejectUnauthorized: $VALUE,
+          ...
+        });
+    - pattern: |
+        $AGENT = new https.Agent({
+          ca: $CA_CERT,
+          ...
+        });
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-295
+    impact: 'Inventory: Certificate validation configuration detected in codebase'
+- id: javascript-crypto-cipher-rc4
+  message: RC4 stream cipher usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipher("rc4", $KEY)
+    - pattern: crypto.createCipher("rc4-40", $KEY)
+    - pattern: crypto.createCipher("rc4-hmac-md5", $KEY)
+    - pattern: crypto.createDecipher("rc4", $KEY)
+    - pattern: crypto.createDecipher("rc4-40", $KEY)
+    - pattern: crypto.createDecipher("rc4-hmac-md5", $KEY)
+    - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
+    - pattern: CryptoJS.RC4.encrypt($DATA, $KEY)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: RC4 stream cipher usage detected in codebase'
+- id: javascript-crypto-sha3
+  message: SHA3 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha3-224")
+    - pattern: crypto.createHash("sha3-256")
+    - pattern: crypto.createHash("sha3-384")
+    - pattern: crypto.createHash("sha3-512")
+    - pattern: crypto.createHash("shake128")
+    - pattern: crypto.createHash("shake256")
+    - pattern: crypto.createHash('sha3-224')
+    - pattern: crypto.createHash('sha3-256')
+    - pattern: crypto.createHash('sha3-384')
+    - pattern: crypto.createHash('sha3-512')
+    - pattern: crypto.createHash('shake128')
+    - pattern: crypto.createHash('shake256')
+    - pattern: |
+        $HASHER = crypto.createHash("sha3-256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha3-256").update($DATA).digest()
+    - pattern: crypto.createHash("shake128").update($DATA).digest()
+    - pattern: crypto.createHash("shake256").update($DATA).digest()
+    - pattern: require("crypto-js").SHA3($DATA)
+    - pattern: CryptoJS.SHA3($DATA)
+    - pattern: require("@noble/hashes").sha3_224($DATA)
+    - pattern: require("@noble/hashes").sha3_256($DATA)
+    - pattern: require("@noble/hashes").sha3_384($DATA)
+    - pattern: require("@noble/hashes").sha3_512($DATA)
+    - pattern: require("@noble/hashes").shake128($DATA)
+    - pattern: require("@noble/hashes").shake256($DATA)
+    - pattern: |
+        const { sha3_256 } = require("@noble/hashes");
+        sha3_256($DATA)
+    - pattern: |
+        const { shake128 } = require("@noble/hashes");
+        shake128($DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA3 hash function usage detected in codebase'
+- id: javascript-crypto-md5
+  message: MD5 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("md5")
+    - pattern: crypto.createHash('md5')
+    - pattern: |
+        $HASHER = crypto.createHash("md5");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("md5").update($DATA).digest()
+    - pattern: |
+        $HASHER = crypto.createHash("md5");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("hex");
+    - pattern: |
+        $HASHER = crypto.createHash("md5");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("base64");
+    - pattern: crypto.createHash("md5").update($DATA).digest("hex")
+    - pattern: crypto.createHash("md5").update($DATA).digest("base64")
+    - pattern: require("crypto-js").MD5($DATA)
+    - pattern: CryptoJS.MD5($DATA)
+    - pattern: |
+        const crypto = await import('crypto');
+        crypto.createHash("md5")
+    - pattern: |
+        const { createHash } = require('crypto');
+        createHash("md5")
+    - pattern: |
+        const { createHash } = await import('crypto');
+        createHash("md5")
+    - patterns:
+      - pattern: crypto.createHash($ALGO)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"(md5|MD5)"'
+    - patterns:
+      - pattern: |
+          $HASHER = crypto.createHash($ALGO);
+          $HASHER.update($DATA);
+          $HASH = $HASHER.digest();
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"(md5|MD5)"'
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: MD5 hash function usage detected in codebase'
+- id: javascript-crypto-tls-version
+  message: TLS version configuration detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $OPTIONS = {
+          secureProtocol: "TLSv1_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          secureProtocol: "TLSv1_1_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          secureProtocol: "TLSv1_2_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          minVersion: "TLSv1.2",
+          maxVersion: "TLSv1.3",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          minVersion: "TLSv1",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          minVersion: "TLSv1.1",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          minVersion: "TLSv1.2",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          minVersion: "TLSv1.3",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          maxVersion: "TLSv1",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          maxVersion: "TLSv1.1",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          maxVersion: "TLSv1.2",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          maxVersion: "TLSv1.3",
+          ...
+        };
+    - pattern: https.createServer($OPTIONS, $HANDLER)
+    - pattern: tls.createServer($OPTIONS)
+    - pattern: tls.connect($PORT, $HOST, $OPTIONS)
+    - pattern: tls.connect($OPTIONS)
+    - pattern: |
+        https.createServer({
+          secureProtocol: $PROTOCOL,
+          ...
+        }, $HANDLER)
+    - pattern: |
+        https.createServer({
+          minVersion: $VERSION,
+          ...
+        }, $HANDLER)
+    - pattern: |
+        https.createServer({
+          maxVersion: $VERSION,
+          ...
+        }, $HANDLER)
+    - pattern: |
+        tls.createServer({
+          secureProtocol: $PROTOCOL,
+          ...
+        })
+    - pattern: |
+        tls.createServer({
+          minVersion: $VERSION,
+          ...
+        })
+    - pattern: |
+        tls.createServer({
+          maxVersion: $VERSION,
+          ...
+        })
+    - pattern: |
+        tls.connect($PORT, $HOST, {
+          secureProtocol: $PROTOCOL,
+          ...
+        })
+    - pattern: |
+        tls.connect($PORT, $HOST, {
+          minVersion: $VERSION,
+          ...
+        })
+    - pattern: |
+        tls.connect($PORT, $HOST, {
+          maxVersion: $VERSION,
+          ...
+        })
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: TLS version configuration detected in codebase'
+- id: javascript-crypto-sha512
+  message: SHA512 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha512")
+    - pattern: crypto.createHash('sha512')
+    - pattern: crypto.createHash("sha384")
+    - pattern: crypto.createHash('sha384')
+    - pattern: |
+        $HASHER = crypto.createHash("sha512");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: |
+        $HASHER = crypto.createHash("sha384");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha512").update($DATA).digest()
+    - pattern: crypto.createHash("sha384").update($DATA).digest()
+    - pattern: |
+        $HASHER = crypto.createHash("sha512");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("hex");
+    - pattern: |
+        $HASHER = crypto.createHash("sha512");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("base64");
+    - pattern: crypto.createHash("sha512").update($DATA).digest("hex")
+    - pattern: crypto.createHash("sha512").update($DATA).digest("base64")
+    - pattern: require("crypto-js").SHA512($DATA)
+    - pattern: require("crypto-js").SHA384($DATA)
+    - pattern: CryptoJS.SHA512($DATA)
+    - pattern: CryptoJS.SHA384($DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA512 hash function usage detected in codebase'
+- id: javascript-crypto-sha1
+  message: SHA1 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha1")
+    - pattern: crypto.createHash('sha1')
+    - pattern: |
+        $HASHER = crypto.createHash("sha1");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha1").update($DATA).digest()
+    - pattern: |
+        $HASHER = crypto.createHash("sha1");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("hex");
+    - pattern: |
+        $HASHER = crypto.createHash("sha1");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("base64");
+    - pattern: crypto.createHash("sha1").update($DATA).digest("hex")
+    - pattern: crypto.createHash("sha1").update($DATA).digest("base64")
+    - pattern: require("crypto-js").SHA1($DATA)
+    - pattern: CryptoJS.SHA1($DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA1 hash function usage detected in codebase'
+- id: javascript-crypto-hardcoded-key
+  message: Hardcoded cryptographic key detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipheriv($ALGO, "$KEY", $IV)
+    - pattern: crypto.createDecipheriv($ALGO, "$KEY", $IV)
+    - pattern: crypto.createCipher($ALGO, "$KEY")
+    - pattern: crypto.createDecipher($ALGO, "$KEY")
+    - pattern: |
+        const $KEY = "$VALUE";
+        ...
+        crypto.createCipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        const $KEY = "$VALUE";
+        ...
+        crypto.createDecipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        let $KEY = "$VALUE";
+        ...
+        crypto.createCipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        let $KEY = "$VALUE";
+        ...
+        crypto.createDecipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        var $KEY = "$VALUE";
+        ...
+        crypto.createCipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        var $KEY = "$VALUE";
+        ...
+        crypto.createDecipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        const $KEY = Buffer.from("$VALUE");
+        ...
+        crypto.createCipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        const $KEY = Buffer.from("$VALUE", "hex");
+        ...
+        crypto.createCipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        const $KEY = Buffer.from("$VALUE", "base64");
+        ...
+        crypto.createCipheriv($ALGO, $KEY, $IV)
+    - pattern: |
+        const $CONFIG = {
+          key: "$VALUE",
+          ...
+        };
+        ...
+        crypto.createCipheriv($ALGO, $CONFIG.key, $IV)
+    - pattern: |
+        let $CONFIG = {
+          key: "$VALUE",
+          ...
+        };
+        ...
+        crypto.createCipheriv($ALGO, $CONFIG.key, $IV)
+    - pattern: |
+        var $CONFIG = {
+          key: "$VALUE",
+          ...
+        };
+        ...
+        crypto.createCipheriv($ALGO, $CONFIG.key, $IV)
+    - pattern: crypto.createCipheriv($ALGO, Buffer.from("$KEY"), $IV)
+    - pattern: crypto.createCipheriv($ALGO, Buffer.from("$KEY", "hex"), $IV)
+    - pattern: crypto.createCipheriv($ALGO, Buffer.from("$KEY", "base64"), $IV)
+    - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY"), $DATA)
+    - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY", "hex"), $DATA)
+    - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY", "base64"), $DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  pattern-not:
+  - pattern: |
+      $KEY = process.env.$VAR
+      ...
+      crypto.createCipheriv($ALGO, $KEY, $IV)
+  - pattern: |
+      const $KEY = process.env.$VAR
+      ...
+      crypto.createCipheriv($ALGO, $KEY, $IV)
+  - pattern: |
+      $KEY = require($MODULE).$PROP
+      ...
+      crypto.createCipheriv($ALGO, $KEY, $IV)
+  - pattern: |
+      const $KEY = require($MODULE).$PROP
+      ...
+      crypto.createCipheriv($ALGO, $KEY, $IV)
+  - pattern: |
+      $KEY = $CONFIG.$PROP
+      ...
+      crypto.createCipheriv($ALGO, $KEY, $IV)
+  - pattern: |
+      const $KEY = $CONFIG.$PROP
+      ...
+      crypto.createCipheriv($ALGO, $KEY, $IV)
+  metadata:
+    category: crypto
+    cwe: CWE-798
+    impact: 'Inventory: Hardcoded cryptographic key detected in codebase'
+- id: javascript-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createSign("ecdsa-with-SHA256")
+    - pattern: crypto.createSign("ecdsa-with-SHA512")
+    - pattern: crypto.createVerify("ecdsa-with-SHA256")
+    - pattern: crypto.createVerify("ecdsa-with-SHA512")
+    - pattern: |
+        $SIGN = crypto.createSign("ecdsa-with-SHA256");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY = crypto.createVerify("ecdsa-with-SHA256");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: crypto.createECDH("prime256v1")
+    - pattern: crypto.createECDH("secp256k1")
+    - pattern: crypto.createECDH("secp384r1")
+    - pattern: crypto.createECDH("secp521r1")
+    - pattern: |
+        $ECDH = crypto.createECDH("prime256v1");
+        $ECDH.generateKeys();
+        $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+    - pattern: |
+        crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-384" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-521" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: ECDSA cryptographic operations detected in codebase'
+- id: javascript-crypto-key-length
+  message: Cryptographic key length usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $BITS
+          comparison: $BITS < 2048
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $BITS
+          comparison: $BITS < 2048
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "ECDSA", namedCurve: $CURVE }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $CURVE
+          regex: '"(P-224|P-256|P-384|P-521|secp160k1|secp256k1|prime256v1)"'
+    - pattern: crypto.createECDH($CURVE)
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-GCM", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-GCM", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $LENGTH
+          comparison: $LENGTH < 128
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $LENGTH
+          comparison: $LENGTH < 128
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $LENGTH
+          comparison: $LENGTH < 128
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Cryptographic key length usage detected in codebase'
+- id: javascript-crypto-sha256
+  message: SHA256 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha256")
+    - pattern: crypto.createHash('sha256')
+    - pattern: |
+        $HASHER = crypto.createHash("sha256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha256").update($DATA).digest()
+    - pattern: |
+        $HASHER = crypto.createHash("sha256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("hex");
+    - pattern: |
+        $HASHER = crypto.createHash("sha256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("base64");
+    - pattern: crypto.createHash("sha256").update($DATA).digest("hex")
+    - pattern: crypto.createHash("sha256").update($DATA).digest("base64")
+    - pattern: require("crypto-js").SHA256($DATA)
+    - pattern: CryptoJS.SHA256($DATA)
+    - pattern: |
+        const crypto = await import('crypto');
+        crypto.createHash("sha256")
+    - pattern: |
+        const { createHash } = require('crypto');
+        createHash("sha256")
+    - pattern: |
+        const { createHash } = await import('crypto');
+        createHash("sha256")
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA256 hash function usage detected in codebase'
+- id: javascript-crypto-cipher-aes
+  message: AES cipher usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipher("aes-256-cbc", $KEY)
+    - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipher("aes-256-cbc", $KEY)
+    - pattern: crypto.createDecipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: |
+        $CIPHER = crypto.createCipheriv("aes-256-gcm", $KEY, $IV);
+        $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
+        $CIPHERTEXT += $CIPHER.final();
+    - pattern: require("crypto-js").AES.encrypt($DATA, $KEY)
+    - pattern: CryptoJS.AES.encrypt($DATA, $KEY)
+    - pattern: |
+        const crypto = await import('crypto');
+        crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: |
+        const { createCipheriv } = require('crypto');
+        createCipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: |
+        const { createCipheriv } = await import('crypto');
+        createCipheriv("aes-256-cbc", $KEY, $IV)
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGO, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"aes-.*"'
+    - patterns:
+      - pattern: crypto.createDecipheriv($ALGO, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"aes-.*"'
+    - patterns:
+      - pattern: crypto.createCipher($ALGO, $KEY)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"aes-.*"'
+    - patterns:
+      - pattern: crypto.createDecipher($ALGO, $KEY)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"aes-.*"'
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: AES cipher usage detected in codebase'
+- id: javascript-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.randomBytes($LENGTH)
+    - pattern: crypto.getRandomValues($ARRAY)
+    - pattern: |
+        $BYTES = crypto.randomBytes($LENGTH);
+        ...
+        $BYTES
+    - pattern: Math.random()
+    - pattern: Math.floor(Math.random() * $MAX)
+  focus-metavariable: $LENGTH
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-338
+    impact: 'Inventory: Random number generation for cryptographic use detected in
+      codebase'
+- id: javascript-crypto-password-hashing
+  message: Password hashing operations detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
+    - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
+    - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+    - pattern: require("bcrypt").hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: require("bcrypt").hashSync($PASSWORD, $ROUNDS)
+    - pattern: require("bcrypt").compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: require("bcrypt").compareSync($PASSWORD, $HASH)
+    - pattern: require("bcryptjs").hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: require("bcryptjs").hashSync($PASSWORD, $ROUNDS)
+    - pattern: require("bcryptjs").compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: require("bcryptjs").compareSync($PASSWORD, $HASH)
+    - pattern: $BCRYPT.hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: $BCRYPT.hashSync($PASSWORD, $ROUNDS)
+    - pattern: $BCRYPT.compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: $BCRYPT.compareSync($PASSWORD, $HASH)
+    - pattern: bcrypt.hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: bcrypt.hashSync($PASSWORD, $ROUNDS)
+    - pattern: bcrypt.compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: bcrypt.compareSync($PASSWORD, $HASH)
+    - pattern: bcryptjs.hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: bcryptjs.hashSync($PASSWORD, $ROUNDS)
+    - pattern: bcryptjs.compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: bcryptjs.compareSync($PASSWORD, $HASH)
+    - patterns:
+      - pattern: require("bcrypt").hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - patterns:
+      - pattern: require("bcryptjs").hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - patterns:
+      - pattern: bcrypt.hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - patterns:
+      - pattern: bcryptjs.hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - pattern: |
+        $HASH = await bcrypt.hash($PASSWORD, $ROUNDS);
+        ...
+        $MATCH = await bcrypt.compare($PASSWORD, $HASH);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Password hashing operations detected in codebase'
+- id: javascript-crypto-ed25519
+  message: Ed25519 signature operations detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createSign("ed25519")
+    - pattern: crypto.createVerify("ed25519")
+    - pattern: |
+        $SIGN = crypto.createSign("ed25519");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY = crypto.createVerify("ed25519");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: |
+        crypto.subtle.generateKey({ name: "Ed25519" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+    - pattern: require("@noble/ed25519").sign($MESSAGE, $PRIVATE_KEY)
+    - pattern: require("@noble/ed25519").verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+    - pattern: require("@noble/ed25519").getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").ed25519.sign($MESSAGE, $PRIVATE_KEY)
+    - pattern: require("@noble/curves").ed25519.verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").ed25519.getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").ed448.sign($MESSAGE, $PRIVATE_KEY)
+    - pattern: require("@noble/curves").ed448.verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").ed448.getPublicKey($PRIVATE_KEY)
+    - pattern: |
+        const { ed25519 } = require("@noble/curves");
+        ed25519.sign($MESSAGE, $PRIVATE_KEY)
+    - pattern: |
+        const { ed25519 } = require("@noble/curves");
+        ed25519.verify($SIGNATURE, $MESSAGE, $PUBLIC_KEY)
+    - pattern: require("tweetnacl").sign.detached($MESSAGE, $SECRET_KEY)
+    - pattern: require("tweetnacl").sign($MESSAGE, $SECRET_KEY)
+    - pattern: require("tweetnacl").sign.open($SIGNED_MESSAGE, $PUBLIC_KEY)
+    - pattern: require("tweetnacl").sign.detached.verify($MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+    - pattern: require("libsodium-wrappers").crypto_sign($MESSAGE, $SECRET_KEY)
+    - pattern: require("libsodium-wrappers").crypto_sign_open($SIGNED_MESSAGE, $PUBLIC_KEY)
+    - pattern: require("libsodium-wrappers").crypto_sign_detached($MESSAGE, $SECRET_KEY)
+    - pattern: require("libsodium-wrappers").crypto_sign_verify_detached($SIGNATURE,
+        $MESSAGE, $PUBLIC_KEY)
+    - pattern: require("sjcl").ecc.ecdsa.generateKeys($CURVE, $PARANOIA)
+    - pattern: require("sjcl").ecc.ecdsa.secretKey($KEY)
+    - pattern: require("sjcl").ecc.ecdsa.publicKey($KEY)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Ed25519 signature operations detected in codebase'
+- id: javascript-crypto-hash-comparison
+  message: Hash function used in comparison or verification detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $HASH1 = crypto.createHash("md5");
+        $HASH1.update($DATA1);
+        $HASH2 = crypto.createHash("md5");
+        $HASH2.update($DATA2);
+        $HASH1.digest("hex") === $HASH2.digest("hex")
+    - pattern: |
+        $HASH1 = crypto.createHash("sha1");
+        $HASH1.update($DATA1);
+        $HASH2 = crypto.createHash("sha1");
+        $HASH2.update($DATA2);
+        $HASH1.digest("hex") === $HASH2.digest("hex")
+    - pattern: |
+        $HASH1 = crypto.createHash("sha256");
+        $HASH1.update($DATA1);
+        $HASH2 = crypto.createHash("sha256");
+        $HASH2.update($DATA2);
+        $HASH1.digest("hex") === $HASH2.digest("hex")
+    - pattern: |
+        $HASH = crypto.createHash("md5");
+        $HASH.update($DATA);
+        if ($HASH.digest("hex") === $EXPECTED) {
+          ...
+        }
+    - pattern: |
+        $HASH = crypto.createHash("sha1");
+        $HASH.update($DATA);
+        if ($HASH.digest("hex") === $EXPECTED) {
+          ...
+        }
+    - pattern: |
+        $HASH = crypto.createHash("sha256");
+        $HASH.update($DATA);
+        if ($HASH.digest("hex") === $EXPECTED) {
+          ...
+        }
+    - pattern: |
+        $HASH = crypto.createHash("md5");
+        $HASH.update($DATA);
+        crypto.timingSafeEqual($HASH.digest(), $EXPECTED)
+    - pattern: |
+        $HASH = crypto.createHash("sha256");
+        $HASH.update($DATA);
+        crypto.timingSafeEqual($HASH.digest(), $EXPECTED)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Hash function used in comparison or verification detected
+      in codebase'
+- id: javascript-crypto-rsa
+  message: RSA cryptographic operations detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.publicEncrypt($KEY, $DATA)
+    - pattern: crypto.privateDecrypt($KEY, $DATA)
+    - pattern: crypto.privateEncrypt($KEY, $DATA)
+    - pattern: crypto.publicDecrypt($KEY, $DATA)
+    - pattern: |
+        $CIPHERTEXT = crypto.publicEncrypt($PUBLIC_KEY, $PLAINTEXT);
+    - pattern: |
+        $PLAINTEXT = crypto.privateDecrypt($PRIVATE_KEY, $CIPHERTEXT);
+    - pattern: crypto.createSign("RSA-SHA256")
+    - pattern: crypto.createSign("RSA-SHA512")
+    - pattern: crypto.createVerify("RSA-SHA256")
+    - pattern: crypto.createVerify("RSA-SHA512")
+    - pattern: |
+        $SIGN = crypto.createSign("RSA-SHA256");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY = crypto.createVerify("RSA-SHA256");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: require("node-forge").pki.rsa.generateKeyPair($BITS)
+    - pattern: require("node-forge").pki.rsa.encrypt($DATA, $PUBLIC_KEY)
+    - pattern: require("node-forge").pki.rsa.decrypt($DATA, $PRIVATE_KEY)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: RSA cryptographic operations detected in codebase'
+- id: javascript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.randomBytes($LENGTH)
+    - pattern: crypto.getRandomValues($ARRAY)
+    - pattern: |
+        $SALT = crypto.randomBytes(16);
+        ...
+        crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+    - pattern: |
+        $SALT = crypto.randomBytes(32);
+        ...
+        crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS);
+    - pattern: |
+        $SALT = crypto.getRandomValues(new Uint8Array(16));
+        ...
+        crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+    - pattern: |
+        $SALT = crypto.randomBytes($SALT_LENGTH);
+        ...
+        require("bcrypt").hashSync($PASSWORD, $ROUNDS);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-330
+    impact: 'Inventory: Salt generation for cryptographic use detected in codebase'
+- id: javascript-crypto-hmac
+  message: HMAC usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHmac("sha256", $KEY)
+    - pattern: crypto.createHmac("sha512", $KEY)
+    - pattern: crypto.createHmac("sha1", $KEY)
+    - pattern: crypto.createHmac("md5", $KEY)
+    - pattern: crypto.createHmac("sha384", $KEY)
+    - pattern: |
+        $HMAC = crypto.createHmac("sha256", $KEY);
+        $HMAC.update($DATA);
+        $RESULT = $HMAC.digest();
+    - pattern: crypto.createHmac("sha256", $KEY).update($DATA).digest()
+    - pattern: require("crypto-js").HmacSHA256($DATA, $KEY)
+    - pattern: require("crypto-js").HmacSHA512($DATA, $KEY)
+    - pattern: require("crypto-js").HmacSHA1($DATA, $KEY)
+    - pattern: CryptoJS.HmacSHA256($DATA, $KEY)
+    - pattern: CryptoJS.HmacSHA512($DATA, $KEY)
+    - pattern: CryptoJS.HmacSHA1($DATA, $KEY)
+    - pattern: |
+        $HMAC1 = crypto.createHmac("sha256", $KEY);
+        $HMAC1.update($DATA);
+        $HMAC2 = crypto.createHmac("sha256", $KEY);
+        $HMAC2.update($DATA);
+        crypto.timingSafeEqual($HMAC1.digest(), $HMAC2.digest())
+    - pattern: |
+        $HMAC1 = crypto.createHmac("sha256", $KEY);
+        $HMAC1.update($DATA);
+        $HMAC2 = crypto.createHmac("sha256", $KEY);
+        $HMAC2.update($DATA);
+        $HMAC1.digest() === $HMAC2.digest()
+    - pattern: |
+        $HMAC = crypto.createHmac("sha256", $KEY);
+        $HMAC.update($DATA);
+        $EXPECTED = Buffer.from($EXPECTED_STRING, "hex");
+        crypto.timingSafeEqual($HMAC.digest(), $EXPECTED)
+    - patterns:
+      - pattern: crypto.createHmac($ALGO, $KEY)
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"(sha256|sha512|sha1|md5|sha384)"'
+    - patterns:
+      - pattern: |
+          $HMAC = crypto.createHmac($ALGO, $KEY);
+          $HMAC.update($DATA);
+          $RESULT = $HMAC.digest();
+      - metavariable-regex:
+          metavariable: $ALGO
+          regex: '"(sha256|sha512|sha1|md5|sha384)"'
+    - pattern: |
+        crypto.subtle.sign({ name: "HMAC", hash: $HASH }, $KEY, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "HMAC", hash: $HASH }, $KEY, $SIG, $DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: HMAC usage detected in codebase'
+- id: javascript-crypto-ripemd160
+  message: RIPEMD-160 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("ripemd160")
+    - pattern: crypto.createHash("rmd160")
+    - pattern: crypto.createHash('ripemd160')
+    - pattern: crypto.createHash('rmd160')
+    - pattern: |
+        $HASHER = crypto.createHash("ripemd160");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("ripemd160").update($DATA).digest()
+    - pattern: |
+        $HASHER = crypto.createHash("ripemd160");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("hex");
+    - pattern: |
+        $HASHER = crypto.createHash("ripemd160");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest("base64");
+    - pattern: crypto.createHash("ripemd160").update($DATA).digest("hex")
+    - pattern: crypto.createHash("ripemd160").update($DATA).digest("base64")
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: RIPEMD-160 hash function usage detected in codebase'
+- id: javascript-crypto-digital-signatures
+  message: Digital signature operations detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createSign("RSA-SHA256")
+    - pattern: crypto.createSign("RSA-SHA512")
+    - pattern: crypto.createSign("ecdsa-with-SHA256")
+    - pattern: crypto.createSign("ecdsa-with-SHA512")
+    - pattern: crypto.createVerify("RSA-SHA256")
+    - pattern: crypto.createVerify("RSA-SHA512")
+    - pattern: crypto.createVerify("ecdsa-with-SHA256")
+    - pattern: crypto.createVerify("ecdsa-with-SHA512")
+    - pattern: |
+        $SIGN = crypto.createSign("RSA-SHA256");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY = crypto.createVerify("RSA-SHA256");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: |
+        crypto.subtle.sign({ name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.sign({ name: "RSA-PSS", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "RSA-PSS", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Digital signature operations detected in codebase'
+- id: javascript-crypto-blake2
+  message: BLAKE2 hash function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("blake2b512")
+    - pattern: crypto.createHash("blake2s256")
+    - pattern: crypto.createHash('blake2b512')
+    - pattern: crypto.createHash('blake2s256')
+    - pattern: |
+        $HASHER = crypto.createHash("blake2b512");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: |
+        $HASHER = crypto.createHash("blake2s256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("blake2b512").update($DATA).digest()
+    - pattern: crypto.createHash("blake2s256").update($DATA).digest()
+    - pattern: require("@noble/hashes").blake2b($DATA)
+    - pattern: require("@noble/hashes").blake2s($DATA)
+    - pattern: require("@noble/hashes").blake2b512($DATA)
+    - pattern: require("@noble/hashes").blake2s256($DATA)
+    - pattern: |
+        const { blake2b } = require("@noble/hashes");
+        blake2b($DATA)
+    - pattern: |
+        const { blake2s } = require("@noble/hashes");
+        blake2s($DATA)
+  focus-metavariable: $DATA
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: BLAKE2 hash function usage detected in codebase'
+- id: javascript-crypto-webcrypto-api
+  message: Web Crypto API usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.subtle.encrypt($ALGO, $KEY, $DATA)
+    - pattern: crypto.subtle.decrypt($ALGO, $KEY, $DATA)
+    - pattern: crypto.subtle.sign($ALGO, $KEY, $DATA)
+    - pattern: crypto.subtle.verify($ALGO, $KEY, $SIG, $DATA)
+    - pattern: crypto.subtle.generateKey($ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
+        $USAGE)
+    - pattern: crypto.subtle.deriveBits($ALGO, $BASE_KEY, $LENGTH)
+    - pattern: crypto.subtle.digest($ALGO, $DATA)
+    - pattern: crypto.subtle.importKey($FORMAT, $KEY_DATA, $ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: crypto.subtle.exportKey($FORMAT, $KEY)
+    - pattern: crypto.subtle.wrapKey($FORMAT, $KEY, $WRAPPING_KEY, $WRAP_ALGO)
+    - pattern: crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO,
+        $UNWRAPPED_ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $HASH = await crypto.subtle.digest("SHA-256", $DATA);
+    - pattern: |
+        $KEY = await crypto.subtle.importKey("raw", $KEY_DATA, "AES-GCM", false, ["encrypt"]);
+    - pattern: |
+        $KEY_DATA = await crypto.subtle.exportKey("raw", $KEY);
+    - pattern: |
+        $WRAPPED = await crypto.subtle.wrapKey("raw", $KEY, $WRAPPING_KEY, { name: "AES-KW" });
+    - pattern: |
+        $UNWRAPPED = await crypto.subtle.unwrapKey("raw", $WRAPPED_KEY, $UNWRAPPING_KEY, { name: "AES-KW" }, "AES-GCM", false, ["encrypt"]);
+    - pattern: |
+        crypto.subtle.encrypt({ name: "ChaCha20-Poly1305", iv: $IV }, $KEY, $DATA)
+    - pattern: |
+        crypto.subtle.decrypt({ name: "ChaCha20-Poly1305", iv: $IV }, $KEY, $DATA)
+    - pattern: |
+        crypto.subtle.generateKey({ name: "X25519" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.generateKey({ name: "X448" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.generateKey({ name: "Ed25519" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.generateKey({ name: "Ed448" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIG, $DATA)
+    - pattern: |
+        crypto.subtle.sign({ name: "Ed448" }, $PRIVATE_KEY, $DATA)
+    - pattern: |
+        crypto.subtle.verify({ name: "Ed448" }, $PUBLIC_KEY, $SIG, $DATA)
+    - pattern: |
+        crypto.subtle.deriveKey({ name: "X25519" }, $PRIVATE_KEY, $PUBLIC_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.deriveKey({ name: "X448" }, $PRIVATE_KEY, $PUBLIC_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.deriveBits({ name: "X25519" }, $PRIVATE_KEY, $PUBLIC_KEY, $LENGTH)
+    - pattern: |
+        crypto.subtle.deriveBits({ name: "X448" }, $PRIVATE_KEY, $PUBLIC_KEY, $LENGTH)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Web Crypto API usage detected in codebase'
+- id: javascript-crypto-scrypt
+  message: Scrypt key derivation function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
+    - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+    - pattern: |
+        crypto.scrypt($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P }, function($ERR, $KEY) {
+          ...
+        });
+    - pattern: |
+        $KEY = crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P });
+    - patterns:
+      - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+      - metavariable-regex:
+          metavariable: $KEYLEN
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P })
+      - metavariable-comparison:
+          metavariable: $N
+          comparison: $N < 16384
+    - patterns:
+      - pattern: |
+          crypto.scrypt($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P }, $CALLBACK)
+      - metavariable-comparison:
+          metavariable: $N
+          comparison: $N < 16384
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Scrypt key derivation function usage detected in codebase'
+- id: javascript-crypto-cipher-des
+  message: DES cipher usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipher("des", $KEY)
+    - pattern: crypto.createCipher("des-ede", $KEY)
+    - pattern: crypto.createCipher("des-ede3", $KEY)
+    - pattern: crypto.createCipheriv("des", $KEY, $IV)
+    - pattern: crypto.createCipheriv("des-ede", $KEY, $IV)
+    - pattern: crypto.createCipheriv("des-ede3", $KEY, $IV)
+    - pattern: crypto.createDecipher("des", $KEY)
+    - pattern: crypto.createDecipher("des-ede", $KEY)
+    - pattern: crypto.createDecipher("des-ede3", $KEY)
+    - pattern: crypto.createDecipheriv("des", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("des-ede", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("des-ede3", $KEY, $IV)
+    - pattern: require("crypto-js").DES.encrypt($DATA, $KEY)
+    - pattern: CryptoJS.DES.encrypt($DATA, $KEY)
+    - pattern: require("crypto-js").TripleDES.encrypt($DATA, $KEY)
+    - pattern: CryptoJS.TripleDES.encrypt($DATA, $KEY)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: DES cipher usage detected in codebase'
+- id: javascript-crypto-cipher-modes
+  message: Cryptographic cipher mode usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-ecb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-cfb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-ofb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-ctr", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-gcm", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-ecb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-cfb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-ofb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-ctr", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-gcm", $KEY, $IV)
+    - pattern: |
+        crypto.subtle.encrypt({ name: "ChaCha20-Poly1305", iv: $IV }, $KEY, $DATA)
+    - pattern: |
+        crypto.subtle.decrypt({ name: "ChaCha20-Poly1305", iv: $IV }, $KEY, $DATA)
+    - pattern: require("@noble/ciphers").chacha20poly1305($KEY, $NONCE)
+    - pattern: require("tweetnacl").secretbox($MESSAGE, $NONCE, $KEY)
+    - pattern: require("tweetnacl").secretbox.open($CIPHERTEXT, $NONCE, $KEY)
+    - pattern: require("libsodium-wrappers").crypto_secretbox($MESSAGE, $NONCE, $KEY)
+    - pattern: require("libsodium-wrappers").crypto_secretbox_open($CIPHERTEXT, $NONCE,
+        $KEY)
+    - pattern: require("sjcl").mode.ocb2.encrypt($CIPHER, $PLAINTEXT, $IV)
+    - pattern: require("sjcl").mode.ocb2.decrypt($CIPHER, $CIPHERTEXT, $IV)
+    - pattern: require("sjcl").mode.gcm.encrypt($CIPHER, $PLAINTEXT, $IV)
+    - pattern: require("sjcl").mode.gcm.decrypt($CIPHER, $CIPHERTEXT, $IV)
+    - pattern: |
+        $CIPHER = crypto.createCipheriv("aes-256-$MODE", $KEY, $IV);
+        $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
+        $CIPHERTEXT += $CIPHER.final();
+    - pattern: |
+        $DECIPHER = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
+        $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
+        $PLAINTEXT += $DECIPHER.final();
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Cryptographic cipher mode usage detected in codebase'
+- id: javascript-crypto-static-salt
+  message: Static salt value usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: |
+        const SALT = Buffer.from("$STATIC_VALUE");
+        ...
+        crypto.pbkdf2Sync($PASSWORD, SALT, $ITER, $KEYLEN, $DIGEST);
+    - pattern: |
+        const SALT = Buffer.from("$STATIC_VALUE");
+        ...
+        crypto.scryptSync($PASSWORD, SALT, $KEYLEN);
+    - pattern: crypto.pbkdf2Sync($PASSWORD, Buffer.from("$STATIC_SALT"), $ITER, $KEYLEN,
+        $DIGEST)
+    - pattern: crypto.scryptSync($PASSWORD, Buffer.from("$STATIC_SALT"), $KEYLEN)
+    - pattern: |
+        const SALT = new Uint8Array([$STATIC_VALUES]);
+        ...
+        crypto.subtle.deriveKey({ name: "PBKDF2", salt: SALT, iterations: $ITER, hash: "SHA-256" }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE);
+    - pattern: |
+        const SALT = Buffer.from("$STATIC_VALUE", "hex");
+        ...
+        crypto.pbkdf2Sync($PASSWORD, SALT, $ITER, $KEYLEN, $DIGEST);
+    - pattern: |
+        const SALT = Buffer.from("$STATIC_VALUE", "base64");
+        ...
+        crypto.pbkdf2Sync($PASSWORD, SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: |
+        const STATIC_SALT = "$VALUE";
+        ...
+        crypto.pbkdf2Sync($PASSWORD, Buffer.from(STATIC_SALT), $ITER, $KEYLEN, $DIGEST)
+    - pattern: |
+        const STATIC_SALT = "$VALUE";
+        ...
+        crypto.scryptSync($PASSWORD, Buffer.from(STATIC_SALT), $KEYLEN)
+    - pattern: |
+        const STATIC_SALT = "$VALUE";
+        ...
+        crypto.subtle.deriveKey({ name: "PBKDF2", salt: Buffer.from(STATIC_SALT), iterations: $ITER, hash: "SHA-256" }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+    - patterns:
+      - pattern: |
+          const SALT = Buffer.from("$STATIC_VALUE");
+          ...
+          crypto.pbkdf2Sync($PASSWORD, SALT, $ITER, $KEYLEN, $DIGEST);
+      - metavariable-regex:
+          metavariable: $STATIC_VALUE
+          regex: ^(?!.*randomBytes|.*getRandomValues|.*random).*$
+    - patterns:
+      - pattern: |
+          const SALT = Buffer.from("$STATIC_VALUE");
+          ...
+          crypto.scryptSync($PASSWORD, SALT, $KEYLEN);
+      - metavariable-regex:
+          metavariable: $STATIC_VALUE
+          regex: ^(?!.*randomBytes|.*getRandomValues|.*random).*$
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-330
+    impact: 'Inventory: Static salt value usage detected in codebase'
+- id: javascript-crypto-key-derivation
+  message: Key derivation function usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
+    - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
+    - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+    - pattern: crypto.createECDH("prime256v1")
+    - pattern: |
+        $ECDH = crypto.createECDH("prime256v1");
+        $ECDH.generateKeys();
+        $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+    - pattern: crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
+        $USAGE)
+    - pattern: crypto.subtle.deriveBits($ALGO, $BASE_KEY, $LENGTH)
+    - pattern: |
+        $KEY = await crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+          $BASE_KEY,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        crypto.subtle.deriveKey({ name: "HKDF", hash: "SHA-256", salt: $SALT, info: $INFO }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.deriveBits({ name: "HKDF", hash: "SHA-256", salt: $SALT, info: $INFO }, $BASE_KEY, $LENGTH)
+    - pattern: |
+        $KEY = await crypto.subtle.deriveKey(
+          { name: "HKDF", hash: "SHA-256", salt: $SALT, info: $INFO },
+          $BASE_KEY,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Key derivation function usage detected in codebase'
+- id: javascript-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+  severity: INFO
+  languages:
+  - javascript
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createDiffieHellman($PRIME, $ENCODING)
+    - pattern: crypto.createDiffieHellman($PRIME_LENGTH)
+    - pattern: crypto.createDiffieHellmanGroup("modp14")
+    - pattern: crypto.createDiffieHellmanGroup("modp15")
+    - pattern: crypto.createDiffieHellmanGroup("modp16")
+    - pattern: |
+        $DH = crypto.createDiffieHellman($PRIME_LENGTH);
+        $DH.generateKeys();
+        $SHARED = $DH.computeSecret($PUBLIC_KEY);
+    - pattern: |
+        $DH = crypto.createDiffieHellmanGroup("modp14");
+        $DH.generateKeys();
+        $SHARED = $DH.computeSecret($PUBLIC_KEY);
+    - pattern: crypto.createECDH("prime256v1")
+    - pattern: crypto.createECDH("secp256k1")
+    - pattern: |
+        $ECDH = crypto.createECDH("prime256v1");
+        $ECDH.generateKeys();
+        $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+    - pattern: |
+        crypto.subtle.generateKey({ name: "X25519" }, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        crypto.subtle.deriveKey({ name: "X25519" }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: require("@noble/curves").x25519.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").x25519.getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").x448.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").x448.getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").secp256k1.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").secp256k1.getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").p256.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").p256.getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").p384.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").p384.getPublicKey($PRIVATE_KEY)
+    - pattern: require("@noble/curves").p521.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("@noble/curves").p521.getPublicKey($PRIVATE_KEY)
+    - pattern: |
+        const { x25519 } = require("@noble/curves");
+        x25519.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: |
+        const { secp256k1 } = require("@noble/curves");
+        secp256k1.getSharedSecret($PRIVATE_KEY, $PUBLIC_KEY)
+    - pattern: require("tweetnacl").box.keyPair()
+    - pattern: require("tweetnacl").box($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+    - pattern: require("tweetnacl").box.open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+    - pattern: require("libsodium-wrappers").crypto_box_keypair()
+    - pattern: require("libsodium-wrappers").crypto_box($MESSAGE, $NONCE, $PUBLIC_KEY,
+        $SECRET_KEY)
+    - pattern: require("libsodium-wrappers").crypto_box_open($CIPHERTEXT, $NONCE,
+        $PUBLIC_KEY, $SECRET_KEY)
+    - pattern: require("sjcl").ecc.elGamal.generateKeys($CURVE, $PARANOIA)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, function() {
+        ...
+      })
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, function() {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, function() {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Diffie-Hellman key exchange usage detected in codebase'

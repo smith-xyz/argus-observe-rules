@@ -1,0 +1,1985 @@
+rules:
+  - id: rust-crypto-sodiumoxide
+    message: sodiumoxide cryptographic library usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sodiumoxide::crypto::box_::gen_keypair()
+          - pattern: sodiumoxide::crypto::sign::gen_keypair()
+          - pattern: sodiumoxide::crypto::secretbox::gen_key()
+          - pattern: sodiumoxide::crypto::box_::seal($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: sodiumoxide::crypto::box_::open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: sodiumoxide::crypto::secretbox::seal($MESSAGE, $NONCE, $KEY)
+          - pattern: sodiumoxide::crypto::secretbox::open($CIPHERTEXT, $NONCE, $KEY)
+          - pattern: sodiumoxide::crypto::sign::sign($MESSAGE, $SECRET_KEY)
+          - pattern: sodiumoxide::crypto::sign::verify($SIGNATURE, $PUBLIC_KEY)
+          - pattern: sodiumoxide::crypto::hash::hash($DATA)
+          - pattern: sodiumoxide::crypto::hash::sha256::hash($DATA)
+          - pattern: sodiumoxide::crypto::hash::sha512::hash($DATA)
+          - pattern:
+              sodiumoxide::crypto::pwhash::derive_key($PASSWORD, $SALT, $OPS_LIMIT,
+              $MEM_LIMIT, $KEY_LEN)
+          - pattern: sodiumoxide::crypto::pwhash::pwhash($PASSWORD, $OPS_LIMIT, $MEM_LIMIT)
+          - pattern: sodiumoxide::crypto::pwhash::pwhash_verify($HASH, $PASSWORD)
+          - pattern: sodiumoxide::randombytes::randombytes($LEN)
+          - pattern: sodiumoxide::randombytes::randombytes_into($BUF)
+          - pattern: |
+              use sodiumoxide::crypto::box_;
+              let ($PUBLIC_KEY, $SECRET_KEY) = box_::gen_keypair();
+              box_::seal($MESSAGE, $NONCE, &$PUBLIC_KEY, &$SECRET_KEY)
+          - pattern: |
+              use sodiumoxide::crypto::sign;
+              let ($PUBLIC_KEY, $SECRET_KEY) = sign::gen_keypair();
+              sign::sign($MESSAGE, &$SECRET_KEY)
+          - pattern: |
+              use sodiumoxide::randombytes;
+              randombytes::randombytes($LEN)
+          - pattern: |
+              async fn $FUNC() {
+                  sodiumoxide::crypto::box_::seal($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: sodiumoxide cryptographic library usage detected in codebase"
+  - id: rust-crypto-ring
+    message: ring cryptographic library usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::digest::digest($ALGO, $DATA)
+          - pattern:
+              ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::from($AAD),
+              $IN_OUT)
+          - pattern:
+              ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::from($AAD),
+              $IN_OUT)
+          - pattern:
+              ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::empty(),
+              $IN_OUT)
+          - pattern:
+              ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::empty(),
+              $IN_OUT)
+          - pattern: ring::hmac::sign($KEY, $MESSAGE)
+          - pattern: ring::hmac::verify($KEY, $MESSAGE, $SIGNATURE)
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: ring::rand::SystemRandom::new()
+          - pattern: ring::rand::generate($RNG, $OUTPUT)
+          - pattern: |
+              use ring::digest;
+              digest::digest(&digest::SHA256, $DATA)
+          - pattern: |
+              use ring::aead;
+              aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ring cryptographic library usage detected in codebase"
+  - id: rust-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sha3::Sha3_224::new()
+          - pattern: sha3::Sha3_256::new()
+          - pattern: sha3::Sha3_384::new()
+          - pattern: sha3::Sha3_512::new()
+          - pattern: sha3::Sha3_224::default()
+          - pattern: sha3::Sha3_256::default()
+          - pattern: sha3::Sha3_384::default()
+          - pattern: sha3::Sha3_512::default()
+          - pattern: |
+              let mut $HASHER = sha3::Sha3_256::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use sha3::{Sha3_256, Digest};
+              let mut $HASHER = Sha3_256::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              let mut $HASHER = sha3::Sha3_512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: crypto::sha3::Sha3_256::new()
+          - pattern: crypto::sha3::Sha3_512::new()
+          - pattern: |
+              use crypto::digest::Digest;
+              let mut $HASHER = crypto::sha3::Sha3_256::new();
+              $HASHER.input($DATA);
+              $HASHER.result_str()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha3::Sha3_256::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha3::Sha3_256::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"
+  - id: rust-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: argon2::hash_encoded($PASSWORD, $SALT, &$CONFIG, $ALGO)
+          - pattern: argon2::verify_encoded($HASH, $PASSWORD)
+          - pattern: argon2::Argon2::new($ALGO, $VERSION, $PARAMS)
+          - pattern: argon2::Argon2::default()
+          - pattern: argon2::Argon2::new_with_secret($SECRET, $ALGO, $VERSION, $PARAMS)
+          - pattern: |
+              use argon2::{Argon2, PasswordHasher, PasswordVerifier};
+              let $ARGON2 = Argon2::default();
+              $ARGON2.hash_password($PASSWORD, $SALT)
+          - patterns:
+              - pattern: argon2::Argon2::new($ALGO, $VERSION, $PARAMS)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: \d+
+          - pattern: scrypt::scrypt($PASSWORD, $SALT, &$PARAMS, $OUTPUT)
+          - patterns:
+              - pattern: scrypt::ScryptParams::new($LOG_N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $LOG_N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+          - pattern: scrypt::ScryptParams::recommended()
+          - pattern: |
+              let $PARAMS = scrypt::ScryptParams::new($LOG_N, $R, $P);
+              scrypt::scrypt($PASSWORD, $SALT, &$PARAMS, $OUTPUT)
+          - pattern: pbkdf2::pbkdf2($PASSWORD, $SALT, $ITERATIONS, $OUTPUT)
+          - patterns:
+              - pattern: pbkdf2::pbkdf2_hmac($ALGO, $PASSWORD, $SALT, $ITERATIONS, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: \d+
+          - patterns:
+              - pattern: |
+                  use pbkdf2::{pbkdf2_hmac, Algorithm};
+                  pbkdf2_hmac(Algorithm::Sha256, $PASSWORD, $SALT, $ITERATIONS, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: \d+
+          - pattern: |
+              async fn $FUNC() {
+                  argon2::hash_encoded($PASSWORD, $SALT, &$CONFIG, $ALGO)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $VERSION
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Key derivation function usage detected in codebase"
+  - id: rust-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::dh::Dh::from_params($P, $G)
+          - pattern: openssl::dh::Dh::from_pqg($P, $Q, $G)
+          - pattern: openssl::dh::Dh::get_2048_256()
+          - pattern: openssl::dh::Dh::get_3072_256()
+          - pattern: openssl::dh::DhParams::get_2048_256()
+          - pattern: openssl::dh::DhParams::get_3072_256()
+          - pattern: |
+              let $DH = openssl::dh::Dh::get_2048_256();
+              let $PUBLIC_KEY = $DH.generate_key();
+          - pattern: |
+              let $DH = openssl::dh::Dh::get_3072_256();
+              let $PUBLIC_KEY = $DH.generate_key();
+          - pattern: |
+              let $DH = openssl::dh::Dh::get_2048_256();
+              let $PUBLIC_KEY = $DH.generate_key();
+              let $SHARED_SECRET = $DH.compute_key($PEER_PUBLIC_KEY);
+          - pattern: x25519_dalek::PublicKey::from($BYTES)
+          - pattern: x25519_dalek::StaticSecret::new($RNG)
+          - pattern: x25519_dalek::StaticSecret::from($BYTES)
+          - pattern: x25519_dalek::StaticSecret::diffie_hellman($SECRET, $PUBLIC_KEY)
+          - pattern: |
+              use x25519_dalek::{StaticSecret, PublicKey};
+              let $SECRET = StaticSecret::new($RNG);
+              let $PUBLIC_KEY = PublicKey::from(&$SECRET);
+              $SECRET.diffie_hellman(&$PEER_PUBLIC_KEY)
+          - pattern:
+              ring::agreement::agree_ephemeral($ALGO, $PRIVATE_KEY, $PUBLIC_KEY,
+              $OUTPUT)
+          - pattern: ring::agreement::EphemeralPrivateKey::generate($ALGO, $RNG)
+          - pattern: ring::agreement::UnparsedPublicKey::new($ALGO, $PUBLIC_KEY_BYTES)
+          - pattern: ring::agreement::X25519
+          - pattern: ring::agreement::P256
+          - pattern: ring::agreement::P384
+          - pattern: |
+              use ring::agreement;
+              let $PRIVATE_KEY = agreement::EphemeralPrivateKey::generate(&agreement::X25519, $RNG);
+              agreement::agree_ephemeral($PRIVATE_KEY, $PUBLIC_KEY, $OUTPUT)
+          - pattern: |
+              async fn $FUNC() {
+                  let ($PUBLIC_KEY, $SECRET_KEY) = x25519_dalek::StaticSecret::new($RNG);
+                  $SECRET_KEY.diffie_hellman(&$PEER_PUBLIC_KEY)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"
+  - id: rust-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sha1::Sha1::new()
+          - pattern: sha1::Sha1::default()
+          - pattern: sha1::Sha1::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha1::Sha1::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use sha1::{Sha1, Digest};
+              let mut $HASHER = Sha1::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: sha1::Sha1::digest($DATA)
+          - pattern: sha1::digest($DATA)
+          - pattern: crypto::sha1::Sha1::new()
+          - pattern: |
+              use crypto::digest::Digest;
+              let mut $HASHER = crypto::sha1::Sha1::new();
+              $HASHER.input($DATA);
+              $HASHER.result_str()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha1(), $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha1())
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha1::Sha1::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha1::Sha1::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"
+  - id: rust-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::digest::digest(&ring::digest::SHA512, $DATA)
+          - pattern: ring::digest::SHA512
+          - pattern: sha2::Sha512::new()
+          - pattern: sha2::Sha512::default()
+          - pattern: sha2::Sha512::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha2::Sha512::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              let mut $HASHER = sha2::Sha512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize_into($OUTPUT);
+          - pattern: |
+              use sha2::{Sha512, Digest};
+              let mut $HASHER = Sha512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: crypto::sha2::Sha512::new()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha512(), $DATA)
+          - pattern: |
+              let $MD = openssl::hash::MessageDigest::sha512();
+              openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha512())
+          - pattern: |
+              let mut $HASHER = openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha512());
+              $HASHER.update($DATA);
+              $HASHER.finish()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha2::Sha512::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha2::Sha512::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"
+  - id: rust-crypto-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::aead::CHACHA20_POLY1305
+          - pattern: ring::aead::SealingKey::new(&ring::aead::CHACHA20_POLY1305, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::CHACHA20_POLY1305, $KEY)
+          - pattern:
+              ring::aead::LessSafeKey::new(ring::aead::UnboundKey::new(&ring::aead::CHACHA20_POLY1305,
+              $KEY))
+          - pattern:
+              ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT,
+              $OUT)
+          - pattern:
+              ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT,
+              $OUT)
+          - pattern: ring::aead::UnboundKey::new(&ring::aead::CHACHA20_POLY1305, $KEY)
+          - pattern:
+              ring::aead::UnboundKey::new_less_safe_key(&ring::aead::CHACHA20_POLY1305,
+              $KEY)
+          - pattern: ring::aead::SealingKey::new_from_unbound_key($UNBOUND_KEY)
+          - pattern: ring::aead::OpeningKey::new_from_unbound_key($UNBOUND_KEY)
+          - pattern: |
+              let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::CHACHA20_POLY1305, $KEY);
+              let $CIPHERTEXT = ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT);
+          - pattern: |
+              let $OPENING_KEY = ring::aead::OpeningKey::new(&ring::aead::CHACHA20_POLY1305, $KEY);
+              let $PLAINTEXT = ring::aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT);
+          - pattern: chacha20::ChaCha20::new($KEY, $NONCE)
+          - pattern: chacha20::ChaCha20Rng::from_seed($SEED)
+          - pattern: chacha20poly1305::ChaCha20Poly1305::new_from_slice($KEY)
+          - pattern: |
+              use chacha20poly1305::{ChaCha20Poly1305, KeyInit, Aead};
+              let $CIPHER = ChaCha20Poly1305::new_from_slice($KEY);
+              $CIPHER.encrypt($NONCE, $PLAINTEXT)
+          - pattern: |
+              use chacha20poly1305::{ChaCha20Poly1305, KeyInit, Aead};
+              let $CIPHER = ChaCha20Poly1305::new_from_slice($KEY);
+              $CIPHER.decrypt($NONCE, $CIPHERTEXT)
+          - pattern: |
+              use chacha20poly1305::{ChaCha20Poly1305, KeyInit, Aead};
+              let $CIPHER = ChaCha20Poly1305::new(KeyInit::init($KEY));
+              $CIPHER.encrypt($NONCE, $PLAINTEXT)
+          - pattern: |
+              async fn $FUNC() {
+                  let $CIPHER = chacha20poly1305::ChaCha20Poly1305::new_from_slice($KEY);
+                  $CIPHER.encrypt($NONCE, $PLAINTEXT)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"
+  - id: rust-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - patterns:
+              - pattern: ring::signature::sign(&ring::signature::$ALGO, $PRIVATE_KEY, $MESSAGE)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (ECDSA_P256_SHA256|ECDSA_P384_SHA384|ED25519|RSA_PKCS1_2048_8192_SHA256|RSA_PKCS1_2048_8192_SHA512|RSA_PKCS1_3072_8192_SHA384|RSA_PSS_2048_8192_SHA256|RSA_PSS_2048_8192_SHA384|RSA_PSS_2048_8192_SHA512)
+          - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - pattern:
+                  ring::signature::verify(&ring::signature::$ALGO, $PUBLIC_KEY, $MESSAGE,
+                  $SIGNATURE)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (ECDSA_P256_SHA256|ECDSA_P384_SHA384|ED25519|RSA_PKCS1_2048_8192_SHA256|RSA_PKCS1_2048_8192_SHA512|RSA_PKCS1_3072_8192_SHA384|RSA_PSS_2048_8192_SHA256|RSA_PSS_2048_8192_SHA384|RSA_PSS_2048_8192_SHA512)
+          - pattern: openssl::sign::Signer::new($MD, $KEY)
+          - pattern: openssl::sign::Verifier::new($MD, $KEY)
+          - pattern: |
+              let mut $SIGNER = openssl::sign::Signer::new($MD, $KEY);
+              $SIGNER.update($MESSAGE);
+              $SIGNER.sign_to_vec()
+          - pattern: |
+              let mut $VERIFIER = openssl::sign::Verifier::new($MD, $KEY);
+              $VERIFIER.update($MESSAGE);
+              $VERIFIER.verify($SIGNATURE)
+          - pattern: ed25519_dalek::SigningKey::sign($MESSAGE)
+          - pattern: ed25519_dalek::VerifyingKey::verify($MESSAGE, $SIGNATURE)
+          - pattern: rsa::RsaPrivateKey::sign($SCHEME, $HASH)
+          - pattern: rsa::RsaPublicKey::verify($SCHEME, $HASH, $SIGNATURE)
+          - pattern: |
+              async fn $FUNC() {
+                  ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
+  - id: rust-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: md5::Md5::new()
+          - pattern: md5::Md5::default()
+          - pattern: md5::Md5::from($DATA)
+          - pattern: |
+              let mut $HASHER = md5::Md5::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use md5::{Md5, Digest};
+              let mut $HASHER = Md5::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: md5::compute($DATA)
+          - pattern: md5::Md5::digest($DATA)
+          - pattern: crypto::digest::Digest::update($HASHER, $DATA)
+          - pattern: crypto::md5::Md5::new()
+          - pattern: |
+              use crypto::digest::Digest;
+              let mut $HASHER = crypto::md5::Md5::new();
+              $HASHER.input($DATA);
+              $HASHER.result_str()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(md5::Md5::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::md5(), $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::md5())
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = md5::Md5::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: rust-crypto-random-generation
+    message: Cryptographic random number generation detected
+    severity: INFO
+    languages:
+      - rust
+    mode: taint
+    pattern-sources:
+      - pattern: ring::rand::SystemRandom::new()
+      - pattern: ring::rand::generate($RNG, $OUTPUT)
+      - pattern: ring::rand::SecureRandom::fill($RNG, $BUF)
+      - pattern: |
+          let $RNG = ring::rand::SystemRandom::new();
+          let $BYTES = ring::rand::generate(&$RNG);
+      - pattern: |
+          use ring::rand;
+          let $RNG = rand::SystemRandom::new();
+          rand::generate(&$RNG, $OUTPUT)
+      - pattern: openssl::rand::rand_bytes($BUF)
+      - pattern: openssl::rand::rand_priv_bytes($BUF)
+      - pattern: |
+          use openssl::rand;
+          rand::rand_bytes($BUF)
+      - pattern: getrandom::getrandom($BUF)
+      - pattern: getrandom::fill($BUF)
+      - pattern: rand::thread_rng()
+      - pattern: rand::random()
+      - pattern: rand::rngs::ThreadRng::default()
+      - pattern: |
+          use rand::RngCore;
+          let mut $RNG = rand::thread_rng();
+          $RNG.fill_bytes($BUF)
+    pattern-sinks:
+      - pattern: ring::aead::SealingKey::new($ALGO, $KEY)
+      - pattern: ring::aead::OpeningKey::new($ALGO, $KEY)
+      - pattern: openssl::rsa::Rsa::generate($BITS)
+      - pattern: rsa::RsaPrivateKey::new($RNG, $BITS)
+      - pattern: ed25519_dalek::SigningKey::generate($RNG)
+      - pattern: x25519_dalek::StaticSecret::new($RNG)
+      - pattern: ring::agreement::EphemeralPrivateKey::generate($ALGO, $RNG)
+      - pattern: |
+          let $KEY = ring::aead::SealingKey::new($ALGO, $KEY_BYTES);
+          ring::aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+      - pattern: |
+          async fn $FUNC() {
+              let $RNG = ring::rand::SystemRandom::new();
+              ring::rand::generate(&$RNG, $OUTPUT)
+          }
+    pattern-not-inside:
+      - pattern: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: Cryptographic random number generation detected in codebase"
+  - id: rust-crypto-password-hashing
+    message: Password hashing operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: bcrypt::hash($PASSWORD, $COST)
+          - pattern: bcrypt::verify($PASSWORD, $HASH)
+          - pattern: bcrypt::DEFAULT_COST
+          - patterns:
+              - pattern: bcrypt::hash($PASSWORD, $COST)
+              - metavariable-regex:
+                  metavariable: $COST
+                  regex: \d+
+          - pattern: |
+              let $HASH = bcrypt::hash($PASSWORD, bcrypt::DEFAULT_COST);
+              bcrypt::verify($INPUT, &$HASH)
+          - pattern: |
+              use bcrypt::{hash, verify, DEFAULT_COST};
+              hash($PASSWORD, DEFAULT_COST)
+          - pattern: argon2::hash_encoded($PASSWORD, $SALT, &$CONFIG, $ALGO)
+          - pattern: argon2::verify_encoded($HASH, $PASSWORD)
+          - pattern: scrypt::scrypt($PASSWORD, $SALT, &$PARAMS, $OUTPUT)
+          - pattern: scrypt::verify($HASH, $PASSWORD)
+          - pattern: |
+              use scrypt::{scrypt, ScryptParams};
+              let $PARAMS = ScryptParams::recommended();
+              scrypt($PASSWORD, $SALT, &$PARAMS, $OUTPUT)
+          - pattern: pbkdf2::pbkdf2($PASSWORD, $SALT, $ITER, $OUTPUT)
+          - patterns:
+              - pattern: pbkdf2::pbkdf2_hmac::<sha2::Sha256>($PASSWORD, $SALT, $ITER, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+          - patterns:
+              - pattern: pbkdf2::pbkdf2_hmac::<sha2::Sha512>($PASSWORD, $SALT, $ITER, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+          - patterns:
+              - pattern: |
+                  use pbkdf2::{pbkdf2_hmac, pbkdf2};
+                  use sha2::Sha256;
+                  pbkdf2_hmac::<Sha256>($PASSWORD, $SALT, $ITER, $OUTPUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+          - pattern: |
+              async fn $FUNC() {
+                  bcrypt::hash($PASSWORD, bcrypt::DEFAULT_COST)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $COST
+    metadata:
+      category: crypto
+      cwe: CWE-916
+      impact: "Inventory: Password hashing operations detected in codebase"
+  - id: rust-crypto-hkdf
+    message: HKDF key derivation function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: hkdf::Hkdf::<sha2::Sha256>::extract($SALT, $IKM)
+          - pattern: hkdf::Hkdf::<sha2::Sha512>::extract($SALT, $IKM)
+          - pattern: hkdf::Hkdf::<sha2::Sha256>::expand($PRK, $INFO, $OKM)
+          - pattern: hkdf::Hkdf::<sha2::Sha512>::expand($PRK, $INFO, $OKM)
+          - pattern: |
+              let $HKDF = hkdf::Hkdf::<sha2::Sha256>::extract($SALT, $IKM);
+              $HKDF.expand($INFO, $OKM)
+          - pattern: |
+              let $HKDF = hkdf::Hkdf::<sha2::Sha512>::extract($SALT, $IKM);
+              $HKDF.expand($INFO, $OKM)
+          - pattern: |
+              use hkdf::Hkdf;
+              let $HKDF = Hkdf::<sha2::Sha256>::extract($SALT, $IKM);
+              $HKDF.expand($INFO, $OKM)
+          - pattern: ring::hkdf::extract($ALGO, $SALT, $IKM)
+          - pattern: ring::hkdf::expand($ALGO, $PRK, $INFO, $OKM)
+          - pattern: ring::hkdf::HKDF_SHA256
+          - pattern: ring::hkdf::HKDF_SHA384
+          - pattern: ring::hkdf::HKDF_SHA512
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HKDF key derivation function usage detected in codebase"
+  - id: rust-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - rust
+    mode: taint
+    pattern-sources:
+      - pattern: |
+          let $KEY = "$VALUE";
+      - pattern: |
+          const $KEY: &str = "$VALUE";
+      - pattern: |
+          const $KEY: &[u8] = b"$VALUE";
+      - pattern: |
+          static $KEY: &str = "$VALUE";
+      - pattern: |
+          static $KEY: &[u8] = b"$VALUE";
+      - pattern: ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, b"$KEY")
+      - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM, b"$KEY")
+      - pattern: ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, b"$KEY")
+      - pattern: aes::Aes256::new(b"$KEY")
+      - pattern: aes_gcm::Aes256Gcm::new(b"$KEY")
+    pattern-sinks:
+      - pattern: ring::aead::SealingKey::new($ALGO, $KEY)
+      - pattern: ring::aead::OpeningKey::new($ALGO, $KEY)
+      - pattern: ring::hmac::Key::new($ALGO, $KEY)
+      - pattern: openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+      - pattern: openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA)
+      - pattern: openssl::symm::encrypt($CIPHER, $KEY.as_bytes(), $IV, $DATA)
+      - pattern: openssl::symm::decrypt($CIPHER, $KEY.as_bytes(), $IV, $DATA)
+      - pattern: aes::Aes256::new($KEY)
+      - pattern: aes_gcm::Aes256Gcm::new($KEY)
+    metavariable-propagator:
+      metavariable: $KEY
+      from: $KEY = $VALUE
+      to: $KEY
+    pattern-not-inside:
+      - pattern: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+  - id: rust-crypto-sha224
+    message: SHA224 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sha2::Sha224::new()
+          - pattern: sha2::Sha224::default()
+          - pattern: sha2::Sha224::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha2::Sha224::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use sha2::{Sha224, Digest};
+              let mut $HASHER = Sha224::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha224(), $DATA)
+          - pattern: |
+              let $MD = openssl::hash::MessageDigest::sha224();
+              openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha224())
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha2::Sha224::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha2::Sha224::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA224 hash function usage detected in codebase"
+  - id: rust-crypto-ed25519
+    message: Ed25519 signature operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::ED25519
+          - pattern: ring::signature::sign(&ring::signature::ED25519, $PRIVATE_KEY, $MESSAGE)
+          - pattern:
+              ring::signature::verify(&ring::signature::ED25519, $PUBLIC_KEY, $MESSAGE,
+              $SIGNATURE)
+          - pattern: |
+              let $SIGNATURE = ring::signature::sign(&ring::signature::ED25519, $PRIVATE_KEY, $MESSAGE);
+              ring::signature::verify(&ring::signature::ED25519, $PUBLIC_KEY, $MESSAGE, &$SIGNATURE)
+          - pattern: ed25519_dalek::SigningKey::from_bytes($BYTES)
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES)
+          - pattern: ed25519_dalek::SigningKey::from_bytes($BYTES)?
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES)?
+          - pattern: ed25519_dalek::SigningKey::from_bytes($BYTES).unwrap()
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES).unwrap()
+          - pattern: ed25519_dalek::SigningKey::generate($RNG)
+          - pattern: ed25519_dalek::VerifyingKey::from_bytes($BYTES).unwrap()
+          - pattern: ed25519_dalek::SigningKey::sign($MESSAGE)
+          - pattern: ed25519_dalek::VerifyingKey::verify($MESSAGE, $SIGNATURE)
+          - pattern: |
+              use ed25519_dalek::{SigningKey, Signer};
+              let $SIGNING_KEY = SigningKey::from_bytes($BYTES);
+              $SIGNING_KEY.sign($MESSAGE)
+          - pattern: |
+              use ed25519_dalek::{VerifyingKey, Verifier};
+              let $VERIFYING_KEY = VerifyingKey::from_bytes($BYTES)?;
+              $VERIFYING_KEY.verify($MESSAGE, $SIGNATURE)
+          - pattern: |
+              async fn $FUNC() {
+                  let $SIGNING_KEY = ed25519_dalek::SigningKey::from_bytes($BYTES);
+                  $SIGNING_KEY.sign($MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Ed25519 signature operations detected in codebase"
+  - id: rust-crypto-openssl
+    message: OpenSSL cryptographic library usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new($MD)
+          - pattern: openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: openssl::rsa::Rsa::generate($BITS)
+          - pattern: openssl::rsa::Rsa::public_encrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::private_decrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::ec::EcKey::generate($GROUP)
+          - pattern: openssl::sign::Signer::new($MD, $KEY)
+          - pattern: openssl::sign::Verifier::new($MD, $KEY)
+          - pattern: openssl::ssl::SslConnector::builder($METHOD)
+          - pattern: openssl::ssl::SslAcceptor::builder($METHOD)
+          - pattern: |
+              use openssl::hash;
+              hash::hash(hash::MessageDigest::sha256(), $DATA)
+          - pattern: |
+              use openssl::symm;
+              symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: OpenSSL cryptographic library usage detected in codebase"
+  - id: rust-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: ring::aead::$ALGO
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (AES_128_GCM|AES_256_GCM|AES_128_GCM_SIV|AES_256_GCM_SIV)
+          - pattern: ring::aead::AES_256_GCM
+          - pattern: ring::aead::AES_128_GCM
+          - pattern: ring::aead::AES_128_GCM_SIV
+          - pattern: ring::aead::AES_256_GCM_SIV
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, $KEY)
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_128_GCM, $KEY)
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_128_GCM_SIV, $KEY)
+          - pattern: ring::aead::SealingKey::new(&ring::aead::AES_256_GCM_SIV, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM_SIV, $KEY)
+          - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM_SIV, $KEY)
+          - pattern: ring::aead::LessSafeKey::new($ALGO, $KEY)
+          - pattern:
+              ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT,
+              $OUT)
+          - pattern: $KEY.seal_in_place($NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern:
+              ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT,
+              $OUT)
+          - pattern: $KEY.open_in_place($NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern: ring::aead::UnboundKey::new($ALGO, $KEY)
+          - pattern: ring::aead::UnboundKey::new_less_safe_key($ALGO, $KEY)
+          - pattern: ring::aead::SealingKey::new_from_unbound_key($UNBOUND_KEY)
+          - pattern: ring::aead::OpeningKey::new_from_unbound_key($UNBOUND_KEY)
+          - pattern: |
+              let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, $KEY);
+              let $CIPHERTEXT = ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT);
+          - pattern: |
+              let $OPENING_KEY = ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM, $KEY);
+              let $PLAINTEXT = ring::aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT);
+          - pattern: |
+              let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::AES_128_GCM, $KEY);
+              let $CIPHERTEXT = ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT);
+          - pattern: |
+              let $OPENING_KEY = ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM, $KEY);
+              let $PLAINTEXT = ring::aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT);
+          - pattern: openssl::symm::Cipher::aes_128_ecb()
+          - pattern: openssl::symm::Cipher::aes_256_ecb()
+          - pattern: openssl::symm::Cipher::aes_128_cbc()
+          - pattern: openssl::symm::Cipher::aes_256_cbc()
+          - pattern: openssl::symm::Cipher::aes_128_gcm()
+          - pattern: openssl::symm::Cipher::aes_192_cbc()
+          - pattern: openssl::symm::Cipher::aes_256_gcm()
+          - pattern: openssl::symm::Cipher::aes_256_ctr()
+          - pattern: openssl::symm::Cipher::aes_256_cfb128()
+          - pattern: openssl::symm::Cipher::aes_256_ofb()
+          - pattern: openssl::symm::Cipher::aes_128_ctr()
+          - pattern: openssl::symm::Cipher::aes_256_ctr()
+          - pattern: openssl::symm::Crypter::new($MODE, $CIPHER, $KEY, $IV)
+          - pattern: openssl::symm::Crypter::encrypt($CRYPTER, $DATA)
+          - pattern: openssl::symm::Crypter::decrypt($CRYPTER, $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY,
+              $IV, $DATA)
+          - pattern: aes::Aes128::new($KEY)
+          - pattern: aes::Aes192::new($KEY)
+          - pattern: aes::Aes256::new($KEY)
+          - pattern: aes_gcm::Aes128Gcm::new_from_slice($KEY)
+          - pattern: aes_gcm::Aes256Gcm::new_from_slice($KEY)
+          - pattern: |
+              use aes_gcm::{Aes256Gcm, KeyInit, Aead};
+              let $CIPHER = Aes256Gcm::new_from_slice($KEY);
+              $CIPHER.encrypt($NONCE, $PLAINTEXT)
+          - pattern: |
+              use aes_gcm::{Aes256Gcm, KeyInit, Aead};
+              let $CIPHER = Aes256Gcm::new_from_slice($KEY);
+              $CIPHER.decrypt($NONCE, $CIPHERTEXT)
+          - pattern: |
+              use aes_gcm::{Aes128Gcm, KeyInit, Aead};
+              let $CIPHER = Aes128Gcm::new_from_slice($KEY);
+              $CIPHER.encrypt($NONCE, $PLAINTEXT)
+          - pattern: |
+              use aes_gcm::{Aes128Gcm, KeyInit, Aead};
+              let $CIPHER = Aes128Gcm::new_from_slice($KEY);
+              $CIPHER.decrypt($NONCE, $CIPHERTEXT)
+          - pattern: |
+              use ring::aead;
+              let $SEALING_KEY = aead::SealingKey::new(&aead::AES_256_GCM, $KEY);
+              aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              use ring::aead;
+              let $OPENING_KEY = aead::OpeningKey::new(&aead::AES_256_GCM, $KEY);
+              aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern: aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
+          - pattern:
+              aead::seal_in_place(&$SEALING_KEY, $NONCE, aead::Aad::empty(), &mut
+              $OUT)
+          - pattern:
+              aead::open_in_place(&$OPENING_KEY, $NONCE, aead::Aad::empty(), &mut
+              $OUT)
+          - pattern: openssl::symm::encrypt($CIPHER, $KEY, Some($IV), $DATA)
+          - pattern: openssl::symm::decrypt($CIPHER, $KEY, Some($IV), $DATA)
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::aes_256_gcm();
+              openssl::symm::encrypt($CIPHER, $KEY, Some($IV), $DATA)
+          - pattern: |
+              async fn $FUNC() {
+                  let $SEALING_KEY = ring::aead::SealingKey::new(&ring::aead::AES_256_GCM, $KEY);
+                  ring::aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
+  - id: rust-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: openssl::rsa::Rsa::generate($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+          - patterns:
+              - pattern: rsa::RsaPrivateKey::new($RNG, $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"
+  - id: rust-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: openssl::rsa::Rsa::generate($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+          - pattern: openssl::rsa::Rsa::generate_with_e($BITS, $E)
+          - pattern: openssl::rsa::Rsa::public_key_from_der($DATA)
+          - pattern: openssl::rsa::Rsa::public_key_from_pem($DATA)
+          - pattern: openssl::rsa::Rsa::private_key_from_der($DATA)
+          - pattern: openssl::rsa::Rsa::private_key_from_pem($DATA)
+          - pattern: openssl::rsa::Rsa::private_key_from_pem_passphrase($DATA, $PASS)
+          - pattern: openssl::rsa::Rsa::public_encrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::private_decrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::private_encrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Rsa::public_decrypt($DATA, $OUTPUT, $PADDING)
+          - pattern: openssl::rsa::Padding::PKCS1
+          - pattern: openssl::rsa::Padding::PKCS1_OAEP
+          - pattern: openssl::rsa::Padding::PKCS1_PSS
+          - pattern: |
+              let $RSA = openssl::rsa::Rsa::generate($BITS);
+              $RSA.public_key_to_der()
+          - pattern: |
+              let $RSA = openssl::rsa::Rsa::generate($BITS);
+              $RSA.public_key_to_pem()
+          - patterns:
+              - pattern: rsa::RsaPrivateKey::new($RNG, $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+          - pattern: rsa::RsaPublicKey::from($PRIVATE_KEY)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"
+  - id: rust-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: blake2::Blake2b::new($KEY)
+          - pattern: blake2::Blake2s::new($KEY)
+          - pattern: blake2::Blake2b::new_with_params($KEY, $SALT, $PERSONAL)
+          - pattern: blake2::Blake2s::new_with_params($KEY, $SALT, $PERSONAL)
+          - pattern: |
+              let mut $HASHER = blake2::Blake2b::new($KEY);
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use blake2::{Blake2b, Digest};
+              let mut $HASHER = Blake2b::new($KEY);
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: blake2::Blake2b512::new()
+          - pattern: blake2::Blake2b256::new()
+          - pattern: blake2::Blake2s256::new()
+          - pattern: blake2::Blake2s128::new()
+          - pattern: |
+              let mut $HASHER = blake2::Blake2b512::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              let mut $HASHER = blake2::Blake2s256::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize_into($OUTPUT)
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(blake2::Blake2b::new($KEY));
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = blake2::Blake2b::new($KEY);
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"
+  - id: rust-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::hmac::sign($KEY, $MESSAGE)
+          - pattern: ring::hmac::verify($KEY, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - pattern: ring::hmac::Key::new($ALGO, $KEY)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (HMAC_SHA256|HMAC_SHA384|HMAC_SHA512|HMAC_SHA1_FOR_LEGACY_USE_ONLY)
+          - pattern: ring::hmac::HMAC_SHA256
+          - pattern: ring::hmac::HMAC_SHA384
+          - pattern: ring::hmac::HMAC_SHA512
+          - pattern: ring::hmac::HMAC_SHA1_FOR_LEGACY_USE_ONLY
+          - pattern: |
+              let $HMAC_KEY = ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, $KEY);
+              let $SIGNATURE = ring::hmac::sign(&$HMAC_KEY, $MESSAGE);
+          - pattern: |
+              let $HMAC_KEY = ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, $KEY);
+              ring::hmac::verify(&$HMAC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: |
+              use ring::hmac;
+              let $KEY = hmac::Key::new(hmac::HMAC_SHA256, $KEY_BYTES);
+          - pattern: hmac::Hmac::<sha2::Sha256>::new_from_slice($KEY)
+          - pattern: hmac::Hmac::<sha2::Sha512>::new_from_slice($KEY)
+          - pattern: |
+              use hmac::{Hmac, Mac, KeyInit};
+              let mut $MAC = Hmac::<sha2::Sha256>::new_from_slice($KEY);
+              $MAC.update($MESSAGE);
+              $MAC.finalize()
+          - pattern: |
+              use hmac::{Hmac, Mac, KeyInit};
+              let mut $MAC = Hmac::<sha2::Sha256>::new(KeyInit::init($KEY));
+              $MAC.update($MESSAGE);
+              $MAC.finalize()
+          - pattern: crypto::hmac::Hmac::new($KEY)
+          - pattern:
+              openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(),
+              $KEY)
+          - pattern: |
+              let mut $SIGNER = openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(), $KEY);
+              $SIGNER.update($MESSAGE);
+              $SIGNER.sign_to_vec()
+          - pattern: |
+              async fn $FUNC() {
+                  let $HMAC_KEY = ring::hmac::Key::new(&ring::hmac::HMAC_SHA256, $KEY);
+                  ring::hmac::sign(&$HMAC_KEY, $MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"
+  - id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: secp256k1::Secp256k1::new()
+          - pattern: secp256k1::Secp256k1::signing_only()
+          - pattern: secp256k1::Secp256k1::verification_only()
+          - pattern: secp256k1::SecretKey::from_slice($BYTES)
+          - pattern: secp256k1::SecretKey::from_keypair($KEYPAIR)
+          - pattern: secp256k1::PublicKey::from_secret_key($SECP256K1, $SECRET_KEY)
+          - pattern: secp256k1::PublicKey::from_slice($BYTES)
+          - pattern: secp256k1::Message::from_slice($BYTES)
+          - pattern: secp256k1::ecdsa::Signature::from_compact($BYTES)
+          - pattern: secp256k1::ecdsa::Signature::from_der($BYTES)
+          - pattern: secp256k1::ecdsa::sign($MESSAGE, $SECRET_KEY)
+          - pattern: secp256k1::ecdsa::sign($SECP256K1, $MESSAGE, $SECRET_KEY)
+          - pattern: secp256k1::ecdsa::verify($MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: secp256k1::ecdsa::verify($SECP256K1, $MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: secp256k1::KeyPair::from_secret_key($SECP256K1, $SECRET_KEY)
+          - pattern: secp256k1::KeyPair::secret_key($KEYPAIR)
+          - pattern: secp256k1::KeyPair::public_key($KEYPAIR)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::sign(&$MESSAGE, $SECRET_KEY)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::sign($SECP256K1, &$MESSAGE, $SECRET_KEY)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::verify(&$MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::verify($SECP256K1, &$MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: |
+              async fn $FUNC() {
+                  secp256k1::ecdsa::sign($MESSAGE, $SECRET_KEY)
+              }
+          - pattern: |
+              async fn $FUNC() {
+                  secp256k1::ecdsa::sign($SECP256K1, $MESSAGE, $SECRET_KEY)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: secp256k1 cryptographic operations detected in codebase"
+  - id: rust-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::symm::Cipher::des_cbc()
+          - pattern: openssl::symm::Cipher::des_ecb()
+          - pattern: openssl::symm::Cipher::des_cfb64()
+          - pattern: openssl::symm::Cipher::des_ofb()
+          - pattern: openssl::symm::Cipher::des3_cbc()
+          - pattern: openssl::symm::Cipher::des3_ecb()
+          - pattern: openssl::symm::Cipher::des3_cfb64()
+          - pattern: openssl::symm::Cipher::des3_ofb()
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV,
+              $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV,
+              $DATA)
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des_cbc();
+              let $CIPHERTEXT = openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des_cbc();
+              let $PLAINTEXT = openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des3_cbc();
+              let $CIPHERTEXT = openssl::symm::encrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              let $CIPHER = openssl::symm::Cipher::des3_cbc();
+              let $PLAINTEXT = openssl::symm::decrypt($CIPHER, $KEY, $IV, $DATA);
+          - pattern: |
+              use openssl::symm;
+              let $CIPHER = symm::Cipher::des_cbc();
+              symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern: |
+              use openssl::symm;
+              let $CIPHER = symm::Cipher::des3_cbc();
+              symm::encrypt($CIPHER, $KEY, $IV, $DATA)
+          - pattern:
+              openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des_cbc(),
+              $KEY, $IV)
+          - pattern:
+              openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des3_cbc(),
+              $KEY, $IV)
+          - pattern: |
+              async fn $FUNC() {
+                  openssl::symm::encrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV, $DATA)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"
+  - id: rust-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: native_tls::TlsConnector::builder().danger_accept_invalid_certs(true)
+          - pattern: native_tls::TlsAcceptor::builder().danger_accept_invalid_certs(true)
+          - pattern: |
+              let $CONNECTOR = native_tls::TlsConnector::builder()
+                .danger_accept_invalid_certs(true)
+                .build();
+          - pattern: |
+              let $ACCEPTOR = native_tls::TlsAcceptor::builder()
+                .danger_accept_invalid_certs(true)
+                .build();
+          - pattern: rustls::ClientConfig::builder().with_safe_defaults().dangerous()
+          - pattern: rustls::ServerConfig::builder().with_safe_defaults().dangerous()
+          - pattern: |
+              let $CONFIG = rustls::ClientConfig::builder()
+                .with_safe_defaults()
+                .dangerous()
+                .set_certificate_verifier($VERIFIER);
+          - pattern: rustls::client::DangerousClientConfig::set_certificate_verifier($VERIFIER)
+          - pattern: openssl::ssl::SslConnector::builder($METHOD).unwrap().set_verify(openssl::ssl::SslVerifyMode::NONE)
+          - pattern: openssl::ssl::SslAcceptor::builder($METHOD).unwrap().set_verify(openssl::ssl::SslVerifyMode::NONE)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"
+  - id: rust-crypto-iv-nonce
+    message: Initialization vector or nonce usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::aead::Nonce::assume_unique_for_key($BYTES)
+          - pattern: ring::aead::Nonce::try_assume_unique_for_key($BYTES)
+          - pattern: |
+              let $NONCE = ring::aead::Nonce::assume_unique_for_key([0u8; 12]);
+              ring::aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let $IV = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, &$IV, $DATA)
+          - pattern: |
+              let $IV = [0u8; 12];
+              ring::aead::seal_in_place($KEY, ring::aead::Nonce::assume_unique_for_key($IV), $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let mut $IV = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, &$IV, $DATA)
+          - pattern: |
+              let mut $NONCE = [0u8; 12];
+              ring::aead::seal_in_place($KEY, ring::aead::Nonce::assume_unique_for_key($NONCE), $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let $IV = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+          - pattern: |
+              const $IV: [u8; 16] = [0u8; 16];
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+          - pattern: |
+              let mut $IV = [0u8; 16];
+              $IV[0] = 1;
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+          - pattern: |
+              let mut $COUNTER = 0u64;
+              let $NONCE = $COUNTER.to_le_bytes();
+              ring::aead::seal_in_place($KEY, ring::aead::Nonce::assume_unique_for_key($NONCE), $AAD, $PLAINTEXT, $OUT)
+          - pattern: |
+              let mut $COUNTER = 0u32;
+              let $IV = $COUNTER.to_le_bytes();
+              openssl::symm::encrypt($CIPHER, $KEY, Some(&$IV), $DATA)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Initialization vector or nonce usage detected in codebase"
+  - id: rust-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::symm::Cipher::aes_128_ecb()
+          - pattern: openssl::symm::Cipher::aes_256_ecb()
+          - pattern: openssl::symm::Cipher::aes_128_cbc()
+          - pattern: openssl::symm::Cipher::aes_256_cbc()
+          - pattern: openssl::symm::Cipher::aes_128_cfb128()
+          - pattern: openssl::symm::Cipher::aes_256_cfb128()
+          - pattern: openssl::symm::Cipher::aes_128_cfb1()
+          - pattern: openssl::symm::Cipher::aes_256_cfb1()
+          - pattern: openssl::symm::Cipher::aes_128_cfb8()
+          - pattern: openssl::symm::Cipher::aes_256_cfb8()
+          - pattern: openssl::symm::Cipher::aes_128_ofb()
+          - pattern: openssl::symm::Cipher::aes_256_ofb()
+          - pattern: openssl::symm::Cipher::aes_128_ctr()
+          - pattern: openssl::symm::Cipher::aes_256_ctr()
+          - pattern: openssl::symm::Cipher::aes_128_gcm()
+          - pattern: openssl::symm::Cipher::aes_256_gcm()
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::encrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY,
+              $IV, $DATA)
+          - pattern:
+              openssl::symm::decrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY,
+              $IV, $DATA)
+          - pattern: cbc::Encryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cbc::Decryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cbc::Encryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cbc::Decryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cbc::Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cbc::Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: ctr::Ctr128BE::<aes::Aes128>::new($KEY, $IV)
+          - pattern: ctr::Ctr128LE::<aes::Aes128>::new($KEY, $IV)
+          - pattern: ctr::Ctr128BE::<aes::Aes192>::new($KEY, $IV)
+          - pattern: ctr::Ctr128LE::<aes::Aes192>::new($KEY, $IV)
+          - pattern: ctr::Ctr128BE::<aes::Aes256>::new($KEY, $IV)
+          - pattern: ctr::Ctr128LE::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb8::Encryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb8::Decryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb8::Encryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cfb8::Decryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cfb8::Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb8::Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb64::Encryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb64::Decryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb64::Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb64::Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: ofb::Ofb::<aes::Aes128>::new($KEY, $IV)
+          - pattern: ofb::Ofb::<aes::Aes192>::new($KEY, $IV)
+          - pattern: ofb::Ofb::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use cbc::{Encryptor, Decryptor};
+              Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use cbc::{Encryptor, Decryptor};
+              Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use ctr::Ctr128BE;
+              Ctr128BE::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use cfb8::{Encryptor, Decryptor};
+              Encryptor::<aes::Aes256>::new($KEY, $IV)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"
+  - id: rust-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: rustls::cipher_suite::TLS13_AES_256_GCM_SHA384
+          - pattern: rustls::cipher_suite::TLS13_AES_128_GCM_SHA256
+          - pattern: rustls::cipher_suite::TLS13_CHACHA20_POLY1305_SHA256
+          - pattern: rustls::cipher_suite::TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - pattern: rustls::cipher_suite::TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+          - pattern: rustls::cipher_suite::TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+          - pattern: |
+              rustls::ClientConfig::builder()
+                .with_safe_default_cipher_suites()
+                .with_safe_default_kx_groups()
+          - pattern: |
+              rustls::ServerConfig::builder()
+                .with_safe_default_cipher_suites()
+                .with_safe_default_kx_groups()
+          - pattern: rustls::ClientConfig::builder().with_cipher_suites($SUITES)
+          - pattern: rustls::ServerConfig::builder().with_cipher_suites($SUITES)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"
+  - id: rust-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::digest::digest(&ring::digest::SHA256, $DATA)
+          - pattern: ring::digest::SHA256
+          - pattern: ring::digest::SHA384
+          - pattern: ring::digest::SHA512
+          - pattern: sha2::Sha256::new()
+          - pattern: sha2::Sha256::default()
+          - pattern: sha2::Sha256::from($DATA)
+          - pattern: |
+              let mut $HASHER = sha2::Sha256::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              let mut $HASHER = sha2::Sha256::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize_into($OUTPUT);
+          - pattern: |
+              use sha2::{Sha256, Digest};
+              let mut $HASHER = Sha256::new();
+              $HASHER.update($DATA);
+          - pattern: crypto::sha2::Sha256::new()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha256(), $DATA)
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha384(), $DATA)
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::sha512(), $DATA)
+          - pattern: |
+              let $MD = openssl::hash::MessageDigest::sha256();
+              openssl::hash::hash($MD, $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha256())
+          - pattern: |
+              let mut $HASHER = openssl::hash::Hasher::new(openssl::hash::MessageDigest::sha256());
+              $HASHER.update($DATA);
+              $HASHER.finish()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(sha2::Sha256::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = sha2::Sha256::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $DATA
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"
+  - id: rust-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: rustls::ProtocolVersion::$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLSv1_[0-3]|TLSv1\.[0-3])
+          - pattern: rustls::ProtocolVersion::TLSv1_0
+          - pattern: rustls::ProtocolVersion::TLSv1_1
+          - pattern: rustls::ProtocolVersion::TLSv1_2
+          - pattern: rustls::ProtocolVersion::TLSv1_3
+          - pattern: |
+              let $CONFIG = rustls::ClientConfig::builder()
+                .with_safe_defaults()
+                .with_protocol_versions(&[rustls::ProtocolVersion::TLSv1_2])
+                .unwrap();
+          - pattern: |
+              let $CONFIG = rustls::ServerConfig::builder()
+                .with_safe_defaults()
+                .with_protocol_versions(&[rustls::ProtocolVersion::TLSv1_2])
+                .unwrap();
+          - pattern: rustls::ClientConfig::builder().with_protocol_versions($VERSIONS)
+          - pattern: rustls::ServerConfig::builder().with_protocol_versions($VERSIONS)
+          - patterns:
+              - pattern: native_tls::Protocol::$VERSION
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (Tlsv10|Tlsv11|Tlsv12|Tlsv13)
+          - pattern: native_tls::TlsConnector::builder().min_protocol_version($VERSION)
+          - pattern: native_tls::TlsConnector::builder().max_protocol_version($VERSION)
+          - pattern: native_tls::TlsAcceptor::builder().min_protocol_version($VERSION)
+          - pattern: native_tls::TlsAcceptor::builder().max_protocol_version($VERSION)
+          - pattern: native_tls::Protocol::Tlsv10
+          - pattern: native_tls::Protocol::Tlsv11
+          - pattern: native_tls::Protocol::Tlsv12
+          - pattern: native_tls::Protocol::Tlsv13
+          - pattern: |
+              let $CONNECTOR = native_tls::TlsConnector::builder()
+                .min_protocol_version(Some(native_tls::Protocol::Tlsv12))
+                .build();
+          - pattern: openssl::ssl::SslMethod::tls()
+          - pattern: openssl::ssl::SslMethod::tlsv1()
+          - pattern: openssl::ssl::SslMethod::tlsv1_1()
+          - pattern: openssl::ssl::SslMethod::tlsv1_2()
+          - pattern: openssl::ssl::SslMethod::tlsv1_3()
+          - pattern: openssl::ssl::SslConnector::builder($METHOD)
+          - pattern: openssl::ssl::SslAcceptor::builder($METHOD)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $VERSION
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"
+  - id: rust-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::ECDSA_P256_SHA256_ASN1_SIGNING
+          - pattern: ring::signature::ECDSA_P384_SHA384_ASN1_SIGNING
+          - pattern: ring::signature::ECDSA_P256_SHA256_FIXED_SIGNING
+          - pattern: ring::signature::ECDSA_P384_SHA384_FIXED_SIGNING
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: ring::signature::UnparsedPublicKey::new($ALGO, $PUBLIC_KEY)
+          - pattern: |
+              let $ALGO = &ring::signature::ECDSA_P256_SHA256_ASN1_SIGNING;
+              let $SIGNATURE = ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE);
+          - pattern: |
+              let $PUBLIC_KEY = ring::signature::UnparsedPublicKey::new(&ring::signature::ECDSA_P256_SHA256_ASN1_SIGNING, $PUBLIC_KEY_BYTES);
+              ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - pattern: openssl::ec::EcGroup::from_curve_name($CURVE)
+              - metavariable-regex:
+                  metavariable: $CURVE
+                  regex: (X9_62_PRIME256V1|SECP384R1|SECP521R1|SECP224R1|SECP256K1)
+          - pattern: openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1)
+          - pattern: openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::SECP384R1)
+          - pattern: openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::SECP521R1)
+          - pattern: openssl::ec::EcKey::generate($GROUP)
+          - pattern: openssl::ec::EcKey::from_private_components($GROUP, $PRIVATE_KEY)
+          - pattern: openssl::ec::EcKey::from_public_key($GROUP, $PUBLIC_KEY)
+          - pattern: |
+              let $GROUP = openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1);
+              let $KEY = openssl::ec::EcKey::generate(&$GROUP);
+          - pattern:
+              openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(),
+              $EC_KEY)
+          - pattern:
+              openssl::sign::Verifier::new(openssl::hash::MessageDigest::sha256(),
+              $EC_KEY)
+          - pattern: openssl::ecdsa::EcdsaSig::sign($MESSAGE, $PRIVATE_KEY)
+          - pattern: openssl::ecdsa::EcdsaSig::verify($MESSAGE, $PUBLIC_KEY)
+          - pattern: |
+              async fn $FUNC() {
+                  ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    focus-metavariable: $CURVE
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

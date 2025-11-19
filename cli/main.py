@@ -187,6 +187,199 @@ def validate(
         typer.echo(f"✓ Successfully validated {rule_count} rule(s)")
 
 
+def _represent_str_literal(dumper, data):
+    """Represent multiline strings as literal block scalars (|)"""
+    if "\n" in data:
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+
+
+yaml.add_representer(str, _represent_str_literal)
+
+
+def _write_config_file(output_path: Path, filename: str, rules: list) -> Path:
+    """Write rules to a YAML config file and return the file path"""
+    config_file = output_path / filename
+    with open(config_file, "w") as f:
+        yaml.dump(
+            {"rules": rules},
+            f,
+            sort_keys=False,
+            default_flow_style=False,
+            allow_unicode=True,
+        )
+    return config_file
+
+
+def _discover_languages_and_categories() -> dict[str, list[str]]:
+    """Discover available languages and their categories from the rules directory"""
+    languages_dir = RULES_DIR / "languages"
+    if not languages_dir.exists():
+        return {}
+
+    languages_categories = {}
+    for lang_dir in sorted(languages_dir.iterdir()):
+        if lang_dir.is_dir():
+            lang_name = lang_dir.name
+            categories = []
+            for category_dir in sorted(lang_dir.iterdir()):
+                if category_dir.is_dir() and list(category_dir.glob("*.yml")):
+                    categories.append(category_dir.name)
+            if categories:
+                languages_categories[lang_name] = categories
+
+    return languages_categories
+
+
+@app.command()
+def generate_config(
+    language: Optional[str] = typer.Option(
+        None,
+        "--language",
+        "-l",
+        help='Language to include (e.g., "go", "python"). Use "all" for all languages. Omit for all languages.',
+    ),
+    category: Optional[str] = typer.Option(
+        None,
+        "--category",
+        "-c",
+        help='Category to include (e.g., "crypto", "pqc"). Omit to include all categories.',
+    ),
+    name: Optional[str] = typer.Option(
+        None,
+        "--name",
+        "-n",
+        help="Output filename (e.g., 'my-config.yml'). Auto-generated if not provided.",
+    ),
+    output_dir: str = typer.Option(
+        "configs", "--output-dir", "-o", help="Output directory for config files"
+    ),
+    validate: bool = typer.Option(
+        True, "--validate/--no-validate", help="Validate generated configs with semgrep"
+    ),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Show detailed output"),
+) -> None:
+    """Generate unified Semgrep config files for external use
+
+    Examples:
+        # Generate config for Go crypto rules
+        observe generate-config --language go --category crypto --name crypto-go.yml
+
+        # Generate config for all crypto rules across all languages
+        observe generate-config --category crypto --name crypto-all.yml
+
+        # Generate config for all rules
+        observe generate-config --name all-rules.yml
+
+        # Generate config for Python PQC rules
+        observe generate-config --language python --category pqc --name python-pqc.yml
+    """
+    output_path = Path(output_dir).resolve()
+    output_path.mkdir(parents=True, exist_ok=True)
+
+    languages_categories = _discover_languages_and_categories()
+    if not languages_categories:
+        typer.echo(
+            "Error: No languages or categories found in rules directory", err=True
+        )
+        raise typer.Exit(1)
+
+    if verbose:
+        typer.echo(f"Available languages: {list(languages_categories.keys())}")
+        for lang, cats in languages_categories.items():
+            typer.echo(f"  {lang}: {cats}")
+
+    # Determine which languages to include
+    if language and language.lower() != "all":
+        if language not in languages_categories:
+            typer.echo(
+                f"Error: Language '{language}' not found. Available: {list(languages_categories.keys())}",
+                err=True,
+            )
+            raise typer.Exit(1)
+        target_languages = [language]
+    else:
+        target_languages = list(languages_categories.keys())
+
+    # Determine which categories to include
+    if category:
+        # Verify category exists in at least one target language
+        found_category = False
+        for lang in target_languages:
+            if category in languages_categories.get(lang, []):
+                found_category = True
+                break
+        if not found_category:
+            all_categories = set()
+            for cats in languages_categories.values():
+                all_categories.update(cats)
+            typer.echo(
+                f"Error: Category '{category}' not found in target languages. Available: {sorted(all_categories)}",
+                err=True,
+            )
+            raise typer.Exit(1)
+        target_categories = [category]
+    else:
+        # Collect all categories from target languages
+        target_categories = set()
+        for lang in target_languages:
+            target_categories.update(languages_categories.get(lang, []))
+        target_categories = sorted(target_categories)
+
+    if verbose:
+        typer.echo(f"Target languages: {target_languages}")
+        typer.echo(f"Target categories: {target_categories}")
+
+    # Build patterns to match rules
+    patterns = []
+    for lang in target_languages:
+        for cat in target_categories:
+            if cat in languages_categories.get(lang, []):
+                pattern = f"{lang}-{cat}"
+                patterns.append(pattern)
+
+    if not patterns:
+        typer.echo(
+            f"Error: No rules found matching language(s) {target_languages} and category/categories {target_categories}",
+            err=True,
+        )
+        raise typer.Exit(1)
+
+    if verbose:
+        typer.echo(f"Loading rules with patterns: {patterns}")
+
+    # Load rules
+    rules = load_semgrep_rules(patterns=patterns, verbose=verbose)
+
+    if not rules:
+        typer.echo("Warning: No rules found matching the specified criteria", err=True)
+        raise typer.Exit(1)
+
+    # Generate output filename
+    if name:
+        if not name.endswith((".yml", ".yaml")):
+            name = f"{name}.yml"
+        output_filename = name
+    else:
+        # Auto-generate filename
+        lang_part = target_languages[0] if len(target_languages) == 1 else "all"
+        cat_part = target_categories[0] if len(target_categories) == 1 else "all"
+        output_filename = f"{lang_part}-{cat_part}.yml"
+
+    # Write config file
+    config_file = _write_config_file(output_path, output_filename, rules)
+    typer.echo(f"Generated {config_file} with {len(rules)} rules")
+
+    if validate:
+        typer.echo("\nValidating generated config file...")
+        try:
+            run_semgrep_validate(config_file, verbose=verbose)
+            typer.echo(f"✓ Validated {config_file.name}")
+        except typer.Exit:
+            typer.echo(f"✗ Validation failed for {config_file.name}", err=True)
+            raise
+
+
 @app.command()
 def test(
     pattern: Optional[str] = typer.Argument(
@@ -266,12 +459,16 @@ def test(
 
             results_by_rule = group_semgrep_results_by_rule_id(findings)
 
-            test_expectations = load_test_expectations(
+            test_expectations, missing_tests = load_test_expectations(
                 rules, fail_on_missing=fail_on_missing, verbose=verbose
             )
 
             execute_tests(
-                results_by_rule, test_expectations, len(rules), verbose=verbose
+                results_by_rule,
+                test_expectations,
+                len(rules),
+                missing_tests,
+                verbose=verbose,
             )
         except FileNotFoundError:
             typer.echo("Error: semgrep not found. Is it installed?", err=True)
@@ -429,7 +626,7 @@ def load_test_expectations(rules, fail_on_missing: bool = False, verbose: bool =
             typer.echo(f"  - {rule_id}", err=True)
         raise typer.Exit(1)
 
-    return rule_expectations
+    return rule_expectations, missing_tests
 
 
 def get_relative_test_path(full_path: str, test_dir: str) -> str:
@@ -453,7 +650,11 @@ def format_finding_location(finding: dict, test_dir: str) -> str:
 
 
 def execute_tests(
-    results_by_rule, rule_expectations, total_rules_loaded, verbose: bool = False
+    results_by_rule,
+    rule_expectations,
+    total_rules_loaded,
+    missing_tests,
+    verbose: bool = False,
 ):
     # Validate results
     passed_tests = 0
@@ -541,19 +742,73 @@ def execute_tests(
                 f"  Test directory: {get_relative_test_path(rule_test_dir, Path.cwd())}"
             )
 
-            if missing_findings:
-                typer.echo(f"\n  Missing expected findings ({len(missing_findings)}):")
-                for exp in missing_findings:
-                    exp_file = Path(exp["file"]).name
-                    exp_line = exp["line"]
-                    typer.echo(f"    {exp_file}:{exp_line}")
+            # Summary counts at the top
+            typer.echo("\n  Summary:")
+            typer.echo(f"    Semgrep found: {len(actual_findings)} finding(s)")
+            typer.echo(f"    Expected: {len(expected_findings)} finding(s)")
+            typer.echo(f"    Missing: {len(missing_findings)} expected finding(s)")
+            typer.echo(f"    Unexpected: {len(unexpected_findings)} finding(s)")
 
+            # Show all actual findings Semgrep found
+            if actual_findings:
+                typer.echo(f"\n  Semgrep found ({len(actual_findings)} finding(s)):")
+                # Group by file for better readability
+                findings_by_file = {}
+                for actual in actual_findings:
+                    actual_file = Path(actual["file"]).name
+                    if actual_file not in findings_by_file:
+                        findings_by_file[actual_file] = []
+                    findings_by_file[actual_file].append(actual)
+
+                for file_name in sorted(findings_by_file.keys()):
+                    file_findings = sorted(
+                        findings_by_file[file_name], key=lambda x: x["line"]
+                    )
+                    for actual in file_findings:
+                        typer.echo(format_finding_location(actual, rule_test_dir))
+                        if verbose:
+                            typer.echo(f"    Message: {actual['message']}")
+            elif expected_findings:
+                typer.echo("\n  Semgrep found: 0 finding(s)")
+                typer.echo(
+                    "    [WARNING] No findings detected - pattern may not be matching correctly"
+                )
+
+            # Show expected findings with match status
+            if expected_findings:
+                typer.echo(f"\n  Expected findings ({len(expected_findings)}):")
+                # Create a set of actual finding locations for quick lookup
+                actual_locations = {
+                    (Path(f["file"]).name, f["line"]) for f in actual_findings
+                }
+
+                # Group expected by file
+                expected_by_file = {}
+                for exp in expected_findings:
+                    exp_file = Path(exp["file"]).name
+                    if exp_file not in expected_by_file:
+                        expected_by_file[exp_file] = []
+                    expected_by_file[exp_file].append(exp)
+
+                for file_name in sorted(expected_by_file.keys()):
+                    file_expected = sorted(
+                        expected_by_file[file_name], key=lambda x: x["line"]
+                    )
+                    for exp in file_expected:
+                        exp_file = Path(exp["file"]).name
+                        exp_line = exp["line"]
+                        is_found = (exp_file, exp_line) in actual_locations
+                        status = "[✓] Found" if is_found else "[X] Missing"
+                        typer.echo(f"    {exp_file}:{exp_line} {status}")
+
+            # Show unexpected findings separately
             if unexpected_findings:
                 typer.echo(f"\n  Unexpected findings ({len(unexpected_findings)}):")
                 for actual in unexpected_findings:
                     typer.echo(format_finding_location(actual, rule_test_dir))
                     typer.echo(f"    Message: {actual['message']}")
 
+            # Show no findings violations
             if no_findings_violations:
                 typer.echo("\n  Files that should have no findings but do:")
                 for violation_file in no_findings_violations:
@@ -573,17 +828,22 @@ def execute_tests(
 
     # Report summary
     total_rules_tested = len(rule_expectations)
-    rules_without_tests = total_rules_loaded - total_rules_tested
+    rules_without_tests_count = len(missing_tests)
 
     summary_parts = [
         f"{passed_tests} passed",
         f"{failed_tests} failed",
         f"{total_rules_tested} total rules tested",
     ]
-    if rules_without_tests > 0:
-        summary_parts.append(f"{rules_without_tests} rules without tests")
+    if rules_without_tests_count > 0:
+        summary_parts.append(f"{rules_without_tests_count} rules without tests")
 
     typer.echo(f"\nTest Summary: {', '.join(summary_parts)}")
+
+    if rules_without_tests_count > 0:
+        typer.echo(f"\nRules without tests ({rules_without_tests_count}):")
+        for rule_id in sorted(missing_tests):
+            typer.echo(f"  - {rule_id}")
 
     if failed_tests > 0:
         typer.echo(f"{failed_tests} test(s) failed!")
@@ -591,6 +851,75 @@ def execute_tests(
     else:
         typer.echo("All tests passed!")
         return
+
+
+def _format_yaml_file(file_path: Path, verbose: bool = False) -> bool:
+    """Format a single YAML file in place"""
+    try:
+        with open(file_path, "r") as f:
+            content = yaml.safe_load(f)
+
+        with open(file_path, "w") as f:
+            yaml.dump(
+                content,
+                f,
+                sort_keys=False,
+                default_flow_style=False,
+                allow_unicode=True,
+            )
+
+        if verbose:
+            typer.echo(f"Formatted {file_path}")
+        return True
+    except Exception as e:
+        typer.echo(f"Error formatting {file_path}: {e}", err=True)
+        return False
+
+
+@app.command()
+def format_yaml(
+    path: str = typer.Argument(..., help="YAML file or directory to format"),
+    verbose: bool = typer.Option(False, "--verbose", "-v", help="Show detailed output"),
+):
+    """Format YAML files using consistent formatting"""
+    target_path = Path(path).resolve()
+
+    if not target_path.exists():
+        typer.echo(f"Error: Path {path} does not exist", err=True)
+        raise typer.Exit(1)
+
+    formatted_count = 0
+    failed_count = 0
+
+    if target_path.is_file():
+        if target_path.suffix not in (".yml", ".yaml"):
+            typer.echo(f"Error: {path} is not a YAML file", err=True)
+            raise typer.Exit(1)
+        if _format_yaml_file(target_path, verbose=verbose):
+            formatted_count = 1
+        else:
+            failed_count = 1
+    elif target_path.is_dir():
+        yaml_files = list(target_path.rglob("*.yml")) + list(
+            target_path.rglob("*.yaml")
+        )
+        if not yaml_files:
+            typer.echo(f"No YAML files found in {path}")
+            return
+
+        if verbose:
+            typer.echo(f"Found {len(yaml_files)} YAML file(s)")
+
+        for yaml_file in yaml_files:
+            if _format_yaml_file(yaml_file, verbose=verbose):
+                formatted_count += 1
+            else:
+                failed_count += 1
+
+    typer.echo(f"Formatted {formatted_count} file(s)")
+    if failed_count > 0:
+        typer.echo(f"Failed to format {failed_count} file(s)", err=True)
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":

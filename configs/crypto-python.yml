@@ -1,0 +1,1945 @@
+rules:
+  - id: python-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: AES.new($KEY, $MODE)
+          - pattern: AES.new($KEY, AES.MODE_ECB)
+          - pattern: AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $CIPHER = AES.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = AES.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.AES($KEY)
+          - pattern: Cipher(algorithms.AES($KEY), $MODE)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
+              $ENCRYPTOR = $CIPHER.encryptor()
+              $CIPHERTEXT = $ENCRYPTOR.update($PLAINTEXT) + $ENCRYPTOR.finalize()
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
+              $DECRYPTOR = $CIPHER.decryptor()
+              $PLAINTEXT = $DECRYPTOR.update($CIPHERTEXT) + $DECRYPTOR.finalize()
+          - patterns:
+              - pattern-inside: |
+                  $KEY = os.urandom($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $KEY
+                  patterns:
+                    - pattern: AES.new($KEY, $MODE)
+                    - pattern: Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
+  - id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+          - pattern: |
+              $HKDF = HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: |
+              $HKDF = HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: HKDF.extract($SALT, $INPUT_MATERIAL)
+          - pattern: HKDF.expand($PRK, $INFO, $LENGTH)
+          - pattern: |
+              from Crypto.Protocol.KDF import HKDF
+              $KEY = HKDF($LENGTH, $SALT, $INFO, $HASH)
+          - pattern: |
+              from Crypto.Protocol.KDF import HKDF
+              $KEY = HKDF($LENGTH, $SALT, $INFO, $HASH, $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+              $HKDF = HKDF($ALGORITHM, $LENGTH, $SALT, $INFO, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+              $HKDF = HKDF($ALGORITHM, $LENGTH, $SALT, $INFO, $BACKEND)
+              $KEY = $HKDF.derive($KEY_MATERIAL)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDFExpand
+              $HKDF = HKDFExpand($ALGORITHM, $LENGTH, $INFO, $BACKEND)
+              $KEY = $HKDF.derive($PRK)
+          - pattern: |
+              from cryptography.hazmat.primitives.kdf.hkdf import HKDFExtract
+              $HKDF = HKDFExtract($ALGORITHM, $SALT, $BACKEND)
+              $PRK = $HKDF.extract($INPUT_MATERIAL)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: HKDF key derivation function usage detected in codebase"
+  - id: python-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: dh.generate_parameters($GENERATOR, $KEY_SIZE, $BACKEND)
+          - pattern: |
+              $PARAMETERS = dh.generate_parameters($GENERATOR, $KEY_SIZE, $BACKEND)
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+          - pattern: dh.generate_private_key($PARAMETERS, $BACKEND)
+          - pattern: |
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+          - pattern: |
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              ...
+              $SHARED_KEY = $PRIVATE_KEY.exchange($PUBLIC_KEY)
+          - pattern: |
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              ...
+              $SHARED_KEY = dh.derive_shared_key($PRIVATE_KEY, $PUBLIC_KEY)
+          - pattern: dh.DHParameterNumbers($P, $G)
+          - pattern: dh.DHPrivateNumbers($PRIVATE_VALUE, $PUBLIC_NUMBERS)
+          - pattern: dh.DHPublicNumbers($Y, $PARAMETER_NUMBERS)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PARAMETERS = dh.generate_parameters($GENERATOR, $KEY_SIZE, $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PRIVATE_KEY = dh.generate_private_key($PARAMETERS, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              $SHARED_KEY = $PRIVATE_KEY.exchange($PUBLIC_KEY)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PARAM_NUMS = dh.DHParameterNumbers($P, $G)
+              $PARAMETERS = $PARAM_NUMS.parameters($BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import dh
+              $PRIV_NUMS = dh.DHPrivateNumbers($PRIVATE_VALUE, $PUBLIC_NUMS)
+              $PRIVATE_KEY = $PRIV_NUMS.private_key($BACKEND)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"
+  - id: python-crypto-key-length
+    message: Cryptographic key length configuration detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    focus-metavariable: $KEY_SIZE
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+          - patterns:
+              - pattern: |
+                  $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              - metavariable-regex:
+                  metavariable: $KEY_SIZE
+                  regex: \d+
+          - patterns:
+              - pattern: |
+                  $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              - metavariable-comparison:
+                  metavariable: $KEY_SIZE
+                  comparison: $KEY_SIZE < 2048
+          - pattern: |
+              from Crypto.PublicKey import RSA
+              $KEY = RSA.generate($BITS)
+          - patterns:
+              - pattern: |
+                  from Crypto.PublicKey import RSA
+                  $KEY = RSA.generate($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+          - patterns:
+              - pattern: |
+                  from Crypto.PublicKey import RSA
+                  $KEY = RSA.generate($BITS)
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - pattern: |
+              from Crypto.Cipher import AES
+              $KEY = os.urandom($KEY_LENGTH)
+              $CIPHER = AES.new($KEY, $MODE)
+          - patterns:
+              - pattern: |
+                  from Crypto.Cipher import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = AES.new($KEY, $MODE)
+              - metavariable-regex:
+                  metavariable: $KEY_LENGTH
+                  regex: \d+
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers.algorithms import AES
+              $KEY = os.urandom($KEY_LENGTH)
+              $CIPHER = Cipher(AES($KEY), $MODE, $BACKEND)
+          - patterns:
+              - pattern: |
+                  from cryptography.hazmat.primitives.ciphers.algorithms import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = Cipher(AES($KEY), $MODE, $BACKEND)
+              - metavariable-regex:
+                  metavariable: $KEY_LENGTH
+                  regex: (8|12|16|24|32|64|128|256|512|1024|2048|4096)
+          - patterns:
+              - pattern: |
+                  from Crypto.Cipher import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = AES.new($KEY, $MODE)
+              - metavariable-comparison:
+                  metavariable: $KEY_LENGTH
+                  comparison: $KEY_LENGTH < 16
+          - patterns:
+              - pattern: |
+                  from Crypto.Cipher import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = AES.new($KEY, $MODE)
+              - metavariable-regex:
+                  metavariable: $KEY_LENGTH
+                  regex: (8|12|16|24|32|64|128|256|512|1024|2048|4096)
+          - patterns:
+              - pattern: |
+                  from cryptography.hazmat.primitives.ciphers.algorithms import AES
+                  $KEY = os.urandom($KEY_LENGTH)
+                  $CIPHER = Cipher(AES($KEY), $MODE, $BACKEND)
+              - metavariable-comparison:
+                  metavariable: $KEY_LENGTH
+                  comparison: $KEY_LENGTH < 16
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length configuration detected in codebase"
+  - id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: DES3.new($KEY, $MODE)
+          - pattern: TripleDES.new($KEY, $MODE)
+          - pattern: |
+              $CIPHER = DES3.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = DES3.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              $CIPHER = TripleDES.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = TripleDES.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.TripleDES($KEY)
+          - pattern: |
+              from Crypto.Cipher import DES3
+              $CIPHER = DES3.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import DES3
+              $CIPHER = DES3.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.TripleDES($KEY), $MODE, $BACKEND)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: 3DES (Triple DES) cipher usage detected in codebase"
+  - id: python-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
+          - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER, dklen=$KEYLEN)
+          - patterns:
+              - pattern: hashlib.pbkdf2_hmac("$HASH", $PASSWORD, $SALT, $ITER)
+              - metavariable-regex:
+                  metavariable: $HASH
+                  regex: (md5|sha1|sha224|sha256|sha384|sha512|sha3_224|sha3_256|sha3_384|sha3_512)
+          - patterns:
+              - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+          - patterns:
+              - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
+              - metavariable-comparison:
+                  metavariable: $N
+                  comparison: $N < 16384
+          - pattern: |
+              $KEY = hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
+              ...
+              $KEY
+          - pattern: argon2.hash_password($PASSWORD, $SALT)
+          - pattern: argon2.verify_password($HASH, $PASSWORD)
+          - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
+          - pattern: scrypt.verify($HASH, $PASSWORD)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"
+  - id: python-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $VERSION
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: ssl.PROTOCOL_SSLv2
+          - pattern: ssl.PROTOCOL_SSLv3
+          - pattern: ssl.PROTOCOL_TLSv1
+          - pattern: ssl.PROTOCOL_TLSv1_1
+          - pattern: ssl.PROTOCOL_TLSv1_2
+          - pattern: ssl.PROTOCOL_TLSv1_3
+          - pattern: ssl.create_default_context(ssl.PROTOCOL_TLSv1)
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.minimum_version = ssl.TLSVersion.$VERSION
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              ...
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"
+  - id: python-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $LENGTH
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: secrets.token_bytes($LENGTH)
+          - pattern: secrets.token_hex($LENGTH)
+          - pattern: secrets.token_urlsafe($LENGTH)
+          - pattern: os.urandom($LENGTH)
+          - patterns:
+              - pattern: secrets.token_bytes($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: (8|12|16|24|32|64|128|256|512|1024|2048|4096)
+          - patterns:
+              - pattern: os.urandom($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: (8|12|16|24|32|64|128|256|512|1024|2048|4096)
+          - pattern: random.getrandbits($BITS)
+          - pattern: random.randint($MIN, $MAX)
+          - pattern: random.random()
+          - pattern: |
+              $KEY = secrets.token_bytes($LENGTH)
+              ...
+              $KEY
+          - pattern: |
+              $IV = os.urandom($LENGTH)
+              ...
+              $IV
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact:
+        "Inventory: Random number generation for cryptographic use detected in
+        codebase"
+  - id: python-crypto-cipher-camellia
+    message: Camellia cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Camellia.new($KEY, $MODE)
+          - pattern: Camellia.new($KEY, Camellia.MODE_ECB)
+          - pattern: Camellia.new($KEY, Camellia.MODE_CBC, $IV)
+          - pattern: Camellia.new($KEY, Camellia.MODE_CFB, $IV)
+          - pattern: Camellia.new($KEY, Camellia.MODE_OFB, $IV)
+          - pattern: Camellia.new($KEY, Camellia.MODE_CTR, $COUNTER)
+          - pattern: Camellia.new($KEY, Camellia.MODE_GCM, $NONCE)
+          - pattern: |
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Camellia
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Camellia
+              $CIPHER = Camellia.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.Camellia($KEY)
+          - pattern: Cipher(algorithms.Camellia($KEY), $MODE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.Camellia($KEY), $MODE, $BACKEND)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Camellia cipher usage detected in codebase"
+  - id: python-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.blake2b($DATA)
+          - pattern: hashlib.blake2s($DATA)
+          - pattern: hashlib.blake2b($DATA, digest_size=$SIZE)
+          - pattern: hashlib.blake2s($DATA, digest_size=$SIZE)
+          - pattern: hashlib.blake2b($DATA, key=$KEY)
+          - pattern: hashlib.blake2b($DATA, salt=$SALT)
+          - pattern: hashlib.blake2b($DATA, person=$PERSON)
+          - pattern: hashlib.blake2b($DATA, key=$KEY, salt=$SALT)
+          - pattern: hashlib.blake2b($DATA, key=$KEY, salt=$SALT, person=$PERSON)
+          - pattern: hashlib.blake2b($DATA, key=$KEY, salt=$SALT, person=$PERSON, digest_size=$SIZE)
+          - pattern: hashlib.blake2s($DATA, key=$KEY)
+          - pattern: hashlib.blake2s($DATA, salt=$SALT)
+          - pattern: hashlib.blake2s($DATA, person=$PERSON)
+          - pattern: hashlib.blake2s($DATA, key=$KEY, salt=$SALT)
+          - pattern: hashlib.blake2s($DATA, key=$KEY, salt=$SALT, person=$PERSON)
+          - pattern: hashlib.blake2s($DATA, key=$KEY, salt=$SALT, person=$PERSON, digest_size=$SIZE)
+          - pattern: |
+              $HASHER = hashlib.blake2b($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.blake2b($DATA, key=$KEY)
+              $HASHER.update($MORE_DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.blake2b($DATA, key=$KEY, salt=$SALT)
+              $HASHER.update($MORE_DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.blake2s($DATA, key=$KEY)
+              $HASHER.update($MORE_DATA)
+              $HASH = $HASHER.digest()
+          - pattern: hashlib.blake2b($DATA).hexdigest()
+          - pattern: hashlib.blake2s($DATA).hexdigest()
+          - pattern: hashlib.blake2b($DATA, key=$KEY).hexdigest()
+          - pattern: hashlib.blake2s($DATA, key=$KEY).hexdigest()
+          - patterns:
+              - pattern: hashlib.blake2b($DATA, digest_size=$SIZE)
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: (16|20|28|32|48|64)
+          - patterns:
+              - pattern: hashlib.blake2s($DATA, digest_size=$SIZE)
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: (16|20|28|32)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"
+  - id: python-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    focus-metavariable: $PRIVATE_KEY
+    patterns:
+      - pattern-either:
+          - pattern: ec.generate_private_key($CURVE, $BACKEND)
+          - pattern: |
+              $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+          - pattern: ec.SECP256R1()
+          - pattern: ec.SECP384R1()
+          - pattern: ec.SECP521R1()
+          - pattern: ec.SECP256K1()
+          - pattern: ec.BrainpoolP256R1()
+          - pattern: ec.BrainpoolP384R1()
+          - pattern: ec.BrainpoolP512R1()
+          - pattern: |
+              $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+              ...
+              $PRIVATE_KEY.sign($DATA, $ALGORITHM)
+          - patterns:
+              - pattern-inside: |
+                  $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $PRIVATE_KEY
+                  patterns:
+                    - pattern: $PRIVATE_KEY.sign($DATA, $ALGORITHM)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, $ALGORITHM)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.generate(curve=$CURVE)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.from_string($KEY_DATA, curve=$CURVE)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.generate(curve=$CURVE)
+              ...
+              $SIGNATURE = $KEY.sign($DATA)
+          - pattern: |
+              from ecdsa import VerifyingKey
+              $KEY = VerifyingKey.from_string($KEY_DATA, curve=$CURVE)
+              ...
+              $KEY.verify($SIGNATURE, $DATA)
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.SECP256k1
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.NIST256p
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.NIST384p
+          - pattern: |
+              from ecdsa import curves
+              $CURVE = curves.NIST521p
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"
+  - id: python-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha1($DATA)
+          - pattern: hashlib.sha1()
+          - pattern: |
+              $HASHER = hashlib.sha1()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.sha1()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.sha1($DATA).hexdigest()
+          - pattern: hashlib.sha1($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha1)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha1)
+          - pattern: pbkdf2_hmac("sha1", $PASSWORD, $SALT, $ITER)
+          - patterns:
+              - pattern: pbkdf2_hmac("sha1", $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+          - patterns:
+              - pattern: hashlib.sha1($DATA)
+              - metavariable-regex:
+                  metavariable: $DATA
+                  regex: .+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"
+  - id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha3_224($DATA)
+          - pattern: hashlib.sha3_256($DATA)
+          - pattern: hashlib.sha3_384($DATA)
+          - pattern: hashlib.sha3_512($DATA)
+          - pattern: hashlib.sha3_224()
+          - pattern: hashlib.sha3_256()
+          - pattern: hashlib.sha3_384()
+          - pattern: hashlib.sha3_512()
+          - pattern: hashlib.shake_128($DATA)
+          - pattern: hashlib.shake_256($DATA)
+          - pattern: hashlib.shake_128()
+          - pattern: hashlib.shake_256()
+          - pattern: |
+              $HASHER = hashlib.sha3_256()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.shake_128()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest($LENGTH)
+          - pattern: |
+              $HASHER = hashlib.shake_256()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest($LENGTH)
+          - pattern: hashlib.sha3_256($DATA).hexdigest()
+          - pattern: hashlib.sha3_512($DATA).hexdigest()
+          - pattern: hashlib.shake_128($DATA).hexdigest($LENGTH)
+          - pattern: hashlib.shake_256($DATA).hexdigest($LENGTH)
+          - pattern: hashlib.shake_128($DATA).digest($LENGTH)
+          - pattern: hashlib.shake_256($DATA).digest($LENGTH)
+          - patterns:
+              - pattern: hashlib.shake_128($DATA).digest($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: \d+
+          - patterns:
+              - pattern: hashlib.shake_256($DATA).digest($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: \d+
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"
+  - id: python-crypto-cipher-twofish
+    message: Twofish cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Twofish.new($KEY, $MODE)
+          - pattern: Twofish.new($KEY, Twofish.MODE_ECB)
+          - pattern: Twofish.new($KEY, Twofish.MODE_CBC, $IV)
+          - pattern: Twofish.new($KEY, Twofish.MODE_CFB, $IV)
+          - pattern: Twofish.new($KEY, Twofish.MODE_OFB, $IV)
+          - pattern: Twofish.new($KEY, Twofish.MODE_CTR, $COUNTER)
+          - pattern: |
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Twofish
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Twofish
+              $CIPHER = Twofish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Twofish cipher usage detected in codebase"
+  - id: python-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha256($DATA)
+          - pattern: hashlib.sha256()
+          - pattern: |
+              $HASHER = hashlib.sha256()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.sha256()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.sha256($DATA).hexdigest()
+          - pattern: hashlib.sha256($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha256)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha256)
+          - pattern: pbkdf2_hmac("sha256", $PASSWORD, $SALT, $ITER)
+          - patterns:
+              - pattern: pbkdf2_hmac("sha256", $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"
+  - id: python-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: DES.new($KEY, $MODE)
+          - pattern: DES3.new($KEY, $MODE)
+          - pattern: |
+              $CIPHER = DES.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = DES3.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.TripleDES($KEY)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"
+  - id: python-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.md5($DATA)
+          - pattern: hashlib.md5()
+          - pattern: |
+              $HASHER = hashlib.md5()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.md5()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.md5($DATA).hexdigest()
+          - pattern: hashlib.md5($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.md5)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.md5)
+          - pattern: hashlib.pbkdf2_hmac("md5", $PASSWORD, $SALT, $ITER)
+          - pattern: hashlib.pbkdf2_hmac("md5", $PASSWORD, $SALT, $ITER, dklen=$KEYLEN)
+          - patterns:
+              - pattern: hashlib.pbkdf2_hmac("md5", $PASSWORD, $SALT, $ITER)
+              - metavariable-comparison:
+                  metavariable: $ITER
+                  comparison: $ITER < 100000
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: python-crypto-fernet
+    message: Fernet symmetric encryption usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: Fernet($KEY)
+          - pattern: |
+              $FERNET = Fernet($KEY)
+              $TOKEN = $FERNET.encrypt($DATA)
+          - pattern: |
+              $FERNET = Fernet($KEY)
+              $DATA = $FERNET.decrypt($TOKEN)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              $TOKEN = $FERNET.encrypt($DATA)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              $DATA = $FERNET.decrypt($TOKEN)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $KEY = Fernet.generate_key()
+              $FERNET = Fernet($KEY)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              ...
+              $FERNET.encrypt($DATA)
+          - pattern: |
+              from cryptography.fernet import Fernet
+              $FERNET = Fernet($KEY)
+              ...
+              $FERNET.decrypt($TOKEN)
+          - pattern: |
+              from cryptography.fernet import MultiFernet
+              $FERNET = MultiFernet([$FERNET1, $FERNET2])
+              $TOKEN = $FERNET.encrypt($DATA)
+          - pattern: |
+              from cryptography.fernet import MultiFernet
+              $FERNET = MultiFernet([$FERNET1, $FERNET2])
+              $DATA = $FERNET.decrypt($TOKEN)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Fernet symmetric encryption usage detected in codebase"
+  - id: python-crypto-iv-nonce
+    message: IV or nonce generation and usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $IV
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: os.urandom($LENGTH)
+          - pattern: secrets.token_bytes($LENGTH)
+          - patterns:
+              - pattern: os.urandom($LENGTH)
+              - metavariable-regex:
+                  metavariable: $LENGTH
+                  regex: (8|12|16|24|32|64)
+          - patterns:
+              - pattern-inside: |
+                  $IV = os.urandom($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $IV
+                  patterns:
+                    - pattern: AES.new($KEY, AES.MODE_CBC, $IV)
+                    - pattern: Cipher(algorithms.AES($KEY), modes.CBC($IV), $BACKEND)
+          - patterns:
+              - pattern-inside: |
+                  $NONCE = os.urandom($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $NONCE
+                  patterns:
+                    - pattern: AES.new($KEY, AES.MODE_GCM, $NONCE)
+                    - pattern: Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
+          - pattern: |
+              $IV = os.urandom($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              $NONCE = os.urandom($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $IV = secrets.token_bytes($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              $NONCE = secrets.token_bytes($LENGTH)
+              ...
+              AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $IV = os.urandom(16)
+              $MODE = modes.CBC($IV)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $NONCE = os.urandom(12)
+              $MODE = modes.GCM($NONCE)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $IV = os.urandom(16)
+              $CIPHER = AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $NONCE = os.urandom(12)
+              $CIPHER = AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $IV = b"$STATIC_IV"
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              $NONCE = b"$STATIC_NONCE"
+              ...
+              AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: |
+              $IV = "$STATIC_IV"
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV.encode())
+          - pattern: |
+              $IV = [0x00] * $LENGTH
+              ...
+              AES.new($KEY, AES.MODE_CBC, bytes($IV))
+          - pattern: |
+              $IV = b"\x00" * $LENGTH
+              ...
+              AES.new($KEY, AES.MODE_CBC, $IV)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: IV or nonce generation and usage detected in codebase"
+  - id: python-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $PRIVATE_KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.sign($DATA, $PADDING, $ALGORITHM)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, $PADDING, $ALGORITHM)
+          - pattern: |
+              $PRIVATE_KEY = ec.generate_private_key($CURVE, $BACKEND)
+              ...
+              $PRIVATE_KEY.sign($DATA, $ALGORITHM)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, $ALGORITHM)
+          - pattern: |
+              from Crypto.Signature import pkcs1_15
+              $SIGNER = pkcs1_15.new($PRIVATE_KEY)
+              $SIGNATURE = $SIGNER.sign($HASH)
+          - pattern: |
+              from Crypto.Signature import pkcs1_15
+              $VERIFIER = pkcs1_15.new($PUBLIC_KEY)
+              $VERIFIER.verify($HASH, $SIGNATURE)
+          - pattern: |
+              from Crypto.Signature import DSS
+              $SIGNER = DSS.new($PRIVATE_KEY, $MODE)
+              $SIGNATURE = $SIGNER.sign($HASH)
+          - pattern: |
+              from Crypto.Signature import DSS
+              $VERIFIER = DSS.new($PUBLIC_KEY, $MODE)
+              $VERIFIER.verify($HASH, $SIGNATURE)
+          - pattern: |
+              from ecdsa import SigningKey
+              $KEY = SigningKey.generate(curve=$CURVE)
+              $SIGNATURE = $KEY.sign($DATA)
+          - pattern: |
+              from ecdsa import VerifyingKey
+              $KEY = VerifyingKey.from_string($KEY_DATA, curve=$CURVE)
+              $KEY.verify($SIGNATURE, $DATA)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import padding
+              $SIGNATURE = $PRIVATE_KEY.sign($DATA, padding.PKCS1v15(), $ALGORITHM)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import padding
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, padding.PKCS1v15(), $ALGORITHM)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import padding
+              $SIGNATURE = $PRIVATE_KEY.sign($DATA, padding.PSS($MGF, $SALT_LENGTH), $ALGORITHM)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import padding
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, padding.PSS($MGF, $SALT_LENGTH), $ALGORITHM)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import ed25519
+              $PRIVATE_KEY = ed25519.Ed25519PrivateKey.generate()
+              $SIGNATURE = $PRIVATE_KEY.sign($DATA)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import ed25519
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import ed448
+              $PRIVATE_KEY = ed448.Ed448PrivateKey.generate()
+              $SIGNATURE = $PRIVATE_KEY.sign($DATA)
+          - pattern: |
+              from cryptography.hazmat.primitives.asymmetric import ed448
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
+  - id: python-crypto-cipher-salsa20
+    message: Salsa20 cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Salsa20.new($KEY, $NONCE)
+          - pattern: |
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Salsa20
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Salsa20
+              $CIPHER = Salsa20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Salsa20 cipher usage detected in codebase"
+  - id: python-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $MODE
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: AES.MODE_ECB
+          - pattern: AES.MODE_CBC
+          - pattern: AES.MODE_CFB
+          - pattern: AES.MODE_OFB
+          - pattern: AES.MODE_CTR
+          - pattern: AES.MODE_GCM
+          - pattern: AES.MODE_CCM
+          - pattern: AES.MODE_XTS
+          - pattern: AES.new($KEY, AES.MODE_ECB)
+          - pattern: AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: AES.new($KEY, AES.MODE_CFB, $IV)
+          - pattern: AES.new($KEY, AES.MODE_OFB, $IV)
+          - pattern: AES.new($KEY, AES.MODE_CTR, $COUNTER)
+          - pattern: AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: AES.new($KEY, AES.MODE_CCM, $NONCE)
+          - pattern: AES.new($KEY, AES.MODE_XTS, $TWEAK)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, AES.MODE_ECB)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, AES.MODE_CBC, $IV)
+          - pattern: |
+              from Crypto.Cipher import AES
+              $CIPHER = AES.new($KEY, AES.MODE_GCM, $NONCE)
+          - pattern: modes.ECB()
+          - pattern: modes.CBC($IV)
+          - pattern: modes.CFB($IV)
+          - pattern: modes.OFB($IV)
+          - pattern: modes.CTR($COUNTER)
+          - pattern: modes.GCM($NONCE)
+          - pattern: modes.CCM($NONCE, $TAG_LENGTH)
+          - pattern: modes.XTS($TWEAK)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $MODE = modes.ECB()
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $MODE = modes.CBC($IV)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import modes
+              $MODE = modes.GCM($NONCE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), modes.ECB(), $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), modes.CBC($IV), $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"
+  - id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $SUITE
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.set_ciphers($CIPHER_STRING)
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.set_ciphers($CIPHER_STRING)
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.ciphers()
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.ciphers()
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.set_ciphers("$CIPHER_LIST")
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.set_ciphers("$CIPHER_LIST")
+          - pattern: |
+              from urllib3.util.ssl_ import create_urllib3_context
+              $CONTEXT = create_urllib3_context()
+              $CONTEXT.set_ciphers($CIPHER_STRING)
+          - pattern: |
+              import requests
+              $SESSION = requests.Session()
+              $SESSION.mount("https://", $ADAPTER)
+              ...
+              $ADAPTER.init_poolmanager(ciphers=$CIPHER_STRING)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"
+  - id: python-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+          - pattern: rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+          - pattern: rsa.RSAPrivateKey.generate($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+          - pattern: rsa.RSAPublicKey.from_encoded($DATA, $BACKEND)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.encrypt($PLAINTEXT, $PADDING)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.decrypt($CIPHERTEXT, $PADDING)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.encrypt($PLAINTEXT, $PADDING)
+          - pattern: |
+              $PRIVATE_KEY = rsa.generate_private_key($PUBLIC_EXPONENT, $KEY_SIZE, $BACKEND)
+              ...
+              $PRIVATE_KEY.sign($DATA, $PADDING, $ALGORITHM)
+          - pattern: |
+              $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+              ...
+              $PUBLIC_KEY.verify($SIGNATURE, $DATA, $PADDING, $ALGORITHM)
+          - pattern: serialization.load_pem_private_key($DATA, $PASSWORD, $BACKEND)
+          - pattern: serialization.load_pem_public_key($DATA, $BACKEND)
+          - pattern: serialization.load_der_private_key($DATA, $PASSWORD, $BACKEND)
+          - pattern: serialization.load_der_public_key($DATA, $BACKEND)
+          - pattern: serialization.load_ssh_private_key($DATA, $PASSWORD, $BACKEND)
+          - pattern: serialization.load_ssh_public_key($DATA, $BACKEND)
+          - pattern: serialization.load_pem_parameters($DATA, $BACKEND)
+          - pattern: serialization.load_der_parameters($DATA, $BACKEND)
+          - pattern: padding.PKCS1v15()
+          - pattern: padding.OAEP($MGF, $ALGORITHM, $LABEL)
+          - pattern: padding.PSS($MGF, $SALT_LENGTH)
+          - pattern: padding.PKCS1v15()
+          - pattern: |
+              from Crypto.PublicKey import RSA
+              $KEY = RSA.generate($BITS)
+          - pattern: |
+              from Crypto.PublicKey import RSA
+              $KEY = RSA.importKey($KEY_DATA)
+          - pattern: |
+              from Crypto.Cipher import PKCS1_v1_5
+              $CIPHER = PKCS1_v1_5.new($PUBLIC_KEY)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import PKCS1_v1_5
+              $CIPHER = PKCS1_v1_5.new($PRIVATE_KEY)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT, $SENTINEL)
+          - pattern: |
+              from Crypto.Signature import pkcs1_15
+              $SIGNER = pkcs1_15.new($PRIVATE_KEY)
+              $SIGNATURE = $SIGNER.sign($HASH)
+          - pattern: |
+              from Crypto.Signature import pkcs1_15
+              $VERIFIER = pkcs1_15.new($PUBLIC_KEY)
+              $VERIFIER.verify($HASH, $SIGNATURE)
+          - patterns:
+              - pattern-inside: |
+                  $PRIVATE_KEY = rsa.generate_private_key(...)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $PRIVATE_KEY
+                  patterns:
+                    - pattern: $PRIVATE_KEY.encrypt(...)
+                    - pattern: $PRIVATE_KEY.decrypt(...)
+                    - pattern: $PRIVATE_KEY.sign(...)
+          - patterns:
+              - pattern-inside: |
+                  $PRIVATE_KEY = rsa.generate_private_key(...)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $PRIVATE_KEY
+                  patterns:
+                    - pattern: $PUBLIC_KEY = $PRIVATE_KEY.public_key()
+                    - pattern-either:
+                        - pattern: $PUBLIC_KEY.encrypt(...)
+                        - pattern: $PUBLIC_KEY.verify(...)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"
+  - id: python-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $KEY
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hmac.new($KEY, $MSG, $DIGEST)
+          - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, $DIGEST)
+              $HMAC.update($DATA)
+              $RESULT = $HMAC.digest()
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              $RESULT = $HMAC.hexdigest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.md5)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha1)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha256)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha3_256)
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha3_512)
+          - pattern: hmac.new($KEY, $MSG, hashlib.blake2b)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.md5)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha1)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha256)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha3_256)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha3_512)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.blake2b)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, $DIGEST)
+              ...
+              hmac.compare_digest($HMAC.digest(), $EXPECTED)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              base64.b64encode($HMAC.digest())
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              $HMAC.hexdigest()
+          - pattern: hmac.digest($KEY, $MSG, $DIGEST)
+          - pattern: hmac.digest($KEY, $MSG, digest=$DIGEST)
+          - pattern: hmac.compare_digest($DIGEST1, $DIGEST2)
+          - patterns:
+              - pattern: hmac.new($KEY, $MSG, digestmod="$ALG")
+              - metavariable-regex:
+                  metavariable: $ALG
+                  regex: (md5|sha1|sha224|sha256|sha384|sha512|sha3_224|sha3_256|sha3_384|sha3_512|blake2b|blake2s)
+          - pattern: |
+              $HMAC = hmac.new($KEY, $MSG, digestmod=$DIGEST)
+              ...
+              hmac.compare_digest($HMAC.digest(), $EXPECTED)
+          - patterns:
+              - pattern-inside: |
+                  $KEY = secrets.token_bytes($LENGTH)
+                  ...
+              - metavariable-pattern:
+                  metavariable: $KEY
+                  patterns:
+                    - pattern: hmac.new($KEY, $MSG, $DIGEST)
+                    - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"
+  - id: python-crypto-cipher-rc4
+    message: RC4 cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: ARC4.new($KEY)
+          - pattern: |
+              $CIPHER = ARC4.new($KEY)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = ARC4.new($KEY)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import ARC4
+              $CIPHER = ARC4.new($KEY)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import ARC4
+              $CIPHER = ARC4.new($KEY)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import ARC4
+              $CIPHER = ARC4.new($KEY)
+              ...
+              $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import ARC4
+              $CIPHER = ARC4.new($KEY)
+              ...
+              $CIPHER.decrypt($CIPHERTEXT)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 cipher usage detected in codebase"
+  - id: python-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: Blowfish.new($KEY, $MODE)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_ECB)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_CBC, $IV)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_CFB, $IV)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_OFB, $IV)
+          - pattern: Blowfish.new($KEY, Blowfish.MODE_CTR, $COUNTER)
+          - pattern: |
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import Blowfish
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import Blowfish
+              $CIPHER = Blowfish.new($KEY, $MODE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.Blowfish($KEY)
+          - pattern: Cipher(algorithms.Blowfish($KEY), $MODE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"
+  - id: python-crypto-cipher-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: ChaCha20.new($KEY, $NONCE)
+          - pattern: |
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20
+              $CIPHER = ChaCha20.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20_Poly1305
+              $CIPHER = ChaCha20_Poly1305.new($KEY, $NONCE)
+              $CIPHERTEXT = $CIPHER.encrypt_and_digest($PLAINTEXT)
+          - pattern: |
+              from Crypto.Cipher import ChaCha20_Poly1305
+              $CIPHER = ChaCha20_Poly1305.new($KEY, $NONCE)
+              $PLAINTEXT = $CIPHER.decrypt_and_verify($CIPHERTEXT, $TAG)
+          - pattern: cryptography.hazmat.primitives.ciphers.algorithms.ChaCha20($KEY)
+          - pattern: Cipher(algorithms.ChaCha20($KEY), $MODE)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+              $CIPHER = Cipher(algorithms.ChaCha20($KEY), modes.ChaCha20Poly1305($NONCE), $BACKEND)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
+              $CIPHER = ChaCha20Poly1305($KEY)
+              $CIPHERTEXT = $CIPHER.encrypt($NONCE, $PLAINTEXT, $ASSOCIATED_DATA)
+          - pattern: |
+              from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
+              $CIPHER = ChaCha20Poly1305($KEY)
+              $PLAINTEXT = $CIPHER.decrypt($NONCE, $CIPHERTEXT, $ASSOCIATED_DATA)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"
+  - id: python-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $DATA
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: hashlib.sha512($DATA)
+          - pattern: hashlib.sha512()
+          - pattern: |
+              $HASHER = hashlib.sha512()
+              $HASHER.update($DATA)
+              $HASH = $HASHER.digest()
+          - pattern: |
+              $HASHER = hashlib.sha512()
+              ...
+              $HASH = $HASHER.hexdigest()
+          - pattern: hashlib.sha512($DATA).hexdigest()
+          - pattern: hashlib.sha512($DATA).digest()
+          - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
+          - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
+          - pattern: pbkdf2_hmac("sha512", $PASSWORD, $SALT, $ITER)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"
+  - id: python-crypto-certificate-validation
+    message: SSL/TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $CONTEXT
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.check_hostname = False
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.check_hostname = False
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.verify_mode = ssl.CERT_NONE
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.verify_mode = ssl.CERT_NONE
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.verify_mode = ssl.CERT_OPTIONAL
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.verify_mode = ssl.CERT_OPTIONAL
+          - pattern: |
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.verify_mode = ssl.CERT_REQUIRED
+          - pattern: |
+              $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+              $CONTEXT.verify_mode = ssl.CERT_REQUIRED
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl._create_unverified_context()
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.load_verify_locations($CAFILE)
+          - pattern: |
+              import ssl
+              $CONTEXT = ssl.create_default_context()
+              $CONTEXT.load_cert_chain($CERTFILE, $KEYFILE)
+          - pattern: |
+              import requests
+              requests.get($URL, verify=False)
+          - pattern: |
+              import requests
+              requests.post($URL, verify=False, data=$DATA)
+          - pattern: |
+              import urllib3
+              urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+              ...
+              requests.get($URL, verify=False)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: SSL/TLS certificate validation configuration detected in codebase"
+  - id: python-crypto-password-hashing
+    message: Password hashing operations detected
+    severity: INFO
+    languages:
+      - python
+    focus-metavariable: $PASSWORD
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    patterns:
+      - pattern-either:
+          - pattern: bcrypt.hashpw($PASSWORD, $SALT)
+          - pattern: bcrypt.checkpw($PASSWORD, $HASH)
+          - pattern: bcrypt.gensalt($ROUNDS)
+          - patterns:
+              - pattern: bcrypt.gensalt($ROUNDS)
+              - metavariable-comparison:
+                  metavariable: $ROUNDS
+                  comparison: $ROUNDS < 10
+          - pattern: argon2.hash_password($PASSWORD, $SALT)
+          - pattern: argon2.verify_password($HASH, $PASSWORD)
+          - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
+          - pattern: scrypt.verify($HASH, $PASSWORD)
+          - pattern: hashlib.pbkdf2_hmac("sha256", $PASSWORD, $SALT, $ITER)
+          - pattern: |
+              $HASH = bcrypt.hashpw($PASSWORD, bcrypt.gensalt())
+              ...
+              bcrypt.checkpw($INPUT, $HASH)
+          - pattern: passlib.hash.bcrypt.hash($PASSWORD)
+          - pattern: passlib.hash.bcrypt.verify($PASSWORD, $HASH)
+          - pattern: passlib.hash.argon2.hash($PASSWORD)
+          - pattern: passlib.hash.argon2.verify($PASSWORD, $HASH)
+          - pattern: passlib.hash.sha256_crypt.hash($PASSWORD)
+          - pattern: passlib.hash.sha256_crypt.verify($PASSWORD, $HASH)
+          - pattern: passlib.hash.pbkdf2_sha256.hash($PASSWORD)
+          - pattern: passlib.hash.pbkdf2_sha256.verify($PASSWORD, $HASH)
+          - pattern: passlib.hash.pbkdf2_sha512.hash($PASSWORD)
+          - pattern: passlib.hash.pbkdf2_sha512.verify($PASSWORD, $HASH)
+          - pattern: |
+              from passlib.hash import bcrypt
+              $HASH = bcrypt.hash($PASSWORD)
+          - pattern: |
+              from passlib.hash import bcrypt
+              bcrypt.verify($PASSWORD, $HASH)
+          - pattern: |
+              from passlib.hash import argon2
+              $HASH = argon2.hash($PASSWORD)
+          - pattern: |
+              from passlib.hash import argon2
+              argon2.verify($PASSWORD, $HASH)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Password hashing operations detected in codebase"
+  - id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - python
+    paths:
+      include:
+        - "**/*.py"
+        - "**/*.pyi"
+      exclude:
+        - "**/__pycache__/**"
+        - "**/*.pyc"
+    mode: taint
+    pattern-sources:
+      - pattern: $KEY = "$VALUE"
+      - pattern: $KEY = '$VALUE'
+      - pattern: $KEY = b"$VALUE"
+      - pattern: $KEY = b'$VALUE'
+      - pattern: KEY = "$VALUE"
+      - pattern: KEY = '$VALUE'
+      - pattern: KEY = b"$VALUE"
+      - pattern: KEY = b'$VALUE'
+      - pattern: '"$VALUE"'
+      - pattern: "'$VALUE'"
+      - pattern: b"$VALUE"
+      - pattern: b'$VALUE'
+      - pattern: |
+          $KEY = os.getenv("$ENV_VAR", "$DEFAULT_KEY")
+      - pattern: |
+          $KEY = os.getenv("$ENV_VAR") or "$DEFAULT_KEY"
+      - pattern: |
+          $KEY = os.getenv("$ENV_VAR")
+          if not $KEY:
+              $KEY = "$DEFAULT_KEY"
+      - pattern: |
+          $KEY = os.environ.get("$ENV_VAR", "$DEFAULT_KEY")
+      - pattern: |
+          $CONFIG = {"key": "$VALUE"}
+      - pattern: |
+          $CONFIG = {"key": b"$VALUE"}
+      - pattern: |
+          class $CONFIG:
+              $FIELD = "$VALUE"
+      - pattern: |
+          class $CONFIG:
+              $FIELD = b"$VALUE"
+    pattern-sinks:
+      - pattern: AES.new($KEY, $MODE)
+      - pattern: DES.new($KEY, $MODE)
+      - pattern: DES3.new($KEY, $MODE)
+      - pattern: TripleDES.new($KEY, $MODE)
+      - pattern: ARC4.new($KEY)
+      - pattern: Blowfish.new($KEY, $MODE)
+      - pattern: Twofish.new($KEY, $MODE)
+      - pattern: Camellia.new($KEY, $MODE)
+      - pattern: ChaCha20.new($KEY, $NONCE)
+      - pattern: Salsa20.new($KEY, $NONCE)
+      - pattern: Fernet($KEY)
+      - pattern: MultiFernet([$KEY, ...])
+      - pattern: Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.DES($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.TripleDES($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.Camellia($KEY), $MODE, $BACKEND)
+      - pattern: Cipher(algorithms.ChaCha20($KEY), $MODE, $BACKEND)
+      - pattern: rsa.generate_private_key($PUBLIC_EXPONENT, $KEY, $BACKEND)
+      - pattern: ec.generate_private_key($CURVE, $BACKEND)
+      - pattern: hmac.new($KEY, $MSG, $DIGEST)
+      - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+  - id: python-crypto-pycryptodome
+    message: PyCryptodome library usage detected
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: |
+              from Crypto.Cipher import $CIPHER
+          - pattern: |
+              from Crypto.PublicKey import $KEY_TYPE
+          - pattern: |
+              from Crypto.Hash import $HASH_TYPE
+          - pattern: |
+              from Crypto.Signature import $SIGNATURE_TYPE
+          - pattern: |
+              from Crypto.Random import $RANDOM_TYPE
+          - pattern: |
+              from Crypto.Protocol import $PROTOCOL_TYPE
+          - pattern: |
+              from Crypto.Util import $UTIL_TYPE
+          - pattern: |
+              from Crypto.Cipher import AES, DES, DES3, ARC4, ChaCha20, Salsa20
+          - pattern: |
+              from Crypto.PublicKey import RSA, DSA, ECC
+          - pattern: |
+              from Crypto.Hash import MD5, SHA1, SHA256, SHA512, SHA3_256, SHA3_512, BLAKE2b
+          - pattern: |
+              from Crypto.Signature import pkcs1_15, DSS, eddsa
+          - pattern: |
+              from Crypto.Random import get_random_bytes
+          - pattern: |
+              from Crypto.Protocol.KDF import PBKDF2, HKDF, scrypt
+          - pattern: |
+              from Crypto.Util.Padding import pad, unpad
+          - pattern: |
+              import Crypto.Cipher
+          - pattern: |
+              import Crypto.PublicKey
+          - pattern: |
+              import Crypto.Hash
+          - pattern: |
+              import Crypto.Signature
+    pattern-not-inside:
+      - pattern: |
+          """
+          $DOCSTRING
+          """
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: PyCryptodome library usage detected in codebase"

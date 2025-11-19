@@ -1,0 +1,2185 @@
+rules:
+- id: typescript-crypto-tls-version
+  message: TLS version configuration detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $OPTIONS
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          secureProtocol: "TLSv1_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          secureProtocol: "TLSv1_1_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          secureProtocol: "TLSv1_2_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          minVersion: "TLSv1.2",
+          maxVersion: "TLSv1.3",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          secureProtocol: "TLSv1_method",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          minVersion: "TLSv1.2",
+          ...
+        };
+    - pattern: |
+        https.createServer($OPTIONS, $HANDLER);
+    - pattern: |
+        tls.createServer($OPTIONS, $HANDLER);
+    - pattern: |
+        tls.createSecureContext($OPTIONS);
+    - pattern: |
+        const $CONTEXT = tls.createSecureContext({
+          secureProtocol: "TLSv1_2_method",
+          ...
+        });
+    - pattern: |
+        const $CONTEXT = tls.createSecureContext({
+          minVersion: "TLSv1.2",
+          ...
+        });
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: TLS version configuration detected in codebase'
+- id: typescript-crypto-sha256
+  message: SHA256 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha256")
+    - pattern: crypto.createHash('sha256')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("sha256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha256").update($DATA).digest()
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.SHA256($DATA)
+    - pattern: require("crypto-js").SHA256($DATA)
+    - pattern: CryptoJS.SHA256($DATA)
+    - pattern: |
+        await crypto.subtle.digest("SHA-256", $DATA);
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"sha256"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''sha256'''
+    - patterns:
+      - pattern: |
+          const $ALGORITHM = "sha256";
+          ...
+          crypto.createHash($ALGORITHM)
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"SHA-256"'
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''SHA-256'''
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA256 hash function usage detected in codebase'
+- id: typescript-crypto-webcrypto-api
+  message: Web Crypto API usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.subtle.encrypt($ALGO, $KEY, $DATA)
+    - pattern: crypto.subtle.decrypt($ALGO, $KEY, $DATA)
+    - pattern: crypto.subtle.sign($ALGO, $KEY, $DATA)
+    - pattern: crypto.subtle.verify($ALGO, $KEY, $SIG, $DATA)
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: crypto.subtle.digest($ALGO, $DATA)
+    - pattern: |
+        await crypto.subtle.digest("SHA-256", $DATA);
+    - pattern: crypto.subtle.importKey($FORMAT, $KEY_DATA, $ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: crypto.subtle.exportKey($FORMAT, $KEY)
+    - pattern: crypto.subtle.wrapKey($FORMAT, $KEY, $WRAPPING_KEY, $WRAP_ALGO)
+    - pattern: crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO,
+        $IMPORT_ALGO, $EXTRACTABLE, $USAGE)
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "Ed25519" },
+          true,
+          ["sign", "verify"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "X25519" },
+          true,
+          ["deriveKey", "deriveBits"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "ChaCha20-Poly1305", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: $ALGORITHM, length: $LENGTH },
+          $EXTRACTABLE,
+          $USAGE
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: $ALGORITHM },
+          $EXTRACTABLE,
+          $USAGE
+        );
+    - pattern: |
+        await crypto.subtle.deriveBits(
+          { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+          $BASE_KEY,
+          $LENGTH
+        );
+    - pattern: |
+        await crypto.subtle.deriveBits(
+          { name: "HKDF", hash: "SHA-256", salt: $SALT, info: $INFO },
+          $BASE_KEY,
+          $LENGTH
+        );
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Web Crypto API usage detected in codebase'
+- id: typescript-crypto-iv-nonce
+  message: IV or nonce generation for cryptographic use detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $IV
+  patterns:
+  - pattern-either:
+    - pattern: crypto.randomBytes($LENGTH)
+    - pattern: crypto.getRandomValues($ARRAY)
+    - pattern: |
+        $IV: Buffer = crypto.randomBytes(16);
+        ...
+        crypto.createCipheriv("aes-256-cbc", $KEY, $IV);
+    - pattern: |
+        $NONCE: Buffer = crypto.randomBytes(12);
+        ...
+        crypto.createCipheriv("aes-256-gcm", $KEY, $NONCE);
+    - pattern: |
+        $IV = crypto.getRandomValues(new Uint8Array(16));
+        ...
+        await crypto.subtle.encrypt({ name: "AES-CBC", iv: $IV }, $KEY, $DATA);
+    - pattern: |
+        $NONCE = crypto.getRandomValues(new Uint8Array(12));
+        ...
+        await crypto.subtle.encrypt({ name: "AES-GCM", iv: $NONCE }, $KEY, $DATA);
+    - pattern: |
+        $IV = new Uint8Array(16);
+        crypto.getRandomValues($IV);
+        ...
+        await crypto.subtle.encrypt({ name: "AES-CBC", iv: $IV }, $KEY, $DATA);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-330
+    impact: 'Inventory: IV or nonce generation for cryptographic use detected in codebase'
+- id: typescript-crypto-digital-signatures
+  message: Digital signature operations detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createSign("RSA-SHA256")
+    - pattern: crypto.createSign("RSA-SHA512")
+    - pattern: crypto.createSign("ecdsa-with-SHA256")
+    - pattern: crypto.createSign("ecdsa-with-SHA512")
+    - pattern: crypto.createVerify("RSA-SHA256")
+    - pattern: crypto.createVerify("RSA-SHA512")
+    - pattern: crypto.createVerify("ecdsa-with-SHA256")
+    - pattern: crypto.createVerify("ecdsa-with-SHA512")
+    - pattern: |
+        $SIGN: crypto.Sign = crypto.createSign("RSA-SHA256");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY: crypto.Verify = crypto.createVerify("RSA-SHA256");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: |
+        await crypto.subtle.sign({ name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, $PRIVATE_KEY, $DATA);
+    - pattern: |
+        await crypto.subtle.sign({ name: "RSA-PSS", hash: "SHA-256" }, $PRIVATE_KEY, $DATA);
+    - pattern: |
+        await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA);
+    - pattern: |
+        await crypto.subtle.verify({ name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+    - pattern: |
+        await crypto.subtle.verify({ name: "RSA-PSS", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+    - pattern: |
+        await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey({ name: "Ed25519" }, true, ["sign", "verify"]);
+    - pattern: |
+        await crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA);
+    - pattern: |
+        await crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Digital signature operations detected in codebase'
+- id: typescript-crypto-sha224
+  message: SHA224 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha224")
+    - pattern: crypto.createHash('sha224')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("sha224");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha224").update($DATA).digest()
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"sha224"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''sha224'''
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"SHA-224"'
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''SHA-224'''
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA224 hash function usage detected in codebase'
+- id: typescript-crypto-rsa
+  message: RSA cryptographic operations detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.publicEncrypt($KEY, $DATA)
+    - pattern: crypto.privateDecrypt($KEY, $DATA)
+    - pattern: crypto.privateEncrypt($KEY, $DATA)
+    - pattern: crypto.publicDecrypt($KEY, $DATA)
+    - pattern: |
+        $CIPHERTEXT = crypto.publicEncrypt($PUBLIC_KEY, $PLAINTEXT);
+    - pattern: |
+        $PLAINTEXT = crypto.privateDecrypt($PRIVATE_KEY, $CIPHERTEXT);
+    - pattern: crypto.createSign("RSA-SHA256")
+    - pattern: crypto.createSign("RSA-SHA512")
+    - pattern: crypto.createVerify("RSA-SHA256")
+    - pattern: crypto.createVerify("RSA-SHA512")
+    - pattern: |
+        $SIGN: crypto.Sign = crypto.createSign("RSA-SHA256");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY: crypto.Verify = crypto.createVerify("RSA-SHA256");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: require("node-forge").pki.rsa.generateKeyPair($BITS)
+    - pattern: require("node-forge").pki.rsa.encrypt($DATA, $PUBLIC_KEY)
+    - pattern: require("node-forge").pki.rsa.decrypt($DATA, $PRIVATE_KEY)
+    - pattern: require("node-forge").pki.rsa.sign($DATA, $PRIVATE_KEY)
+    - pattern: require("node-forge").pki.rsa.verify($DATA, $SIGNATURE, $PUBLIC_KEY)
+    - pattern: require("node-forge").pki.rsa.setPublicKey($PUBLIC_KEY)
+    - pattern: require("node-forge").pki.rsa.setPrivateKey($PRIVATE_KEY)
+    - pattern: |
+        const $LIBRARY = await import("node-forge");
+        $LIBRARY.pki.rsa.generateKeyPair($BITS);
+    - pattern: |
+        const $LIBRARY = require($MODULE);
+        $LIBRARY.pki.rsa.generateKeyPair($BITS);
+    - patterns:
+      - pattern: |
+          $KEY = await crypto.subtle.generateKey(
+            { name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+            true,
+            ["encrypt", "decrypt"]
+          );
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+    - patterns:
+      - pattern: |
+          $KEY = await crypto.subtle.generateKey(
+            { name: "RSA-PSS", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+            true,
+            ["sign", "verify"]
+          );
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+    - patterns:
+      - pattern: |
+          $KEY = await crypto.subtle.generateKey(
+            { name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+            true,
+            ["encrypt", "decrypt"]
+          );
+      - metavariable-comparison:
+          metavariable: $BITS
+          comparison: $BITS < 2048
+    - patterns:
+      - pattern: |
+          $KEY = await crypto.subtle.generateKey(
+            { name: "RSA-PSS", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+            true,
+            ["sign", "verify"]
+          );
+      - metavariable-comparison:
+          metavariable: $BITS
+          comparison: $BITS < 2048
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: RSA cryptographic operations detected in codebase'
+- id: typescript-crypto-scrypt
+  message: Scrypt key derivation function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
+    - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+    - pattern: |
+        crypto.scrypt($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P }, function($ERR, $KEY) {
+          ...
+        });
+    - pattern: |
+        $KEY = crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P });
+    - patterns:
+      - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+      - metavariable-regex:
+          metavariable: $KEYLEN
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P })
+      - metavariable-regex:
+          metavariable: $N
+          regex: \d+
+      - metavariable-regex:
+          metavariable: $R
+          regex: \d+
+      - metavariable-regex:
+          metavariable: $P
+          regex: \d+
+    - patterns:
+      - pattern: |
+          crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, { N: $N, r: $R, p: $P })
+      - metavariable-comparison:
+          metavariable: $N
+          comparison: $N < 16384
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Scrypt key derivation function usage detected in codebase'
+- id: typescript-crypto-certificate-validation
+  message: Certificate validation configuration detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $OPTIONS
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          rejectUnauthorized: true,
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          rejectUnauthorized: false,
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          ca: $CA_CERT,
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          cert: $CERT,
+          key: $KEY,
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          checkServerIdentity: function($HOSTNAME, $CERT) {
+            ...
+          },
+          ...
+        };
+    - pattern: |
+        $AGENT: https.Agent = new https.Agent({
+          rejectUnauthorized: $VALUE,
+          ...
+        });
+    - pattern: |
+        $AGENT: https.Agent = new https.Agent({
+          ca: $CA_CERT,
+          ...
+        });
+    - pattern: |
+        $OPTIONS = {
+          rejectUnauthorized: true,
+          ...
+        };
+    - pattern: |
+        $AGENT = new https.Agent({
+          rejectUnauthorized: $VALUE,
+          ...
+        });
+    - pattern: |
+        const $CONTEXT = tls.createSecureContext({
+          rejectUnauthorized: false,
+          ...
+        });
+    - pattern: |
+        const $CONTEXT = tls.createSecureContext({
+          checkServerIdentity: function($HOSTNAME, $CERT) {
+            ...
+          },
+          ...
+        });
+    - pattern: |
+        https.createServer({
+          rejectUnauthorized: false,
+          ...
+        }, $HANDLER);
+    - pattern: |
+        tls.createServer({
+          rejectUnauthorized: false,
+          ...
+        }, $HANDLER);
+    - pattern: |
+        const $AGENT = new https.Agent({
+          rejectUnauthorized: false,
+          ...
+        });
+        https.request({ agent: $AGENT, ... }, $CALLBACK);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-295
+    impact: 'Inventory: Certificate validation configuration detected in codebase'
+- id: typescript-crypto-blake2
+  message: BLAKE2 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("blake2b512")
+    - pattern: crypto.createHash("blake2s256")
+    - pattern: crypto.createHash('blake2b512')
+    - pattern: crypto.createHash('blake2s256')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("blake2b512");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("blake2s256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("blake2b512").update($DATA).digest()
+    - pattern: crypto.createHash("blake2s256").update($DATA).digest()
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"(blake2b512|blake2s256)"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''(blake2b512|blake2s256)'''
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: BLAKE2 hash function usage detected in codebase'
+- id: typescript-crypto-sha3
+  message: SHA3 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha3-224")
+    - pattern: crypto.createHash("sha3-256")
+    - pattern: crypto.createHash("sha3-384")
+    - pattern: crypto.createHash("sha3-512")
+    - pattern: crypto.createHash('sha3-224')
+    - pattern: crypto.createHash('sha3-256')
+    - pattern: crypto.createHash('sha3-384')
+    - pattern: crypto.createHash('sha3-512')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("sha3-256");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha3-256").update($DATA).digest()
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.SHA3($DATA)
+    - pattern: CryptoJS.SHA3($DATA)
+    - pattern: require("crypto-js").SHA3($DATA)
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"sha3-(224|256|384|512)"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''sha3-(224|256|384|512)'''
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA3 hash function usage detected in codebase'
+- id: typescript-crypto-cipher-rc4
+  message: RC4 stream cipher usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipher("rc4", $KEY)
+    - pattern: crypto.createCipher("rc4-40", $KEY)
+    - pattern: crypto.createCipher("rc4-hmac-md5", $KEY)
+    - pattern: crypto.createDecipher("rc4", $KEY)
+    - pattern: crypto.createDecipher("rc4-40", $KEY)
+    - pattern: crypto.createDecipher("rc4-hmac-md5", $KEY)
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"rc4(-40|-hmac-md5)?"'
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''rc4(-40|-hmac-md5)?'''
+    - patterns:
+      - pattern: |
+          const $ALGORITHM = "rc4";
+          ...
+          crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.RC4.encrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.RC4.encrypt($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.RC4.decrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.RC4.decrypt($DATA, $KEY)
+    - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
+    - pattern: require("crypto-js").RC4.decrypt($DATA, $KEY)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: RC4 stream cipher usage detected in codebase'
+- id: typescript-crypto-tls-cipher-suites
+  message: TLS cipher suite configuration detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $OPTIONS
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          ciphers: "$CIPHER_LIST",
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          honorCipherOrder: true,
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+    - pattern: |
+        $OPTIONS: tls.TlsOptions = {
+          secureOptions: $FLAGS,
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+    - pattern: |
+        $OPTIONS = {
+          ciphers: "$CIPHER_SUITE",
+          ...
+        };
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: TLS cipher suite configuration detected in codebase'
+- id: typescript-crypto-sha1
+  message: SHA1 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha1")
+    - pattern: crypto.createHash('sha1')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("sha1");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha1").update($DATA).digest()
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.SHA1($DATA)
+    - pattern: CryptoJS.SHA1($DATA)
+    - pattern: require("crypto-js").SHA1($DATA)
+    - pattern: |
+        await crypto.subtle.digest("SHA-1", $DATA);
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"sha1"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''sha1'''
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"SHA-1"'
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''SHA-1'''
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA1 hash function usage detected in codebase'
+- id: typescript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $SALT
+  patterns:
+  - pattern-either:
+    - pattern: crypto.randomBytes($LENGTH)
+    - pattern: crypto.getRandomValues($ARRAY)
+    - pattern: |
+        $SALT: Buffer = crypto.randomBytes(16);
+        ...
+        crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+    - pattern: |
+        $SALT: Buffer = crypto.randomBytes(32);
+        ...
+        crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS);
+    - pattern: |
+        $SALT = crypto.getRandomValues(new Uint8Array(16));
+        ...
+        crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+    - pattern: |
+        $SALT = crypto.randomBytes($SALT_LENGTH);
+        ...
+        require("bcrypt").hashSync($PASSWORD, $ROUNDS);
+    - pattern: |
+        $SALT = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+        ...
+        await crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+          $BASE_KEY,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $SALT = Buffer.from("$VALUE");
+        ...
+        crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST);
+    - pattern: |
+        $SALT = Buffer.from("$VALUE", "hex");
+        ...
+        crypto.scryptSync($PASSWORD, $SALT, $KEYLEN);
+    - patterns:
+      - pattern: crypto.randomBytes($SALT_LENGTH)
+      - metavariable-regex:
+          metavariable: $SALT_LENGTH
+          regex: \d+
+      - focus-metavariable: $SALT_LENGTH
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-330
+    impact: 'Inventory: Salt generation for cryptographic use detected in codebase'
+- id: typescript-crypto-diffie-hellman
+  message: Diffie-Hellman key exchange usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createDiffieHellman($PRIME, $ENCODING)
+    - pattern: crypto.createDiffieHellman($PRIME_LENGTH)
+    - pattern: crypto.createDiffieHellmanGroup("modp14")
+    - pattern: crypto.createDiffieHellmanGroup("modp15")
+    - pattern: crypto.createDiffieHellmanGroup("modp16")
+    - pattern: crypto.createDiffieHellmanGroup("modp1")
+    - pattern: crypto.createDiffieHellmanGroup("modp2")
+    - pattern: crypto.createDiffieHellmanGroup("modp5")
+    - pattern: crypto.createDiffieHellmanGroup("modp17")
+    - pattern: crypto.createDiffieHellmanGroup("modp18")
+    - pattern: |
+        $DH: crypto.DiffieHellman = crypto.createDiffieHellman($PRIME_LENGTH);
+        $DH.generateKeys();
+        $SHARED = $DH.computeSecret($PUBLIC_KEY);
+    - pattern: |
+        $DH: crypto.DiffieHellman = crypto.createDiffieHellmanGroup("modp14");
+        $DH.generateKeys();
+        $SHARED = $DH.computeSecret($PUBLIC_KEY);
+    - pattern: crypto.createECDH("prime256v1")
+    - pattern: crypto.createECDH("secp256k1")
+    - pattern: |
+        $ECDH: crypto.ECDH = crypto.createECDH("prime256v1");
+        $ECDH.generateKeys();
+        $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "ECDH", namedCurve: "P-256" },
+          true,
+          ["deriveKey", "deriveBits"]
+        );
+    - pattern: |
+        await crypto.subtle.deriveKey(
+          { name: "ECDH", public: $PUBLIC_KEY },
+          $PRIVATE_KEY,
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "X25519" },
+          true,
+          ["deriveKey", "deriveBits"]
+        );
+    - pattern: |
+        await crypto.subtle.deriveKey(
+          { name: "X25519", public: $PUBLIC_KEY },
+          $PRIVATE_KEY,
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Diffie-Hellman key exchange usage detected in codebase'
+- id: typescript-crypto-password-hashing
+  message: Password hashing operations detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
+    - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
+    - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+    - pattern: require("bcrypt").hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: require("bcrypt").hashSync($PASSWORD, $ROUNDS)
+    - pattern: require("bcrypt").compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: require("bcrypt").compareSync($PASSWORD, $HASH)
+    - pattern: require("bcryptjs").hash($PASSWORD, $ROUNDS, $CALLBACK)
+    - pattern: require("bcryptjs").hashSync($PASSWORD, $ROUNDS)
+    - pattern: require("bcryptjs").compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: require("bcryptjs").compareSync($PASSWORD, $HASH)
+    - pattern: |
+        $HASH = await bcrypt.hash($PASSWORD, $ROUNDS);
+        ...
+        $MATCH = await bcrypt.compare($PASSWORD, $HASH);
+    - pattern: import * as bcrypt from "bcrypt"; await bcrypt.hash($PASSWORD, $ROUNDS)
+    - pattern: import * as bcrypt from "bcryptjs"; await bcrypt.hash($PASSWORD, $ROUNDS)
+    - pattern: bcrypt.hashSync($PASSWORD, $ROUNDS)
+    - pattern: bcrypt.compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: bcrypt.compareSync($PASSWORD, $HASH)
+    - pattern: bcryptjs.hashSync($PASSWORD, $ROUNDS)
+    - pattern: bcryptjs.compare($PASSWORD, $HASH, $CALLBACK)
+    - pattern: bcryptjs.compareSync($PASSWORD, $HASH)
+    - pattern: |
+        await bcrypt.compare($PASSWORD, $HASH);
+    - pattern: |
+        await bcryptjs.compare($PASSWORD, $HASH);
+    - pattern: |
+        const $LIBRARY = await import("bcrypt");
+        await $LIBRARY.hash($PASSWORD, $ROUNDS);
+    - pattern: |
+        const $LIBRARY = await import("bcryptjs");
+        await $LIBRARY.hash($PASSWORD, $ROUNDS);
+    - pattern: |
+        const $LIBRARY = require($MODULE);
+        $LIBRARY.hashSync($PASSWORD, $ROUNDS);
+    - patterns:
+      - pattern: bcrypt.hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - patterns:
+      - pattern: bcryptjs.hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - patterns:
+      - pattern: require("bcrypt").hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+    - patterns:
+      - pattern: require("bcryptjs").hashSync($PASSWORD, $ROUNDS)
+      - metavariable-comparison:
+          metavariable: $ROUNDS
+          comparison: $ROUNDS < 10
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Password hashing operations detected in codebase'
+- id: typescript-crypto-hmac
+  message: HMAC usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHmac("sha256", $KEY)
+    - pattern: crypto.createHmac("sha512", $KEY)
+    - pattern: crypto.createHmac("sha1", $KEY)
+    - pattern: crypto.createHmac("md5", $KEY)
+    - pattern: crypto.createHmac("sha384", $KEY)
+    - patterns:
+      - pattern: crypto.createHmac($ALGORITHM, $KEY)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"(sha256|sha512|sha1|md5|sha384)"'
+    - patterns:
+      - pattern: crypto.createHmac($ALGORITHM, $KEY)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''(sha256|sha512|sha1|md5|sha384)'''
+    - patterns:
+      - pattern: |
+          const $ALGORITHM = "sha256";
+          ...
+          crypto.createHmac($ALGORITHM, $KEY)
+    - pattern: |
+        $HMAC: crypto.Hmac = crypto.createHmac("sha256", $KEY);
+        $HMAC.update($DATA);
+        $RESULT = $HMAC.digest();
+    - pattern: crypto.createHmac("sha256", $KEY).update($DATA).digest()
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.HmacSHA256($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.HmacSHA512($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.HmacSHA1($DATA, $KEY)
+    - pattern: CryptoJS.HmacSHA256($DATA, $KEY)
+    - pattern: CryptoJS.HmacSHA512($DATA, $KEY)
+    - pattern: CryptoJS.HmacSHA1($DATA, $KEY)
+    - pattern: |
+        await crypto.subtle.sign(
+          { name: "HMAC", hash: "SHA-256" },
+          $KEY,
+          $DATA
+        );
+    - pattern: |
+        await crypto.subtle.verify(
+          { name: "HMAC", hash: "SHA-256" },
+          $KEY,
+          $SIGNATURE,
+          $DATA
+        );
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: HMAC usage detected in codebase'
+- id: typescript-crypto-hardcoded-key
+  message: Hardcoded cryptographic key detected
+  severity: INFO
+  languages:
+  - typescript
+  mode: taint
+  pattern-sources:
+  - pattern: |
+      const $KEY: string = "$VALUE";
+  - pattern: |
+      let $KEY: string = "$VALUE";
+  - pattern: |
+      const $KEY = "$VALUE";
+  - pattern: |
+      let $KEY = "$VALUE";
+  - pattern: |
+      $KEY = "$VALUE";
+  - pattern: |
+      $KEY = Buffer.from("$VALUE");
+  - pattern: |
+      $KEY = Buffer.from("$VALUE", "hex");
+  - pattern: |
+      $KEY = Buffer.from("$VALUE", "base64");
+  - pattern: |
+      $KEY_DATA = new Uint8Array([$VALUES]);
+  - pattern: |
+      $OPTIONS = {
+        key: "$VALUE",
+        ...
+      };
+  pattern-sinks:
+  - pattern: crypto.createCipheriv($ALGO, $KEY, $IV)
+  - pattern: crypto.createDecipheriv($ALGO, $KEY, $IV)
+  - pattern: crypto.subtle.encrypt($ALGO, $KEY, $DATA)
+  - pattern: crypto.subtle.decrypt($ALGO, $KEY, $DATA)
+  - pattern: crypto.subtle.sign($ALGO, $KEY, $DATA)
+  - pattern: crypto.subtle.verify($ALGO, $KEY, $SIG, $DATA)
+  - pattern: |
+      await crypto.subtle.importKey("raw", $KEY_DATA, { name: "AES-GCM" }, false, ["encrypt", "decrypt"])
+  - pattern: |
+      crypto.createCipheriv("aes-256-cbc", $OPTIONS.key, $IV)
+  metavariable-propagator:
+    metavariable: $KEY
+    from: $KEY = $VALUE
+    to: $KEY
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  - pattern: |
+      /**
+       * $DOCSTRING
+       */
+  metadata:
+    category: crypto
+    cwe: CWE-798
+    impact: 'Inventory: Hardcoded cryptographic key detected in codebase'
+- id: typescript-crypto-key-derivation
+  message: Key derivation function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
+    - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
+    - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+    - pattern: crypto.createECDH("prime256v1")
+    - pattern: |
+        $ECDH: crypto.ECDH = crypto.createECDH("prime256v1");
+        $ECDH.generateKeys();
+        $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+    - pattern: crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
+        $USAGE)
+    - pattern: crypto.subtle.deriveBits($ALGO, $BASE_KEY, $LENGTH)
+    - pattern: |
+        $KEY = await crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+          $BASE_KEY,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.deriveKey(
+          { name: "HKDF", hash: "SHA-256", salt: $SALT, info: $INFO },
+          $BASE_KEY,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Key derivation function usage detected in codebase'
+- id: typescript-crypto-md5
+  message: MD5 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("md5")
+    - pattern: crypto.createHash('md5')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("md5");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("md5").update($DATA).digest()
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.MD5($DATA)
+    - pattern: require("crypto-js").MD5($DATA)
+    - pattern: CryptoJS.MD5($DATA)
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"md5"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''md5'''
+    - patterns:
+      - pattern: |
+          const $ALGORITHM = "md5";
+          ...
+          crypto.createHash($ALGORITHM)
+    - pattern: |
+        const $ALGORITHM = "md5";
+        crypto.createHash($ALGORITHM)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: MD5 hash function usage detected in codebase'
+- id: typescript-crypto-argon2
+  message: Argon2 key derivation function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: require("argon2").hash($PASSWORD, $OPTIONS)
+    - pattern: require("argon2").verify($HASH, $PASSWORD)
+    - pattern: require("argon2-browser").hash($PASSWORD, $OPTIONS)
+    - pattern: require("argon2-browser").verify($HASH, $PASSWORD)
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2i, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
+    - pattern: |
+        $MATCH = await argon2.verify($HASH, $PASSWORD);
+    - pattern: import * as argon2 from "argon2"; await argon2.hash($PASSWORD, $OPTIONS)
+    - pattern: import * as argon2 from "argon2-browser"; await argon2.hash($PASSWORD,
+        $OPTIONS)
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2d, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
+    - pattern: |
+        $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2id, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
+    - pattern: |
+        const $LIBRARY = await import("argon2");
+        await $LIBRARY.hash($PASSWORD, $OPTIONS);
+    - pattern: |
+        const $LIBRARY = await import("argon2-browser");
+        await $LIBRARY.hash($PASSWORD, $OPTIONS);
+    - pattern: |
+        const $LIBRARY = require($MODULE);
+        await $LIBRARY.hash($PASSWORD, $OPTIONS);
+    - patterns:
+      - pattern: |
+          await argon2.hash($PASSWORD, { type: argon2.argon2i, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM })
+      - metavariable-comparison:
+          metavariable: $MEMORY
+          comparison: $MEMORY < 65536
+    - patterns:
+      - pattern: |
+          await argon2.hash($PASSWORD, { type: argon2.argon2i, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM })
+      - metavariable-comparison:
+          metavariable: $TIME
+          comparison: $TIME < 3
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Argon2 key derivation function usage detected in codebase'
+- id: typescript-crypto-cipher-des
+  message: DES cipher usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipher("des", $KEY)
+    - pattern: crypto.createCipher("des-ede", $KEY)
+    - pattern: crypto.createCipher("des-ede3", $KEY)
+    - pattern: crypto.createCipheriv("des", $KEY, $IV)
+    - pattern: crypto.createCipheriv("des-ede", $KEY, $IV)
+    - pattern: crypto.createCipheriv("des-ede3", $KEY, $IV)
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"des(-ede|-ede3)?(-cbc|-ecb|-cfb|-ofb)?"'
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''des(-ede|-ede3)?(-cbc|-ecb|-cfb|-ofb)?'''
+    - patterns:
+      - pattern: |
+          const $ALGORITHM = "des-ede3-cbc";
+          ...
+          crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+    - pattern: crypto.createDecipher("des", $KEY)
+    - pattern: crypto.createDecipher("des-ede", $KEY)
+    - pattern: crypto.createDecipher("des-ede3", $KEY)
+    - pattern: crypto.createDecipheriv("des", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("des-ede", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("des-ede3", $KEY, $IV)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.DES.encrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.DES.encrypt($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.DES.decrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.DES.decrypt($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.TripleDES.encrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.TripleDES.encrypt($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.TripleDES.decrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.TripleDES.decrypt($DATA, $KEY)
+    - pattern: require("crypto-js").DES.encrypt($DATA, $KEY)
+    - pattern: require("crypto-js").DES.decrypt($DATA, $KEY)
+    - pattern: require("crypto-js").TripleDES.encrypt($DATA, $KEY)
+    - pattern: require("crypto-js").TripleDES.decrypt($DATA, $KEY)
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: DES cipher usage detected in codebase'
+- id: typescript-crypto-pbkdf2
+  message: PBKDF2 key derivation function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $PASSWORD
+  patterns:
+  - pattern-either:
+    - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
+    - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+    - pattern: |
+        crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, "sha256", function($ERR, $KEY) {
+          ...
+        });
+    - pattern: |
+        $KEY = crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, "sha256");
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-regex:
+          metavariable: $ITER
+          regex: \d+
+      - metavariable-regex:
+          metavariable: $KEYLEN
+          regex: \d+
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-comparison:
+          metavariable: $ITER
+          comparison: $ITER < 100000
+    - patterns:
+      - pattern: |
+          await crypto.subtle.deriveKey(
+            { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+            $BASE_KEY,
+            { name: "AES-GCM", length: 256 },
+            false,
+            ["encrypt", "decrypt"]
+          );
+      - metavariable-comparison:
+          metavariable: $ITER
+          comparison: $ITER < 100000
+    - pattern: |
+        $KEY = await crypto.subtle.deriveKey(
+          { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+          $BASE_KEY,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-regex:
+          metavariable: $DIGEST
+          regex: '"(sha256|sha512|sha1|sha384|sha224)"'
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-regex:
+          metavariable: $DIGEST
+          regex: '''(sha256|sha512|sha1|sha384|sha224)'''
+    - pattern: |
+        const $LIBRARY = await import("crypto");
+        await $LIBRARY.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: PBKDF2 key derivation function usage detected in codebase'
+- id: typescript-crypto-cipher-modes
+  message: Cryptographic cipher mode usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipheriv("aes-128-cbc", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-cbc", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-128-ecb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-ecb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-ecb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-128-cfb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-cfb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-cfb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-128-ofb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-ofb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-ofb", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-128-ctr", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-ctr", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-ctr", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-128-gcm", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-gcm", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-gcm", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-128-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-128-ecb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-ecb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-ecb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-128-cfb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-cfb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-cfb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-128-ofb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-ofb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-ofb", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-128-ctr", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-ctr", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-ctr", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-128-gcm", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-gcm", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-gcm", $KEY, $IV)
+    - pattern: |
+        $CIPHER: crypto.Cipher = crypto.createCipheriv("aes-256-$MODE", $KEY, $IV);
+        $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
+        $CIPHERTEXT += $CIPHER.final();
+    - pattern: |
+        $DECIPHER: crypto.Decipher = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
+        $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
+        $PLAINTEXT += $DECIPHER.final();
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: Cryptographic cipher mode usage detected in codebase'
+- id: typescript-crypto-cipher-aes
+  message: AES cipher usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createCipher("aes-128-cbc", $KEY)
+    - pattern: crypto.createCipher("aes-192-cbc", $KEY)
+    - pattern: crypto.createCipher("aes-256-cbc", $KEY)
+    - pattern: crypto.createCipheriv("aes-128-cbc", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-192-cbc", $KEY, $IV)
+    - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"aes-[0-9]+-(cbc|gcm|ctr|cfb|ofb|ecb)"'
+    - patterns:
+      - pattern: crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''aes-[0-9]+-(cbc|gcm|ctr|cfb|ofb|ecb)'''
+    - patterns:
+      - pattern: |
+          const $ALGORITHM = "aes-256-cbc";
+          ...
+          crypto.createCipheriv($ALGORITHM, $KEY, $IV)
+    - pattern: crypto.createDecipher("aes-128-cbc", $KEY)
+    - pattern: crypto.createDecipher("aes-192-cbc", $KEY)
+    - pattern: crypto.createDecipher("aes-256-cbc", $KEY)
+    - pattern: crypto.createDecipheriv("aes-128-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-192-cbc", $KEY, $IV)
+    - pattern: crypto.createDecipheriv("aes-256-cbc", $KEY, $IV)
+    - pattern: |
+        $CIPHER: crypto.Cipher = crypto.createCipheriv("aes-256-gcm", $KEY, $IV);
+        $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
+        $CIPHERTEXT += $CIPHER.final();
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.AES.encrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.AES.encrypt($DATA, $KEY)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.AES.decrypt($DATA,
+        $KEY)
+    - pattern: CryptoJS.AES.decrypt($DATA, $KEY)
+    - pattern: require("crypto-js").AES.encrypt($DATA, $KEY)
+    - pattern: require("crypto-js").AES.decrypt($DATA, $KEY)
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-CBC", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-CTR", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 128 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 192 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-KW", length: 256 },
+          true,
+          ["wrapKey", "unwrapKey"]
+        );
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: AES cipher usage detected in codebase'
+- id: typescript-crypto-key-length
+  message: Cryptographic key length usage detected
+  severity: INFO
+  languages:
+  - typescript
+  patterns:
+  - pattern-either:
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+      - focus-metavariable: $BITS
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $BITS
+          comparison: $BITS < 2048
+      - focus-metavariable: $BITS
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSA-PSS", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+      - focus-metavariable: $BITS
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $BITS
+          regex: \d+
+      - focus-metavariable: $BITS
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "ECDSA", namedCurve: $CURVE }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $CURVE
+          regex: '"(P-224|P-256|P-384|P-521|secp160k1|secp256k1|prime256v1)"'
+      - focus-metavariable: $CURVE
+    - pattern: crypto.createECDH($CURVE)
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-GCM", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+      - focus-metavariable: $LENGTH
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-GCM", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-comparison:
+          metavariable: $LENGTH
+          comparison: $LENGTH < 128
+      - focus-metavariable: $LENGTH
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+      - focus-metavariable: $LENGTH
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-CTR", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+      - focus-metavariable: $LENGTH
+    - patterns:
+      - pattern: |
+          crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+      - focus-metavariable: $LENGTH
+    - patterns:
+      - pattern: |
+          $KEY = Buffer.alloc($SIZE);
+          ...
+          crypto.createCipheriv("aes-256-cbc", $KEY, $IV);
+      - metavariable-regex:
+          metavariable: $SIZE
+          regex: \d+
+      - focus-metavariable: $SIZE
+    - patterns:
+      - pattern: |
+          $KEY = new Uint8Array($SIZE);
+          ...
+          await crypto.subtle.importKey("raw", $KEY, { name: "AES-GCM" }, false, ["encrypt", "decrypt"]);
+      - metavariable-regex:
+          metavariable: $SIZE
+          regex: \d+
+      - focus-metavariable: $SIZE
+    - patterns:
+      - pattern: crypto.pbkdf2Sync($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST)
+      - metavariable-regex:
+          metavariable: $KEYLEN
+          regex: \d+
+      - focus-metavariable: $KEYLEN
+    - patterns:
+      - pattern: crypto.scryptSync($PASSWORD, $SALT, $KEYLEN, $OPTIONS)
+      - metavariable-regex:
+          metavariable: $KEYLEN
+          regex: \d+
+      - focus-metavariable: $KEYLEN
+    - patterns:
+      - pattern: |
+          await crypto.subtle.deriveKey(
+            { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+            $BASE_KEY,
+            { name: "AES-GCM", length: $LENGTH },
+            false,
+            ["encrypt", "decrypt"]
+          );
+      - metavariable-regex:
+          metavariable: $LENGTH
+          regex: \d+
+      - focus-metavariable: $LENGTH
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-326
+    impact: 'Inventory: Cryptographic key length usage detected in codebase'
+- id: typescript-crypto-random-generation
+  message: Random number generation for cryptographic use detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $LENGTH
+  patterns:
+  - pattern-either:
+    - pattern: crypto.randomBytes($LENGTH)
+    - pattern: crypto.getRandomValues($ARRAY)
+    - pattern: |
+        $BYTES: Buffer = crypto.randomBytes($LENGTH);
+        ...
+        $BYTES
+    - pattern: |
+        $ARRAY = new Uint8Array($LENGTH);
+        crypto.getRandomValues($ARRAY);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey(
+          { name: "AES-GCM", length: 256 },
+          true,
+          ["encrypt", "decrypt"]
+        );
+    - pattern: |
+        $IV = new Uint8Array(12);
+        crypto.getRandomValues($IV);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-338
+    impact: 'Inventory: Random number generation for cryptographic use detected in
+      codebase'
+- id: typescript-crypto-sha512
+  message: SHA512 hash function usage detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $DATA
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createHash("sha512")
+    - pattern: crypto.createHash('sha512')
+    - pattern: crypto.createHash("sha384")
+    - pattern: crypto.createHash('sha384')
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("sha512");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: |
+        $HASHER: crypto.Hash = crypto.createHash("sha384");
+        $HASHER.update($DATA);
+        $HASH = $HASHER.digest();
+    - pattern: crypto.createHash("sha512").update($DATA).digest()
+    - pattern: crypto.createHash("sha384").update($DATA).digest()
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.SHA512($DATA)
+    - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.SHA384($DATA)
+    - pattern: CryptoJS.SHA512($DATA)
+    - pattern: CryptoJS.SHA384($DATA)
+    - pattern: require("crypto-js").SHA512($DATA)
+    - pattern: require("crypto-js").SHA384($DATA)
+    - pattern: |
+        await crypto.subtle.digest("SHA-512", $DATA);
+    - pattern: |
+        await crypto.subtle.digest("SHA-384", $DATA);
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"(sha512|sha384)"'
+    - patterns:
+      - pattern: crypto.createHash($ALGORITHM)
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''(sha512|sha384)'''
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '"(SHA-512|SHA-384)"'
+    - patterns:
+      - pattern: |
+          await crypto.subtle.digest($ALGORITHM, $DATA);
+      - metavariable-regex:
+          metavariable: $ALGORITHM
+          regex: '''(SHA-512|SHA-384)'''
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: SHA512 hash function usage detected in codebase'
+- id: typescript-crypto-ecdsa
+  message: ECDSA cryptographic operations detected
+  severity: INFO
+  languages:
+  - typescript
+  focus-metavariable: $KEY
+  patterns:
+  - pattern-either:
+    - pattern: crypto.createSign("ecdsa-with-SHA256")
+    - pattern: crypto.createSign("ecdsa-with-SHA512")
+    - pattern: crypto.createVerify("ecdsa-with-SHA256")
+    - pattern: crypto.createVerify("ecdsa-with-SHA512")
+    - pattern: |
+        $SIGN: crypto.Sign = crypto.createSign("ecdsa-with-SHA256");
+        $SIGN.update($DATA);
+        $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+    - pattern: |
+        $VERIFY: crypto.Verify = crypto.createVerify("ecdsa-with-SHA256");
+        $VERIFY.update($DATA);
+        $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+    - pattern: crypto.createECDH("prime256v1")
+    - pattern: crypto.createECDH("secp256k1")
+    - pattern: crypto.createECDH("secp384r1")
+    - pattern: crypto.createECDH("secp521r1")
+    - pattern: |
+        $ECDH: crypto.ECDH = crypto.createECDH("prime256v1");
+        $ECDH.generateKeys();
+        $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, $EXTRACTABLE, $USAGE);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-384" }, $EXTRACTABLE, $USAGE);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-521" }, $EXTRACTABLE, $USAGE);
+    - pattern: |
+        await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA);
+    - pattern: |
+        await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+    - pattern: |
+        $KEY = await crypto.subtle.generateKey({ name: "Ed25519" }, $EXTRACTABLE, $USAGE);
+    - pattern: |
+        await crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA);
+    - pattern: |
+        await crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+  pattern-not-inside:
+  - pattern: |
+      describe($NAME, () => {
+        ...
+      })
+  - pattern: |
+      it($NAME, () => {
+        ...
+      })
+  - pattern: |
+      test($NAME, () => {
+        ...
+      })
+  - pattern: |
+      // $COMMENT
+  - pattern: |
+      /* $COMMENT */
+  metadata:
+    category: crypto
+    cwe: CWE-327
+    impact: 'Inventory: ECDSA cryptographic operations detected in codebase'

@@ -1,0 +1,1062 @@
+rules:
+  - id: java-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("SHA1")
+          - pattern: MessageDigest.getInstance("SHA-1")
+          - pattern: MessageDigest.getInstance("SHA1", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA-1", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(SHA1|SHA-1)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA1");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA1", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"
+  - id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance(".../ECB/...")
+          - pattern: Cipher.getInstance(".../CBC/...")
+          - pattern: Cipher.getInstance(".../CFB/...")
+          - pattern: Cipher.getInstance(".../OFB/...")
+          - pattern: Cipher.getInstance(".../CTR/...")
+          - pattern: Cipher.getInstance(".../GCM/...")
+          - pattern: Cipher.getInstance(".../CCM/...")
+          - pattern: Cipher.getInstance(".../XTS/...")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CBC/PKCS5Padding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/GCM/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $GCM_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CFB/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/OFB/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CTR/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/CCM/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $CCM_PARAMS);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/XTS/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"
+  - id: java-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SSLContext.getInstance("TLS").getDefaultSSLParameters().setCipherSuites($SUITES)
+          - pattern: $SSL_PARAMS.setCipherSuites($SUITES)
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLS");
+              $PARAMS = $CONTEXT.getDefaultSSLParameters();
+              $PARAMS.setCipherSuites($SUITES);
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLS");
+              $ENGINE = $CONTEXT.createSSLEngine();
+              $ENGINE.setEnabledCipherSuites($SUITES);
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLS");
+              $SOCKET_FACTORY = $CONTEXT.getSocketFactory();
+              $SOCKET = $SOCKET_FACTORY.createSocket($HOST, $PORT);
+              $SSL_SOCKET = ($SOCKET instanceof SSLSocket) ? (SSLSocket) $SOCKET : null;
+              if ($SSL_SOCKET != null) {
+                  $SSL_SOCKET.setEnabledCipherSuites($SUITES);
+              }
+          - pattern: |
+              $SERVER_SOCKET_FACTORY = $CONTEXT.getServerSocketFactory();
+              $SERVER_SOCKET = $SERVER_SOCKET_FACTORY.createServerSocket($PORT);
+              if ($SERVER_SOCKET instanceof SSLServerSocket) {
+                  ((SSLServerSocket) $SERVER_SOCKET).setEnabledCipherSuites($SUITES);
+              }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"
+  - id: java-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("AES")
+          - pattern: Cipher.getInstance("AES/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("AES/GCM/NoPadding")
+          - pattern: Cipher.getInstance("AES/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("AES/CFB/NoPadding")
+          - pattern: Cipher.getInstance("AES/OFB/NoPadding")
+          - pattern: Cipher.getInstance("AES/CTR/NoPadding")
+          - pattern: Cipher.getInstance("AES/CCM/NoPadding")
+          - pattern: Cipher.getInstance("AES/XTS/NoPadding")
+          - pattern: KeyGenerator.getInstance("AES")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES/GCM/NoPadding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $PARAMS);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $GEN = KeyGenerator.getInstance("AES");
+              $GEN.init($BITS);
+              $KEY = $GEN.generateKey();
+          - patterns:
+              - pattern: $GEN.init($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: Cipher.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"AES[^"]*"'
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES");
+              $CIPHER.init(Cipher.WRAP_MODE, $KEY);
+              $WRAPPED = $CIPHER.wrap($KEY_TO_WRAP);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("AES");
+              $CIPHER.init(Cipher.UNWRAP_MODE, $KEY);
+              $UNWRAPPED = $CIPHER.unwrap($WRAPPED_KEY, "AES", Cipher.SECRET_KEY);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
+  - id: java-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("MD5")
+          - pattern: MessageDigest.getInstance("md5")
+          - pattern: MessageDigest.getInstance("MD5", $PROVIDER)
+          - pattern: MessageDigest.getInstance("md5", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(MD5|md5)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("MD5");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("MD5");
+              ...
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("MD5", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: java-crypto-password-hashing
+    message: Password hashing operations detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: BCrypt.hashpw($PASSWORD, $SALT)
+          - pattern: BCrypt.checkpw($PASSWORD, $HASH)
+          - pattern: BCrypt.gensalt($ROUNDS)
+          - pattern: BCrypt.gensalt()
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+          - pattern: |
+              $HASH = BCrypt.hashpw($PASSWORD, BCrypt.gensalt());
+              ...
+              BCrypt.checkpw($INPUT, $HASH);
+          - patterns:
+              - pattern: BCrypt.gensalt($ROUNDS)
+              - metavariable-regex:
+                  metavariable: $ROUNDS
+                  regex: \d+
+              - focus-metavariable: $ROUNDS
+          - pattern: |
+              $FACTORY = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+              $SPEC = new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN);
+              $KEY = $FACTORY.generateSecret($SPEC);
+          - patterns:
+              - pattern: new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Password hashing operations detected in codebase"
+  - id: java-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("SHA3-224")
+          - pattern: MessageDigest.getInstance("SHA3-256")
+          - pattern: MessageDigest.getInstance("SHA3-384")
+          - pattern: MessageDigest.getInstance("SHA3-512")
+          - pattern: MessageDigest.getInstance("SHA3-224", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA3-256", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA3-384", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA3-512", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(SHA3-224|SHA3-256|SHA3-384|SHA3-512)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA3-256");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA3-512");
+              ...
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA3-384");
+              $DIGEST.update($DATA);
+              $BYTES = $DIGEST.digest();
+              $HEX = DatatypeConverter.printHexBinary($BYTES);
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA3-256", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"
+  - id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Signature.getInstance("SHA256withRSA")
+          - pattern: Signature.getInstance("SHA512withRSA")
+          - pattern: Signature.getInstance("SHA256withRSA/PSS")
+          - pattern: Signature.getInstance("SHA512withRSA/PSS")
+          - pattern: Signature.getInstance("SHA256withECDSA")
+          - pattern: Signature.getInstance("SHA512withECDSA")
+          - pattern: Signature.getInstance("SHA256withDSA")
+          - pattern: Signature.getInstance("SHA512withDSA")
+          - pattern: Signature.getInstance("Ed25519")
+          - pattern: Signature.getInstance("Ed448")
+          - patterns:
+              - pattern: Signature.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"(SHA[0-9]+with(RSA|ECDSA|DSA)|Ed25519|Ed448)"'
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $SIG = Signature.getInstance("SHA256withRSA");
+              $SIG.initSign($PRIV_KEY);
+              $SIG.update($DATA);
+              $SIGNATURE = $SIG.sign();
+          - pattern: |
+              $SIG = Signature.getInstance("SHA256withRSA");
+              $SIG.initVerify($PUB_KEY);
+              $SIG.update($DATA);
+              $VERIFIED = $SIG.verify($SIGNATURE);
+          - pattern: |
+              $SIG = Signature.getInstance("SHA256withECDSA");
+              $SIG.initSign($PRIV_KEY);
+              $SIG.update($DATA);
+              $SIGNATURE = $SIG.sign();
+          - pattern: |
+              $SIG = Signature.getInstance("SHA256withRSA/PSS");
+              $SIG.initSign($PRIV_KEY);
+              $SIG.update($DATA);
+              $SIGNATURE = $SIG.sign();
+          - pattern: |
+              $SIG = Signature.getInstance("Ed25519");
+              $SIG.initSign($PRIV_KEY);
+              $SIG.update($DATA);
+              $SIGNATURE = $SIG.sign();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
+  - id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $GEN = KeyGenerator.getInstance("AES");
+              $GEN.init($BITS);
+              $KEY = $GEN.generateKey();
+          - pattern: |
+              $GEN = KeyGenerator.getInstance("DES");
+              $GEN.init($BITS);
+              $KEY = $GEN.generateKey();
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("RSA");
+              $GEN.initialize($BITS);
+              $PAIR = $GEN.generateKeyPair();
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("EC");
+              $GEN.initialize($BITS);
+              $PAIR = $GEN.generateKeyPair();
+          - patterns:
+              - pattern: $GEN.init($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: $GEN.initialize($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - pattern: |
+              $KEY = new SecretKeySpec($BYTES, "AES");
+              ...
+              $LEN = $BYTES.length;
+          - patterns:
+              - pattern: new SecretKeySpec(new byte[$SIZE], "AES")
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: \d+
+              - focus-metavariable: $SIZE
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"
+  - id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("DESede")
+          - pattern: Cipher.getInstance("TripleDES")
+          - pattern: Cipher.getInstance("DESede/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede/CFB/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede/OFB/PKCS5Padding")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("DESede");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("DESede/CBC/PKCS5Padding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("TripleDES");
+              $CIPHER.init(Cipher.DECRYPT_MODE, $KEY);
+              $PLAINTEXT = $CIPHER.doFinal($CIPHERTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: 3DES cipher usage detected in codebase"
+  - id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("SHA-512")
+          - pattern: MessageDigest.getInstance("SHA512")
+          - pattern: MessageDigest.getInstance("SHA512/224")
+          - pattern: MessageDigest.getInstance("SHA512/256")
+          - pattern: MessageDigest.getInstance("SHA-512", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA512", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(SHA-512|SHA512|SHA512/224|SHA512/256)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA512");
+              ...
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512");
+              $DIGEST.update($DATA);
+              $BYTES = $DIGEST.digest();
+              $HEX = DatatypeConverter.printHexBinary($BYTES);
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512");
+              $DIGEST.update($DATA);
+              $BYTES = $DIGEST.digest();
+              $BASE64 = Base64.getEncoder().encodeToString($BYTES);
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-512", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"
+  - id: java-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - java
+    taint-mode:
+      source:
+        - pattern-either:
+            - pattern: $KEY = "$VALUE"
+            - pattern: $KEY = '$VALUE'
+            - pattern: private static final String $KEY = "$VALUE"
+            - pattern: private static final String $KEY = '$VALUE'
+            - pattern: final String $KEY = "$VALUE"
+            - pattern: final String $KEY = '$VALUE'
+            - pattern: private static final byte[] $KEY = {$BYTES}
+            - pattern: final byte[] $KEY = {$BYTES}
+      sink:
+        - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
+        - pattern: new SecretKeySpec($KEY, $ALGO)
+        - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
+        - pattern: new SecretKeySpec(new byte[] {$KEY}, $ALGO)
+    patterns:
+      - pattern-either:
+          - pattern: new SecretKeySpec("$KEY".getBytes(), "AES")
+          - pattern: new SecretKeySpec($KEY.getBytes(), "AES")
+          - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
+          - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
+          - pattern: new SecretKeySpec(new byte[] {$BYTES}, "AES")
+          - pattern: new SecretKeySpec(new byte[] {$BYTES}, $ALGO)
+          - pattern: |
+              private static final String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), "AES");
+          - pattern: |
+              private static final byte[] $KEY = {$BYTES};
+              ...
+              new SecretKeySpec($KEY, "AES");
+          - pattern: |
+              final String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), "AES");
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+  - id: java-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SSLContext.getInstance("TLSv1")
+          - pattern: SSLContext.getInstance("TLSv1.1")
+          - pattern: SSLContext.getInstance("TLSv1.2")
+          - pattern: SSLContext.getInstance("TLSv1.3")
+          - pattern: SSLContext.getInstance("SSL")
+          - pattern: SSLContext.getInstance("SSLv3")
+          - pattern: |
+              $CONTEXT = SSLContext.getInstance("TLSv1.2");
+              $CONTEXT.init($KEY_MANAGERS, $TRUST_MANAGERS, $RAND);
+          - patterns:
+              - pattern: SSLContext.getInstance($PROTOCOL)
+              - metavariable-regex:
+                  metavariable: $PROTOCOL
+                  regex: '"(TLSv1(\.[0-3])?|SSLv3|SSL)"'
+              - focus-metavariable: $PROTOCOL
+          - pattern: System.setProperty("https.protocols", "TLSv1.2")
+          - patterns:
+              - pattern: System.setProperty("https.protocols", $PROTOCOLS)
+              - metavariable-regex:
+                  metavariable: $PROTOCOLS
+                  regex: '"[^"]*"'
+              - focus-metavariable: $PROTOCOLS
+          - pattern: |
+              System.setProperty("https.protocols", "TLSv1.2");
+              ...
+              $CONNECTION = new java.net.URL("https://example.com").openConnection();
+          - pattern: |
+              $FACTORY = SSLSocketFactory.getDefault();
+              $SOCKET = $FACTORY.createSocket($HOST, $PORT);
+              $SSL_SOCKET = (SSLSocket) $SOCKET;
+              $SSL_SOCKET.setEnabledProtocols($PROTOCOLS);
+          - pattern: |
+              $SOCKET = $FACTORY.createSocket($HOST, $PORT);
+              if ($SOCKET instanceof SSLSocket) {
+                  ((SSLSocket) $SOCKET).setEnabledProtocols($PROTOCOLS);
+              }
+          - patterns:
+              - pattern: $SSL_SOCKET.setEnabledProtocols($PROTOCOLS)
+              - metavariable-regex:
+                  metavariable: $PROTOCOLS
+                  regex: new String\[\] \{.*\}
+              - focus-metavariable: $PROTOCOLS
+          - pattern: SSLSocket.setEnabledProtocols($PROTOCOLS)
+          - pattern: SSLServerSocket.setEnabledProtocols($PROTOCOLS)
+          - pattern: |
+              $SERVER_SOCKET = $FACTORY.createServerSocket($PORT);
+              if ($SERVER_SOCKET instanceof SSLServerSocket) {
+                  ((SSLServerSocket) $SERVER_SOCKET).setEnabledProtocols($PROTOCOLS);
+              }
+          - pattern: |
+              $CONNECTION = (HttpsURLConnection) $URL.openConnection();
+              $CONNECTION.setSSLSocketFactory($FACTORY);
+          - pattern: |
+              $PARAMS = $CONTEXT.getDefaultSSLParameters();
+              $PARAMS.setProtocols($PROTOCOLS);
+          - patterns:
+              - pattern: SSLParameters.setProtocols($PROTOCOLS)
+              - metavariable-regex:
+                  metavariable: $PROTOCOLS
+                  regex: new String\[\] \{.*\}
+              - focus-metavariable: $PROTOCOLS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"
+  - id: java-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("DH")
+          - pattern: KeyAgreement.getInstance("DH")
+          - pattern: KeyAgreement.getInstance("DiffieHellman")
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("DH");
+              $GEN.initialize($PARAMS);
+              $PAIR = $GEN.generateKeyPair();
+          - pattern: |
+              $AGREEMENT = KeyAgreement.getInstance("DH");
+              $AGREEMENT.init($PRIV_KEY);
+              $AGREEMENT.doPhase($PUB_KEY, true);
+              $SECRET = $AGREEMENT.generateSecret();
+          - pattern: |
+              $AGREEMENT = KeyAgreement.getInstance("DiffieHellman");
+              $AGREEMENT.init($PRIV_KEY);
+              $AGREEMENT.doPhase($PUB_KEY, true);
+              $SECRET = $AGREEMENT.generateSecret($ALGO);
+          - pattern: |
+              $AGREEMENT = KeyAgreement.getInstance("DH");
+              $AGREEMENT.init($PRIV_KEY);
+              $AGREEMENT.doPhase($PUB_KEY, true);
+              $SECRET_KEY = $AGREEMENT.generateSecret($ALGO);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"
+  - id: java-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1")
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256")
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA384")
+          - pattern: SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512")
+          - pattern: |
+              $FACTORY = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+              $SPEC = new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN);
+              $KEY = $FACTORY.generateSecret($SPEC);
+          - pattern: |
+              $FACTORY = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
+              $SPEC = new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN);
+              $KEY = $FACTORY.generateSecret($SPEC);
+          - patterns:
+              - pattern: new PBEKeySpec($PASSWORD, $SALT, $ITER, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+              - focus-metavariable: $ITER
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"
+  - id: java-crypto-certificate-validation
+    message: Certificate validation configuration detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $TRUST_MANAGER.checkClientTrusted($CHAIN, $AUTH_TYPE)
+          - pattern: $TRUST_MANAGER.checkServerTrusted($CHAIN, $AUTH_TYPE)
+          - pattern: |
+              class $CLASS implements X509TrustManager {
+                  public void checkClientTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {
+                      ...
+                  }
+                  public void checkServerTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {
+                      ...
+                  }
+              }
+          - pattern: |
+              $TRUST_MANAGER = new X509TrustManager() {
+                  public void checkClientTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {
+                      ...
+                  }
+                  public void checkServerTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) {
+                      ...
+                  }
+              };
+          - pattern: |
+              $TRUST_MANAGER = new X509TrustManager() {
+                  public void checkClientTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) throws CertificateException {
+                      ...
+                  }
+                  public void checkServerTrusted(X509Certificate[] $CHAIN, String $AUTH_TYPE) throws CertificateException {
+                      ...
+                  }
+              };
+          - pattern: |
+              $HOSTNAME_VERIFIER = new HostnameVerifier() {
+                  public boolean verify(String $HOSTNAME, SSLSession $SESSION) {
+                      return true;
+                  }
+              };
+          - pattern: HttpsURLConnection.setDefaultHostnameVerifier($VERIFIER)
+          - pattern: $CONNECTION.setHostnameVerifier($VERIFIER)
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: Certificate validation configuration detected in codebase"
+  - id: java-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("DES")
+          - pattern: Cipher.getInstance("DES/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("DES/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("DESede")
+          - pattern: Cipher.getInstance("TripleDES")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("DES");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"
+  - id: java-crypto-cipher-rc4
+    message: RC4 cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("RC4")
+          - pattern: Cipher.getInstance("ARCFOUR")
+          - pattern: Cipher.getInstance("ARC4")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("RC4");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("ARCFOUR");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("ARC4");
+              $CIPHER.init(Cipher.DECRYPT_MODE, $KEY);
+              $PLAINTEXT = $CIPHER.doFinal($CIPHERTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 cipher usage detected in codebase"
+  - id: java-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SecureRandom.getInstance($ALGO)
+          - pattern: SecureRandom.getInstanceStrong()
+          - pattern: new SecureRandom()
+          - pattern: |
+              $RAND = SecureRandom.getInstance("SHA1PRNG");
+              $BYTES = new byte[$LENGTH];
+              $RAND.nextBytes($BYTES);
+          - pattern: |
+              $RAND = new SecureRandom();
+              $RAND.nextBytes($BYTES);
+          - pattern: |
+              $RAND = SecureRandom.getInstance($ALGO);
+              $RAND.setSeed($SEED);
+          - pattern: |
+              $RAND = new SecureRandom();
+              $RAND.setSeed($SEED);
+          - pattern: SecureRandom.generateSeed($LENGTH)
+          - pattern: |
+              $RAND = SecureRandom.getInstance($ALGO);
+              $SEED = $RAND.generateSeed($LENGTH);
+          - patterns:
+              - pattern: SecureRandom.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)(SHA1PRNG|NativePRNG|Windows-PRNG|DRBG|PKCS11)
+          - pattern: new Random()
+          - pattern: Math.random()
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact:
+        "Inventory: Random number generation for cryptographic use detected in
+        codebase"
+  - id: java-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("BLAKE2B-512")
+          - pattern: MessageDigest.getInstance("BLAKE2B-256")
+          - pattern: MessageDigest.getInstance("BLAKE2S-256")
+          - pattern: MessageDigest.getInstance("BLAKE2B-512", $PROVIDER)
+          - pattern: MessageDigest.getInstance("BLAKE2B-256", $PROVIDER)
+          - pattern: MessageDigest.getInstance("BLAKE2S-256", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(BLAKE2B-512|BLAKE2B-256|BLAKE2S-256)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("BLAKE2B-512");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("BLAKE2B-256");
+              ...
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("BLAKE2S-256");
+              $DIGEST.update($DATA);
+              $BYTES = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("BLAKE2B-512", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"
+  - id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Cipher.getInstance("Blowfish")
+          - pattern: Cipher.getInstance("Blowfish/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("Blowfish/ECB/PKCS5Padding")
+          - pattern: Cipher.getInstance("Blowfish/CFB/PKCS5Padding")
+          - pattern: Cipher.getInstance("Blowfish/OFB/PKCS5Padding")
+          - pattern: |
+              $CIPHER = Cipher.getInstance("Blowfish");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("Blowfish/CBC/PKCS5Padding");
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+              $CIPHERTEXT = $CIPHER.doFinal($PLAINTEXT);
+          - pattern: |
+              $CIPHER = Cipher.getInstance("Blowfish/ECB/PKCS5Padding");
+              $CIPHER.init(Cipher.DECRYPT_MODE, $KEY);
+              $PLAINTEXT = $CIPHER.doFinal($CIPHERTEXT);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"
+  - id: java-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("EC")
+          - pattern: KeyPairGenerator.getInstance("ECDSA")
+          - pattern: Signature.getInstance("SHA256withECDSA")
+          - pattern: Signature.getInstance("SHA512withECDSA")
+          - patterns:
+              - pattern: |
+                  $GEN = KeyPairGenerator.getInstance("EC");
+                  $GEN.initialize($CURVE_PARAMS);
+                  $PAIR = $GEN.generateKeyPair();
+              - focus-metavariable: $CURVE_PARAMS
+          - pattern: |
+              $SIG = Signature.getInstance("SHA256withECDSA");
+              $SIG.initSign($PRIV_KEY);
+              $SIG.update($DATA);
+              $SIGNATURE = $SIG.sign();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"
+  - id: java-crypto-bouncycastle
+    message: BouncyCastle cryptographic library usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Security.addProvider(new BouncyCastleProvider())
+          - pattern: Security.insertProviderAt(new BouncyCastleProvider(), $POSITION)
+          - pattern: Security.addProvider($PROVIDER)
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.addProvider($PROVIDER);
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.insertProviderAt($PROVIDER, $POSITION);
+          - pattern: MessageDigest.getInstance("MD4")
+          - pattern: MessageDigest.getInstance("MD4", $PROVIDER)
+          - pattern: MessageDigest.getInstance("MD2")
+          - pattern: MessageDigest.getInstance("MD2", $PROVIDER)
+          - pattern: Cipher.getInstance("Twofish")
+          - pattern: Cipher.getInstance("Twofish/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("Camellia")
+          - pattern: Cipher.getInstance("Camellia/CBC/PKCS5Padding")
+          - pattern: Cipher.getInstance("ChaCha20")
+          - pattern: Cipher.getInstance("ChaCha20-Poly1305")
+          - pattern: Cipher.getInstance("Salsa20")
+          - pattern: KeyPairGenerator.getInstance("ElGamal")
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.addProvider($PROVIDER);
+              $CIPHER = Cipher.getInstance("Twofish", $PROVIDER);
+          - pattern: |
+              $PROVIDER = new BouncyCastleProvider();
+              Security.addProvider($PROVIDER);
+              $DIGEST = MessageDigest.getInstance("MD4", $PROVIDER);
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(MD4|MD2)$
+          - patterns:
+              - pattern: Cipher.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(Twofish|Camellia|ChaCha20|Salsa20|ChaCha20-Poly1305)
+          - patterns:
+              - pattern: KeyPairGenerator.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(ElGamal)$
+          - pattern: org.bouncycastle.jce.provider.BouncyCastleProvider
+          - pattern: new org.bouncycastle.jce.provider.BouncyCastleProvider()
+          - pattern: org.bouncycastle.crypto.digests.MD4Digest
+          - pattern: org.bouncycastle.crypto.digests.MD2Digest
+          - pattern: org.bouncycastle.crypto.digests.SHA3Digest
+          - pattern: org.bouncycastle.crypto.engines.TwofishEngine
+          - pattern: org.bouncycastle.crypto.engines.CamelliaEngine
+          - pattern: org.bouncycastle.crypto.engines.ChaCha7539Engine
+          - pattern: org.bouncycastle.crypto.engines.Salsa20Engine
+          - pattern: org.bouncycastle.crypto.engines.ElGamalEngine
+          - pattern: org.bouncycastle.crypto.generators.Argon2BytesGenerator
+          - pattern: org.bouncycastle.crypto.generators.SCrypt
+          - pattern: org.bouncycastle.crypto.macs.HMac
+          - pattern: org.bouncycastle.crypto.prng.DigestRandomGenerator
+          - pattern: |
+              $DIGEST = new org.bouncycastle.crypto.digests.MD4Digest();
+              $DIGEST.update($DATA, 0, $DATA.length);
+              $HASH = new byte[$DIGEST.getDigestSize()];
+              $DIGEST.doFinal($HASH, 0);
+          - pattern: |
+              $ENGINE = new org.bouncycastle.crypto.engines.TwofishEngine();
+              $CIPHER = new org.bouncycastle.crypto.modes.CBCBlockCipher($ENGINE);
+              $CIPHER.init(true, $PARAMS);
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BouncyCastle cryptographic library usage detected in codebase"
+  - id: java-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("RSA")
+          - pattern: Cipher.getInstance("RSA")
+          - pattern: Cipher.getInstance("RSA/ECB/PKCS1Padding")
+          - pattern: Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
+          - pattern: |
+              $GEN = KeyPairGenerator.getInstance("RSA");
+              $GEN.initialize($BITS);
+              $PAIR = $GEN.generateKeyPair();
+          - patterns:
+              - pattern: $GEN.initialize($BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"
+  - id: java-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Mac.getInstance("HmacMD5")
+          - pattern: Mac.getInstance("HmacSHA1")
+          - pattern: Mac.getInstance("HmacSHA256")
+          - pattern: Mac.getInstance("HmacSHA384")
+          - pattern: Mac.getInstance("HmacSHA512")
+          - pattern: Mac.getInstance("HmacSHA3-224")
+          - pattern: Mac.getInstance("HmacSHA3-256")
+          - pattern: Mac.getInstance("HmacSHA3-384")
+          - pattern: Mac.getInstance("HmacSHA3-512")
+          - pattern: |
+              $MAC = Mac.getInstance("HmacSHA256");
+              $KEYSPEC = new SecretKeySpec($KEY, "HmacSHA256");
+              $MAC.init($KEYSPEC);
+              $MAC.update($DATA);
+              $RESULT = $MAC.doFinal();
+          - pattern: |
+              $MAC = Mac.getInstance("HmacSHA512");
+              $KEYSPEC = new SecretKeySpec($KEY, "HmacSHA512");
+              $MAC.init($KEYSPEC);
+              $RESULT = $MAC.doFinal($DATA);
+          - pattern: |
+              $MAC = Mac.getInstance("HmacSHA256");
+              $KEYSPEC = new SecretKeySpec($KEY.getBytes(), "HmacSHA256");
+              $MAC.init($KEYSPEC);
+              $MAC.update($DATA);
+              $RESULT = $MAC.doFinal();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"
+  - id: java-crypto-iv-nonce
+    message: Initialization vector (IV) or nonce usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: new IvParameterSpec($IV)
+          - pattern: new GCMParameterSpec($TAG_LEN, $NONCE)
+          - pattern: new AlgorithmParameterSpec()
+          - pattern: |
+              $IV = new byte[$SIZE];
+              ...
+              $IV_PARAMS = new IvParameterSpec($IV);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $IV = "static_iv_value".getBytes();
+              ...
+              $IV_PARAMS = new IvParameterSpec($IV);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $NONCE = new byte[12];
+              ...
+              $GCM_PARAMS = new GCMParameterSpec(128, $NONCE);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $GCM_PARAMS);
+          - pattern: |
+              $IV = new byte[16];
+              $RAND.nextBytes($IV);
+              $IV_PARAMS = new IvParameterSpec($IV);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+          - pattern: |
+              $NONCE = new byte[12];
+              $RAND.nextBytes($NONCE);
+              $GCM_PARAMS = new GCMParameterSpec(128, $NONCE);
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $GCM_PARAMS);
+          - pattern: |
+              $IV_PARAMS = new IvParameterSpec("static".getBytes());
+              $CIPHER.init(Cipher.ENCRYPT_MODE, $KEY, $IV_PARAMS);
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Initialization vector (IV) or nonce usage detected in codebase"
+  - id: java-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: MessageDigest.getInstance("SHA-256")
+          - pattern: MessageDigest.getInstance("SHA256")
+          - pattern: MessageDigest.getInstance("SHA-256", $PROVIDER)
+          - pattern: MessageDigest.getInstance("SHA256", $PROVIDER)
+          - patterns:
+              - pattern: MessageDigest.getInstance($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: (?i)^(SHA-256|SHA256)$
+              - focus-metavariable: $ALGO
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-256");
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+          - pattern: |
+              $DIGEST = MessageDigest.getInstance("SHA-256", $PROVIDER);
+              $DIGEST.update($DATA);
+              $HASH = $DIGEST.digest();
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"
