@@ -1,39 +1,39 @@
 findings:
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 21
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 21
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 25
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 26
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 27
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 34
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-- file: test_code.java
-  line: 34
-  rule_id: java-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 21
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 21
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 25
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 26
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 27
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 34
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+  - file: test_code.java
+    line: 34
+    rule_id: java-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

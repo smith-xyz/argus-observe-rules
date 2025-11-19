@@ -1,60 +1,60 @@
 rules:
-- id: rust-crypto-md5
-  message: MD5 hash function usage detected
-  severity: INFO
-  languages:
-  - rust
-  patterns:
-  - pattern-either:
-    - pattern: md5::Md5::new()
-    - pattern: md5::Md5::default()
-    - pattern: md5::Md5::from($DATA)
-    - pattern: |
-        let mut $HASHER = md5::Md5::new();
-        $HASHER.update($DATA);
-        let $HASH = $HASHER.finalize();
-    - pattern: |
-        use md5::{Md5, Digest};
-        let mut $HASHER = Md5::new();
-        $HASHER.update($DATA);
-        $HASHER.finalize()
-    - pattern: md5::compute($DATA)
-    - pattern: md5::Md5::digest($DATA)
-    - pattern: crypto::digest::Digest::update($HASHER, $DATA)
-    - pattern: crypto::md5::Md5::new()
-    - pattern: |
-        use crypto::digest::Digest;
-        let mut $HASHER = crypto::md5::Md5::new();
-        $HASHER.input($DATA);
-        $HASHER.result_str()
-    - pattern: |
-        use digest::Digest;
-        let mut $HASHER: Box<dyn Digest> = Box::new(md5::Md5::new());
-        $HASHER.update($DATA);
-        $HASHER.finalize()
-    - pattern: openssl::hash::hash(openssl::hash::MessageDigest::md5(), $DATA)
-    - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::md5())
-    - pattern: |
-        async fn $FUNC() {
-            let mut $HASHER = md5::Md5::new();
-            $HASHER.update($DATA);
-            $HASHER.finalize()
-        }
-  - pattern-not-inside: |
-      #[test]
-      fn $TEST() {
-          ...
-      }
-  - pattern-not-inside: |
-      #[cfg(test)]
-      mod $MODULE {
-          ...
-      }
-  - pattern-not-inside: |
-      mod tests {
-          ...
-      }
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: rust-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: md5::Md5::new()
+          - pattern: md5::Md5::default()
+          - pattern: md5::Md5::from($DATA)
+          - pattern: |
+              let mut $HASHER = md5::Md5::new();
+              $HASHER.update($DATA);
+              let $HASH = $HASHER.finalize();
+          - pattern: |
+              use md5::{Md5, Digest};
+              let mut $HASHER = Md5::new();
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: md5::compute($DATA)
+          - pattern: md5::Md5::digest($DATA)
+          - pattern: crypto::digest::Digest::update($HASHER, $DATA)
+          - pattern: crypto::md5::Md5::new()
+          - pattern: |
+              use crypto::digest::Digest;
+              let mut $HASHER = crypto::md5::Md5::new();
+              $HASHER.input($DATA);
+              $HASHER.result_str()
+          - pattern: |
+              use digest::Digest;
+              let mut $HASHER: Box<dyn Digest> = Box::new(md5::Md5::new());
+              $HASHER.update($DATA);
+              $HASHER.finalize()
+          - pattern: openssl::hash::hash(openssl::hash::MessageDigest::md5(), $DATA)
+          - pattern: openssl::hash::Hasher::new(openssl::hash::MessageDigest::md5())
+          - pattern: |
+              async fn $FUNC() {
+                  let mut $HASHER = md5::Md5::new();
+                  $HASHER.update($DATA);
+                  $HASHER.finalize()
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"

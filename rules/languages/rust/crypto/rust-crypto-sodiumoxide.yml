@@ -1,58 +1,58 @@
 rules:
-- id: rust-crypto-sodiumoxide
-  message: sodiumoxide cryptographic library usage detected
-  severity: INFO
-  languages:
-  - rust
-  patterns:
-  - pattern-either:
-    - pattern: sodiumoxide::crypto::box_::gen_keypair()
-    - pattern: sodiumoxide::crypto::sign::gen_keypair()
-    - pattern: sodiumoxide::crypto::secretbox::gen_key()
-    - pattern: sodiumoxide::crypto::box_::seal($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
-    - pattern: sodiumoxide::crypto::box_::open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
-    - pattern: sodiumoxide::crypto::secretbox::seal($MESSAGE, $NONCE, $KEY)
-    - pattern: sodiumoxide::crypto::secretbox::open($CIPHERTEXT, $NONCE, $KEY)
-    - pattern: sodiumoxide::crypto::sign::sign($MESSAGE, $SECRET_KEY)
-    - pattern: sodiumoxide::crypto::sign::verify($SIGNATURE, $PUBLIC_KEY)
-    - pattern: sodiumoxide::crypto::hash::hash($DATA)
-    - pattern: sodiumoxide::crypto::hash::sha256::hash($DATA)
-    - pattern: sodiumoxide::crypto::hash::sha512::hash($DATA)
-    - pattern: sodiumoxide::crypto::pwhash::derive_key($PASSWORD, $SALT, $OPS_LIMIT, $MEM_LIMIT, $KEY_LEN)
-    - pattern: sodiumoxide::crypto::pwhash::pwhash($PASSWORD, $OPS_LIMIT, $MEM_LIMIT)
-    - pattern: sodiumoxide::crypto::pwhash::pwhash_verify($HASH, $PASSWORD)
-    - pattern: sodiumoxide::randombytes::randombytes($LEN)
-    - pattern: sodiumoxide::randombytes::randombytes_into($BUF)
-    - pattern: |
-        use sodiumoxide::crypto::box_;
-        let ($PUBLIC_KEY, $SECRET_KEY) = box_::gen_keypair();
-        box_::seal($MESSAGE, $NONCE, &$PUBLIC_KEY, &$SECRET_KEY)
-    - pattern: |
-        use sodiumoxide::crypto::sign;
-        let ($PUBLIC_KEY, $SECRET_KEY) = sign::gen_keypair();
-        sign::sign($MESSAGE, &$SECRET_KEY)
-    - pattern: |
-        use sodiumoxide::randombytes;
-        randombytes::randombytes($LEN)
-    - pattern: |
-        async fn $FUNC() {
-            sodiumoxide::crypto::box_::seal($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
-        }
-  - pattern-not-inside: |
-      #[test]
-      fn $TEST() {
-          ...
-      }
-  - pattern-not-inside: |
-      #[cfg(test)]
-      mod $MODULE {
-          ...
-      }
-  - pattern-not-inside: |
-      mod tests {
-          ...
-      }
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: "Inventory: sodiumoxide cryptographic library usage detected in codebase"
+  - id: rust-crypto-sodiumoxide
+    message: sodiumoxide cryptographic library usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: sodiumoxide::crypto::box_::gen_keypair()
+          - pattern: sodiumoxide::crypto::sign::gen_keypair()
+          - pattern: sodiumoxide::crypto::secretbox::gen_key()
+          - pattern: sodiumoxide::crypto::box_::seal($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: sodiumoxide::crypto::box_::open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+          - pattern: sodiumoxide::crypto::secretbox::seal($MESSAGE, $NONCE, $KEY)
+          - pattern: sodiumoxide::crypto::secretbox::open($CIPHERTEXT, $NONCE, $KEY)
+          - pattern: sodiumoxide::crypto::sign::sign($MESSAGE, $SECRET_KEY)
+          - pattern: sodiumoxide::crypto::sign::verify($SIGNATURE, $PUBLIC_KEY)
+          - pattern: sodiumoxide::crypto::hash::hash($DATA)
+          - pattern: sodiumoxide::crypto::hash::sha256::hash($DATA)
+          - pattern: sodiumoxide::crypto::hash::sha512::hash($DATA)
+          - pattern: sodiumoxide::crypto::pwhash::derive_key($PASSWORD, $SALT, $OPS_LIMIT, $MEM_LIMIT, $KEY_LEN)
+          - pattern: sodiumoxide::crypto::pwhash::pwhash($PASSWORD, $OPS_LIMIT, $MEM_LIMIT)
+          - pattern: sodiumoxide::crypto::pwhash::pwhash_verify($HASH, $PASSWORD)
+          - pattern: sodiumoxide::randombytes::randombytes($LEN)
+          - pattern: sodiumoxide::randombytes::randombytes_into($BUF)
+          - pattern: |
+              use sodiumoxide::crypto::box_;
+              let ($PUBLIC_KEY, $SECRET_KEY) = box_::gen_keypair();
+              box_::seal($MESSAGE, $NONCE, &$PUBLIC_KEY, &$SECRET_KEY)
+          - pattern: |
+              use sodiumoxide::crypto::sign;
+              let ($PUBLIC_KEY, $SECRET_KEY) = sign::gen_keypair();
+              sign::sign($MESSAGE, &$SECRET_KEY)
+          - pattern: |
+              use sodiumoxide::randombytes;
+              randombytes::randombytes($LEN)
+          - pattern: |
+              async fn $FUNC() {
+                  sodiumoxide::crypto::box_::seal($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: sodiumoxide cryptographic library usage detected in codebase"

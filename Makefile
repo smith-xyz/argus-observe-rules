@@ -15,7 +15,7 @@ help:
 	@echo "Development:"
 	@echo "  lint         Run ruff linting"
 	@echo "  format       Format code with ruff"
-	@echo "  format-yaml  Format YAML files (requires PATH=)"
+	@echo "  format-yaml  Format YAML files using yamlfmt or prettier"
 	@echo "  clean        Clean up temporary files"
 	@echo ""
 	@echo "Rule Management:"
@@ -44,13 +44,20 @@ format:
 	uv run ruff format .
 
 format-yaml:
-ifndef PATH
-	@echo "Error: PATH parameter required"
-	@echo "Usage: make format-yaml PATH=configs/go-runtime-security.yml"
-	@echo "       make format-yaml PATH=configs/"
-	@exit 1
-endif
-	uv run observe format-yaml $(PATH)
+	@echo "Formatting YAML files with prettier..."
+	@if command -v prettier >/dev/null 2>&1; then \
+		prettier --write "rules/**/*.{yml,yaml}" "configs/**/*.{yml,yaml}" "tests/**/*.{yml,yaml}"; \
+	elif command -v yamlfmt >/dev/null 2>&1; then \
+		echo "Using yamlfmt..."; \
+		find rules configs tests -name "*.yml" -o -name "*.yaml" | xargs yamlfmt -w; \
+	else \
+		echo "Error: No YAML formatter found."; \
+		echo ""; \
+		echo "Install one of the following:"; \
+		echo "  prettier: npm install -g prettier"; \
+		echo "  yamlfmt: go install github.com/google/yamlfmt/cmd/yamlfmt@latest"; \
+		exit 1; \
+	fi
 
 clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true

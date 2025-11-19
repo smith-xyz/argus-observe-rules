@@ -1,63 +1,63 @@
 findings:
-- file: test_code.java
-  line: 7
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 7
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 8
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 8
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 9
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 9
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 10
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 10
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 14
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 14
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 19
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 19
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
-- file: test_code.java
-  line: 19
-  rule_id: java-crypto-tls-version
-  message: TLS version configuration detected
+  - file: test_code.java
+    line: 7
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 7
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 8
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 8
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 9
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 9
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 10
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 10
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 14
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 14
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 19
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 19
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
+  - file: test_code.java
+    line: 19
+    rule_id: java-crypto-tls-version
+    message: TLS version configuration detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

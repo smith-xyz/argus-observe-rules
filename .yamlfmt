@@ -1,0 +1,7 @@
+formatter:
+  type: basic
+  indent: 2
+  line_ending: unix
+  line_length: 120
+  retain_line_breaks: true
+  trim_trailing_whitespace: true

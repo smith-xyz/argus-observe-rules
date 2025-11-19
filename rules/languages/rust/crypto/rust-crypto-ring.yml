@@ -1,43 +1,43 @@
 rules:
-    - id: rust-crypto-ring
-      message: ring cryptographic library usage detected
-      severity: INFO
-      languages:
-          - rust
-      patterns:
-          - pattern-either:
-                - pattern: ring::digest::digest($ALGO, $DATA)
-                - pattern: ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::from($AAD), $IN_OUT)
-                - pattern: ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::from($AAD), $IN_OUT)
-                - pattern: ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::empty(), $IN_OUT)
-                - pattern: ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::empty(), $IN_OUT)
-                - pattern: ring::hmac::sign($KEY, $MESSAGE)
-                - pattern: ring::hmac::verify($KEY, $MESSAGE, $SIGNATURE)
-                - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
-                - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
-                - pattern: ring::rand::SystemRandom::new()
-                - pattern: ring::rand::generate($RNG, $OUTPUT)
-                - pattern: |
-                      use ring::digest;
-                      digest::digest(&digest::SHA256, $DATA)
-                - pattern: |
-                      use ring::aead;
-                      aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
-          - pattern-not-inside: |
-                #[test]
-                fn $TEST() {
-                    ...
-                }
-          - pattern-not-inside: |
-                #[cfg(test)]
-                mod $MODULE {
-                    ...
-                }
-          - pattern-not-inside: |
-                mod tests {
-                    ...
-                }
-      metadata:
-          category: crypto
-          cwe: CWE-327
-          impact: "Inventory: ring cryptographic library usage detected in codebase"
+  - id: rust-crypto-ring
+    message: ring cryptographic library usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::digest::digest($ALGO, $DATA)
+          - pattern: ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::from($AAD), $IN_OUT)
+          - pattern: ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::from($AAD), $IN_OUT)
+          - pattern: ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::empty(), $IN_OUT)
+          - pattern: ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::empty(), $IN_OUT)
+          - pattern: ring::hmac::sign($KEY, $MESSAGE)
+          - pattern: ring::hmac::verify($KEY, $MESSAGE, $SIGNATURE)
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: ring::rand::SystemRandom::new()
+          - pattern: ring::rand::generate($RNG, $OUTPUT)
+          - pattern: |
+              use ring::digest;
+              digest::digest(&digest::SHA256, $DATA)
+          - pattern: |
+              use ring::aead;
+              aead::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ring cryptographic library usage detected in codebase"

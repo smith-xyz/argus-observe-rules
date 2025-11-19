@@ -1,43 +1,43 @@
 findings:
-- file: test_code.c
-  line: 6
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 7
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 12
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 13
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 19
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 20
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 21
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 22
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 23
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
-- file: test_code.c
-  line: 24
-  rule_id: c-crypto-password-hashing
-  message: Password hashing function usage detected
+  - file: test_code.c
+    line: 6
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 7
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 12
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 13
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 19
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 20
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 21
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 22
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 23
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
+  - file: test_code.c
+    line: 24
+    rule_id: c-crypto-password-hashing
+    message: Password hashing function usage detected
 no_findings:
-- negative_cases.c
+  - negative_cases.c

@@ -1,55 +1,55 @@
 findings:
-- file: test_code.java
-  line: 10
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 14
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 20
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 21
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 26
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 27
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 30
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 31
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 37
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
-- file: test_code.java
-  line: 44
-  rule_id: java-crypto-key-length
-  message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 10
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 14
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 20
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 21
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 26
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 27
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 30
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 31
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 37
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
+  - file: test_code.java
+    line: 44
+    rule_id: java-crypto-key-length
+    message: Cryptographic key length usage detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

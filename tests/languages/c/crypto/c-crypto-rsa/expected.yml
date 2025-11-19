@@ -1,71 +1,71 @@
 findings:
-- file: test_code.c
-  line: 5
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 10
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 13
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 19
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 24
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 25
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 30
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 35
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 36
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 41
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 42
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 47
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 49
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 58
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 59
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 64
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
-- file: test_code.c
-  line: 65
-  rule_id: c-crypto-rsa
-  message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 5
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 10
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 13
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 19
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 24
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 25
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 30
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 35
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 36
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 41
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 42
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 47
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 49
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 58
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 59
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 64
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
+  - file: test_code.c
+    line: 65
+    rule_id: c-crypto-rsa
+    message: RSA cryptographic operations detected
 no_findings:
-- negative_cases.c
+  - negative_cases.c

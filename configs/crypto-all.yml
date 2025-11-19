@@ -102,8 +102,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: c-crypto-key-derivation
     message: Key derivation function usage detected
@@ -113,32 +112,28 @@ rules:
     patterns:
       - pattern-either:
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
                   $KEYLEN, $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
                   $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
           - patterns:
-              - pattern:
-                  EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY,
+              - pattern: EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY,
                   $IV)
               - metavariable-regex:
                   metavariable: $COUNT
                   regex: \d+
               - focus-metavariable: $COUNT
           - patterns:
-              - pattern:
-                  EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
+              - pattern: EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
                   $KEY, $KEYLEN)
               - metavariable-regex:
                   metavariable: $N
@@ -245,12 +240,10 @@ rules:
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-          - pattern:
-              AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
+          - pattern: AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
               $ENCRYPT)
           - pattern: AES_ofb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
-          - pattern:
-              AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
+          - pattern: AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
               $BUFFER, $NUM)
     metadata:
       category: crypto
@@ -476,48 +469,37 @@ rules:
       - pattern-either:
           - pattern: BCryptOpenAlgorithmProvider($ALG_HANDLE, $ALG_ID, $IMPL, $FLAGS)
           - pattern: BCryptCloseAlgorithmProvider($ALG_HANDLE, $FLAGS)
-          - pattern:
-              BCryptGenerateSymmetricKey($ALG_HANDLE, $KEY_HANDLE, $KEY_OBJECT, $KEY_OBJECT_LEN,
+          - pattern: BCryptGenerateSymmetricKey($ALG_HANDLE, $KEY_HANDLE, $KEY_OBJECT, $KEY_OBJECT_LEN,
               $SECRET, $SECRET_LEN, $FLAGS)
           - pattern: BCryptGenerateKeyPair($ALG_HANDLE, $KEY_HANDLE, $KEY_LENGTH, $FLAGS)
           - pattern: BCryptFinalizeKeyPair($KEY_HANDLE, $FLAGS)
-          - pattern:
-              BCryptImportKeyPair($ALG_HANDLE, $NULL, $BLOB_TYPE, $KEY_HANDLE, $KEY_BLOB,
+          - pattern: BCryptImportKeyPair($ALG_HANDLE, $NULL, $BLOB_TYPE, $KEY_HANDLE, $KEY_BLOB,
               $KEY_BLOB_LEN, $FLAGS)
-          - pattern:
-              BCryptExportKey($KEY_HANDLE, $NULL, $BLOB_TYPE, $OUTPUT, $OUTPUT_LEN,
+          - pattern: BCryptExportKey($KEY_HANDLE, $NULL, $BLOB_TYPE, $OUTPUT, $OUTPUT_LEN,
               $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptEncrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
+          - pattern: BCryptEncrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
               $IV_LEN, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptDecrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
+          - pattern: BCryptDecrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
               $IV_LEN, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
           - pattern: BCryptGenRandom($PROV_HANDLE, $BUFFER, $BUFFER_LEN, $FLAGS)
-          - pattern:
-              BCryptCreateHash($ALG_HANDLE, $HASH_HANDLE, $HASH_OBJECT, $HASH_OBJECT_LEN,
+          - pattern: BCryptCreateHash($ALG_HANDLE, $HASH_HANDLE, $HASH_OBJECT, $HASH_OBJECT_LEN,
               $SECRET, $SECRET_LEN, $FLAGS)
           - pattern: BCryptHashData($HASH_HANDLE, $INPUT, $INPUT_LEN, $FLAGS)
           - pattern: BCryptFinishHash($HASH_HANDLE, $OUTPUT, $OUTPUT_LEN, $FLAGS)
           - pattern: BCryptDestroyHash($HASH_HANDLE)
           - pattern: BCryptDestroyKey($KEY_HANDLE)
-          - pattern:
-              BCryptSignHash($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN, $SIGNATURE,
+          - pattern: BCryptSignHash($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN, $SIGNATURE,
               $SIGNATURE_LEN, $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptVerifySignature($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN,
+          - pattern: BCryptVerifySignature($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN,
               $SIGNATURE, $SIGNATURE_LEN, $FLAGS)
-          - pattern:
-              BCryptDeriveKey($SECRET_HANDLE, $PARAM_LIST, $DERIVED_KEY, $DERIVED_KEY_LEN,
+          - pattern: BCryptDeriveKey($SECRET_HANDLE, $PARAM_LIST, $DERIVED_KEY, $DERIVED_KEY_LEN,
               $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptDeriveKeyPBKDF2($ALG_HANDLE, $PASSWORD, $PASSWORD_LEN, $SALT,
+          - pattern: BCryptDeriveKeyPBKDF2($ALG_HANDLE, $PASSWORD, $PASSWORD_LEN, $SALT,
               $SALT_LEN, $ITERATIONS, $DERIVED_KEY, $DERIVED_KEY_LEN, $FLAGS)
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Windows CNG (Cryptography Next Generation) usage detected
+      impact: "Inventory: Windows CNG (Cryptography Next Generation) usage detected
         in codebase"
   - id: c-crypto-digital-signatures
     message: Digital signature operations detected
@@ -579,8 +561,7 @@ rules:
           - pattern: bcrypt_hashpw($PASS, $SALT, $HASH)
           - pattern: bcrypt_checkpw($PASS, $HASH)
           - patterns:
-              - pattern:
-                  argon2i_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
+              - pattern: argon2i_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
                   $SALT_LEN, $HASH, $HASH_LEN)
               - metavariable-regex:
                   metavariable: $T_COST
@@ -589,8 +570,7 @@ rules:
                   metavariable: $M_COST
                   regex: \d+
           - patterns:
-              - pattern:
-                  argon2id_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
+              - pattern: argon2id_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
                   $SALT_LEN, $HASH, $HASH_LEN)
               - metavariable-regex:
                   metavariable: $T_COST
@@ -599,8 +579,7 @@ rules:
                   metavariable: $M_COST
                   regex: \d+
           - patterns:
-              - pattern:
-                  argon2d_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
+              - pattern: argon2d_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
                   $SALT_LEN, $HASH, $HASH_LEN)
               - metavariable-regex:
                   metavariable: $T_COST
@@ -820,8 +799,7 @@ rules:
           - pattern: DES_set_key_checked($KEY, $SCHEDULE)
           - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
           - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
-          - pattern:
-              DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
+          - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
               $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
@@ -842,22 +820,18 @@ rules:
           - pattern: CryptGenKey($HPROV, $ALGID, $FLAGS, $HPROVKEY)
           - pattern: CryptDeriveKey($HPROV, $ALGID, $HHASH, $FLAGS, $HPROVKEY)
           - pattern: CryptImportKey($HPROV, $PBDATA, $DWDLEN, $HPROVKEY, $DWFLAGS, $HPROVKEYOUT)
-          - pattern:
-              CryptExportKey($HPROVKEY, $HPROVKEYEXP, $DWFLAGS, $DWPARAM, $PBDATA,
+          - pattern: CryptExportKey($HPROVKEY, $HPROVKEYEXP, $DWFLAGS, $DWPARAM, $PBDATA,
               $PDWLEN)
-          - pattern:
-              CryptEncrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN,
+          - pattern: CryptEncrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN,
               $DWBUFLEN)
           - pattern: CryptDecrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN)
           - pattern: CryptCreateHash($HPROV, $ALGID, $HPROVKEY, $DWFLAGS, $HPROVHASH)
           - pattern: CryptHashData($HPROVHASH, $PBDATA, $DWDLEN, $DWFLAGS)
           - pattern: CryptHashSessionKey($HPROVHASH, $HPROVKEY, $DWFLAGS)
           - pattern: CryptGetHashParam($HPROVHASH, $DWPARAM, $PBDATA, $PDWLEN, $DWFLAGS)
-          - pattern:
-              CryptSignHash($HPROVHASH, $DWKEYSPEC, $DESCRIPTION, $DWFLAGS, $PBSIGNATURE,
+          - pattern: CryptSignHash($HPROVHASH, $DWKEYSPEC, $DESCRIPTION, $DWFLAGS, $PBSIGNATURE,
               $PDSIGLEN)
-          - pattern:
-              CryptVerifySignature($HPROVHASH, $PBSIGNATURE, $DWSIGLEN, $HPROVKEY,
+          - pattern: CryptVerifySignature($HPROVHASH, $PBSIGNATURE, $DWSIGLEN, $HPROVKEY,
               $DESCRIPTION, $DWFLAGS)
           - pattern: CryptGenRandom($HPROV, $DWDLEN, $PBBUFFER)
     metadata:
@@ -2443,8 +2417,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: javascript-crypto-password-hashing
     message: Password hashing operations detected
@@ -2580,8 +2553,7 @@ rules:
           - pattern: require("libsodium-wrappers").crypto_sign($MESSAGE, $SECRET_KEY)
           - pattern: require("libsodium-wrappers").crypto_sign_open($SIGNED_MESSAGE, $PUBLIC_KEY)
           - pattern: require("libsodium-wrappers").crypto_sign_detached($MESSAGE, $SECRET_KEY)
-          - pattern:
-              require("libsodium-wrappers").crypto_sign_verify_detached($SIGNATURE,
+          - pattern: require("libsodium-wrappers").crypto_sign_verify_detached($SIGNATURE,
               $MESSAGE, $PUBLIC_KEY)
           - pattern: require("sjcl").ecc.ecdsa.generateKeys($CURVE, $PARANOIA)
           - pattern: require("sjcl").ecc.ecdsa.secretKey($KEY)
@@ -2702,8 +2674,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Hash function used in comparison or verification detected
+      impact: "Inventory: Hash function used in comparison or verification detected
         in codebase"
   - id: javascript-crypto-rsa
     message: RSA cryptographic operations detected
@@ -3122,16 +3093,14 @@ rules:
           - pattern: crypto.subtle.sign($ALGO, $KEY, $DATA)
           - pattern: crypto.subtle.verify($ALGO, $KEY, $SIG, $DATA)
           - pattern: crypto.subtle.generateKey($ALGO, $EXTRACTABLE, $USAGE)
-          - pattern:
-              crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
+          - pattern: crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
               $USAGE)
           - pattern: crypto.subtle.deriveBits($ALGO, $BASE_KEY, $LENGTH)
           - pattern: crypto.subtle.digest($ALGO, $DATA)
           - pattern: crypto.subtle.importKey($FORMAT, $KEY_DATA, $ALGO, $EXTRACTABLE, $USAGE)
           - pattern: crypto.subtle.exportKey($FORMAT, $KEY)
           - pattern: crypto.subtle.wrapKey($FORMAT, $KEY, $WRAPPING_KEY, $WRAP_ALGO)
-          - pattern:
-              crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO,
+          - pattern: crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO,
               $UNWRAPPED_ALGO, $EXTRACTABLE, $USAGE)
           - pattern: |
               $KEY = await crypto.subtle.generateKey(
@@ -3359,8 +3328,7 @@ rules:
           - pattern: require("tweetnacl").secretbox($MESSAGE, $NONCE, $KEY)
           - pattern: require("tweetnacl").secretbox.open($CIPHERTEXT, $NONCE, $KEY)
           - pattern: require("libsodium-wrappers").crypto_secretbox($MESSAGE, $NONCE, $KEY)
-          - pattern:
-              require("libsodium-wrappers").crypto_secretbox_open($CIPHERTEXT, $NONCE,
+          - pattern: require("libsodium-wrappers").crypto_secretbox_open($CIPHERTEXT, $NONCE,
               $KEY)
           - pattern: require("sjcl").mode.ocb2.encrypt($CIPHER, $PLAINTEXT, $IV)
           - pattern: require("sjcl").mode.ocb2.decrypt($CIPHER, $CIPHERTEXT, $IV)
@@ -3422,8 +3390,7 @@ rules:
               const SALT = Buffer.from("$STATIC_VALUE");
               ...
               crypto.scryptSync($PASSWORD, SALT, $KEYLEN);
-          - pattern:
-              crypto.pbkdf2Sync($PASSWORD, Buffer.from("$STATIC_SALT"), $ITER, $KEYLEN,
+          - pattern: crypto.pbkdf2Sync($PASSWORD, Buffer.from("$STATIC_SALT"), $ITER, $KEYLEN,
               $DIGEST)
           - pattern: crypto.scryptSync($PASSWORD, Buffer.from("$STATIC_SALT"), $KEYLEN)
           - pattern: |
@@ -3515,8 +3482,7 @@ rules:
               $ECDH = crypto.createECDH("prime256v1");
               $ECDH.generateKeys();
               $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
-          - pattern:
-              crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
+          - pattern: crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
               $USAGE)
           - pattern: crypto.subtle.deriveBits($ALGO, $BASE_KEY, $LENGTH)
           - pattern: |
@@ -3624,11 +3590,9 @@ rules:
           - pattern: require("tweetnacl").box($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
           - pattern: require("tweetnacl").box.open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
           - pattern: require("libsodium-wrappers").crypto_box_keypair()
-          - pattern:
-              require("libsodium-wrappers").crypto_box($MESSAGE, $NONCE, $PUBLIC_KEY,
+          - pattern: require("libsodium-wrappers").crypto_box($MESSAGE, $NONCE, $PUBLIC_KEY,
               $SECRET_KEY)
-          - pattern:
-              require("libsodium-wrappers").crypto_box_open($CIPHERTEXT, $NONCE,
+          - pattern: require("libsodium-wrappers").crypto_box_open($CIPHERTEXT, $NONCE,
               $PUBLIC_KEY, $SECRET_KEY)
           - pattern: require("sjcl").ecc.elGamal.generateKeys($CURVE, $PARANOIA)
     pattern-not-inside:
@@ -4016,8 +3980,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: csharp-crypto-key-length
     message: Cryptographic key length usage detected
@@ -4192,8 +4155,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-326
-      impact:
-        "Inventory: SP800108DeriveBytes key derivation function usage detected
+      impact: "Inventory: SP800108DeriveBytes key derivation function usage detected
         in codebase"
   - id: csharp-crypto-rsa
     message: RSA cryptographic operations detected
@@ -4895,8 +4857,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Cipher mode usage detected in codebase (CBC, CFB, ECB, OFB,
+      impact: "Inventory: Cipher mode usage detected in codebase (CBC, CFB, ECB, OFB,
         CTS)"
   - id: csharp-crypto-sha384
     message: SHA384 hash function usage detected
@@ -5314,8 +5275,7 @@ rules:
     patterns:
       - pattern-either:
           - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20(), $ENGINE, $KEY, $IV, $ENCRYPT)
-          - pattern:
-              EVP_CipherInit_ex($CTX, EVP_chacha20_poly1305(), $ENGINE, $KEY, $IV,
+          - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20_poly1305(), $ENGINE, $KEY, $IV,
               $ENCRYPT)
           - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20", $PROPS)
           - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20-Poly1305", $PROPS)
@@ -5434,11 +5394,9 @@ rules:
           - pattern: mbedtls_rsa_gen_key($RSA, $F_RNG, $PRNG, $N_BITS, $EXPONENT)
           - pattern: mbedtls_rsa_public($RSA, $INPUT, $OUTPUT)
           - pattern: mbedtls_rsa_private($RSA, $F_RNG, $PRNG, $INPUT, $OUTPUT)
-          - pattern:
-              mbedtls_rsa_pkcs1_sign($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
+          - pattern: mbedtls_rsa_pkcs1_sign($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
               $HASH, $SIG)
-          - pattern:
-              mbedtls_rsa_pkcs1_verify($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
+          - pattern: mbedtls_rsa_pkcs1_verify($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
               $HASH, $SIG)
           - pattern: mbedtls_ecdsa_sign($GRP, $R, $S, $D, $BUF, $BLEN, $F_RNG, $PRNG)
           - pattern: mbedtls_ecdsa_verify($GRP, $BUF, $BLEN, $Q, $R, $S)
@@ -5447,13 +5405,11 @@ rules:
           - pattern: mbedtls_ctr_drbg_seed($CTX, $F_ENTROPY, $P_ENTROPY, $CUSTOM, $LEN)
           - pattern: mbedtls_ctr_drbg_random($P_RNG, $OUTPUT, $OUTPUT_LEN)
           - pattern: mbedtls_hmac_drbg_init($CTX)
-          - pattern:
-              mbedtls_hmac_drbg_seed($CTX, $MD, $F_ENTROPY, $P_ENTROPY, $CUSTOM,
+          - pattern: mbedtls_hmac_drbg_seed($CTX, $MD, $F_ENTROPY, $P_ENTROPY, $CUSTOM,
               $LEN)
           - pattern: mbedtls_gcm_init($CTX)
           - pattern: mbedtls_gcm_setkey($CTX, $CIPHER, $KEY, $KEYLEN)
-          - pattern:
-              mbedtls_gcm_crypt_and_tag($CTX, $MODE, $LENGTH, $IV, $IVLEN, $ADD,
+          - pattern: mbedtls_gcm_crypt_and_tag($CTX, $MODE, $LENGTH, $IV, $IVLEN, $ADD,
               $ADDLEN, $INPUT, $OUTPUT, $TAGLEN, $TAG)
     metadata:
       category: crypto
@@ -5596,12 +5552,10 @@ rules:
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-          - pattern:
-              AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
+          - pattern: AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
               $ENCRYPT)
           - pattern: AES_ofb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
-          - pattern:
-              AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
+          - pattern: AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
               $BUFFER, $NUM)
           - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
           - pattern: CryptoPP::CBC_Mode<$CIPHER>::Decryption($KEY, $KEYLEN, $IV)
@@ -5857,8 +5811,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Cryptographically secure random number generation detected
+      impact: "Inventory: Cryptographically secure random number generation detected
         in codebase"
   - id: cpp-crypto-digital-signatures
     message: Digital signature operations detected
@@ -5906,8 +5859,7 @@ rules:
                     - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Verifier($PUBKEY)
               - pattern: $VERIFIER.VerifyMessage($MESSAGE, $SIGNATURE)
           - pattern: DSA_new()
-          - pattern:
-              DSA_generate_parameters_ex($DSA, $BITS, $SEED, $SEEDLEN, $COUNTER,
+          - pattern: DSA_generate_parameters_ex($DSA, $BITS, $SEED, $SEEDLEN, $COUNTER,
               $H_RET, $CALLBACK, $CALLBACKARG)
           - pattern: DSA_generate_key($DSA)
           - pattern: DSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $DSA)
@@ -5927,30 +5879,26 @@ rules:
     patterns:
       - pattern-either:
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
                   $KEYLEN, $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
                   $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
-          - pattern:
-              EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
+          - pattern: EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
               $KEY, $KEYLEN)
           - pattern: EVP_KDF_fetch($ENGINE, "PBKDF2", $PROPS)
           - pattern: EVP_KDF_fetch($ENGINE, "scrypt", $PROPS)
           - pattern: EVP_KDF_fetch($ENGINE, "Argon2", $PROPS)
           - pattern: CryptoPP::PKCS5_PBKDF2_HMAC<$HASH>()
-          - pattern:
-              CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
+          - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
               $SALTLEN, $N, $R, $P)
           - pattern: Botan::PBKDF2($PBKDF)
           - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
@@ -5958,21 +5906,16 @@ rules:
           - pattern: |
               CryptoPP::PKCS5_PBKDF2_HMAC<$HASH> $PBKDF;
               $PBKDF.DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT, $SALTLEN, $ITER);
-          - pattern:
-              argon2_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+          - pattern: argon2_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
               $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $TYPE, $VERSION)
-          - pattern:
-              argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+          - pattern: argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
               $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-          - pattern:
-              argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+          - pattern: argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
               $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-          - pattern:
-              argon2d_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+          - pattern: argon2d_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
               $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
           - patterns:
-              - pattern:
-                  argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+              - pattern: argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
                   $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
               - metavariable-regex:
                   metavariable: $TIME_COST
@@ -5981,8 +5924,7 @@ rules:
                   metavariable: $MEMORY_COST
                   regex: \d+
           - patterns:
-              - pattern:
-                  argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+              - pattern: argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
                   $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
               - metavariable-regex:
                   metavariable: $TIME_COST
@@ -5991,8 +5933,7 @@ rules:
                   metavariable: $MEMORY_COST
                   regex: \d+
           - patterns:
-              - pattern:
-                  CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
+              - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
                   $SALTLEN, $N, $R, $P)
               - metavariable-regex:
                   metavariable: $N
@@ -6044,8 +5985,7 @@ rules:
           - pattern: DES_set_key_checked($KEY, $SCHEDULE)
           - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
           - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
-          - pattern:
-              DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
+          - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
               $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
@@ -6053,11 +5993,9 @@ rules:
           - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3", $PROPS)
           - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-CBC", $PROPS)
           - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-ECB", $PROPS)
-          - pattern:
-              DES_ede3_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
+          - pattern: DES_ede3_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
               $IV, $NUM, $ENCRYPT)
-          - pattern:
-              DES_ede3_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
+          - pattern: DES_ede3_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
               $IV, $NUM)
           - pattern: CryptoPP::DES_EDE3::Encryption($KEY, $KEYLEN)
           - pattern: CryptoPP::DES_EDE3::Decryption($KEY, $KEYLEN)
@@ -6157,16 +6095,14 @@ rules:
     patterns:
       - pattern-either:
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
                   $KEYLEN, $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
                   $OUT)
               - metavariable-regex:
                   metavariable: $ITER
@@ -6182,12 +6118,10 @@ rules:
           - pattern: EVP_PKEY_CTX_add1_hkdf_info($CTX, $INFO, $INFOLEN)
           - pattern: CryptoPP::HKDF<$HASH> $HKDF;
           - pattern: CryptoPP::HKDF<$HASH>($SALT, $SALTLEN, $INFO, $INFOLEN)
-          - pattern:
-              CryptoPP::HKDF<$HASH>::DeriveKey($KEY, $KEYLEN, $SECRET, $SECRETLEN,
+          - pattern: CryptoPP::HKDF<$HASH>::DeriveKey($KEY, $KEYLEN, $SECRET, $SECRETLEN,
               $SALT, $SALTLEN, $INFO, $INFOLEN)
           - patterns:
-              - pattern:
-                  CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
+              - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
                   $SALTLEN, $N, $R, $P)
               - metavariable-regex:
                   metavariable: $N
@@ -6228,20 +6162,15 @@ rules:
       - cpp
     patterns:
       - pattern-either:
-          - pattern:
-              EVP_CipherInit_ex($CTX, EVP_camellia_128_cbc(), $ENGINE, $KEY, $IV,
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_cbc(), $ENGINE, $KEY, $IV,
               $ENCRYPT)
-          - pattern:
-              EVP_CipherInit_ex($CTX, EVP_camellia_192_cbc(), $ENGINE, $KEY, $IV,
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_192_cbc(), $ENGINE, $KEY, $IV,
               $ENCRYPT)
-          - pattern:
-              EVP_CipherInit_ex($CTX, EVP_camellia_256_cbc(), $ENGINE, $KEY, $IV,
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_cbc(), $ENGINE, $KEY, $IV,
               $ENCRYPT)
-          - pattern:
-              EVP_CipherInit_ex($CTX, EVP_camellia_128_gcm(), $ENGINE, $KEY, $IV,
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_gcm(), $ENGINE, $KEY, $IV,
               $ENCRYPT)
-          - pattern:
-              EVP_CipherInit_ex($CTX, EVP_camellia_256_gcm(), $ENGINE, $KEY, $IV,
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_gcm(), $ENGINE, $KEY, $IV,
               $ENCRYPT)
           - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-CBC", $PROPS)
           - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-192-CBC", $PROPS)
@@ -6584,8 +6513,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Non-cryptographic random number generator detected (may be
+      impact: "Inventory: Non-cryptographic random number generator detected (may be
         used in cryptographic context)"
   - id: cpp-crypto-libsodium
     message: libsodium cryptographic library usage detected
@@ -6604,37 +6532,29 @@ rules:
           - pattern: crypto_hash_sha256($OUT, $IN, $INLEN)
           - pattern: crypto_hash_sha512($OUT, $IN, $INLEN)
           - pattern: crypto_generichash($OUT, $OUTLEN, $IN, $INLEN, $KEY, $KEYLEN)
-          - pattern:
-              crypto_pwhash($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT,
+          - pattern: crypto_pwhash($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT,
               $ALG)
           - pattern: crypto_pwhash_str($OUT, $PASSWD, $PASSLEN, $OPSLIMIT, $MEMLIMIT)
           - pattern: crypto_pwhash_str_verify($STR, $PASSWD, $PASSLEN)
-          - pattern:
-              crypto_pwhash_argon2i($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
+          - pattern: crypto_pwhash_argon2i($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
               $MEMLIMIT, $ALG)
-          - pattern:
-              crypto_pwhash_argon2id($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
+          - pattern: crypto_pwhash_argon2id($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
               $MEMLIMIT, $ALG)
           - pattern: randombytes($BUF, $SIZE)
           - pattern: randombytes_buf($BUF, $SIZE)
           - pattern: randombytes_random()
-          - pattern:
-              crypto_aead_chacha20poly1305_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN,
+          - pattern: crypto_aead_chacha20poly1305_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN,
               $NPUB, $K)
-          - pattern:
-              crypto_aead_chacha20poly1305_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD,
+          - pattern: crypto_aead_chacha20poly1305_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD,
               $ADLEN, $K)
-          - pattern:
-              crypto_aead_aes256gcm_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN, $NPUB,
+          - pattern: crypto_aead_aes256gcm_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN, $NPUB,
               $K)
-          - pattern:
-              crypto_aead_aes256gcm_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD, $ADLEN,
+          - pattern: crypto_aead_aes256gcm_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD, $ADLEN,
               $K)
           - pattern: crypto_box_keypair($PK, $SK)
           - pattern: crypto_sign_keypair($PK, $SK)
           - pattern: crypto_secretbox_keygen($K)
-          - pattern:
-              crypto_generichash_blake2b_salt_personal($OUT, $OUTLEN, $IN, $INLEN,
+          - pattern: crypto_generichash_blake2b_salt_personal($OUT, $OUTLEN, $IN, $INLEN,
               $KEY, $KEYLEN, $SALT, $PERSONAL)
     metadata:
       category: crypto
@@ -6660,8 +6580,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: cpp-crypto-cipher-twofish
     message: Twofish cipher usage detected
@@ -7545,8 +7464,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: java-crypto-blake2
     message: BLAKE2 hash function usage detected
@@ -7871,8 +7789,7 @@ rules:
           - pattern: sodiumoxide::crypto::hash::hash($DATA)
           - pattern: sodiumoxide::crypto::hash::sha256::hash($DATA)
           - pattern: sodiumoxide::crypto::hash::sha512::hash($DATA)
-          - pattern:
-              sodiumoxide::crypto::pwhash::derive_key($PASSWORD, $SALT, $OPS_LIMIT,
+          - pattern: sodiumoxide::crypto::pwhash::derive_key($PASSWORD, $SALT, $OPS_LIMIT,
               $MEM_LIMIT, $KEY_LEN)
           - pattern: sodiumoxide::crypto::pwhash::pwhash($PASSWORD, $OPS_LIMIT, $MEM_LIMIT)
           - pattern: sodiumoxide::crypto::pwhash::pwhash_verify($HASH, $PASSWORD)
@@ -7919,17 +7836,13 @@ rules:
     patterns:
       - pattern-either:
           - pattern: ring::digest::digest($ALGO, $DATA)
-          - pattern:
-              ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::from($AAD),
+          - pattern: ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::from($AAD),
               $IN_OUT)
-          - pattern:
-              ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::from($AAD),
+          - pattern: ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::from($AAD),
               $IN_OUT)
-          - pattern:
-              ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::empty(),
+          - pattern: ring::aead::seal_in_place($SEALING_KEY, $NONCE, ring::aead::Aad::empty(),
               $IN_OUT)
-          - pattern:
-              ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::empty(),
+          - pattern: ring::aead::open_in_place($OPENING_KEY, $NONCE, ring::aead::Aad::empty(),
               $IN_OUT)
           - pattern: ring::hmac::sign($KEY, $MESSAGE)
           - pattern: ring::hmac::verify($KEY, $MESSAGE, $SIGNATURE)
@@ -8130,8 +8043,7 @@ rules:
               let $SECRET = StaticSecret::new($RNG);
               let $PUBLIC_KEY = PublicKey::from(&$SECRET);
               $SECRET.diffie_hellman(&$PEER_PUBLIC_KEY)
-          - pattern:
-              ring::agreement::agree_ephemeral($ALGO, $PRIVATE_KEY, $PUBLIC_KEY,
+          - pattern: ring::agreement::agree_ephemeral($ALGO, $PRIVATE_KEY, $PUBLIC_KEY,
               $OUTPUT)
           - pattern: ring::agreement::EphemeralPrivateKey::generate($ALGO, $RNG)
           - pattern: ring::agreement::UnparsedPublicKey::new($ALGO, $PUBLIC_KEY_BYTES)
@@ -8297,18 +8209,14 @@ rules:
           - pattern: ring::aead::CHACHA20_POLY1305
           - pattern: ring::aead::SealingKey::new(&ring::aead::CHACHA20_POLY1305, $KEY)
           - pattern: ring::aead::OpeningKey::new(&ring::aead::CHACHA20_POLY1305, $KEY)
-          - pattern:
-              ring::aead::LessSafeKey::new(ring::aead::UnboundKey::new(&ring::aead::CHACHA20_POLY1305,
+          - pattern: ring::aead::LessSafeKey::new(ring::aead::UnboundKey::new(&ring::aead::CHACHA20_POLY1305,
               $KEY))
-          - pattern:
-              ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT,
+          - pattern: ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT,
               $OUT)
-          - pattern:
-              ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT,
+          - pattern: ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT,
               $OUT)
           - pattern: ring::aead::UnboundKey::new(&ring::aead::CHACHA20_POLY1305, $KEY)
-          - pattern:
-              ring::aead::UnboundKey::new_less_safe_key(&ring::aead::CHACHA20_POLY1305,
+          - pattern: ring::aead::UnboundKey::new_less_safe_key(&ring::aead::CHACHA20_POLY1305,
               $KEY)
           - pattern: ring::aead::SealingKey::new_from_unbound_key($UNBOUND_KEY)
           - pattern: ring::aead::OpeningKey::new_from_unbound_key($UNBOUND_KEY)
@@ -8371,8 +8279,7 @@ rules:
                   regex: (ECDSA_P256_SHA256|ECDSA_P384_SHA384|ED25519|RSA_PKCS1_2048_8192_SHA256|RSA_PKCS1_2048_8192_SHA512|RSA_PKCS1_3072_8192_SHA384|RSA_PSS_2048_8192_SHA256|RSA_PSS_2048_8192_SHA384|RSA_PSS_2048_8192_SHA512)
           - pattern: ring::signature::verify($ALGO, $PUBLIC_KEY, $MESSAGE, $SIGNATURE)
           - patterns:
-              - pattern:
-                  ring::signature::verify(&ring::signature::$ALGO, $PUBLIC_KEY, $MESSAGE,
+              - pattern: ring::signature::verify(&ring::signature::$ALGO, $PUBLIC_KEY, $MESSAGE,
                   $SIGNATURE)
               - metavariable-regex:
                   metavariable: $ALGO
@@ -8771,8 +8678,7 @@ rules:
       - pattern-either:
           - pattern: ring::signature::ED25519
           - pattern: ring::signature::sign(&ring::signature::ED25519, $PRIVATE_KEY, $MESSAGE)
-          - pattern:
-              ring::signature::verify(&ring::signature::ED25519, $PUBLIC_KEY, $MESSAGE,
+          - pattern: ring::signature::verify(&ring::signature::ED25519, $PUBLIC_KEY, $MESSAGE,
               $SIGNATURE)
           - pattern: |
               let $SIGNATURE = ring::signature::sign(&ring::signature::ED25519, $PRIVATE_KEY, $MESSAGE);
@@ -8886,12 +8792,10 @@ rules:
           - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_128_GCM_SIV, $KEY)
           - pattern: ring::aead::OpeningKey::new(&ring::aead::AES_256_GCM_SIV, $KEY)
           - pattern: ring::aead::LessSafeKey::new($ALGO, $KEY)
-          - pattern:
-              ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT,
+          - pattern: ring::aead::LessSafeKey::seal_in_place($KEY, $NONCE, $AAD, $PLAINTEXT,
               $OUT)
           - pattern: $KEY.seal_in_place($NONCE, $AAD, $PLAINTEXT, $OUT)
-          - pattern:
-              ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT,
+          - pattern: ring::aead::LessSafeKey::open_in_place($KEY, $NONCE, $AAD, $CIPHERTEXT,
               $OUT)
           - pattern: $KEY.open_in_place($NONCE, $AAD, $CIPHERTEXT, $OUT)
           - pattern: ring::aead::UnboundKey::new($ALGO, $KEY)
@@ -8925,17 +8829,13 @@ rules:
           - pattern: openssl::symm::Crypter::new($MODE, $CIPHER, $KEY, $IV)
           - pattern: openssl::symm::Crypter::encrypt($CRYPTER, $DATA)
           - pattern: openssl::symm::Crypter::decrypt($CRYPTER, $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_gcm(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_gcm(), $KEY,
               $IV, $DATA)
           - pattern: aes::Aes128::new($KEY)
           - pattern: aes::Aes192::new($KEY)
@@ -8968,11 +8868,9 @@ rules:
               aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
           - pattern: aead::seal_in_place($SEALING_KEY, $NONCE, $AAD, $PLAINTEXT, $OUT)
           - pattern: aead::open_in_place($OPENING_KEY, $NONCE, $AAD, $CIPHERTEXT, $OUT)
-          - pattern:
-              aead::seal_in_place(&$SEALING_KEY, $NONCE, aead::Aad::empty(), &mut
+          - pattern: aead::seal_in_place(&$SEALING_KEY, $NONCE, aead::Aad::empty(), &mut
               $OUT)
-          - pattern:
-              aead::open_in_place(&$OPENING_KEY, $NONCE, aead::Aad::empty(), &mut
+          - pattern: aead::open_in_place(&$OPENING_KEY, $NONCE, aead::Aad::empty(), &mut
               $OUT)
           - pattern: openssl::symm::encrypt($CIPHER, $KEY, Some($IV), $DATA)
           - pattern: openssl::symm::decrypt($CIPHER, $KEY, Some($IV), $DATA)
@@ -9196,8 +9094,7 @@ rules:
               $MAC.update($MESSAGE);
               $MAC.finalize()
           - pattern: crypto::hmac::Hmac::new($KEY)
-          - pattern:
-              openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(),
+          - pattern: openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(),
               $KEY)
           - pattern: |
               let mut $SIGNER = openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(), $KEY);
@@ -9312,29 +9209,21 @@ rules:
           - pattern: openssl::symm::Cipher::des3_ecb()
           - pattern: openssl::symm::Cipher::des3_cfb64()
           - pattern: openssl::symm::Cipher::des3_ofb()
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des_cbc(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des_ecb(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des3_cbc(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV,
               $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::des3_ecb(), $KEY, $IV,
               $DATA)
           - pattern: |
               let $CIPHER = openssl::symm::Cipher::des_cbc();
@@ -9356,11 +9245,9 @@ rules:
               use openssl::symm;
               let $CIPHER = symm::Cipher::des3_cbc();
               symm::encrypt($CIPHER, $KEY, $IV, $DATA)
-          - pattern:
-              openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des_cbc(),
+          - pattern: openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des_cbc(),
               $KEY, $IV)
-          - pattern:
-              openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des3_cbc(),
+          - pattern: openssl::symm::Crypter::new($MODE, openssl::symm::Cipher::des3_cbc(),
               $KEY, $IV)
           - pattern: |
               async fn $FUNC() {
@@ -9512,29 +9399,21 @@ rules:
           - pattern: openssl::symm::Cipher::aes_256_ctr()
           - pattern: openssl::symm::Cipher::aes_128_gcm()
           - pattern: openssl::symm::Cipher::aes_256_gcm()
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::encrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY,
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY,
               $IV, $DATA)
-          - pattern:
-              openssl::symm::decrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY,
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY,
               $IV, $DATA)
           - pattern: cbc::Encryptor::<aes::Aes128>::new($KEY, $IV)
           - pattern: cbc::Decryptor::<aes::Aes128>::new($KEY, $IV)
@@ -9805,11 +9684,9 @@ rules:
           - pattern: |
               let $GROUP = openssl::ec::EcGroup::from_curve_name(openssl::nid::Nid::X9_62_PRIME256V1);
               let $KEY = openssl::ec::EcKey::generate(&$GROUP);
-          - pattern:
-              openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(),
+          - pattern: openssl::sign::Signer::new(openssl::hash::MessageDigest::sha256(),
               $EC_KEY)
-          - pattern:
-              openssl::sign::Verifier::new(openssl::hash::MessageDigest::sha256(),
+          - pattern: openssl::sign::Verifier::new(openssl::hash::MessageDigest::sha256(),
               $EC_KEY)
           - pattern: openssl::ecdsa::EcdsaSig::sign($MESSAGE, $PRIVATE_KEY)
           - pattern: openssl::ecdsa::EcdsaSig::verify($MESSAGE, $PUBLIC_KEY)
@@ -10004,8 +9881,7 @@ rules:
           - pattern: crypto.subtle.importKey($FORMAT, $KEY_DATA, $ALGO, $EXTRACTABLE, $USAGE)
           - pattern: crypto.subtle.exportKey($FORMAT, $KEY)
           - pattern: crypto.subtle.wrapKey($FORMAT, $KEY, $WRAPPING_KEY, $WRAP_ALGO)
-          - pattern:
-              crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO,
+          - pattern: crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO,
               $IMPORT_ALGO, $EXTRACTABLE, $USAGE)
           - pattern: |
               $KEY = await crypto.subtle.generateKey(
@@ -10647,12 +10523,10 @@ rules:
                   const $ALGORITHM = "rc4";
                   ...
                   crypto.createCipheriv($ALGORITHM, $KEY, $IV)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.RC4.encrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.RC4.encrypt($DATA,
               $KEY)
           - pattern: CryptoJS.RC4.encrypt($DATA, $KEY)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.RC4.decrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.RC4.decrypt($DATA,
               $KEY)
           - pattern: CryptoJS.RC4.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
@@ -11199,8 +11073,7 @@ rules:
               $ECDH: crypto.ECDH = crypto.createECDH("prime256v1");
               $ECDH.generateKeys();
               $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
-          - pattern:
-              crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
+          - pattern: crypto.subtle.deriveKey($ALGO, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE,
               $USAGE)
           - pattern: crypto.subtle.deriveBits($ALGO, $BASE_KEY, $LENGTH)
           - pattern: |
@@ -11314,8 +11187,7 @@ rules:
           - pattern: |
               $MATCH = await argon2.verify($HASH, $PASSWORD);
           - pattern: import * as argon2 from "argon2"; await argon2.hash($PASSWORD, $OPTIONS)
-          - pattern:
-              import * as argon2 from "argon2-browser"; await argon2.hash($PASSWORD,
+          - pattern: import * as argon2 from "argon2-browser"; await argon2.hash($PASSWORD,
               $OPTIONS)
           - pattern: |
               $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2d, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
@@ -11398,20 +11270,16 @@ rules:
           - pattern: crypto.createDecipheriv("des", $KEY, $IV)
           - pattern: crypto.createDecipheriv("des-ede", $KEY, $IV)
           - pattern: crypto.createDecipheriv("des-ede3", $KEY, $IV)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.DES.encrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.DES.encrypt($DATA,
               $KEY)
           - pattern: CryptoJS.DES.encrypt($DATA, $KEY)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.DES.decrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.DES.decrypt($DATA,
               $KEY)
           - pattern: CryptoJS.DES.decrypt($DATA, $KEY)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.TripleDES.encrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.TripleDES.encrypt($DATA,
               $KEY)
           - pattern: CryptoJS.TripleDES.encrypt($DATA, $KEY)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.TripleDES.decrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.TripleDES.decrypt($DATA,
               $KEY)
           - pattern: CryptoJS.TripleDES.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").DES.encrypt($DATA, $KEY)
@@ -11634,12 +11502,10 @@ rules:
               $CIPHER: crypto.Cipher = crypto.createCipheriv("aes-256-gcm", $KEY, $IV);
               $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
               $CIPHERTEXT += $CIPHER.final();
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.AES.encrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.AES.encrypt($DATA,
               $KEY)
           - pattern: CryptoJS.AES.encrypt($DATA, $KEY)
-          - pattern:
-              import * as CryptoJS from "crypto-js"; CryptoJS.AES.decrypt($DATA,
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.AES.decrypt($DATA,
               $KEY)
           - pattern: CryptoJS.AES.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").AES.encrypt($DATA, $KEY)
@@ -11889,8 +11755,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: typescript-crypto-sha512
     message: SHA512 hash function usage detected
@@ -12483,8 +12348,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: python-crypto-cipher-camellia
     message: Camellia cipher usage detected
@@ -14605,8 +14469,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Cipher mode usage detected in codebase (OFB, CFB, CTR, CBC,
+      impact: "Inventory: Cipher mode usage detected in codebase (OFB, CFB, CTR, CBC,
         GCM)"
   - id: go-crypto-hash-comparison
     message: Hash function used in comparison or verification detected
@@ -14648,8 +14511,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Hash function used in comparison or verification detected
+      impact: "Inventory: Hash function used in comparison or verification detected
         in codebase"
   - id: go-crypto-salt-generation
     message: Salt generation for cryptographic use detected
@@ -14959,8 +14821,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Hash algorithm used via generic hash.Hash interface detected
+      impact: "Inventory: Hash algorithm used via generic hash.Hash interface detected
         in codebase"
   - id: go-crypto-hardcoded-key
     message: Hardcoded cryptographic key detected
@@ -15196,8 +15057,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: go-crypto-scrypt
     message: scrypt key derivation function usage detected

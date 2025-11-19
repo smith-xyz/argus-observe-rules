@@ -753,8 +753,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: java-crypto-blake2
     message: BLAKE2 hash function usage detected

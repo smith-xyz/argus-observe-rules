@@ -45,4 +45,3 @@ rules:
       category: tls_runtime_security
       cwe: CWE-757
       impact: Custom TLS config in HTTP servers may override platform TLS profiles (e.g., OpenShift TLS profile)
-

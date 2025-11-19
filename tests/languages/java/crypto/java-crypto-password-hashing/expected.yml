@@ -1,35 +1,35 @@
 findings:
-- file: test_code.java
-  line: 8
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 9
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 20
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 25
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 25
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 25
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.java
-  line: 26
-  rule_id: java-crypto-password-hashing
-  message: Password hashing operations detected
+  - file: test_code.java
+    line: 8
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 9
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 20
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 25
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 25
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 25
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.java
+    line: 26
+    rule_id: java-crypto-password-hashing
+    message: Password hashing operations detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

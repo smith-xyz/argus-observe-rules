@@ -1,31 +1,31 @@
 findings:
-- file: test_code.py
-  line: 6
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.py
-  line: 8
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.py
-  line: 10
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.py
-  line: 12
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.py
-  line: 16
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.py
-  line: 18
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
-- file: test_code.py
-  line: 19
-  rule_id: python-crypto-password-hashing
-  message: Password hashing operations detected
+  - file: test_code.py
+    line: 6
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.py
+    line: 8
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.py
+    line: 10
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.py
+    line: 12
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.py
+    line: 16
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.py
+    line: 18
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
+  - file: test_code.py
+    line: 19
+    rule_id: python-crypto-password-hashing
+    message: Password hashing operations detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py

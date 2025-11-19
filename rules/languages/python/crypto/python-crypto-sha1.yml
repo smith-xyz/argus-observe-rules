@@ -38,7 +38,7 @@ rules:
               - pattern: hashlib.sha1($DATA)
               - metavariable-regex:
                   metavariable: $DATA
-                  regex: '.+'
+                  regex: ".+"
 
     pattern-not-inside:
       - pattern: |

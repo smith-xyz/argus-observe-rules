@@ -1,39 +1,39 @@
 findings:
-- file: test_code.c
-  line: 7
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 13
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 19
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 25
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 31
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 37
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 43
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 49
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-- file: test_code.c
-  line: 55
-  rule_id: c-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 7
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 13
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 19
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 25
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 31
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 37
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 43
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 49
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+  - file: test_code.c
+    line: 55
+    rule_id: c-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
 no_findings:
-- negative_cases.c
+  - negative_cases.c

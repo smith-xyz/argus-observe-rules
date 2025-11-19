@@ -1,47 +1,47 @@
 findings:
-- file: test_code.py
-  line: 6
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 8
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 10
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 12
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 14
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 16
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 18
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 20
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 22
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 26
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
-- file: test_code.py
-  line: 28
-  rule_id: python-crypto-sha3
-  message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 6
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 8
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 10
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 12
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 14
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 16
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 18
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 20
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 22
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 26
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
+  - file: test_code.py
+    line: 28
+    rule_id: python-crypto-sha3
+    message: SHA3 hash function usage detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py

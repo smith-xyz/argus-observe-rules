@@ -1,67 +1,67 @@
 findings:
-- file: test_code.c
-  line: 8
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 15
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 24
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 30
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 37
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 46
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 54
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 61
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 69
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 77
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 84
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 92
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 101
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 110
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 119
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.c
-  line: 128
-  rule_id: c-crypto-digital-signatures
-  message: Digital signature operations detected
+  - file: test_code.c
+    line: 8
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 15
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 24
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 30
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 37
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 46
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 54
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 61
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 69
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 77
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 84
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 92
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 101
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 110
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 119
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.c
+    line: 128
+    rule_id: c-crypto-digital-signatures
+    message: Digital signature operations detected
 no_findings:
-- negative_cases.c
+  - negative_cases.c

@@ -1,35 +1,35 @@
 findings:
-- file: test_code.py
-  line: 10
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 12
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 14
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 17
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 20
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 23
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 26
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
-- file: test_code.py
-  line: 28
-  rule_id: python-crypto-cipher-3des
-  message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 10
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 12
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 14
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 17
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 20
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 23
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 26
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
+  - file: test_code.py
+    line: 28
+    rule_id: python-crypto-cipher-3des
+    message: 3DES (Triple DES) cipher usage detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py

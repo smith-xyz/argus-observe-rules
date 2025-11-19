@@ -1,71 +1,71 @@
 rules:
-- id: rust-crypto-secp256k1
-  message: secp256k1 cryptographic operations detected
-  severity: INFO
-  languages:
-  - rust
-  patterns:
-  - pattern-either:
-    - pattern: secp256k1::Secp256k1::new()
-    - pattern: secp256k1::Secp256k1::signing_only()
-    - pattern: secp256k1::Secp256k1::verification_only()
-    - pattern: secp256k1::SecretKey::from_slice($BYTES)
-    - pattern: secp256k1::SecretKey::from_keypair($KEYPAIR)
-    - pattern: secp256k1::PublicKey::from_secret_key($SECP256K1, $SECRET_KEY)
-    - pattern: secp256k1::PublicKey::from_slice($BYTES)
-    - pattern: secp256k1::Message::from_slice($BYTES)
-    - pattern: secp256k1::ecdsa::Signature::from_compact($BYTES)
-    - pattern: secp256k1::ecdsa::Signature::from_der($BYTES)
-    - pattern: secp256k1::ecdsa::sign($MESSAGE, $SECRET_KEY)
-    - pattern: secp256k1::ecdsa::sign($SECP256K1, $MESSAGE, $SECRET_KEY)
-    - pattern: secp256k1::ecdsa::verify($MESSAGE, $SIGNATURE, $PUBLIC_KEY)
-    - pattern: secp256k1::ecdsa::verify($SECP256K1, $MESSAGE, $SIGNATURE, $PUBLIC_KEY)
-    - pattern: secp256k1::KeyPair::from_secret_key($SECP256K1, $SECRET_KEY)
-    - pattern: secp256k1::KeyPair::secret_key($KEYPAIR)
-    - pattern: secp256k1::KeyPair::public_key($KEYPAIR)
-    - pattern: |
-        use secp256k1::{Secp256k1, Message, ecdsa};
-        let $SECP256K1 = Secp256k1::new();
-        let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
-        ecdsa::sign(&$MESSAGE, $SECRET_KEY)
-    - pattern: |
-        use secp256k1::{Secp256k1, Message, ecdsa};
-        let $SECP256K1 = Secp256k1::new();
-        let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
-        ecdsa::sign($SECP256K1, &$MESSAGE, $SECRET_KEY)
-    - pattern: |
-        use secp256k1::{Secp256k1, Message, ecdsa};
-        let $SECP256K1 = Secp256k1::new();
-        let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
-        ecdsa::verify(&$MESSAGE, $SIGNATURE, $PUBLIC_KEY)
-    - pattern: |
-        use secp256k1::{Secp256k1, Message, ecdsa};
-        let $SECP256K1 = Secp256k1::new();
-        let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
-        ecdsa::verify($SECP256K1, &$MESSAGE, $SIGNATURE, $PUBLIC_KEY)
-    - pattern: |
-        async fn $FUNC() {
-            secp256k1::ecdsa::sign($MESSAGE, $SECRET_KEY)
-        }
-    - pattern: |
-        async fn $FUNC() {
-            secp256k1::ecdsa::sign($SECP256K1, $MESSAGE, $SECRET_KEY)
-        }
-  - pattern-not-inside: |
-      #[test]
-      fn $TEST() {
-          ...
-      }
-  - pattern-not-inside: |
-      #[cfg(test)]
-      mod $MODULE {
-          ...
-      }
-  - pattern-not-inside: |
-      mod tests {
-          ...
-      }
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: "Inventory: secp256k1 cryptographic operations detected in codebase"
+  - id: rust-crypto-secp256k1
+    message: secp256k1 cryptographic operations detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: secp256k1::Secp256k1::new()
+          - pattern: secp256k1::Secp256k1::signing_only()
+          - pattern: secp256k1::Secp256k1::verification_only()
+          - pattern: secp256k1::SecretKey::from_slice($BYTES)
+          - pattern: secp256k1::SecretKey::from_keypair($KEYPAIR)
+          - pattern: secp256k1::PublicKey::from_secret_key($SECP256K1, $SECRET_KEY)
+          - pattern: secp256k1::PublicKey::from_slice($BYTES)
+          - pattern: secp256k1::Message::from_slice($BYTES)
+          - pattern: secp256k1::ecdsa::Signature::from_compact($BYTES)
+          - pattern: secp256k1::ecdsa::Signature::from_der($BYTES)
+          - pattern: secp256k1::ecdsa::sign($MESSAGE, $SECRET_KEY)
+          - pattern: secp256k1::ecdsa::sign($SECP256K1, $MESSAGE, $SECRET_KEY)
+          - pattern: secp256k1::ecdsa::verify($MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: secp256k1::ecdsa::verify($SECP256K1, $MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: secp256k1::KeyPair::from_secret_key($SECP256K1, $SECRET_KEY)
+          - pattern: secp256k1::KeyPair::secret_key($KEYPAIR)
+          - pattern: secp256k1::KeyPair::public_key($KEYPAIR)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::sign(&$MESSAGE, $SECRET_KEY)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::sign($SECP256K1, &$MESSAGE, $SECRET_KEY)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::verify(&$MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: |
+              use secp256k1::{Secp256k1, Message, ecdsa};
+              let $SECP256K1 = Secp256k1::new();
+              let $MESSAGE = Message::from_slice($MESSAGE_BYTES)?;
+              ecdsa::verify($SECP256K1, &$MESSAGE, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: |
+              async fn $FUNC() {
+                  secp256k1::ecdsa::sign($MESSAGE, $SECRET_KEY)
+              }
+          - pattern: |
+              async fn $FUNC() {
+                  secp256k1::ecdsa::sign($SECP256K1, $MESSAGE, $SECRET_KEY)
+              }
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: secp256k1 cryptographic operations detected in codebase"

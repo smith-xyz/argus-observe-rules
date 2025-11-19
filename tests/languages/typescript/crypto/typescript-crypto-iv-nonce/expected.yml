@@ -1,31 +1,31 @@
 findings:
-- file: test_code.ts
-  line: 6
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
-- file: test_code.ts
-  line: 9
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
-- file: test_code.ts
-  line: 16
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
-- file: test_code.ts
-  line: 19
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
-- file: test_code.ts
-  line: 30
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
-- file: test_code.ts
-  line: 38
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
-- file: test_code.ts
-  line: 48
-  rule_id: typescript-crypto-iv-nonce
-  message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 16
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 19
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 30
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 38
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+  - file: test_code.ts
+    line: 48
+    rule_id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
 no_findings:
-- negative_cases.ts
+  - negative_cases.ts

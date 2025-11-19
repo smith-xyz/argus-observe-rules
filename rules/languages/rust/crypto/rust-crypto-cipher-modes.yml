@@ -1,87 +1,87 @@
 rules:
-    - id: rust-crypto-cipher-modes
-      message: Cipher mode usage detected
-      severity: INFO
-      languages:
-          - rust
-      patterns:
-          - pattern-either:
-                - pattern: openssl::symm::Cipher::aes_128_ecb()
-                - pattern: openssl::symm::Cipher::aes_256_ecb()
-                - pattern: openssl::symm::Cipher::aes_128_cbc()
-                - pattern: openssl::symm::Cipher::aes_256_cbc()
-                - pattern: openssl::symm::Cipher::aes_128_cfb128()
-                - pattern: openssl::symm::Cipher::aes_256_cfb128()
-                - pattern: openssl::symm::Cipher::aes_128_cfb1()
-                - pattern: openssl::symm::Cipher::aes_256_cfb1()
-                - pattern: openssl::symm::Cipher::aes_128_cfb8()
-                - pattern: openssl::symm::Cipher::aes_256_cfb8()
-                - pattern: openssl::symm::Cipher::aes_128_ofb()
-                - pattern: openssl::symm::Cipher::aes_256_ofb()
-                - pattern: openssl::symm::Cipher::aes_128_ctr()
-                - pattern: openssl::symm::Cipher::aes_256_ctr()
-                - pattern: openssl::symm::Cipher::aes_128_gcm()
-                - pattern: openssl::symm::Cipher::aes_256_gcm()
-                - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY, $IV, $DATA)
-                - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY, $IV, $DATA)
-                - pattern: cbc::Encryptor::<aes::Aes128>::new($KEY, $IV)
-                - pattern: cbc::Decryptor::<aes::Aes128>::new($KEY, $IV)
-                - pattern: cbc::Encryptor::<aes::Aes192>::new($KEY, $IV)
-                - pattern: cbc::Decryptor::<aes::Aes192>::new($KEY, $IV)
-                - pattern: cbc::Encryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: cbc::Decryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: ctr::Ctr128BE::<aes::Aes128>::new($KEY, $IV)
-                - pattern: ctr::Ctr128LE::<aes::Aes128>::new($KEY, $IV)
-                - pattern: ctr::Ctr128BE::<aes::Aes192>::new($KEY, $IV)
-                - pattern: ctr::Ctr128LE::<aes::Aes192>::new($KEY, $IV)
-                - pattern: ctr::Ctr128BE::<aes::Aes256>::new($KEY, $IV)
-                - pattern: ctr::Ctr128LE::<aes::Aes256>::new($KEY, $IV)
-                - pattern: cfb8::Encryptor::<aes::Aes128>::new($KEY, $IV)
-                - pattern: cfb8::Decryptor::<aes::Aes128>::new($KEY, $IV)
-                - pattern: cfb8::Encryptor::<aes::Aes192>::new($KEY, $IV)
-                - pattern: cfb8::Decryptor::<aes::Aes192>::new($KEY, $IV)
-                - pattern: cfb8::Encryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: cfb8::Decryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: cfb64::Encryptor::<aes::Aes128>::new($KEY, $IV)
-                - pattern: cfb64::Decryptor::<aes::Aes128>::new($KEY, $IV)
-                - pattern: cfb64::Encryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: cfb64::Decryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: ofb::Ofb::<aes::Aes128>::new($KEY, $IV)
-                - pattern: ofb::Ofb::<aes::Aes192>::new($KEY, $IV)
-                - pattern: ofb::Ofb::<aes::Aes256>::new($KEY, $IV)
-                - pattern: |
-                      use cbc::{Encryptor, Decryptor};
-                      Encryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: |
-                      use cbc::{Encryptor, Decryptor};
-                      Decryptor::<aes::Aes256>::new($KEY, $IV)
-                - pattern: |
-                      use ctr::Ctr128BE;
-                      Ctr128BE::<aes::Aes256>::new($KEY, $IV)
-                - pattern: |
-                      use cfb8::{Encryptor, Decryptor};
-                      Encryptor::<aes::Aes256>::new($KEY, $IV)
-          - pattern-not-inside: |
-                #[test]
-                fn $TEST() {
-                    ...
-                }
-          - pattern-not-inside: |
-                #[cfg(test)]
-                mod $MODULE {
-                    ...
-                }
-          - pattern-not-inside: |
-                mod tests {
-                    ...
-                }
-      metadata:
-          category: crypto
-          cwe: CWE-327
-          impact: "Inventory: Cipher mode usage detected in codebase"
+  - id: rust-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: openssl::symm::Cipher::aes_128_ecb()
+          - pattern: openssl::symm::Cipher::aes_256_ecb()
+          - pattern: openssl::symm::Cipher::aes_128_cbc()
+          - pattern: openssl::symm::Cipher::aes_256_cbc()
+          - pattern: openssl::symm::Cipher::aes_128_cfb128()
+          - pattern: openssl::symm::Cipher::aes_256_cfb128()
+          - pattern: openssl::symm::Cipher::aes_128_cfb1()
+          - pattern: openssl::symm::Cipher::aes_256_cfb1()
+          - pattern: openssl::symm::Cipher::aes_128_cfb8()
+          - pattern: openssl::symm::Cipher::aes_256_cfb8()
+          - pattern: openssl::symm::Cipher::aes_128_ofb()
+          - pattern: openssl::symm::Cipher::aes_256_ofb()
+          - pattern: openssl::symm::Cipher::aes_128_ctr()
+          - pattern: openssl::symm::Cipher::aes_256_ctr()
+          - pattern: openssl::symm::Cipher::aes_128_gcm()
+          - pattern: openssl::symm::Cipher::aes_256_gcm()
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_ecb(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_128_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::encrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY, $IV, $DATA)
+          - pattern: openssl::symm::decrypt(openssl::symm::Cipher::aes_256_cbc(), $KEY, $IV, $DATA)
+          - pattern: cbc::Encryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cbc::Decryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cbc::Encryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cbc::Decryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cbc::Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cbc::Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: ctr::Ctr128BE::<aes::Aes128>::new($KEY, $IV)
+          - pattern: ctr::Ctr128LE::<aes::Aes128>::new($KEY, $IV)
+          - pattern: ctr::Ctr128BE::<aes::Aes192>::new($KEY, $IV)
+          - pattern: ctr::Ctr128LE::<aes::Aes192>::new($KEY, $IV)
+          - pattern: ctr::Ctr128BE::<aes::Aes256>::new($KEY, $IV)
+          - pattern: ctr::Ctr128LE::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb8::Encryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb8::Decryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb8::Encryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cfb8::Decryptor::<aes::Aes192>::new($KEY, $IV)
+          - pattern: cfb8::Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb8::Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb64::Encryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb64::Decryptor::<aes::Aes128>::new($KEY, $IV)
+          - pattern: cfb64::Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: cfb64::Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: ofb::Ofb::<aes::Aes128>::new($KEY, $IV)
+          - pattern: ofb::Ofb::<aes::Aes192>::new($KEY, $IV)
+          - pattern: ofb::Ofb::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use cbc::{Encryptor, Decryptor};
+              Encryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use cbc::{Encryptor, Decryptor};
+              Decryptor::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use ctr::Ctr128BE;
+              Ctr128BE::<aes::Aes256>::new($KEY, $IV)
+          - pattern: |
+              use cfb8::{Encryptor, Decryptor};
+              Encryptor::<aes::Aes256>::new($KEY, $IV)
+      - pattern-not-inside: |
+          #[test]
+          fn $TEST() {
+              ...
+          }
+      - pattern-not-inside: |
+          #[cfg(test)]
+          mod $MODULE {
+              ...
+          }
+      - pattern-not-inside: |
+          mod tests {
+              ...
+          }
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"

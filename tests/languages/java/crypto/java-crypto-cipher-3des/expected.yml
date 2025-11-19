@@ -1,43 +1,43 @@
 findings:
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 25
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 25
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 29
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 30
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 31
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-cipher-3des
-  message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 25
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 25
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 29
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 30
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 31
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-cipher-3des
+    message: 3DES cipher usage detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

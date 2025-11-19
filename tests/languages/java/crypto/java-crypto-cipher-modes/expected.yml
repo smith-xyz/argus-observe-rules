@@ -1,31 +1,31 @@
 findings:
-- file: test_code.java
-  line: 28
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
-- file: test_code.java
-  line: 37
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
-- file: test_code.java
-  line: 46
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
-- file: test_code.java
-  line: 55
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
-- file: test_code.java
-  line: 64
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
-- file: test_code.java
-  line: 73
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
-- file: test_code.java
-  line: 81
-  rule_id: java-crypto-cipher-modes
-  message: Cipher mode usage detected
+  - file: test_code.java
+    line: 28
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+  - file: test_code.java
+    line: 37
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+  - file: test_code.java
+    line: 46
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+  - file: test_code.java
+    line: 55
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+  - file: test_code.java
+    line: 64
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+  - file: test_code.java
+    line: 73
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
+  - file: test_code.java
+    line: 81
+    rule_id: java-crypto-cipher-modes
+    message: Cipher mode usage detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

@@ -1,760 +1,760 @@
 rules:
-- id: go-certificate-validation-override
-  message: Certificate validation override detected - breaks trust chain
-  severity: ERROR
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: |
-        $CONFIG.VerifyPeerCertificate = func($RAW_CERTS [][]byte, $VERIFIED_CHAINS [][]*x509.Certificate) error {
-          return nil
-        }
-    - pattern: |
-        $CONFIG.VerifyConnection = func($STATE tls.ConnectionState) error {
-          return nil
-        }
-    - pattern: $CONFIG.RootCAs = nil
-    - pattern: $CONFIG.ClientCAs = nil
-    - pattern: |
-        if $CUSTOM_CERT := os.Getenv("CUSTOM_CA_CERT"); $CUSTOM_CERT != "" {
-          $CONFIG.RootCAs = $FUNC($CUSTOM_CERT)
-        }
-    - pattern: |
-        if $BYPASS := os.Getenv("BYPASS_CERT_PINNING"); $BYPASS == "true" {
-          $CONFIG.VerifyPeerCertificate = nil
-        }
-    - pattern: $CONFIG.CABundle = nil
-    - pattern: |
-        if $FUNC(...) {
-          $WEBHOOK.ClientConfig.CABundle = nil
-        }
-  fix: Use certificate management and trust the cluster CA bundle
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-295
-    impact: Certificate validation override breaks trust chain and enables MITM attacks
-- id: go-dynamic-method-invocation
-  message: Dynamic method invocation patterns detected - landscape mapping
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - patterns:
-      - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $VAL := reflect.ValueOf($OBJ)
-          ...
-          $M := $VAL.MethodByName($NAME)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $M := reflect.ValueOf($OBJ).MethodByName($NAME)
-          if $M.IsValid() {
-            ...
-            $M.$METHOD($ARGS)
-          }
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          if $M := reflect.ValueOf($OBJ).MethodByName($NAME); $M.IsValid() {
-            ...
-            $M.$METHOD($ARGS)
-          }
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: reflect.ValueOf($OBJ).FieldByName($FIELD).MethodByName($NAME).$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $FIELD := reflect.ValueOf($OBJ).FieldByName($NAME)
-          ...
-          $M := $FIELD.MethodByName($MNAME)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $VAL := reflect.ValueOf($OBJ)
-          ...
-          $FIELD := $VAL.FieldByName($FNAME)
-          ...
-          $M := $FIELD.MethodByName($MNAME)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: reflect.ValueOf($OBJ).Method($IDX).$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $M := reflect.ValueOf($OBJ).Method($IDX)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: reflect.ValueOf($OBJ).Elem().MethodByName($NAME).$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $ELEM := reflect.ValueOf($OBJ).Elem()
-          ...
-          $M := $ELEM.MethodByName($NAME)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $VAL := reflect.ValueOf($OBJ)
-          ...
-          $ELEM := $VAL.Elem()
-          ...
-          $M := $ELEM.MethodByName($NAME)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: reflect.Indirect($VALUE).MethodByName($NAME).$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-    - patterns:
-      - pattern: |
-          $IND := reflect.Indirect($VALUE)
-          ...
-          $M := $IND.MethodByName($NAME)
-          ...
-          $M.$METHOD($ARGS)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^(Call|CallSlice)$
-  metadata:
-    category: reflection
-    cwe: CWE-470
-    impact: Dynamic method calls can bypass authentication, authorization, and input
-      validation
-- id: go-grpc-tls-credential-override
-  message: gRPC TLS credential override detected - may bypass service mesh security
-  severity: ERROR
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: grpc.WithInsecure()
-    - pattern: grpc.WithTransportCredentials(insecure.NewCredentials())
-    - pattern: |
-        if $CONDITION {
-          $OPTS = append($OPTS, grpc.WithInsecure())
-        }
-    - pattern: |
-        var $CREDS credentials.TransportCredentials
-        if $CONDITION {
-          $CREDS = insecure.NewCredentials()
-        }
-    - pattern: |
-        grpc.WithUnaryInterceptor(func($CTX context.Context, $METHOD string, $REQ, $REPLY interface{}, $CC *grpc.ClientConn, $INVOKER grpc.UnaryInvoker, $OPTS ...grpc.CallOption) error {
-          ...
-          if $BYPASS_TLS {
-            $OPTS = append($OPTS, grpc.WithInsecure())
-          }
-          ...
-        })
-    - pattern: grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
-    - pattern: |
-        $INSECURE := $FUNC(...)
-        if $INSECURE {
-          $OPTS = append($OPTS, grpc.WithInsecure())
-        }
-  fix: Use service mesh mTLS or properly configured TLS credentials
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-295
-    impact: gRPC credential override bypasses service mesh security and mTLS policies
-- id: go-http-client-tls-override
-  message: HTTP client with custom TLS config detected - May override OpenShift TLS
-    profile settings
-  severity: WARNING
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: |
-        $CLIENT := &http.Client{
-          ...,
-          Transport: &http.Transport{
-            ...,
-            TLSClientConfig: $TLS_CONFIG,
-            ...
-          },
-          ...
-        }
-    - pattern: |
-        $TRANSPORT := &http.Transport{
-          ...,
-          TLSClientConfig: $TLS_CONFIG,
-          ...
-        }
-    - pattern: |
-        $TRANSPORT := &http.Transport{...}
-        ...
-        $TRANSPORT.TLSClientConfig = $TLS_CONFIG
-    - pattern: |
-        $CLIENT := &http.Client{
-          Transport: $TRANSPORT,
-          ...
-        }
-        ...
-        $TRANSPORT.TLSClientConfig = $TLS_CONFIG
-  fix: |
-    Review TLS configuration to ensure it doesn't override OpenShift TLS profile:
-    - Remove MaxVersion restrictions that block TLS 1.3
-    - Use platform TLS profiles when available
-    - Ensure MinVersion allows TLS 1.3 if required by profile
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-757
-    impact: Custom TLS config in HTTP clients may override platform TLS profiles (e.g.,
-      OpenShift TLS profile)
-- id: go-http-server-tls-override
-  message: HTTP server with custom TLS config detected - May override OpenShift TLS
-    profile settings
-  severity: WARNING
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: |
-        $SERVER := &http.Server{
-          ...,
-          TLSConfig: $TLS_CONFIG,
-          ...
-        }
-    - pattern: |
-        http.Server{
-          ...,
-          TLSConfig: $TLS_CONFIG,
-          ...
-        }
-    - pattern: |
-        $SERVER := &http.Server{...}
-        ...
-        $SERVER.TLSConfig = $TLS_CONFIG
-    - pattern: |
-        $SERVER := http.Server{...}
-        ...
-        $SERVER.TLSConfig = $TLS_CONFIG
-    - pattern: |
-        $SERVER := &http.Server{
-          ...,
-          TLSConfig: &tls.Config{...},
-          ...
-        }
-  fix: |
-    Review TLS configuration to ensure it doesn't override OpenShift TLS profile:
-    - Remove MaxVersion restrictions that block TLS 1.3
-    - Use platform TLS profiles when available
-    - Ensure MinVersion allows TLS 1.3 if required by profile
-    - Fetch TLS configuration from API Server, Ingress, or Kubelet configuration
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-757
-    impact: Custom TLS config in HTTP servers may override platform TLS profiles (e.g.,
-      OpenShift TLS profile)
-- id: go-kubernetes-client-tls-override
-  message: Kubernetes client TLS configuration override detected
-  severity: WARNING
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: |
-        &rest.Config{
-          ...,
-          TLSClientConfig: rest.TLSClientConfig{
-            Insecure: true,
-            ...,
-          },
-          ...,
-        }
-    - pattern: |
-        rest.HTTPClientFor(&rest.Config{
-          ...,
-          TLSClientConfig: rest.TLSClientConfig{
-            Insecure: true,
-            ...,
-          },
-          ...,
-        })
-    - pattern: |
-        $CONFIG, $ERR := clientcmd.BuildConfigFromFlags($MASTER, $KUBECONFIG)
-        ...
-        $CONFIG.TLSClientConfig.Insecure = true
-    - pattern: |
-        $CONFIG, $ERR := rest.InClusterConfig()
-        ...
-        $CONFIG.TLSClientConfig.Insecure = true
-  fix: Use in-cluster configuration or properly configured service accounts
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-295
-    impact: Kubernetes client TLS override can bypass cluster security policies
-- id: go-reflection-advanced-patterns
-  message: Advanced reflection patterns detected - landscape mapping
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: reflect.MakeFunc($TYPE, $FUNC)
-    - pattern: reflect.MakeChan($TYPE, $BUFFER)
-    - pattern: reflect.MakeMap($TYPE)
-    - pattern: reflect.MakeMapWithSize($TYPE, $SIZE)
-    - pattern: reflect.MakeSlice($TYPE, $LEN, $CAP)
-    - pattern: reflect.ValueOf($OBJ).Interface()
-    - pattern: reflect.ValueOf($OBJ).Convert($TYPE)
-    - pattern: reflect.ValueOf($OBJ).Elem()
-    - pattern: reflect.ValueOf($OBJ).Addr()
-    - pattern: reflect.ValueOf($OBJ).UnsafeAddr()
-    - pattern: reflect.ValueOf($OBJ).OverflowInt($VALUE)
-    - pattern: reflect.ValueOf($OBJ).OverflowUint($VALUE)
-    - pattern: reflect.ValueOf($OBJ).OverflowFloat($VALUE)
-    - pattern: reflect.ValueOf($OBJ).OverflowComplex($VALUE)
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.Interface()
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.Convert($TYPE)
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.Addr()
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.UnsafeAddr()
-  metadata:
-    category: reflection
-    cwe: CWE-20
-    impact: Can bypass type safety, create security vulnerabilities through resource
-      exhaustion and type confusion
-- id: go-reflection-basic-usage
-  message: Basic reflection usage detected - mapping reflection landscape
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: reflect.TypeOf($OBJ)
-    - pattern: reflect.ValueOf($OBJ)
-    - pattern: reflect.DeepEqual($A, $B)
-    - pattern: reflect.Copy($DST, $SRC)
-    - pattern: reflect.Swapper($SLICE)
-    - pattern: reflect.Indirect($VALUE)
-    - pattern: reflect.Zero($TYPE)
-    - pattern: reflect.Append($SLICE, $VALUES...)
-    - pattern: reflect.AppendSlice($SLICE1, $SLICE2)
-    - pattern: reflect.Select($CASES)
-    - pattern: reflect.TypeOf($OBJ).Method($INDEX)
-    - pattern: reflect.TypeOf($OBJ).MethodByName($NAME)
-    - pattern: reflect.TypeOf($OBJ).NumMethod()
-    - pattern: reflect.TypeOf($OBJ).Field($INDEX)
-    - pattern: reflect.TypeOf($OBJ).FieldByName($NAME)
-    - pattern: reflect.TypeOf($OBJ).NumField()
-    - pattern: reflect.TypeOf($OBJ).Kind()
-    - pattern: reflect.TypeOf($OBJ).String()
-    - pattern: reflect.TypeOf($OBJ).Name()
-    - pattern: reflect.ValueOf($OBJ).IsValid()
-    - pattern: reflect.ValueOf($OBJ).IsNil()
-    - pattern: reflect.ValueOf($OBJ).IsZero()
-    - pattern: reflect.ValueOf($OBJ).CanSet()
-    - pattern: reflect.ValueOf($OBJ).CanAddr()
-    - pattern: reflect.ValueOf($OBJ).CanInterface()
-    - pattern: reflect.ValueOf($OBJ).Kind()
-    - pattern: reflect.ValueOf($OBJ).Type()
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.IsValid()
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.Kind()
-    - pattern: |
-        $TYPE := reflect.TypeOf($OBJ)
-        ...
-        $TYPE.Kind()
-    - pattern: |
-        $TYPE := reflect.TypeOf($OBJ)
-        ...
-        $TYPE.Name()
-  metadata:
-    category: reflection
-    cwe: CWE-200
-    impact: Basic reflection usage for landscape mapping
-- id: go-reflection-structural-manipulation
-  message: Reflection structural manipulation detected - landscape mapping
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: reflect.StructOf($FIELDS)
-    - pattern: reflect.SliceOf($TYPE)
-    - pattern: reflect.ArrayOf($SIZE, $TYPE)
-    - pattern: reflect.MapOf($KEY, $VALUE)
-    - pattern: reflect.PtrTo($TYPE)
-    - pattern: reflect.ChanOf($DIR, $TYPE)
-    - pattern: reflect.ValueOf($OBJ).MethodByName($NAME)
-    - pattern: reflect.ValueOf($OBJ).FieldByName($NAME)
-    - pattern: reflect.ValueOf($OBJ).Call($ARGS)
-    - pattern: reflect.ValueOf($OBJ).CallSlice($ARGS)
-    - pattern: reflect.ValueOf($OBJ).MapIndex($KEY)
-    - pattern: reflect.ValueOf($OBJ).SetMapIndex($KEY, $VALUE)
-    - pattern: reflect.ValueOf($OBJ).Index($INDEX)
-    - pattern: reflect.ValueOf($OBJ).Slice($LOW, $HIGH)
-    - pattern: reflect.ValueOf($OBJ).Slice3($LOW, $HIGH, $MAX)
-    - pattern: reflect.ValueOf($OBJ).Send($VALUE)
-    - pattern: reflect.ValueOf($OBJ).Recv()
-    - pattern: reflect.ValueOf($OBJ).TrySend($VALUE)
-    - pattern: reflect.ValueOf($OBJ).TryRecv()
-    - pattern: reflect.ValueOf($OBJ).Close()
-    - pattern: reflect.ValueOf($OBJ).Cap()
-    - pattern: reflect.ValueOf($OBJ).Len()
-    - pattern: reflect.TypeOf($OBJ).ConvertibleTo($OTHER)
-    - pattern: reflect.TypeOf($OBJ).AssignableTo($OTHER)
-    - pattern: reflect.TypeOf($OBJ).Implements($INTERFACE)
-    - pattern: reflect.TypeOf($OBJ).Comparable()
-    - pattern: reflect.TypeOf($OBJ).Key()
-    - pattern: reflect.TypeOf($OBJ).Elem()
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.MethodByName($NAME)
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.FieldByName($NAME)
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.Call($ARGS)
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ)
-        ...
-        $VAL.SetMapIndex($KEY, $VALUE)
-    - pattern: reflect.Indirect($VALUE).FieldByName($NAME)
-    - pattern: reflect.ValueOf($OBJ).Elem().FieldByName($NAME)
-    - pattern: reflect.ValueOf($OBJ).Index($INDEX).String()
-    - pattern: reflect.ValueOf($OBJ).FieldByName($NAME).Index($INDEX)
-    - pattern: |
-        $VAL := reflect.ValueOf($OBJ).MethodByName($NAME)
-        ...
-        $RESULT := $VAL.Call($ARGS)
-    - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)
-    - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)[$INDEX]
-    - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)[$INDEX].Interface()
-    - pattern: $DST.Set(reflect.MakeMap($TYPE))
-    - pattern: $DST.SetMapIndex($KEY, $SRC.MapIndex($KEY))
-  metadata:
-    category: reflection
-    cwe: CWE-470
-    impact: Runtime type manipulation can bypass compile-time safety and introduce
-      race conditions
-- id: go-reflection-type-assertion
-  message: Reflection-based type assertion detected - potential type confusion risk
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: $VALUE.Interface().($TYPE)
-    - pattern: $VALUE.Interface()
-    - pattern: |
-        switch $M := $VALUE.Interface().(type) {
-        case $TYPE:
-        ...
-        }
-    - pattern: |
-        $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME)
-        $FN := $METHOD.Interface()
-    - pattern: $RESULTS[$INDEX].Interface()
-    - pattern: $VALUE[$INDEX].Interface()
-    - pattern: json.Marshal($RESULT.Interface())
-    - pattern: json.MarshalIndent($RESULT.Interface(), $PREFIX, $INDENT)
-  metadata:
-    category: reflection
-    cwe: CWE-470
-    impact: Type assertions from reflection can lead to runtime panics and type confusion
-      vulnerabilities
-- id: go-reflection-value-mutation
-  message: Reflection-based value mutation detected - landscape mapping
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: reflect.NewAt($TYPE, $PTR)
-    - pattern: reflect.New($TYPE)
-    - patterns:
+  - id: go-certificate-validation-override
+    message: Certificate validation override detected - breaks trust chain
+    severity: ERROR
+    languages:
+      - go
+    patterns:
       - pattern-either:
-        - pattern: reflect.ValueOf($EXPR).$METHOD($VALUE)
-        - pattern: |
-            $VAL := reflect.ValueOf($EXPR)
-            ...
-            $VAL.$METHOD($VALUE)
-        - pattern: reflect.ValueOf($EXPR).FieldByName($NAME).$METHOD($VALUE)
-        - pattern: |
-            $FIELD := reflect.ValueOf($EXPR).FieldByName($NAME)
-            ...
-            $FIELD.$METHOD($VALUE)
-        - pattern: reflect.ValueOf($EXPR).Elem().$METHOD($VALUE)
-        - pattern: |
-            $ELEM := reflect.ValueOf($EXPR).Elem()
-            ...
-            $ELEM.$METHOD($VALUE)
-        - pattern: reflect.ValueOf($EXPR).Elem().FieldByName($NAME).$METHOD($VALUE)
-        - pattern: |
-            $FIELD := reflect.ValueOf($EXPR).Elem().FieldByName($NAME)
-            ...
-            $FIELD.$METHOD($VALUE)
-        - pattern: reflect.Indirect($VALUE).$METHOD($NEWVAL)
-        - pattern: reflect.Indirect($VALUE).FieldByName($NAME).$METHOD($NEWVAL)
-        - pattern: reflect.ValueOf($EXPR).Index($IDX).$METHOD($VALUE)
-        - pattern: |
-            $ELEM := reflect.ValueOf($EXPR).Index($IDX)
-            ...
-            $ELEM.$METHOD($VALUE)
-      - metavariable-regex:
-          metavariable: $METHOD
-          regex: ^Set(Bool|Int|Uint|Float|String|Bytes|Complex|Pointer)?$
-  metadata:
-    category: reflection
-    cwe: CWE-470
-    impact: Reflection-based value mutation bypasses compile-time type safety, obscures
-      data flow, and complicates static analysis and CVE impact assessment
-- id: go-service-mesh-bypass
-  message: Service mesh TLS bypass detected - communication outside mesh security
-  severity: ERROR
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: |
-        $URL := "http://" + $SERVICE_IP + ":" + $PORT
-        ...
-        http.$METHOD($URL)
-    - pattern: |
-        $URL := "http://" + $SERVICE_IP + ":" + $PORT
-        ...
-        http.$METHOD($URL, ...)
-    - pattern: |
-        $URL := "http://" + $ENDPOINT
-        ...
-        http.$METHOD($URL)
-    - pattern: |
-        $URL := "http://" + $ENDPOINT
-        ...
-        http.$METHOD($URL, ...)
-    - pattern: |
-        $CLIENT := &http.Client{
-          Transport: &http.Transport{
-            Proxy: http.ProxyFromEnvironment,
-          },
-        }
-    - pattern: |
-        for _, $ENDPOINT := range $ENDPOINTS {
-          $URL := "http://" + $ENDPOINT
-          http.$METHOD($URL)
-        }
-    - pattern: |
-        for _, $ENDPOINT := range $ENDPOINTS {
-          $URL := "http://" + $ENDPOINT
-          http.$METHOD($URL, ...)
-        }
-  fix: Use service mesh routing and let the mesh handle service-to-service communication
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-295
-    impact: Service mesh bypass eliminates mTLS protection and security observability
-- id: go-tls-bypass
-  message: TLS security bypass detected - compromises transport security
-  severity: ERROR
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: $CONFIG.InsecureSkipVerify = true
-    - pattern: |
-        $VAR := true
-        ...
-        $CONFIG.InsecureSkipVerify = $VAR
-    - pattern: |
-        $VAR = true
-        ...
-        $CONFIG.InsecureSkipVerify = $VAR
-    - pattern: $CONFIG.InsecureSkipVerify = $FUNC(...)
-    - pattern: |
-        tls.Config{
-          ...,
-          InsecureSkipVerify: true,
-          ...
-        }
-    - pattern: |
-        &tls.Config{
-          ...,
-          InsecureSkipVerify: true,
-          ...
-        }
-    - pattern: $CONFIG.TLSClientConfig.Insecure = true
-    - pattern: $CONFIG.Insecure = true
-    - pattern: |
-        if $CONDITION {
-          $CONFIG.InsecureSkipVerify = true
-        }
-    - pattern: |
-        if os.Getenv($ENV_VAR) == $VALUE {
-          $CONFIG.InsecureSkipVerify = true
-        }
-    - pattern: |
-        $FIELD := $VALUE.FieldByName("InsecureSkipVerify")
-        $FIELD.SetBool(true)
-    - pattern: $CONFIG.ServerName = ""
-    - pattern: |
-        $URL := "http://" + $HOST
-        http.Get($URL)
-    - pattern: $CONFIG.VerifyPeerCertificate = nil
-    - pattern: $CONFIG.TLS.Enable = false
-    - pattern: $CONFIG.Net.TLS.Enable = false
-    - pattern: $CONFIG.SSL.Enable = false
-    - pattern: $CONFIG.TLSConfig = "false"
-    - pattern: $CONFIG.SSLMode = "disable"
-    - pattern: $FUNC($DRIVER, $DSN + "?sslmode=disable")
-    - pattern: $FUNC($DRIVER, $DSN + "&tls=false")
-    - pattern: $FUNC($DRIVER, $DSN + "?ssl=false")
-  fix: |
-    Remove TLS bypasses and implement proper certificate validation:
-    - Use valid CA certificates
-    - Remove InsecureSkipVerify settings
-    - Use ConfigMaps or Secrets for TLS configuration
-    - Implement proper certificate management
-    - Use service mesh or platform TLS profiles
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-295
-    impact: TLS bypasses eliminate transport security and enable MITM attacks
-- id: go-tls-max-version-blocks-tls13
-  message: TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override
-    OpenShift TLS profile settings
-  severity: WARNING
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: $CONFIG.MaxVersion = tls.VersionTLS12
-    - pattern: |
-        $CONFIG := &tls.Config{
-          ...,
-          MaxVersion: tls.VersionTLS12,
-          ...
-        }
-    - pattern: |
-        tls.Config{
-          ...,
-          MaxVersion: tls.VersionTLS12,
-          ...
-        }
-    - pattern: |
-        $VAR := tls.VersionTLS12
-        ...
-        $CONFIG.MaxVersion = $VAR
-    - pattern: |
-        var $VAR uint16 = tls.VersionTLS12
-        ...
-        $CONFIG.MaxVersion = $VAR
-  fix: Remove MaxVersion restriction or set to tls.VersionTLS13 to allow TLS 1.3
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-757
-    impact: MaxVersion restriction prevents TLS 1.3, which may conflict with OpenShift
-      TLS profile requiring TLS 1.3
-- id: go-tls-min-version-tls12-only
-  message: TLS MinVersion set to TLS 1.2 without MaxVersion - May allow TLS 1.3 but
-    worth reviewing for OpenShift profile compliance
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - patterns:
-    - pattern-either:
-      - pattern: $CONFIG.MinVersion = tls.VersionTLS12
-      - pattern: |
-          $CONFIG := &tls.Config{
-            ...,
-            MinVersion: tls.VersionTLS12,
-            ...
-          }
-    - pattern-not: |
-        $CONFIG := &tls.Config{
-          ...,
-          MaxVersion: tls.VersionTLS12,
-          ...
-        }
-    - pattern-not: $CONFIG.MaxVersion = tls.VersionTLS12
-  fix: Ensure MaxVersion is set to tls.VersionTLS13 or omitted to allow TLS 1.3
-  metadata:
-    category: tls_runtime_security
-    cwe: CWE-757
-    impact: MinVersion without MaxVersion may allow TLS 1.3, but explicit configuration
-      is recommended
-- id: go-unsafe-pointer-operations
-  message: Unsafe pointer operations detected - landscape mapping
-  severity: INFO
-  languages:
-  - go
-  patterns:
-  - pattern-either:
-    - pattern: unsafe.Pointer($EXPR)
-    - pattern: (*$TYPE)(unsafe.Pointer($EXPR))
-    - pattern: uintptr(unsafe.Pointer($EXPR))
-    - pattern: unsafe.Sizeof($EXPR)
-    - pattern: unsafe.Offsetof($EXPR)
-    - pattern: unsafe.Pointer(uintptr($PTR) + $OFFSET)
-    - pattern: unsafe.Pointer(uintptr($PTR) - $OFFSET)
-    - pattern: $VAR := (*$TYPE)(unsafe.Pointer($EXPR))
-    - pattern: $VAR := unsafe.Pointer($EXPR)
-  metadata:
-    category: memory_safety
-    cwe: CWE-119
-    impact: Unsafe operations can lead to memory corruption
+          - pattern: |
+              $CONFIG.VerifyPeerCertificate = func($RAW_CERTS [][]byte, $VERIFIED_CHAINS [][]*x509.Certificate) error {
+                return nil
+              }
+          - pattern: |
+              $CONFIG.VerifyConnection = func($STATE tls.ConnectionState) error {
+                return nil
+              }
+          - pattern: $CONFIG.RootCAs = nil
+          - pattern: $CONFIG.ClientCAs = nil
+          - pattern: |
+              if $CUSTOM_CERT := os.Getenv("CUSTOM_CA_CERT"); $CUSTOM_CERT != "" {
+                $CONFIG.RootCAs = $FUNC($CUSTOM_CERT)
+              }
+          - pattern: |
+              if $BYPASS := os.Getenv("BYPASS_CERT_PINNING"); $BYPASS == "true" {
+                $CONFIG.VerifyPeerCertificate = nil
+              }
+          - pattern: $CONFIG.CABundle = nil
+          - pattern: |
+              if $FUNC(...) {
+                $WEBHOOK.ClientConfig.CABundle = nil
+              }
+    fix: Use certificate management and trust the cluster CA bundle
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Certificate validation override breaks trust chain and enables MITM attacks
+  - id: go-dynamic-method-invocation
+    message: Dynamic method invocation patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $VAL := reflect.ValueOf($OBJ)
+                  ...
+                  $M := $VAL.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $M := reflect.ValueOf($OBJ).MethodByName($NAME)
+                  if $M.IsValid() {
+                    ...
+                    $M.$METHOD($ARGS)
+                  }
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  if $M := reflect.ValueOf($OBJ).MethodByName($NAME); $M.IsValid() {
+                    ...
+                    $M.$METHOD($ARGS)
+                  }
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).FieldByName($FIELD).MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $FIELD := reflect.ValueOf($OBJ).FieldByName($NAME)
+                  ...
+                  $M := $FIELD.MethodByName($MNAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $VAL := reflect.ValueOf($OBJ)
+                  ...
+                  $FIELD := $VAL.FieldByName($FNAME)
+                  ...
+                  $M := $FIELD.MethodByName($MNAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).Method($IDX).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $M := reflect.ValueOf($OBJ).Method($IDX)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: reflect.ValueOf($OBJ).Elem().MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $ELEM := reflect.ValueOf($OBJ).Elem()
+                  ...
+                  $M := $ELEM.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $VAL := reflect.ValueOf($OBJ)
+                  ...
+                  $ELEM := $VAL.Elem()
+                  ...
+                  $M := $ELEM.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: reflect.Indirect($VALUE).MethodByName($NAME).$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+          - patterns:
+              - pattern: |
+                  $IND := reflect.Indirect($VALUE)
+                  ...
+                  $M := $IND.MethodByName($NAME)
+                  ...
+                  $M.$METHOD($ARGS)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^(Call|CallSlice)$
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Dynamic method calls can bypass authentication, authorization, and input
+        validation
+  - id: go-grpc-tls-credential-override
+    message: gRPC TLS credential override detected - may bypass service mesh security
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: grpc.WithInsecure()
+          - pattern: grpc.WithTransportCredentials(insecure.NewCredentials())
+          - pattern: |
+              if $CONDITION {
+                $OPTS = append($OPTS, grpc.WithInsecure())
+              }
+          - pattern: |
+              var $CREDS credentials.TransportCredentials
+              if $CONDITION {
+                $CREDS = insecure.NewCredentials()
+              }
+          - pattern: |
+              grpc.WithUnaryInterceptor(func($CTX context.Context, $METHOD string, $REQ, $REPLY interface{}, $CC *grpc.ClientConn, $INVOKER grpc.UnaryInvoker, $OPTS ...grpc.CallOption) error {
+                ...
+                if $BYPASS_TLS {
+                  $OPTS = append($OPTS, grpc.WithInsecure())
+                }
+                ...
+              })
+          - pattern: grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
+          - pattern: |
+              $INSECURE := $FUNC(...)
+              if $INSECURE {
+                $OPTS = append($OPTS, grpc.WithInsecure())
+              }
+    fix: Use service mesh mTLS or properly configured TLS credentials
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: gRPC credential override bypasses service mesh security and mTLS policies
+  - id: go-http-client-tls-override
+    message: HTTP client with custom TLS config detected - May override OpenShift TLS
+      profile settings
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CLIENT := &http.Client{
+                ...,
+                Transport: &http.Transport{
+                  ...,
+                  TLSClientConfig: $TLS_CONFIG,
+                  ...
+                },
+                ...
+              }
+          - pattern: |
+              $TRANSPORT := &http.Transport{
+                ...,
+                TLSClientConfig: $TLS_CONFIG,
+                ...
+              }
+          - pattern: |
+              $TRANSPORT := &http.Transport{...}
+              ...
+              $TRANSPORT.TLSClientConfig = $TLS_CONFIG
+          - pattern: |
+              $CLIENT := &http.Client{
+                Transport: $TRANSPORT,
+                ...
+              }
+              ...
+              $TRANSPORT.TLSClientConfig = $TLS_CONFIG
+    fix: |
+      Review TLS configuration to ensure it doesn't override OpenShift TLS profile:
+      - Remove MaxVersion restrictions that block TLS 1.3
+      - Use platform TLS profiles when available
+      - Ensure MinVersion allows TLS 1.3 if required by profile
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP clients may override platform TLS profiles (e.g.,
+        OpenShift TLS profile)
+  - id: go-http-server-tls-override
+    message: HTTP server with custom TLS config detected - May override OpenShift TLS
+      profile settings
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $SERVER := &http.Server{
+                ...,
+                TLSConfig: $TLS_CONFIG,
+                ...
+              }
+          - pattern: |
+              http.Server{
+                ...,
+                TLSConfig: $TLS_CONFIG,
+                ...
+              }
+          - pattern: |
+              $SERVER := &http.Server{...}
+              ...
+              $SERVER.TLSConfig = $TLS_CONFIG
+          - pattern: |
+              $SERVER := http.Server{...}
+              ...
+              $SERVER.TLSConfig = $TLS_CONFIG
+          - pattern: |
+              $SERVER := &http.Server{
+                ...,
+                TLSConfig: &tls.Config{...},
+                ...
+              }
+    fix: |
+      Review TLS configuration to ensure it doesn't override OpenShift TLS profile:
+      - Remove MaxVersion restrictions that block TLS 1.3
+      - Use platform TLS profiles when available
+      - Ensure MinVersion allows TLS 1.3 if required by profile
+      - Fetch TLS configuration from API Server, Ingress, or Kubelet configuration
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP servers may override platform TLS profiles (e.g.,
+        OpenShift TLS profile)
+  - id: go-kubernetes-client-tls-override
+    message: Kubernetes client TLS configuration override detected
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              &rest.Config{
+                ...,
+                TLSClientConfig: rest.TLSClientConfig{
+                  Insecure: true,
+                  ...,
+                },
+                ...,
+              }
+          - pattern: |
+              rest.HTTPClientFor(&rest.Config{
+                ...,
+                TLSClientConfig: rest.TLSClientConfig{
+                  Insecure: true,
+                  ...,
+                },
+                ...,
+              })
+          - pattern: |
+              $CONFIG, $ERR := clientcmd.BuildConfigFromFlags($MASTER, $KUBECONFIG)
+              ...
+              $CONFIG.TLSClientConfig.Insecure = true
+          - pattern: |
+              $CONFIG, $ERR := rest.InClusterConfig()
+              ...
+              $CONFIG.TLSClientConfig.Insecure = true
+    fix: Use in-cluster configuration or properly configured service accounts
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Kubernetes client TLS override can bypass cluster security policies
+  - id: go-reflection-advanced-patterns
+    message: Advanced reflection patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.MakeFunc($TYPE, $FUNC)
+          - pattern: reflect.MakeChan($TYPE, $BUFFER)
+          - pattern: reflect.MakeMap($TYPE)
+          - pattern: reflect.MakeMapWithSize($TYPE, $SIZE)
+          - pattern: reflect.MakeSlice($TYPE, $LEN, $CAP)
+          - pattern: reflect.ValueOf($OBJ).Interface()
+          - pattern: reflect.ValueOf($OBJ).Convert($TYPE)
+          - pattern: reflect.ValueOf($OBJ).Elem()
+          - pattern: reflect.ValueOf($OBJ).Addr()
+          - pattern: reflect.ValueOf($OBJ).UnsafeAddr()
+          - pattern: reflect.ValueOf($OBJ).OverflowInt($VALUE)
+          - pattern: reflect.ValueOf($OBJ).OverflowUint($VALUE)
+          - pattern: reflect.ValueOf($OBJ).OverflowFloat($VALUE)
+          - pattern: reflect.ValueOf($OBJ).OverflowComplex($VALUE)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Interface()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Convert($TYPE)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Addr()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.UnsafeAddr()
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety, create security vulnerabilities through resource
+        exhaustion and type confusion
+  - id: go-reflection-basic-usage
+    message: Basic reflection usage detected - mapping reflection landscape
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.TypeOf($OBJ)
+          - pattern: reflect.ValueOf($OBJ)
+          - pattern: reflect.DeepEqual($A, $B)
+          - pattern: reflect.Copy($DST, $SRC)
+          - pattern: reflect.Swapper($SLICE)
+          - pattern: reflect.Indirect($VALUE)
+          - pattern: reflect.Zero($TYPE)
+          - pattern: reflect.Append($SLICE, $VALUES...)
+          - pattern: reflect.AppendSlice($SLICE1, $SLICE2)
+          - pattern: reflect.Select($CASES)
+          - pattern: reflect.TypeOf($OBJ).Method($INDEX)
+          - pattern: reflect.TypeOf($OBJ).MethodByName($NAME)
+          - pattern: reflect.TypeOf($OBJ).NumMethod()
+          - pattern: reflect.TypeOf($OBJ).Field($INDEX)
+          - pattern: reflect.TypeOf($OBJ).FieldByName($NAME)
+          - pattern: reflect.TypeOf($OBJ).NumField()
+          - pattern: reflect.TypeOf($OBJ).Kind()
+          - pattern: reflect.TypeOf($OBJ).String()
+          - pattern: reflect.TypeOf($OBJ).Name()
+          - pattern: reflect.ValueOf($OBJ).IsValid()
+          - pattern: reflect.ValueOf($OBJ).IsNil()
+          - pattern: reflect.ValueOf($OBJ).IsZero()
+          - pattern: reflect.ValueOf($OBJ).CanSet()
+          - pattern: reflect.ValueOf($OBJ).CanAddr()
+          - pattern: reflect.ValueOf($OBJ).CanInterface()
+          - pattern: reflect.ValueOf($OBJ).Kind()
+          - pattern: reflect.ValueOf($OBJ).Type()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.IsValid()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Kind()
+          - pattern: |
+              $TYPE := reflect.TypeOf($OBJ)
+              ...
+              $TYPE.Kind()
+          - pattern: |
+              $TYPE := reflect.TypeOf($OBJ)
+              ...
+              $TYPE.Name()
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping
+  - id: go-reflection-structural-manipulation
+    message: Reflection structural manipulation detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.StructOf($FIELDS)
+          - pattern: reflect.SliceOf($TYPE)
+          - pattern: reflect.ArrayOf($SIZE, $TYPE)
+          - pattern: reflect.MapOf($KEY, $VALUE)
+          - pattern: reflect.PtrTo($TYPE)
+          - pattern: reflect.ChanOf($DIR, $TYPE)
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).FieldByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).Call($ARGS)
+          - pattern: reflect.ValueOf($OBJ).CallSlice($ARGS)
+          - pattern: reflect.ValueOf($OBJ).MapIndex($KEY)
+          - pattern: reflect.ValueOf($OBJ).SetMapIndex($KEY, $VALUE)
+          - pattern: reflect.ValueOf($OBJ).Index($INDEX)
+          - pattern: reflect.ValueOf($OBJ).Slice($LOW, $HIGH)
+          - pattern: reflect.ValueOf($OBJ).Slice3($LOW, $HIGH, $MAX)
+          - pattern: reflect.ValueOf($OBJ).Send($VALUE)
+          - pattern: reflect.ValueOf($OBJ).Recv()
+          - pattern: reflect.ValueOf($OBJ).TrySend($VALUE)
+          - pattern: reflect.ValueOf($OBJ).TryRecv()
+          - pattern: reflect.ValueOf($OBJ).Close()
+          - pattern: reflect.ValueOf($OBJ).Cap()
+          - pattern: reflect.ValueOf($OBJ).Len()
+          - pattern: reflect.TypeOf($OBJ).ConvertibleTo($OTHER)
+          - pattern: reflect.TypeOf($OBJ).AssignableTo($OTHER)
+          - pattern: reflect.TypeOf($OBJ).Implements($INTERFACE)
+          - pattern: reflect.TypeOf($OBJ).Comparable()
+          - pattern: reflect.TypeOf($OBJ).Key()
+          - pattern: reflect.TypeOf($OBJ).Elem()
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.MethodByName($NAME)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.FieldByName($NAME)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.Call($ARGS)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ)
+              ...
+              $VAL.SetMapIndex($KEY, $VALUE)
+          - pattern: reflect.Indirect($VALUE).FieldByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).Elem().FieldByName($NAME)
+          - pattern: reflect.ValueOf($OBJ).Index($INDEX).String()
+          - pattern: reflect.ValueOf($OBJ).FieldByName($NAME).Index($INDEX)
+          - pattern: |
+              $VAL := reflect.ValueOf($OBJ).MethodByName($NAME)
+              ...
+              $RESULT := $VAL.Call($ARGS)
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)[$INDEX]
+          - pattern: reflect.ValueOf($OBJ).MethodByName($NAME).Call($ARGS)[$INDEX].Interface()
+          - pattern: $DST.Set(reflect.MakeMap($TYPE))
+          - pattern: $DST.SetMapIndex($KEY, $SRC.MapIndex($KEY))
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety and introduce
+        race conditions
+  - id: go-reflection-type-assertion
+    message: Reflection-based type assertion detected - potential type confusion risk
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $VALUE.Interface().($TYPE)
+          - pattern: $VALUE.Interface()
+          - pattern: |
+              switch $M := $VALUE.Interface().(type) {
+              case $TYPE:
+              ...
+              }
+          - pattern: |
+              $METHOD := reflect.ValueOf($OBJ).MethodByName($NAME)
+              $FN := $METHOD.Interface()
+          - pattern: $RESULTS[$INDEX].Interface()
+          - pattern: $VALUE[$INDEX].Interface()
+          - pattern: json.Marshal($RESULT.Interface())
+          - pattern: json.MarshalIndent($RESULT.Interface(), $PREFIX, $INDENT)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to runtime panics and type confusion
+        vulnerabilities
+  - id: go-reflection-value-mutation
+    message: Reflection-based value mutation detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: reflect.NewAt($TYPE, $PTR)
+          - pattern: reflect.New($TYPE)
+          - patterns:
+              - pattern-either:
+                  - pattern: reflect.ValueOf($EXPR).$METHOD($VALUE)
+                  - pattern: |
+                      $VAL := reflect.ValueOf($EXPR)
+                      ...
+                      $VAL.$METHOD($VALUE)
+                  - pattern: reflect.ValueOf($EXPR).FieldByName($NAME).$METHOD($VALUE)
+                  - pattern: |
+                      $FIELD := reflect.ValueOf($EXPR).FieldByName($NAME)
+                      ...
+                      $FIELD.$METHOD($VALUE)
+                  - pattern: reflect.ValueOf($EXPR).Elem().$METHOD($VALUE)
+                  - pattern: |
+                      $ELEM := reflect.ValueOf($EXPR).Elem()
+                      ...
+                      $ELEM.$METHOD($VALUE)
+                  - pattern: reflect.ValueOf($EXPR).Elem().FieldByName($NAME).$METHOD($VALUE)
+                  - pattern: |
+                      $FIELD := reflect.ValueOf($EXPR).Elem().FieldByName($NAME)
+                      ...
+                      $FIELD.$METHOD($VALUE)
+                  - pattern: reflect.Indirect($VALUE).$METHOD($NEWVAL)
+                  - pattern: reflect.Indirect($VALUE).FieldByName($NAME).$METHOD($NEWVAL)
+                  - pattern: reflect.ValueOf($EXPR).Index($IDX).$METHOD($VALUE)
+                  - pattern: |
+                      $ELEM := reflect.ValueOf($EXPR).Index($IDX)
+                      ...
+                      $ELEM.$METHOD($VALUE)
+              - metavariable-regex:
+                  metavariable: $METHOD
+                  regex: ^Set(Bool|Int|Uint|Float|String|Bytes|Complex|Pointer)?$
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Reflection-based value mutation bypasses compile-time type safety, obscures
+        data flow, and complicates static analysis and CVE impact assessment
+  - id: go-service-mesh-bypass
+    message: Service mesh TLS bypass detected - communication outside mesh security
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $URL := "http://" + $SERVICE_IP + ":" + $PORT
+              ...
+              http.$METHOD($URL)
+          - pattern: |
+              $URL := "http://" + $SERVICE_IP + ":" + $PORT
+              ...
+              http.$METHOD($URL, ...)
+          - pattern: |
+              $URL := "http://" + $ENDPOINT
+              ...
+              http.$METHOD($URL)
+          - pattern: |
+              $URL := "http://" + $ENDPOINT
+              ...
+              http.$METHOD($URL, ...)
+          - pattern: |
+              $CLIENT := &http.Client{
+                Transport: &http.Transport{
+                  Proxy: http.ProxyFromEnvironment,
+                },
+              }
+          - pattern: |
+              for _, $ENDPOINT := range $ENDPOINTS {
+                $URL := "http://" + $ENDPOINT
+                http.$METHOD($URL)
+              }
+          - pattern: |
+              for _, $ENDPOINT := range $ENDPOINTS {
+                $URL := "http://" + $ENDPOINT
+                http.$METHOD($URL, ...)
+              }
+    fix: Use service mesh routing and let the mesh handle service-to-service communication
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Service mesh bypass eliminates mTLS protection and security observability
+  - id: go-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $CONFIG.InsecureSkipVerify = true
+          - pattern: |
+              $VAR := true
+              ...
+              $CONFIG.InsecureSkipVerify = $VAR
+          - pattern: |
+              $VAR = true
+              ...
+              $CONFIG.InsecureSkipVerify = $VAR
+          - pattern: $CONFIG.InsecureSkipVerify = $FUNC(...)
+          - pattern: |
+              tls.Config{
+                ...,
+                InsecureSkipVerify: true,
+                ...
+              }
+          - pattern: |
+              &tls.Config{
+                ...,
+                InsecureSkipVerify: true,
+                ...
+              }
+          - pattern: $CONFIG.TLSClientConfig.Insecure = true
+          - pattern: $CONFIG.Insecure = true
+          - pattern: |
+              if $CONDITION {
+                $CONFIG.InsecureSkipVerify = true
+              }
+          - pattern: |
+              if os.Getenv($ENV_VAR) == $VALUE {
+                $CONFIG.InsecureSkipVerify = true
+              }
+          - pattern: |
+              $FIELD := $VALUE.FieldByName("InsecureSkipVerify")
+              $FIELD.SetBool(true)
+          - pattern: $CONFIG.ServerName = ""
+          - pattern: |
+              $URL := "http://" + $HOST
+              http.Get($URL)
+          - pattern: $CONFIG.VerifyPeerCertificate = nil
+          - pattern: $CONFIG.TLS.Enable = false
+          - pattern: $CONFIG.Net.TLS.Enable = false
+          - pattern: $CONFIG.SSL.Enable = false
+          - pattern: $CONFIG.TLSConfig = "false"
+          - pattern: $CONFIG.SSLMode = "disable"
+          - pattern: $FUNC($DRIVER, $DSN + "?sslmode=disable")
+          - pattern: $FUNC($DRIVER, $DSN + "&tls=false")
+          - pattern: $FUNC($DRIVER, $DSN + "?ssl=false")
+    fix: |
+      Remove TLS bypasses and implement proper certificate validation:
+      - Use valid CA certificates
+      - Remove InsecureSkipVerify settings
+      - Use ConfigMaps or Secrets for TLS configuration
+      - Implement proper certificate management
+      - Use service mesh or platform TLS profiles
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks
+  - id: go-tls-max-version-blocks-tls13
+    message: TLS MaxVersion set to TLS 1.2 - This prevents TLS 1.3 and may override
+      OpenShift TLS profile settings
+    severity: WARNING
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: $CONFIG.MaxVersion = tls.VersionTLS12
+          - pattern: |
+              $CONFIG := &tls.Config{
+                ...,
+                MaxVersion: tls.VersionTLS12,
+                ...
+              }
+          - pattern: |
+              tls.Config{
+                ...,
+                MaxVersion: tls.VersionTLS12,
+                ...
+              }
+          - pattern: |
+              $VAR := tls.VersionTLS12
+              ...
+              $CONFIG.MaxVersion = $VAR
+          - pattern: |
+              var $VAR uint16 = tls.VersionTLS12
+              ...
+              $CONFIG.MaxVersion = $VAR
+    fix: Remove MaxVersion restriction or set to tls.VersionTLS13 to allow TLS 1.3
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: MaxVersion restriction prevents TLS 1.3, which may conflict with OpenShift
+        TLS profile requiring TLS 1.3
+  - id: go-tls-min-version-tls12-only
+    message: TLS MinVersion set to TLS 1.2 without MaxVersion - May allow TLS 1.3 but
+      worth reviewing for OpenShift profile compliance
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - patterns:
+          - pattern-either:
+              - pattern: $CONFIG.MinVersion = tls.VersionTLS12
+              - pattern: |
+                  $CONFIG := &tls.Config{
+                    ...,
+                    MinVersion: tls.VersionTLS12,
+                    ...
+                  }
+          - pattern-not: |
+              $CONFIG := &tls.Config{
+                ...,
+                MaxVersion: tls.VersionTLS12,
+                ...
+              }
+          - pattern-not: $CONFIG.MaxVersion = tls.VersionTLS12
+    fix: Ensure MaxVersion is set to tls.VersionTLS13 or omitted to allow TLS 1.3
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: MinVersion without MaxVersion may allow TLS 1.3, but explicit configuration
+        is recommended
+  - id: go-unsafe-pointer-operations
+    message: Unsafe pointer operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - go
+    patterns:
+      - pattern-either:
+          - pattern: unsafe.Pointer($EXPR)
+          - pattern: (*$TYPE)(unsafe.Pointer($EXPR))
+          - pattern: uintptr(unsafe.Pointer($EXPR))
+          - pattern: unsafe.Sizeof($EXPR)
+          - pattern: unsafe.Offsetof($EXPR)
+          - pattern: unsafe.Pointer(uintptr($PTR) + $OFFSET)
+          - pattern: unsafe.Pointer(uintptr($PTR) - $OFFSET)
+          - pattern: $VAR := (*$TYPE)(unsafe.Pointer($EXPR))
+          - pattern: $VAR := unsafe.Pointer($EXPR)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe operations can lead to memory corruption

@@ -1,131 +1,131 @@
 findings:
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 12
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 12
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 13
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 14
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 18
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 18
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 19
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 19
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 23
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 23
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 24
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 24
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 28
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 28
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 29
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 29
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 51
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 51
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 51
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 63
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 63
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 63
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 75
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 75
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 87
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 87
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
-- file: test_code.java
-  line: 87
-  rule_id: java-crypto-digital-signatures
-  message: Digital signature operations detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 12
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 12
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 13
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 14
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 18
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 18
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 19
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 19
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 23
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 23
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 24
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 24
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 28
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 28
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 29
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 29
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 51
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 51
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 51
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 63
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 63
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 63
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 75
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 75
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 87
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 87
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
+  - file: test_code.java
+    line: 87
+    rule_id: java-crypto-digital-signatures
+    message: Digital signature operations detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

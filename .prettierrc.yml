@@ -1,0 +1,11 @@
+# Prettier configuration for YAML files
+overrides:
+  - files: "*.{yml,yaml}"
+    options:
+      tabWidth: 2
+      printWidth: 120
+      singleQuote: false
+      trailingComma: none
+      bracketSpacing: true
+      arrowParens: avoid
+      endOfLine: lf

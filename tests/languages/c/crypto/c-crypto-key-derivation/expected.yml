@@ -1,27 +1,27 @@
 findings:
-- file: test_code.c
-  line: 9
-  rule_id: c-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.c
-  line: 17
-  rule_id: c-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.c
-  line: 25
-  rule_id: c-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.c
-  line: 33
-  rule_id: c-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.c
-  line: 38
-  rule_id: c-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.c
-  line: 46
-  rule_id: c-crypto-key-derivation
-  message: Key derivation function usage detected
+  - file: test_code.c
+    line: 9
+    rule_id: c-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.c
+    line: 17
+    rule_id: c-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.c
+    line: 25
+    rule_id: c-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.c
+    line: 33
+    rule_id: c-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.c
+    line: 38
+    rule_id: c-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.c
+    line: 46
+    rule_id: c-crypto-key-derivation
+    message: Key derivation function usage detected
 no_findings:
-- negative_cases.c
+  - negative_cases.c

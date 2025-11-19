@@ -1,31 +1,31 @@
 findings:
-- file: test_code.ts
-  line: 2
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
-- file: test_code.ts
-  line: 9
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
-- file: test_code.ts
-  line: 15
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
-- file: test_code.ts
-  line: 30
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
-- file: test_code.ts
-  line: 36
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
-- file: test_code.ts
-  line: 23
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
-- file: test_code.ts
-  line: 45
-  rule_id: typescript-crypto-webcrypto-api
-  message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 2
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 15
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 30
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 36
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 23
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+  - file: test_code.ts
+    line: 45
+    rule_id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
 no_findings:
-- negative_cases.ts
+  - negative_cases.ts

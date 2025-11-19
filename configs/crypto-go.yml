@@ -628,8 +628,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Cipher mode usage detected in codebase (OFB, CFB, CTR, CBC,
+      impact: "Inventory: Cipher mode usage detected in codebase (OFB, CFB, CTR, CBC,
         GCM)"
   - id: go-crypto-hash-comparison
     message: Hash function used in comparison or verification detected
@@ -671,8 +670,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Hash function used in comparison or verification detected
+      impact: "Inventory: Hash function used in comparison or verification detected
         in codebase"
   - id: go-crypto-salt-generation
     message: Salt generation for cryptographic use detected
@@ -982,8 +980,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Hash algorithm used via generic hash.Hash interface detected
+      impact: "Inventory: Hash algorithm used via generic hash.Hash interface detected
         in codebase"
   - id: go-crypto-hardcoded-key
     message: Hardcoded cryptographic key detected
@@ -1219,8 +1216,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: go-crypto-scrypt
     message: scrypt key derivation function usage detected

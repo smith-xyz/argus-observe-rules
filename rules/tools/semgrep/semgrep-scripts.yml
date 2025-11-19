@@ -1,19 +1,19 @@
 rules:
-- id: semgrep-scripts
-  message: Found Semgrep in shell script
-  severity: INFO
-  languages:
-  - bash
-  patterns:
-  - pattern-either:
-    - pattern: semgrep $...ARGS
-    - pattern: pip install semgrep
-    - pattern: python -m pip install semgrep
-  paths:
-    include:
-    - '*.sh'
-    - '**/scripts/*.sh'
-    - '**/scripts/*.bash'
-  metadata:
-    category: static-analysis
-    tool: semgrep
+  - id: semgrep-scripts
+    message: Found Semgrep in shell script
+    severity: INFO
+    languages:
+      - bash
+    patterns:
+      - pattern-either:
+          - pattern: semgrep $...ARGS
+          - pattern: pip install semgrep
+          - pattern: python -m pip install semgrep
+    paths:
+      include:
+        - "*.sh"
+        - "**/scripts/*.sh"
+        - "**/scripts/*.bash"
+    metadata:
+      category: static-analysis
+      tool: semgrep

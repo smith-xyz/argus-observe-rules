@@ -102,8 +102,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: c-crypto-key-derivation
     message: Key derivation function usage detected
@@ -113,32 +112,28 @@ rules:
     patterns:
       - pattern-either:
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
                   $KEYLEN, $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
           - patterns:
-              - pattern:
-                  PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
                   $OUT)
               - metavariable-regex:
                   metavariable: $ITER
                   regex: \d+
               - focus-metavariable: $ITER
           - patterns:
-              - pattern:
-                  EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY,
+              - pattern: EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY,
                   $IV)
               - metavariable-regex:
                   metavariable: $COUNT
                   regex: \d+
               - focus-metavariable: $COUNT
           - patterns:
-              - pattern:
-                  EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
+              - pattern: EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
                   $KEY, $KEYLEN)
               - metavariable-regex:
                   metavariable: $N
@@ -245,12 +240,10 @@ rules:
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-          - pattern:
-              AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
+          - pattern: AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
               $ENCRYPT)
           - pattern: AES_ofb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
-          - pattern:
-              AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
+          - pattern: AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
               $BUFFER, $NUM)
     metadata:
       category: crypto
@@ -476,48 +469,37 @@ rules:
       - pattern-either:
           - pattern: BCryptOpenAlgorithmProvider($ALG_HANDLE, $ALG_ID, $IMPL, $FLAGS)
           - pattern: BCryptCloseAlgorithmProvider($ALG_HANDLE, $FLAGS)
-          - pattern:
-              BCryptGenerateSymmetricKey($ALG_HANDLE, $KEY_HANDLE, $KEY_OBJECT, $KEY_OBJECT_LEN,
+          - pattern: BCryptGenerateSymmetricKey($ALG_HANDLE, $KEY_HANDLE, $KEY_OBJECT, $KEY_OBJECT_LEN,
               $SECRET, $SECRET_LEN, $FLAGS)
           - pattern: BCryptGenerateKeyPair($ALG_HANDLE, $KEY_HANDLE, $KEY_LENGTH, $FLAGS)
           - pattern: BCryptFinalizeKeyPair($KEY_HANDLE, $FLAGS)
-          - pattern:
-              BCryptImportKeyPair($ALG_HANDLE, $NULL, $BLOB_TYPE, $KEY_HANDLE, $KEY_BLOB,
+          - pattern: BCryptImportKeyPair($ALG_HANDLE, $NULL, $BLOB_TYPE, $KEY_HANDLE, $KEY_BLOB,
               $KEY_BLOB_LEN, $FLAGS)
-          - pattern:
-              BCryptExportKey($KEY_HANDLE, $NULL, $BLOB_TYPE, $OUTPUT, $OUTPUT_LEN,
+          - pattern: BCryptExportKey($KEY_HANDLE, $NULL, $BLOB_TYPE, $OUTPUT, $OUTPUT_LEN,
               $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptEncrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
+          - pattern: BCryptEncrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
               $IV_LEN, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptDecrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
+          - pattern: BCryptDecrypt($KEY_HANDLE, $INPUT, $INPUT_LEN, $PADDING_INFO, $IV,
               $IV_LEN, $OUTPUT, $OUTPUT_LEN, $RESULT_LEN, $FLAGS)
           - pattern: BCryptGenRandom($PROV_HANDLE, $BUFFER, $BUFFER_LEN, $FLAGS)
-          - pattern:
-              BCryptCreateHash($ALG_HANDLE, $HASH_HANDLE, $HASH_OBJECT, $HASH_OBJECT_LEN,
+          - pattern: BCryptCreateHash($ALG_HANDLE, $HASH_HANDLE, $HASH_OBJECT, $HASH_OBJECT_LEN,
               $SECRET, $SECRET_LEN, $FLAGS)
           - pattern: BCryptHashData($HASH_HANDLE, $INPUT, $INPUT_LEN, $FLAGS)
           - pattern: BCryptFinishHash($HASH_HANDLE, $OUTPUT, $OUTPUT_LEN, $FLAGS)
           - pattern: BCryptDestroyHash($HASH_HANDLE)
           - pattern: BCryptDestroyKey($KEY_HANDLE)
-          - pattern:
-              BCryptSignHash($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN, $SIGNATURE,
+          - pattern: BCryptSignHash($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN, $SIGNATURE,
               $SIGNATURE_LEN, $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptVerifySignature($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN,
+          - pattern: BCryptVerifySignature($KEY_HANDLE, $PADDING_INFO, $HASH, $HASH_LEN,
               $SIGNATURE, $SIGNATURE_LEN, $FLAGS)
-          - pattern:
-              BCryptDeriveKey($SECRET_HANDLE, $PARAM_LIST, $DERIVED_KEY, $DERIVED_KEY_LEN,
+          - pattern: BCryptDeriveKey($SECRET_HANDLE, $PARAM_LIST, $DERIVED_KEY, $DERIVED_KEY_LEN,
               $RESULT_LEN, $FLAGS)
-          - pattern:
-              BCryptDeriveKeyPBKDF2($ALG_HANDLE, $PASSWORD, $PASSWORD_LEN, $SALT,
+          - pattern: BCryptDeriveKeyPBKDF2($ALG_HANDLE, $PASSWORD, $PASSWORD_LEN, $SALT,
               $SALT_LEN, $ITERATIONS, $DERIVED_KEY, $DERIVED_KEY_LEN, $FLAGS)
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Windows CNG (Cryptography Next Generation) usage detected
+      impact: "Inventory: Windows CNG (Cryptography Next Generation) usage detected
         in codebase"
   - id: c-crypto-digital-signatures
     message: Digital signature operations detected
@@ -579,8 +561,7 @@ rules:
           - pattern: bcrypt_hashpw($PASS, $SALT, $HASH)
           - pattern: bcrypt_checkpw($PASS, $HASH)
           - patterns:
-              - pattern:
-                  argon2i_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
+              - pattern: argon2i_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
                   $SALT_LEN, $HASH, $HASH_LEN)
               - metavariable-regex:
                   metavariable: $T_COST
@@ -589,8 +570,7 @@ rules:
                   metavariable: $M_COST
                   regex: \d+
           - patterns:
-              - pattern:
-                  argon2id_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
+              - pattern: argon2id_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
                   $SALT_LEN, $HASH, $HASH_LEN)
               - metavariable-regex:
                   metavariable: $T_COST
@@ -599,8 +579,7 @@ rules:
                   metavariable: $M_COST
                   regex: \d+
           - patterns:
-              - pattern:
-                  argon2d_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
+              - pattern: argon2d_hash($T_COST, $M_COST, $PARALLELISM, $PWD, $PWD_LEN, $SALT,
                   $SALT_LEN, $HASH, $HASH_LEN)
               - metavariable-regex:
                   metavariable: $T_COST
@@ -820,8 +799,7 @@ rules:
           - pattern: DES_set_key_checked($KEY, $SCHEDULE)
           - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
           - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
-          - pattern:
-              DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
+          - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
               $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
           - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
@@ -842,22 +820,18 @@ rules:
           - pattern: CryptGenKey($HPROV, $ALGID, $FLAGS, $HPROVKEY)
           - pattern: CryptDeriveKey($HPROV, $ALGID, $HHASH, $FLAGS, $HPROVKEY)
           - pattern: CryptImportKey($HPROV, $PBDATA, $DWDLEN, $HPROVKEY, $DWFLAGS, $HPROVKEYOUT)
-          - pattern:
-              CryptExportKey($HPROVKEY, $HPROVKEYEXP, $DWFLAGS, $DWPARAM, $PBDATA,
+          - pattern: CryptExportKey($HPROVKEY, $HPROVKEYEXP, $DWFLAGS, $DWPARAM, $PBDATA,
               $PDWLEN)
-          - pattern:
-              CryptEncrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN,
+          - pattern: CryptEncrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN,
               $DWBUFLEN)
           - pattern: CryptDecrypt($HPROVKEY, $HHASH, $FINAL, $DWFLAGS, $PBDATA, $PDWLEN)
           - pattern: CryptCreateHash($HPROV, $ALGID, $HPROVKEY, $DWFLAGS, $HPROVHASH)
           - pattern: CryptHashData($HPROVHASH, $PBDATA, $DWDLEN, $DWFLAGS)
           - pattern: CryptHashSessionKey($HPROVHASH, $HPROVKEY, $DWFLAGS)
           - pattern: CryptGetHashParam($HPROVHASH, $DWPARAM, $PBDATA, $PDWLEN, $DWFLAGS)
-          - pattern:
-              CryptSignHash($HPROVHASH, $DWKEYSPEC, $DESCRIPTION, $DWFLAGS, $PBSIGNATURE,
+          - pattern: CryptSignHash($HPROVHASH, $DWKEYSPEC, $DESCRIPTION, $DWFLAGS, $PBSIGNATURE,
               $PDSIGLEN)
-          - pattern:
-              CryptVerifySignature($HPROVHASH, $PBSIGNATURE, $DWSIGLEN, $HPROVKEY,
+          - pattern: CryptVerifySignature($HPROVHASH, $PBSIGNATURE, $DWSIGLEN, $HPROVKEY,
               $DESCRIPTION, $DWFLAGS)
           - pattern: CryptGenRandom($HPROV, $DWDLEN, $PBBUFFER)
     metadata:

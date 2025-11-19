@@ -18,4 +18,3 @@ findings:
 
 no_findings:
   - negative_cases.go
-

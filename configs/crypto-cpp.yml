@@ -1,1496 +1,1496 @@
 rules:
-- id: cpp-crypto-sha384
-  message: SHA384 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SHA384_Init($CTX)
-    - pattern: SHA384_Update($CTX, $DATA, $LEN)
-    - pattern: SHA384_Final($HASH, $CTX)
-    - pattern: |
-        SHA512_CTX $CTX;
-        SHA384_Init(&$CTX);
-        SHA384_Update(&$CTX, $DATA, $LEN);
-        SHA384_Final($HASH, &$CTX);
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha384(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha384(), $ENGINE)
-    - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
-    - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA-384", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA384", $PROPS)
-    - pattern: CryptoPP::SHA384()
-    - pattern: Botan::HashFunction::create("SHA-384")
-    - pattern: Botan::HashFunction::create("SHA384")
-    - pattern: Botan::SHA_384()
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: SHA384 hash function usage detected in codebase'
-- id: cpp-crypto-cipher-blowfish
-  message: Blowfish cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_CipherInit_ex($CTX, EVP_bf_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_bf_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_bf_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_bf_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "BF-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "BF-ECB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "BF-CFB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "BF-OFB", $PROPS)
-    - pattern: CryptoPP::Blowfish::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::Blowfish::Decryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("Blowfish/CBC", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("Blowfish/ECB", Botan::ENCRYPTION)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Blowfish cipher usage detected in codebase'
-- id: cpp-crypto-cipher-chacha20
-  message: ChaCha20 cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20_poly1305(), $ENGINE, $KEY, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20-Poly1305", $PROPS)
-    - pattern: CryptoPP::ChaCha20::Encryption($KEY, $KEYLEN, $IV, $COUNTER)
-    - pattern: CryptoPP::ChaCha20::Decryption($KEY, $KEYLEN, $IV, $COUNTER)
-    - pattern: CryptoPP::ChaCha20Poly1305::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::ChaCha20Poly1305::Decryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("ChaCha20", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("ChaCha20Poly1305", Botan::ENCRYPTION)
-    - pattern: Botan::StreamCipher::create("ChaCha(20)")
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: ChaCha20 cipher usage detected in codebase'
-- id: cpp-crypto-sha224
-  message: SHA224 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SHA224_Init($CTX)
-    - pattern: SHA224_Update($CTX, $DATA, $LEN)
-    - pattern: SHA224_Final($HASH, $CTX)
-    - pattern: |
-        SHA256_CTX $CTX;
-        SHA224_Init(&$CTX);
-        SHA224_Update(&$CTX, $DATA, $LEN);
-        SHA224_Final($HASH, &$CTX);
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha224(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha224(), $ENGINE)
-    - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
-    - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA-224", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA224", $PROPS)
-    - pattern: CryptoPP::SHA224()
-    - pattern: Botan::HashFunction::create("SHA-224")
-    - pattern: Botan::HashFunction::create("SHA224")
-    - pattern: Botan::SHA_224()
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: SHA224 hash function usage detected in codebase'
-- id: cpp-crypto-md5
-  message: MD5 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: MD5_Init($CTX)
-    - pattern: MD5_Update($CTX, $DATA, $LEN)
-    - pattern: MD5_Final($HASH, $CTX)
-    - pattern: |
-        MD5_CTX $CTX;
-        MD5_Init(&$CTX);
-        MD5_Update(&$CTX, $DATA, $LEN);
-        MD5_Final($HASH, &$CTX);
-    - pattern: EVP_DigestInit_ex($CTX, EVP_md5(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_md5(), $ENGINE)
-    - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
-    - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
-    - pattern: EVP_MD_fetch($ENGINE, "MD5", $PROPS)
-    - pattern: CryptoPP::Weak::MD5()
-    - pattern: CryptoPP::MD5()
-    - pattern: Botan::HashFunction::create("MD5")
-    - pattern: Botan::MD5()
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::MD5()
+  - id: cpp-crypto-sha384
+    message: SHA384 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SHA384_Init($CTX)
+          - pattern: SHA384_Update($CTX, $DATA, $LEN)
+          - pattern: SHA384_Final($HASH, $CTX)
+          - pattern: |
+              SHA512_CTX $CTX;
+              SHA384_Init(&$CTX);
+              SHA384_Update(&$CTX, $DATA, $LEN);
+              SHA384_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha384(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha384(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA-384", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA384", $PROPS)
+          - pattern: CryptoPP::SHA384()
+          - pattern: Botan::HashFunction::create("SHA-384")
+          - pattern: Botan::HashFunction::create("SHA384")
+          - pattern: Botan::SHA_384()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA384 hash function usage detected in codebase"
+  - id: cpp-crypto-cipher-blowfish
+    message: Blowfish cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_bf_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-CFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "BF-OFB", $PROPS)
+          - pattern: CryptoPP::Blowfish::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Blowfish::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("Blowfish/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Blowfish/ECB", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Blowfish cipher usage detected in codebase"
+  - id: cpp-crypto-cipher-chacha20
+    message: ChaCha20 cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_chacha20_poly1305(), $ENGINE, $KEY, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "ChaCha20-Poly1305", $PROPS)
+          - pattern: CryptoPP::ChaCha20::Encryption($KEY, $KEYLEN, $IV, $COUNTER)
+          - pattern: CryptoPP::ChaCha20::Decryption($KEY, $KEYLEN, $IV, $COUNTER)
+          - pattern: CryptoPP::ChaCha20Poly1305::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::ChaCha20Poly1305::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("ChaCha20", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("ChaCha20Poly1305", Botan::ENCRYPTION)
+          - pattern: Botan::StreamCipher::create("ChaCha(20)")
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20 cipher usage detected in codebase"
+  - id: cpp-crypto-sha224
+    message: SHA224 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SHA224_Init($CTX)
+          - pattern: SHA224_Update($CTX, $DATA, $LEN)
+          - pattern: SHA224_Final($HASH, $CTX)
+          - pattern: |
+              SHA256_CTX $CTX;
+              SHA224_Init(&$CTX);
+              SHA224_Update(&$CTX, $DATA, $LEN);
+              SHA224_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha224(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha224(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA-224", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA224", $PROPS)
+          - pattern: CryptoPP::SHA224()
+          - pattern: Botan::HashFunction::create("SHA-224")
+          - pattern: Botan::HashFunction::create("SHA224")
+          - pattern: Botan::SHA_224()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA224 hash function usage detected in codebase"
+  - id: cpp-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: MD5_Init($CTX)
+          - pattern: MD5_Update($CTX, $DATA, $LEN)
+          - pattern: MD5_Final($HASH, $CTX)
+          - pattern: |
+              MD5_CTX $CTX;
+              MD5_Init(&$CTX);
+              MD5_Update(&$CTX, $DATA, $LEN);
+              MD5_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_md5(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_md5(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "MD5", $PROPS)
           - pattern: CryptoPP::Weak::MD5()
-      - pattern: $HASH.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
           - pattern: CryptoPP::MD5()
-          - pattern: CryptoPP::Weak::MD5()
-      - pattern: $HASH.Final($OUT)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::MD5()
-          - pattern: CryptoPP::Weak::MD5()
-      - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: MD5 hash function usage detected in codebase'
-- id: cpp-crypto-mbedtls
-  message: mbedTLS cryptographic library usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: mbedtls_md5_init($CTX)
-    - pattern: mbedtls_md5_update($CTX, $DATA, $LEN)
-    - pattern: mbedtls_md5_finish($CTX, $HASH)
-    - pattern: mbedtls_sha1_init($CTX)
-    - pattern: mbedtls_sha1_update($CTX, $DATA, $LEN)
-    - pattern: mbedtls_sha1_finish($CTX, $HASH)
-    - pattern: mbedtls_sha256_init($CTX)
-    - pattern: mbedtls_sha256_update($CTX, $DATA, $LEN)
-    - pattern: mbedtls_sha256_finish($CTX, $HASH)
-    - pattern: mbedtls_sha512_init($CTX)
-    - pattern: mbedtls_sha512_update($CTX, $DATA, $LEN)
-    - pattern: mbedtls_sha512_finish($CTX, $HASH)
-    - pattern: mbedtls_aes_setkey_enc($CTX, $KEY, $BITS)
-    - pattern: mbedtls_aes_setkey_dec($CTX, $KEY, $BITS)
-    - pattern: mbedtls_aes_crypt_ecb($CTX, $MODE, $INPUT, $OUTPUT)
-    - pattern: mbedtls_aes_crypt_cbc($CTX, $MODE, $LENGTH, $IV, $INPUT, $OUTPUT)
-    - pattern: mbedtls_rsa_gen_key($RSA, $F_RNG, $PRNG, $N_BITS, $EXPONENT)
-    - pattern: mbedtls_rsa_public($RSA, $INPUT, $OUTPUT)
-    - pattern: mbedtls_rsa_private($RSA, $F_RNG, $PRNG, $INPUT, $OUTPUT)
-    - pattern: mbedtls_rsa_pkcs1_sign($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
-        $HASH, $SIG)
-    - pattern: mbedtls_rsa_pkcs1_verify($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
-        $HASH, $SIG)
-    - pattern: mbedtls_ecdsa_sign($GRP, $R, $S, $D, $BUF, $BLEN, $F_RNG, $PRNG)
-    - pattern: mbedtls_ecdsa_verify($GRP, $BUF, $BLEN, $Q, $R, $S)
-    - pattern: mbedtls_entropy_init($CTX)
-    - pattern: mbedtls_ctr_drbg_init($CTX)
-    - pattern: mbedtls_ctr_drbg_seed($CTX, $F_ENTROPY, $P_ENTROPY, $CUSTOM, $LEN)
-    - pattern: mbedtls_ctr_drbg_random($P_RNG, $OUTPUT, $OUTPUT_LEN)
-    - pattern: mbedtls_hmac_drbg_init($CTX)
-    - pattern: mbedtls_hmac_drbg_seed($CTX, $MD, $F_ENTROPY, $P_ENTROPY, $CUSTOM,
-        $LEN)
-    - pattern: mbedtls_gcm_init($CTX)
-    - pattern: mbedtls_gcm_setkey($CTX, $CIPHER, $KEY, $KEYLEN)
-    - pattern: mbedtls_gcm_crypt_and_tag($CTX, $MODE, $LENGTH, $IV, $IVLEN, $ADD,
-        $ADDLEN, $INPUT, $OUTPUT, $TAGLEN, $TAG)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: mbedTLS cryptographic library usage detected in codebase'
-- id: cpp-crypto-blake2
-  message: BLAKE2 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_DigestInit_ex($CTX, EVP_blake2b512(), $ENGINE)
-    - pattern: EVP_DigestInit_ex($CTX, EVP_blake2s256(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2b512(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2s256(), $ENGINE)
-    - pattern: blake2b_init($STATE, $OUTLEN)
-    - pattern: blake2b_update($STATE, $DATA, $DATALEN)
-    - pattern: blake2b_final($STATE, $OUT, $OUTLEN)
-    - pattern: blake2s_init($STATE, $OUTLEN)
-    - pattern: blake2s_update($STATE, $DATA, $DATALEN)
-    - pattern: blake2s_final($STATE, $OUT, $OUTLEN)
-    - pattern: CryptoPP::BLAKE2b()
-    - pattern: CryptoPP::BLAKE2s()
-    - pattern: EVP_MD_fetch($ENGINE, "BLAKE2b512", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "BLAKE2s256", $PROPS)
-    - pattern: Botan::HashFunction::create("BLAKE2b(512)")
-    - pattern: Botan::HashFunction::create("BLAKE2s(256)")
-    - pattern: Botan::HashFunction::create("BLAKE2b(256)")
-    - pattern: Botan::HashFunction::create("BLAKE2b(384)")
-    - pattern: Botan::HashFunction::create("BLAKE2s(128)")
-    - pattern: Botan::HashFunction::create("BLAKE2s(224)")
-    - pattern: Botan::BLAKE2b($OUTLEN)
-    - pattern: Botan::BLAKE2s($OUTLEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
+          - pattern: Botan::HashFunction::create("MD5")
+          - pattern: Botan::MD5()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::MD5()
+                    - pattern: CryptoPP::Weak::MD5()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::MD5()
+                    - pattern: CryptoPP::Weak::MD5()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::MD5()
+                    - pattern: CryptoPP::Weak::MD5()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"
+  - id: cpp-crypto-mbedtls
+    message: mbedTLS cryptographic library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: mbedtls_md5_init($CTX)
+          - pattern: mbedtls_md5_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_md5_finish($CTX, $HASH)
+          - pattern: mbedtls_sha1_init($CTX)
+          - pattern: mbedtls_sha1_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_sha1_finish($CTX, $HASH)
+          - pattern: mbedtls_sha256_init($CTX)
+          - pattern: mbedtls_sha256_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_sha256_finish($CTX, $HASH)
+          - pattern: mbedtls_sha512_init($CTX)
+          - pattern: mbedtls_sha512_update($CTX, $DATA, $LEN)
+          - pattern: mbedtls_sha512_finish($CTX, $HASH)
+          - pattern: mbedtls_aes_setkey_enc($CTX, $KEY, $BITS)
+          - pattern: mbedtls_aes_setkey_dec($CTX, $KEY, $BITS)
+          - pattern: mbedtls_aes_crypt_ecb($CTX, $MODE, $INPUT, $OUTPUT)
+          - pattern: mbedtls_aes_crypt_cbc($CTX, $MODE, $LENGTH, $IV, $INPUT, $OUTPUT)
+          - pattern: mbedtls_rsa_gen_key($RSA, $F_RNG, $PRNG, $N_BITS, $EXPONENT)
+          - pattern: mbedtls_rsa_public($RSA, $INPUT, $OUTPUT)
+          - pattern: mbedtls_rsa_private($RSA, $F_RNG, $PRNG, $INPUT, $OUTPUT)
+          - pattern: mbedtls_rsa_pkcs1_sign($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
+              $HASH, $SIG)
+          - pattern: mbedtls_rsa_pkcs1_verify($RSA, $F_RNG, $PRNG, $MODE, $HASH_ALG, $HASH_LEN,
+              $HASH, $SIG)
+          - pattern: mbedtls_ecdsa_sign($GRP, $R, $S, $D, $BUF, $BLEN, $F_RNG, $PRNG)
+          - pattern: mbedtls_ecdsa_verify($GRP, $BUF, $BLEN, $Q, $R, $S)
+          - pattern: mbedtls_entropy_init($CTX)
+          - pattern: mbedtls_ctr_drbg_init($CTX)
+          - pattern: mbedtls_ctr_drbg_seed($CTX, $F_ENTROPY, $P_ENTROPY, $CUSTOM, $LEN)
+          - pattern: mbedtls_ctr_drbg_random($P_RNG, $OUTPUT, $OUTPUT_LEN)
+          - pattern: mbedtls_hmac_drbg_init($CTX)
+          - pattern: mbedtls_hmac_drbg_seed($CTX, $MD, $F_ENTROPY, $P_ENTROPY, $CUSTOM,
+              $LEN)
+          - pattern: mbedtls_gcm_init($CTX)
+          - pattern: mbedtls_gcm_setkey($CTX, $CIPHER, $KEY, $KEYLEN)
+          - pattern: mbedtls_gcm_crypt_and_tag($CTX, $MODE, $LENGTH, $IV, $IVLEN, $ADD,
+              $ADDLEN, $INPUT, $OUTPUT, $TAGLEN, $TAG)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: mbedTLS cryptographic library usage detected in codebase"
+  - id: cpp-crypto-blake2
+    message: BLAKE2 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_DigestInit_ex($CTX, EVP_blake2b512(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_blake2s256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2b512(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_blake2s256(), $ENGINE)
+          - pattern: blake2b_init($STATE, $OUTLEN)
+          - pattern: blake2b_update($STATE, $DATA, $DATALEN)
+          - pattern: blake2b_final($STATE, $OUT, $OUTLEN)
+          - pattern: blake2s_init($STATE, $OUTLEN)
+          - pattern: blake2s_update($STATE, $DATA, $DATALEN)
+          - pattern: blake2s_final($STATE, $OUT, $OUTLEN)
           - pattern: CryptoPP::BLAKE2b()
           - pattern: CryptoPP::BLAKE2s()
-      - pattern: $HASH.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::BLAKE2b()
-          - pattern: CryptoPP::BLAKE2s()
-      - pattern: $HASH.Final($OUT)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::BLAKE2b()
-          - pattern: CryptoPP::BLAKE2s()
-      - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: BLAKE2 hash function usage detected in codebase'
-- id: cpp-crypto-botan
-  message: Botan cryptographic library usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - patterns:
-      - pattern: Botan::HashFunction::create($ALGO)
-      - metavariable-regex:
-          metavariable: $ALGO
-          regex: '"[A-Z0-9_-]+"'
-      - focus-metavariable: $ALGO
-    - patterns:
-      - pattern: Botan::Cipher_Mode::create($ALGO, Botan::ENCRYPTION)
-      - metavariable-regex:
-          metavariable: $ALGO
-          regex: '"[A-Z0-9_/-]+"'
-      - focus-metavariable: $ALGO
-    - patterns:
-      - pattern: Botan::Cipher_Mode::create($ALGO, Botan::DECRYPTION)
-      - metavariable-regex:
-          metavariable: $ALGO
-          regex: '"[A-Z0-9_/-]+"'
-      - focus-metavariable: $ALGO
-    - pattern: Botan::RandomNumberGenerator::create($SOURCE)
-    - pattern: Botan::PKCS11::PKCS11_RNG($SESSION)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Botan cryptographic library usage detected in codebase'
-- id: cpp-crypto-cipher-rc4
-  message: RC4 cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: RC4_set_key($KEY, $LEN, $DATA)
-    - pattern: RC4($KEY, $LEN, $INPUT, $OUTPUT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_rc4(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_rc4_40(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "RC4", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "RC4-40", $PROPS)
-    - pattern: CryptoPP::ARC4 $VAR;
-    - pattern: CryptoPP::ARC4 $VAR($KEY, $KEYLEN);
-    - pattern: CryptoPP::ARC4::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::ARC4::Decryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::Weak::ARC4 $VAR;
-    - pattern: CryptoPP::Weak::ARC4 $VAR($KEY, $KEYLEN);
-    - pattern: CryptoPP::Weak::ARC4::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::Weak::ARC4::Decryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::ARCFour $VAR;
-    - pattern: CryptoPP::ARCFour $VAR($KEY, $KEYLEN);
-    - pattern: Botan::StreamCipher::create("RC4")
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: RC4 cipher usage detected in codebase'
-- id: cpp-crypto-cipher-modes
-  message: Cipher mode usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ctr(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ctr(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ccm(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ccm(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-    - pattern: AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
-        $ENCRYPT)
-    - pattern: AES_ofb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
-    - pattern: AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
-        $BUFFER, $NUM)
-    - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
-    - pattern: CryptoPP::CBC_Mode<$CIPHER>::Decryption($KEY, $KEYLEN, $IV)
-    - pattern: CryptoPP::CTR_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
-    - pattern: CryptoPP::GCM<$CIPHER>::Encryption($KEY, $KEYLEN)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-ECB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-ECB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CFB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CFB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-OFB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-OFB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CTR", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CTR", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-GCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-GCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-XTS", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-XTS", $PROPS)
-    - pattern: AES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
-    - pattern: Botan::Cipher_Mode::create("AES-128/CBC", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("AES-256/GCM", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("AES-128/CTR", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("AES-128/OCB", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("AES-256/OCB", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("AES-128/EAX", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("AES-256/EAX", Botan::ENCRYPTION)
-    - pattern: EVP_CipherUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
-    - pattern: EVP_CipherFinal_ex($CTX, $OUT, $OUTLEN)
-    - pattern: EVP_EncryptUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
-    - pattern: EVP_EncryptFinal_ex($CTX, $OUT, $OUTLEN)
-    - pattern: EVP_DecryptUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
-    - pattern: EVP_DecryptFinal_ex($CTX, $OUT, $OUTLEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Cipher mode usage detected in codebase'
-- id: cpp-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SSL_CTX_set_cipher_list($CTX, $LIST)
-    - pattern: SSL_set_cipher_list($SSL, $LIST)
-    - pattern: SSL_CTX_set_ciphersuites($CTX, $LIST)
-    - pattern: SSL_set_ciphersuites($SSL, $LIST)
-    - pattern: SSL_CTX_get_ciphers($CTX)
-    - pattern: SSL_get_cipher_list($SSL, $PRIORITY)
-    - pattern: SSL_get_current_cipher($SSL)
-    - pattern: SSL_CIPHER_get_name($CIPHER)
-    - pattern: SSL_CIPHER_get_bits($CIPHER, $ALG_BITS)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: TLS cipher suite configuration detected in codebase'
-- id: cpp-crypto-sha1
-  message: SHA1 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SHA1_Init($CTX)
-    - pattern: SHA1_Update($CTX, $DATA, $LEN)
-    - pattern: SHA1_Final($HASH, $CTX)
-    - pattern: |
-        SHA_CTX $CTX;
-        SHA1_Init(&$CTX);
-        SHA1_Update(&$CTX, $DATA, $LEN);
-        SHA1_Final($HASH, &$CTX);
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha1(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha1(), $ENGINE)
-    - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
-    - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA1", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA-1", $PROPS)
-    - pattern: CryptoPP::SHA1()
-    - pattern: CryptoPP::Weak::SHA1()
-    - pattern: Botan::HashFunction::create("SHA-1")
-    - pattern: Botan::SHA_160()
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
+          - pattern: EVP_MD_fetch($ENGINE, "BLAKE2b512", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "BLAKE2s256", $PROPS)
+          - pattern: Botan::HashFunction::create("BLAKE2b(512)")
+          - pattern: Botan::HashFunction::create("BLAKE2s(256)")
+          - pattern: Botan::HashFunction::create("BLAKE2b(256)")
+          - pattern: Botan::HashFunction::create("BLAKE2b(384)")
+          - pattern: Botan::HashFunction::create("BLAKE2s(128)")
+          - pattern: Botan::HashFunction::create("BLAKE2s(224)")
+          - pattern: Botan::BLAKE2b($OUTLEN)
+          - pattern: Botan::BLAKE2s($OUTLEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::BLAKE2b()
+                    - pattern: CryptoPP::BLAKE2s()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::BLAKE2b()
+                    - pattern: CryptoPP::BLAKE2s()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::BLAKE2b()
+                    - pattern: CryptoPP::BLAKE2s()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: BLAKE2 hash function usage detected in codebase"
+  - id: cpp-crypto-botan
+    message: Botan cryptographic library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: Botan::HashFunction::create($ALGO)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"[A-Z0-9_-]+"'
+              - focus-metavariable: $ALGO
+          - patterns:
+              - pattern: Botan::Cipher_Mode::create($ALGO, Botan::ENCRYPTION)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"[A-Z0-9_/-]+"'
+              - focus-metavariable: $ALGO
+          - patterns:
+              - pattern: Botan::Cipher_Mode::create($ALGO, Botan::DECRYPTION)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"[A-Z0-9_/-]+"'
+              - focus-metavariable: $ALGO
+          - pattern: Botan::RandomNumberGenerator::create($SOURCE)
+          - pattern: Botan::PKCS11::PKCS11_RNG($SESSION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Botan cryptographic library usage detected in codebase"
+  - id: cpp-crypto-cipher-rc4
+    message: RC4 cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RC4_set_key($KEY, $LEN, $DATA)
+          - pattern: RC4($KEY, $LEN, $INPUT, $OUTPUT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_rc4(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_rc4_40(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "RC4", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "RC4-40", $PROPS)
+          - pattern: CryptoPP::ARC4 $VAR;
+          - pattern: CryptoPP::ARC4 $VAR($KEY, $KEYLEN);
+          - pattern: CryptoPP::ARC4::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::ARC4::Decryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Weak::ARC4 $VAR;
+          - pattern: CryptoPP::Weak::ARC4 $VAR($KEY, $KEYLEN);
+          - pattern: CryptoPP::Weak::ARC4::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Weak::ARC4::Decryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::ARCFour $VAR;
+          - pattern: CryptoPP::ARCFour $VAR($KEY, $KEYLEN);
+          - pattern: Botan::StreamCipher::create("RC4")
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 cipher usage detected in codebase"
+  - id: cpp-crypto-cipher-modes
+    message: Cipher mode usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_cfb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ofb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ctr(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ctr(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_gcm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_ccm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_ccm(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_128_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_aes_256_xts(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: AES_cfb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM,
+              $ENCRYPT)
+          - pattern: AES_ofb128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
+          - pattern: AES_ctr128_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ECBCOUNT,
+              $BUFFER, $NUM)
+          - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::CBC_Mode<$CIPHER>::Decryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::CTR_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::GCM<$CIPHER>::Encryption($KEY, $KEYLEN)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-OFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-OFB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CTR", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CTR", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-XTS", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-XTS", $PROPS)
+          - pattern: AES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
+          - pattern: Botan::Cipher_Mode::create("AES-128/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-256/GCM", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-128/CTR", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-128/OCB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-256/OCB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-128/EAX", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("AES-256/EAX", Botan::ENCRYPTION)
+          - pattern: EVP_CipherUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: EVP_CipherFinal_ex($CTX, $OUT, $OUTLEN)
+          - pattern: EVP_EncryptUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: EVP_EncryptFinal_ex($CTX, $OUT, $OUTLEN)
+          - pattern: EVP_DecryptUpdate($CTX, $OUT, $OUTLEN, $IN, $INLEN)
+          - pattern: EVP_DecryptFinal_ex($CTX, $OUT, $OUTLEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cipher mode usage detected in codebase"
+  - id: cpp-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_cipher_list($CTX, $LIST)
+          - pattern: SSL_set_cipher_list($SSL, $LIST)
+          - pattern: SSL_CTX_set_ciphersuites($CTX, $LIST)
+          - pattern: SSL_set_ciphersuites($SSL, $LIST)
+          - pattern: SSL_CTX_get_ciphers($CTX)
+          - pattern: SSL_get_cipher_list($SSL, $PRIORITY)
+          - pattern: SSL_get_current_cipher($SSL)
+          - pattern: SSL_CIPHER_get_name($CIPHER)
+          - pattern: SSL_CIPHER_get_bits($CIPHER, $ALG_BITS)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"
+  - id: cpp-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SHA1_Init($CTX)
+          - pattern: SHA1_Update($CTX, $DATA, $LEN)
+          - pattern: SHA1_Final($HASH, $CTX)
+          - pattern: |
+              SHA_CTX $CTX;
+              SHA1_Init(&$CTX);
+              SHA1_Update(&$CTX, $DATA, $LEN);
+              SHA1_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha1(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha1(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA1", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA-1", $PROPS)
           - pattern: CryptoPP::SHA1()
           - pattern: CryptoPP::Weak::SHA1()
-      - pattern: $HASH.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::SHA1()
-          - pattern: CryptoPP::Weak::SHA1()
-      - pattern: $HASH.Final($OUT)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::SHA1()
-          - pattern: CryptoPP::Weak::SHA1()
-      - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: SHA1 hash function usage detected in codebase'
-- id: cpp-crypto-sha256
-  message: SHA256 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SHA256_Init($CTX)
-    - pattern: SHA256_Update($CTX, $DATA, $LEN)
-    - pattern: SHA256_Final($HASH, $CTX)
-    - pattern: |
-        SHA256_CTX $CTX;
-        SHA256_Init(&$CTX);
-        SHA256_Update(&$CTX, $DATA, $LEN);
-        SHA256_Final($HASH, &$CTX);
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha256(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha256(), $ENGINE)
-    - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
-    - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA-256", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA256", $PROPS)
-    - pattern: CryptoPP::SHA256()
-    - pattern: Botan::HashFunction::create("SHA-256")
-    - pattern: Botan::HashFunction::create("SHA256")
-    - pattern: Botan::HashFunction::create("SHA2-256")
-    - pattern: Botan::SHA_256()
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern: CryptoPP::SHA256()
-      - pattern: $HASH.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern: CryptoPP::SHA256()
-      - pattern: $HASH.Final($OUT)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern: CryptoPP::SHA256()
-      - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: SHA256 hash function usage detected in codebase'
-- id: cpp-crypto-tls-version
-  message: TLS/SSL version configuration detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SSL_CTX_new(SSLv2_method())
-    - pattern: SSL_CTX_new(SSLv3_method())
-    - pattern: SSL_CTX_new(TLSv1_method())
-    - pattern: SSL_CTX_new(TLSv1_1_method())
-    - pattern: SSL_CTX_new(TLSv1_2_method())
-    - pattern: SSL_CTX_new(TLSv1_3_method())
-    - pattern: SSL_CTX_new(SSLv23_method())
-    - pattern: SSL_CTX_new(DTLSv1_method())
-    - pattern: SSL_CTX_new(DTLSv1_2_method())
-    - patterns:
-      - pattern: SSL_CTX_set_min_proto_version($CTX, $VERSION)
-      - metavariable-regex:
-          metavariable: $VERSION
-          regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-      - focus-metavariable: $VERSION
-    - patterns:
-      - pattern: SSL_CTX_set_max_proto_version($CTX, $VERSION)
-      - metavariable-regex:
-          metavariable: $VERSION
-          regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-      - focus-metavariable: $VERSION
-    - patterns:
-      - pattern: SSL_set_min_proto_version($SSL, $VERSION)
-      - metavariable-regex:
-          metavariable: $VERSION
-          regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-      - focus-metavariable: $VERSION
-    - patterns:
-      - pattern: SSL_set_max_proto_version($SSL, $VERSION)
-      - metavariable-regex:
-          metavariable: $VERSION
-          regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
-      - focus-metavariable: $VERSION
-    - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_SSLv2)
-    - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_SSLv3)
-    - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1)
-    - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_1)
-    - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_2)
-    - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_3)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: TLS/SSL version configuration detected in codebase'
-- id: cpp-crypto-eddsa
-  message: EdDSA signature operations detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_ED25519, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_ED25519, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_ED448, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_ED448, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ED25519, $ENGINE)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ED448, $ENGINE)
-    - pattern: EVP_DigestSignInit($CTX, $PKCTX, NULL, $ENGINE, $PKEY)
-    - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, NULL, $ENGINE, $PKEY)
-    - pattern: CryptoPP::ed25519::Signer($PRIVKEY)
-    - pattern: CryptoPP::ed25519::Verifier($PUBKEY)
-    - pattern: CryptoPP::ed448::Signer($PRIVKEY)
-    - pattern: CryptoPP::ed448::Verifier($PUBKEY)
-    - pattern: Botan::Ed25519_PrivateKey($RNG)
-    - pattern: Botan::Ed25519_PublicKey($PUBKEY)
-    - pattern: Botan::Ed448_PrivateKey($RNG)
-    - pattern: Botan::Ed448_PublicKey($PUBKEY)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: EdDSA signature operations detected in codebase'
-- id: cpp-crypto-random-secure
-  message: Cryptographically secure random number generation detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: RAND_bytes($BUF, $NUM)
-    - pattern: |
-        unsigned char $BUF[$LEN];
-        RAND_bytes($BUF, $LEN);
-        ...
-    - pattern: RAND_pseudo_bytes($BUF, $NUM)
-    - pattern: RAND_add($BUF, $NUM, $ENTROPY)
-    - pattern: RAND_seed($BUF, $NUM)
-    - pattern: CryptoPP::AutoSeededRandomPool()
-    - pattern: CryptoPP::RandomNumberGenerator()
-    - pattern: Botan::RandomNumberGenerator::create("system")
-    - pattern: Botan::RandomNumberGenerator::create("user")
-    - pattern: getentropy($BUF, $SIZE)
-    - pattern: getrandom($BUF, $SIZE, $FLAGS)
-  metadata:
-    category: crypto
-    cwe: CWE-338
-    impact: 'Inventory: Cryptographically secure random number generation detected
-      in codebase'
-- id: cpp-crypto-digital-signatures
-  message: Digital signature operations detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_SignInit_ex($CTX, $TYPE, $ENGINE)
-    - pattern: EVP_SignUpdate($CTX, $DATA, $DATALEN)
-    - pattern: EVP_SignFinal($CTX, $SIG, $SIGLEN, $PKEY)
-    - pattern: EVP_VerifyInit_ex($CTX, $TYPE, $ENGINE)
-    - pattern: EVP_VerifyUpdate($CTX, $DATA, $DATALEN)
-    - pattern: EVP_VerifyFinal($CTX, $SIG, $SIGLEN, $PKEY)
-    - pattern: EVP_DigestSignInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
-    - pattern: EVP_DigestSignUpdate($CTX, $DATA, $DATALEN)
-    - pattern: EVP_DigestSignFinal($CTX, $SIG, $SIGLEN)
-    - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
-    - pattern: EVP_DigestVerifyUpdate($CTX, $DATA, $DATALEN)
-    - pattern: EVP_DigestVerifyFinal($CTX, $SIG, $SIGLEN)
-    - pattern: RSA_sign($TYPE, $M, $MLEN, $SIGRET, $SIGLEN, $RSA)
-    - pattern: RSA_verify($TYPE, $M, $MLEN, $SIGBUF, $SIGLEN, $RSA)
-    - pattern: ECDSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
-    - pattern: ECDSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
-    - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Signer($PRIVKEY)
-    - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Signer($PRIVKEY)
-    - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Verifier($PUBKEY)
-    - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Verifier($PUBKEY)
-    - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Signer($PRIVKEY)
-    - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Verifier($PUBKEY)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $SIGNER
-          pattern-either:
+          - pattern: Botan::HashFunction::create("SHA-1")
+          - pattern: Botan::SHA_160()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA1()
+                    - pattern: CryptoPP::Weak::SHA1()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA1()
+                    - pattern: CryptoPP::Weak::SHA1()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA1()
+                    - pattern: CryptoPP::Weak::SHA1()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"
+  - id: cpp-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SHA256_Init($CTX)
+          - pattern: SHA256_Update($CTX, $DATA, $LEN)
+          - pattern: SHA256_Final($HASH, $CTX)
+          - pattern: |
+              SHA256_CTX $CTX;
+              SHA256_Init(&$CTX);
+              SHA256_Update(&$CTX, $DATA, $LEN);
+              SHA256_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha256(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA-256", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA256", $PROPS)
+          - pattern: CryptoPP::SHA256()
+          - pattern: Botan::HashFunction::create("SHA-256")
+          - pattern: Botan::HashFunction::create("SHA256")
+          - pattern: Botan::HashFunction::create("SHA2-256")
+          - pattern: Botan::SHA_256()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern: CryptoPP::SHA256()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern: CryptoPP::SHA256()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern: CryptoPP::SHA256()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"
+  - id: cpp-crypto-tls-version
+    message: TLS/SSL version configuration detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_new(SSLv2_method())
+          - pattern: SSL_CTX_new(SSLv3_method())
+          - pattern: SSL_CTX_new(TLSv1_method())
+          - pattern: SSL_CTX_new(TLSv1_1_method())
+          - pattern: SSL_CTX_new(TLSv1_2_method())
+          - pattern: SSL_CTX_new(TLSv1_3_method())
+          - pattern: SSL_CTX_new(SSLv23_method())
+          - pattern: SSL_CTX_new(DTLSv1_method())
+          - pattern: SSL_CTX_new(DTLSv1_2_method())
+          - patterns:
+              - pattern: SSL_CTX_set_min_proto_version($CTX, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - patterns:
+              - pattern: SSL_CTX_set_max_proto_version($CTX, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - patterns:
+              - pattern: SSL_set_min_proto_version($SSL, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - patterns:
+              - pattern: SSL_set_max_proto_version($SSL, $VERSION)
+              - metavariable-regex:
+                  metavariable: $VERSION
+                  regex: (TLS1_[0-3]_VERSION|SSL3_VERSION|SSL2_VERSION|DTLS1_VERSION|DTLS1_2_VERSION)
+              - focus-metavariable: $VERSION
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_SSLv2)
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_SSLv3)
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1)
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_1)
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_2)
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_3)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS/SSL version configuration detected in codebase"
+  - id: cpp-crypto-eddsa
+    message: EdDSA signature operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_ED25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_ED25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_ED448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_ED448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ED25519, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ED448, $ENGINE)
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, NULL, $ENGINE, $PKEY)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, NULL, $ENGINE, $PKEY)
+          - pattern: CryptoPP::ed25519::Signer($PRIVKEY)
+          - pattern: CryptoPP::ed25519::Verifier($PUBKEY)
+          - pattern: CryptoPP::ed448::Signer($PRIVKEY)
+          - pattern: CryptoPP::ed448::Verifier($PUBKEY)
+          - pattern: Botan::Ed25519_PrivateKey($RNG)
+          - pattern: Botan::Ed25519_PublicKey($PUBKEY)
+          - pattern: Botan::Ed448_PrivateKey($RNG)
+          - pattern: Botan::Ed448_PublicKey($PUBKEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: EdDSA signature operations detected in codebase"
+  - id: cpp-crypto-random-secure
+    message: Cryptographically secure random number generation detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RAND_bytes($BUF, $NUM)
+          - pattern: |
+              unsigned char $BUF[$LEN];
+              RAND_bytes($BUF, $LEN);
+              ...
+          - pattern: RAND_pseudo_bytes($BUF, $NUM)
+          - pattern: RAND_add($BUF, $NUM, $ENTROPY)
+          - pattern: RAND_seed($BUF, $NUM)
+          - pattern: CryptoPP::AutoSeededRandomPool()
+          - pattern: CryptoPP::RandomNumberGenerator()
+          - pattern: Botan::RandomNumberGenerator::create("system")
+          - pattern: Botan::RandomNumberGenerator::create("user")
+          - pattern: getentropy($BUF, $SIZE)
+          - pattern: getrandom($BUF, $SIZE, $FLAGS)
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Cryptographically secure random number generation detected
+        in codebase"
+  - id: cpp-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_SignInit_ex($CTX, $TYPE, $ENGINE)
+          - pattern: EVP_SignUpdate($CTX, $DATA, $DATALEN)
+          - pattern: EVP_SignFinal($CTX, $SIG, $SIGLEN, $PKEY)
+          - pattern: EVP_VerifyInit_ex($CTX, $TYPE, $ENGINE)
+          - pattern: EVP_VerifyUpdate($CTX, $DATA, $DATALEN)
+          - pattern: EVP_VerifyFinal($CTX, $SIG, $SIGLEN, $PKEY)
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
+          - pattern: EVP_DigestSignUpdate($CTX, $DATA, $DATALEN)
+          - pattern: EVP_DigestSignFinal($CTX, $SIG, $SIGLEN)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
+          - pattern: EVP_DigestVerifyUpdate($CTX, $DATA, $DATALEN)
+          - pattern: EVP_DigestVerifyFinal($CTX, $SIG, $SIGLEN)
+          - pattern: RSA_sign($TYPE, $M, $MLEN, $SIGRET, $SIGLEN, $RSA)
+          - pattern: RSA_verify($TYPE, $M, $MLEN, $SIGBUF, $SIGLEN, $RSA)
+          - pattern: ECDSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
+          - pattern: ECDSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
           - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Signer($PRIVKEY)
           - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Signer($PRIVKEY)
-          - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Signer($PRIVKEY)
-      - pattern: $SIGNER.SignMessage($RNG, $MESSAGE, $SIGNATURE)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $VERIFIER
-          pattern-either:
           - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Verifier($PUBKEY)
           - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Verifier($PUBKEY)
+          - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Signer($PRIVKEY)
           - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Verifier($PUBKEY)
-      - pattern: $VERIFIER.VerifyMessage($MESSAGE, $SIGNATURE)
-    - pattern: DSA_new()
-    - pattern: DSA_generate_parameters_ex($DSA, $BITS, $SEED, $SEEDLEN, $COUNTER,
-        $H_RET, $CALLBACK, $CALLBACKARG)
-    - pattern: DSA_generate_key($DSA)
-    - pattern: DSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $DSA)
-    - pattern: DSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $DSA)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_DSA, $ENGINE)
-    - pattern: Botan::PK_Signer($SIGNER, $RNG)
-    - pattern: Botan::PK_Verifier($VERIFIER)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Digital signature operations detected in codebase'
-- id: cpp-crypto-password-hashing
-  message: Password hashing operations detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - patterns:
-      - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
-          $KEYLEN, $OUT)
-      - metavariable-regex:
-          metavariable: $ITER
-          regex: \d+
-      - focus-metavariable: $ITER
-    - patterns:
-      - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
-          $OUT)
-      - metavariable-regex:
-          metavariable: $ITER
-          regex: \d+
-      - focus-metavariable: $ITER
-    - pattern: EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
-        $KEY, $KEYLEN)
-    - pattern: EVP_KDF_fetch($ENGINE, "PBKDF2", $PROPS)
-    - pattern: EVP_KDF_fetch($ENGINE, "scrypt", $PROPS)
-    - pattern: EVP_KDF_fetch($ENGINE, "Argon2", $PROPS)
-    - pattern: CryptoPP::PKCS5_PBKDF2_HMAC<$HASH>()
-    - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
-        $SALTLEN, $N, $R, $P)
-    - pattern: Botan::PBKDF2($PBKDF)
-    - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
-    - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
-    - pattern: |
-        CryptoPP::PKCS5_PBKDF2_HMAC<$HASH> $PBKDF;
-        $PBKDF.DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT, $SALTLEN, $ITER);
-    - pattern: argon2_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
-        $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $TYPE, $VERSION)
-    - pattern: argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
-        $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-    - pattern: argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
-        $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-    - pattern: argon2d_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
-        $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-    - patterns:
-      - pattern: argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
-          $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-      - metavariable-regex:
-          metavariable: $TIME_COST
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $MEMORY_COST
-          regex: \d+
-    - patterns:
-      - pattern: argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
-          $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
-      - metavariable-regex:
-          metavariable: $TIME_COST
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $MEMORY_COST
-          regex: \d+
-    - patterns:
-      - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
-          $SALTLEN, $N, $R, $P)
-      - metavariable-regex:
-          metavariable: $N
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $R
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $P
-          regex: \d+
-    - patterns:
-      - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
-      - metavariable-regex:
-          metavariable: $N
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $R
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $P
-          regex: \d+
-    - patterns:
-      - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
-      - metavariable-regex:
-          metavariable: $MEMORY
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $ITERATIONS
-          regex: \d+
-    - patterns:
-      - pattern: |
-          CryptoPP::PKCS5_PBKDF2_HMAC<$HASH> $PBKDF;
-          $PBKDF.DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT, $SALTLEN, $ITER);
-      - metavariable-regex:
-          metavariable: $ITER
-          regex: \d+
-      - focus-metavariable: $ITER
-  metadata:
-    category: crypto
-    cwe: CWE-326
-    impact: 'Inventory: Password hashing operations detected in codebase'
-- id: cpp-crypto-cipher-3des
-  message: 3DES cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: DES_set_key_checked($KEY, $SCHEDULE)
-    - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
-    - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
-    - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-ECB", $PROPS)
-    - pattern: DES_ede3_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
-        $IV, $NUM, $ENCRYPT)
-    - pattern: DES_ede3_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
-        $IV, $NUM)
-    - pattern: CryptoPP::DES_EDE3::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::DES_EDE3::Decryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("3DES/ECB", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("3DES/CBC", Botan::ENCRYPTION)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: 3DES cipher usage detected in codebase'
-- id: cpp-crypto-sha3
-  message: SHA3 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_224(), $ENGINE)
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_256(), $ENGINE)
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_384(), $ENGINE)
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_512(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_224(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_256(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_384(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_512(), $ENGINE)
-    - pattern: CryptoPP::SHA3_224()
-    - pattern: CryptoPP::SHA3_256()
-    - pattern: CryptoPP::SHA3_384()
-    - pattern: CryptoPP::SHA3_512()
-    - pattern: EVP_MD_fetch($ENGINE, "SHA3-224", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA3-256", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA3-384", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA3-512", $PROPS)
-    - pattern: Botan::HashFunction::create("SHA-3(224)")
-    - pattern: Botan::HashFunction::create("SHA-3(256)")
-    - pattern: Botan::HashFunction::create("SHA-3(384)")
-    - pattern: Botan::HashFunction::create("SHA-3(512)")
-    - pattern: Botan::SHA3_224()
-    - pattern: Botan::SHA3_256()
-    - pattern: Botan::SHA3_384()
-    - pattern: Botan::SHA3_512()
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $SIGNER
+                  pattern-either:
+                    - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Signer($PRIVKEY)
+                    - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Signer($PRIVKEY)
+                    - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Signer($PRIVKEY)
+              - pattern: $SIGNER.SignMessage($RNG, $MESSAGE, $SIGNATURE)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $VERIFIER
+                  pattern-either:
+                    - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Verifier($PUBKEY)
+                    - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Verifier($PUBKEY)
+                    - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Verifier($PUBKEY)
+              - pattern: $VERIFIER.VerifyMessage($MESSAGE, $SIGNATURE)
+          - pattern: DSA_new()
+          - pattern: DSA_generate_parameters_ex($DSA, $BITS, $SEED, $SEEDLEN, $COUNTER,
+              $H_RET, $CALLBACK, $CALLBACKARG)
+          - pattern: DSA_generate_key($DSA)
+          - pattern: DSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $DSA)
+          - pattern: DSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $DSA)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_DSA, $ENGINE)
+          - pattern: Botan::PK_Signer($SIGNER, $RNG)
+          - pattern: Botan::PK_Verifier($VERIFIER)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"
+  - id: cpp-crypto-password-hashing
+    message: Password hashing operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
+                  $KEYLEN, $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - focus-metavariable: $ITER
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
+                  $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - focus-metavariable: $ITER
+          - pattern: EVP_PBE_scrypt($PASS, $PASSLEN, $SALT, $SALTLEN, $N, $R, $P, $MAXMEM,
+              $KEY, $KEYLEN)
+          - pattern: EVP_KDF_fetch($ENGINE, "PBKDF2", $PROPS)
+          - pattern: EVP_KDF_fetch($ENGINE, "scrypt", $PROPS)
+          - pattern: EVP_KDF_fetch($ENGINE, "Argon2", $PROPS)
+          - pattern: CryptoPP::PKCS5_PBKDF2_HMAC<$HASH>()
+          - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
+              $SALTLEN, $N, $R, $P)
+          - pattern: Botan::PBKDF2($PBKDF)
+          - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
+          - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
+          - pattern: |
+              CryptoPP::PKCS5_PBKDF2_HMAC<$HASH> $PBKDF;
+              $PBKDF.DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT, $SALTLEN, $ITER);
+          - pattern: argon2_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+              $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $TYPE, $VERSION)
+          - pattern: argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+              $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
+          - pattern: argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+              $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
+          - pattern: argon2d_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+              $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
+          - patterns:
+              - pattern: argon2id_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+                  $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
+              - metavariable-regex:
+                  metavariable: $TIME_COST
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $MEMORY_COST
+                  regex: \d+
+          - patterns:
+              - pattern: argon2i_hash($TIME_COST, $MEMORY_COST, $PARALLELISM, $PWD, $PWD_LEN,
+                  $SALT, $SALTLEN, $HASH, $HASH_LEN, $ENCODED, $ENCODED_LEN, $VERSION)
+              - metavariable-regex:
+                  metavariable: $TIME_COST
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $MEMORY_COST
+                  regex: \d+
+          - patterns:
+              - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
+                  $SALTLEN, $N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+          - patterns:
+              - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+          - patterns:
+              - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: \d+
+          - patterns:
+              - pattern: |
+                  CryptoPP::PKCS5_PBKDF2_HMAC<$HASH> $PBKDF;
+                  $PBKDF.DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT, $SALTLEN, $ITER);
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - focus-metavariable: $ITER
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Password hashing operations detected in codebase"
+  - id: cpp-crypto-cipher-3des
+    message: 3DES cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: DES_set_key_checked($KEY, $SCHEDULE)
+          - pattern: DES_set_key_unchecked($KEY, $SCHEDULE)
+          - pattern: DES_ede3_set_key($KEY, $SCHEDULE)
+          - pattern: DES_ede3_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ede3_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-EDE3-ECB", $PROPS)
+          - pattern: DES_ede3_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
+              $IV, $NUM, $ENCRYPT)
+          - pattern: DES_ede3_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $KS1, $KS2, $KS3,
+              $IV, $NUM)
+          - pattern: CryptoPP::DES_EDE3::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::DES_EDE3::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("3DES/ECB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("3DES/CBC", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: 3DES cipher usage detected in codebase"
+  - id: cpp-crypto-sha3
+    message: SHA3 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_224(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_256(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_384(), $ENGINE)
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha3_512(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_224(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_256(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_384(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha3_512(), $ENGINE)
           - pattern: CryptoPP::SHA3_224()
           - pattern: CryptoPP::SHA3_256()
           - pattern: CryptoPP::SHA3_384()
           - pattern: CryptoPP::SHA3_512()
-      - pattern: $HASH.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::SHA3_224()
-          - pattern: CryptoPP::SHA3_256()
-          - pattern: CryptoPP::SHA3_384()
-          - pattern: CryptoPP::SHA3_512()
-      - pattern: $HASH.Final($OUT)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern-either:
-          - pattern: CryptoPP::SHA3_224()
-          - pattern: CryptoPP::SHA3_256()
-          - pattern: CryptoPP::SHA3_384()
-          - pattern: CryptoPP::SHA3_512()
-      - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: SHA3 hash function usage detected in codebase'
-- id: cpp-crypto-certificate-validation
-  message: TLS certificate validation configuration detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SSL_CTX_set_verify($CTX, $MODE, $CALLBACK)
-    - pattern: SSL_set_verify($SSL, $MODE, $CALLBACK)
-    - pattern: SSL_CTX_set_verify_depth($CTX, $DEPTH)
-    - pattern: SSL_CTX_set_cert_verify_callback($CTX, $CALLBACK, $ARG)
-    - pattern: SSL_get_verify_result($SSL)
-    - pattern: SSL_CTX_load_verify_locations($CTX, $CAFILE, $CAPATH)
-    - pattern: SSL_CTX_set_default_verify_paths($CTX)
-    - pattern: X509_STORE_CTX_get_error($CTX)
-    - pattern: X509_verify_cert($CTX)
-  metadata:
-    category: crypto
-    cwe: CWE-295
-    impact: 'Inventory: TLS certificate validation configuration detected in codebase'
-- id: cpp-crypto-key-derivation
-  message: Key derivation function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - patterns:
-      - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
-          $KEYLEN, $OUT)
-      - metavariable-regex:
-          metavariable: $ITER
-          regex: \d+
-      - focus-metavariable: $ITER
-    - patterns:
-      - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
-          $OUT)
-      - metavariable-regex:
-          metavariable: $ITER
-          regex: \d+
-      - focus-metavariable: $ITER
-    - pattern: EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY, $IV)
-    - pattern: EVP_PKEY_derive_init($CTX)
-    - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
-    - pattern: EVP_KDF_fetch($ENGINE, "HKDF", $PROPS)
-    - pattern: EVP_PKEY_CTX_set_hkdf_md($CTX, $MD)
-    - pattern: EVP_PKEY_CTX_set1_hkdf_salt($CTX, $SALT, $SALTLEN)
-    - pattern: EVP_PKEY_CTX_set1_hkdf_key($CTX, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_CTX_add1_hkdf_info($CTX, $INFO, $INFOLEN)
-    - pattern: CryptoPP::HKDF<$HASH> $HKDF;
-    - pattern: CryptoPP::HKDF<$HASH>($SALT, $SALTLEN, $INFO, $INFOLEN)
-    - pattern: CryptoPP::HKDF<$HASH>::DeriveKey($KEY, $KEYLEN, $SECRET, $SECRETLEN,
-        $SALT, $SALTLEN, $INFO, $INFOLEN)
-    - patterns:
-      - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
-          $SALTLEN, $N, $R, $P)
-      - metavariable-regex:
-          metavariable: $N
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $R
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $P
-          regex: \d+
-    - patterns:
-      - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
-      - metavariable-regex:
-          metavariable: $N
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $R
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $P
-          regex: \d+
-    - patterns:
-      - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
-      - metavariable-regex:
-          metavariable: $MEMORY
-          regex: \d+
-      - metavariable-regex:
-          metavariable: $ITERATIONS
-          regex: \d+
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Key derivation function usage detected in codebase'
-- id: cpp-crypto-cipher-camellia
-  message: Camellia cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_cbc(), $ENGINE, $KEY, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_192_cbc(), $ENGINE, $KEY, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_cbc(), $ENGINE, $KEY, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_gcm(), $ENGINE, $KEY, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_gcm(), $ENGINE, $KEY, $IV,
-        $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-192-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-256-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-GCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-256-GCM", $PROPS)
-    - pattern: CryptoPP::Camellia::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::Camellia::Decryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("Camellia-128/CBC", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("Camellia-256/CBC", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("Camellia-128/GCM", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("Camellia-256/GCM", Botan::ENCRYPTION)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Camellia cipher usage detected in codebase'
-- id: cpp-crypto-cipher-aes
-  message: AES cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - patterns:
-      - pattern: AES_set_encrypt_key($KEY, $BITS, $SCHEDULE)
-      - metavariable-regex:
-          metavariable: $BITS
-          regex: (128|192|256)
-      - focus-metavariable: $BITS
-    - patterns:
-      - pattern: AES_set_decrypt_key($KEY, $BITS, $SCHEDULE)
-      - metavariable-regex:
-          metavariable: $BITS
-          regex: (128|192|256)
-      - focus-metavariable: $BITS
-    - pattern: AES_encrypt($INPUT, $OUTPUT, $SCHEDULE)
-    - pattern: AES_decrypt($INPUT, $OUTPUT, $SCHEDULE)
-    - pattern: AES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-192-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CBC", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-GCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-GCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CCM", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CCM", $PROPS)
-    - patterns:
-      - pattern: CryptoPP::AES::Encryption($KEY, $KEYLEN)
-      - metavariable-regex:
-          metavariable: $KEYLEN
-          regex: \d+
-      - focus-metavariable: $KEYLEN
-    - patterns:
-      - pattern: CryptoPP::AES::Decryption($KEY, $KEYLEN)
-      - metavariable-regex:
-          metavariable: $KEYLEN
-          regex: \d+
-      - focus-metavariable: $KEYLEN
-    - patterns:
-      - pattern: EVP_CIPHER_fetch($ENGINE, $ALGO, $PROPS)
-      - metavariable-regex:
-          metavariable: $ALGO
-          regex: '"AES-[0-9]+-[A-Z]+"'
-      - focus-metavariable: $ALGO
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: AES cipher usage detected in codebase'
-- id: cpp-crypto-ecdh
-  message: ECDH key exchange operations detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: ECDH_compute_key($KEY, $KEYLEN, $PUBKEY, $ECKEY, $KDF)
-    - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_X25519, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_X25519, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_X448, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_X448, $ENGINE, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X25519, $ENGINE)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X448, $ENGINE)
-    - pattern: EVP_PKEY_derive_init($CTX)
-    - pattern: EVP_PKEY_derive_set_peer($CTX, $PEER)
-    - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
-    - pattern: CryptoPP::ECDH<CryptoPP::ECP>::Domain($GROUP)
-    - pattern: CryptoPP::X25519::Domain()
-    - pattern: CryptoPP::X448::Domain()
-    - pattern: Botan::ECDH_PrivateKey($RNG, $GROUP)
-    - pattern: Botan::ECDH_PublicKey($GROUP, $PUBKEY)
-    - pattern: Botan::X25519_PrivateKey($RNG)
-    - pattern: Botan::X25519_PublicKey($PUBKEY)
-    - pattern: Botan::X448_PrivateKey($RNG)
-    - pattern: Botan::X448_PublicKey($PUBKEY)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: ECDH key exchange operations detected in codebase'
-- id: cpp-crypto-hmac
-  message: HMAC usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: HMAC($EVPTYPE, $KEY, $KEYLEN, $DATA, $DATALEN, $HASH, $HASHLEN)
-    - pattern: HMAC_Init_ex($CTX, $KEY, $KEYLEN, $EVPTYPE, $ENGINE)
-    - pattern: HMAC_Update($CTX, $DATA, $DATALEN)
-    - pattern: HMAC_Final($CTX, $HASH, $HASHLEN)
-    - pattern: |
-        HMAC_CTX *$CTX;
-        HMAC_Init_ex($CTX, $KEY, $KEYLEN, $EVPTYPE, $ENGINE);
-        HMAC_Update($CTX, $DATA, $DATALEN);
-        HMAC_Final($CTX, $HASH, $HASHLEN);
-    - pattern: HMAC_CTX_new()
-    - pattern: HMAC_CTX_free($CTX)
-    - pattern: EVP_DigestSignInit($CTX, $PKCTX, $EVPTYPE, $ENGINE, $KEY)
-    - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $EVPTYPE, $ENGINE, $KEY)
-    - pattern: EVP_MAC_fetch($ENGINE, "HMAC", $PROPS)
-    - pattern: CryptoPP::HMAC<$HASH> $VAR;
-    - pattern: CryptoPP::HMAC<$HASH> $VAR($KEY, $KEYLEN);
-    - pattern: CryptoPP::HMAC<$HASH>($KEY, $KEYLEN)
-    - pattern: Botan::MessageAuthenticationCode::create("HMAC($ALGO)")
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HMAC
-          pattern-either:
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-224", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-256", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-384", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA3-512", $PROPS)
+          - pattern: Botan::HashFunction::create("SHA-3(224)")
+          - pattern: Botan::HashFunction::create("SHA-3(256)")
+          - pattern: Botan::HashFunction::create("SHA-3(384)")
+          - pattern: Botan::HashFunction::create("SHA-3(512)")
+          - pattern: Botan::SHA3_224()
+          - pattern: Botan::SHA3_256()
+          - pattern: Botan::SHA3_384()
+          - pattern: Botan::SHA3_512()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA3_224()
+                    - pattern: CryptoPP::SHA3_256()
+                    - pattern: CryptoPP::SHA3_384()
+                    - pattern: CryptoPP::SHA3_512()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA3_224()
+                    - pattern: CryptoPP::SHA3_256()
+                    - pattern: CryptoPP::SHA3_384()
+                    - pattern: CryptoPP::SHA3_512()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern-either:
+                    - pattern: CryptoPP::SHA3_224()
+                    - pattern: CryptoPP::SHA3_256()
+                    - pattern: CryptoPP::SHA3_384()
+                    - pattern: CryptoPP::SHA3_512()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA3 hash function usage detected in codebase"
+  - id: cpp-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_verify($CTX, $MODE, $CALLBACK)
+          - pattern: SSL_set_verify($SSL, $MODE, $CALLBACK)
+          - pattern: SSL_CTX_set_verify_depth($CTX, $DEPTH)
+          - pattern: SSL_CTX_set_cert_verify_callback($CTX, $CALLBACK, $ARG)
+          - pattern: SSL_get_verify_result($SSL)
+          - pattern: SSL_CTX_load_verify_locations($CTX, $CAFILE, $CAPATH)
+          - pattern: SSL_CTX_set_default_verify_paths($CTX)
+          - pattern: X509_STORE_CTX_get_error($CTX)
+          - pattern: X509_verify_cert($CTX)
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"
+  - id: cpp-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $DIGEST,
+                  $KEYLEN, $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - focus-metavariable: $ITER
+          - patterns:
+              - pattern: PKCS5_PBKDF2_HMAC_SHA1($PASS, $PASSLEN, $SALT, $SALTLEN, $ITER, $KEYLEN,
+                  $OUT)
+              - metavariable-regex:
+                  metavariable: $ITER
+                  regex: \d+
+              - focus-metavariable: $ITER
+          - pattern: EVP_BytesToKey($TYPE, $MD, $SALT, $DATA, $DATALEN, $COUNT, $KEY, $IV)
+          - pattern: EVP_PKEY_derive_init($CTX)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+          - pattern: EVP_KDF_fetch($ENGINE, "HKDF", $PROPS)
+          - pattern: EVP_PKEY_CTX_set_hkdf_md($CTX, $MD)
+          - pattern: EVP_PKEY_CTX_set1_hkdf_salt($CTX, $SALT, $SALTLEN)
+          - pattern: EVP_PKEY_CTX_set1_hkdf_key($CTX, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_CTX_add1_hkdf_info($CTX, $INFO, $INFOLEN)
+          - pattern: CryptoPP::HKDF<$HASH> $HKDF;
+          - pattern: CryptoPP::HKDF<$HASH>($SALT, $SALTLEN, $INFO, $INFOLEN)
+          - pattern: CryptoPP::HKDF<$HASH>::DeriveKey($KEY, $KEYLEN, $SECRET, $SECRETLEN,
+              $SALT, $SALTLEN, $INFO, $INFOLEN)
+          - patterns:
+              - pattern: CryptoPP::Scrypt().DeriveKey($KEY, $KEYLEN, $PASS, $PASSLEN, $SALT,
+                  $SALTLEN, $N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+          - patterns:
+              - pattern: Botan::Scrypt().derive_key($KEYLEN, $PASS, $SALT, $N, $R, $P)
+              - metavariable-regex:
+                  metavariable: $N
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $R
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $P
+                  regex: \d+
+          - patterns:
+              - pattern: Botan::Argon2($MEMORY, $PARALLELISM, $ITERATIONS)
+              - metavariable-regex:
+                  metavariable: $MEMORY
+                  regex: \d+
+              - metavariable-regex:
+                  metavariable: $ITERATIONS
+                  regex: \d+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Key derivation function usage detected in codebase"
+  - id: cpp-crypto-cipher-camellia
+    message: Camellia cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_cbc(), $ENGINE, $KEY, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_192_cbc(), $ENGINE, $KEY, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_cbc(), $ENGINE, $KEY, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_128_gcm(), $ENGINE, $KEY, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_camellia_256_gcm(), $ENGINE, $KEY, $IV,
+              $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-192-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-256-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-128-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "CAMELLIA-256-GCM", $PROPS)
+          - pattern: CryptoPP::Camellia::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Camellia::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("Camellia-128/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Camellia-256/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Camellia-128/GCM", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Camellia-256/GCM", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Camellia cipher usage detected in codebase"
+  - id: cpp-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - patterns:
+              - pattern: AES_set_encrypt_key($KEY, $BITS, $SCHEDULE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: (128|192|256)
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: AES_set_decrypt_key($KEY, $BITS, $SCHEDULE)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: (128|192|256)
+              - focus-metavariable: $BITS
+          - pattern: AES_encrypt($INPUT, $OUTPUT, $SCHEDULE)
+          - pattern: AES_decrypt($INPUT, $OUTPUT, $SCHEDULE)
+          - pattern: AES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-192-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CBC", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-GCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-128-CCM", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "AES-256-CCM", $PROPS)
+          - patterns:
+              - pattern: CryptoPP::AES::Encryption($KEY, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+              - focus-metavariable: $KEYLEN
+          - patterns:
+              - pattern: CryptoPP::AES::Decryption($KEY, $KEYLEN)
+              - metavariable-regex:
+                  metavariable: $KEYLEN
+                  regex: \d+
+              - focus-metavariable: $KEYLEN
+          - patterns:
+              - pattern: EVP_CIPHER_fetch($ENGINE, $ALGO, $PROPS)
+              - metavariable-regex:
+                  metavariable: $ALGO
+                  regex: '"AES-[0-9]+-[A-Z]+"'
+              - focus-metavariable: $ALGO
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
+  - id: cpp-crypto-ecdh
+    message: ECDH key exchange operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: ECDH_compute_key($KEY, $KEYLEN, $PUBKEY, $ECKEY, $KDF)
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_X25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_X25519, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_private_key(EVP_PKEY_X448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_new_raw_public_key(EVP_PKEY_X448, $ENGINE, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X25519, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_X448, $ENGINE)
+          - pattern: EVP_PKEY_derive_init($CTX)
+          - pattern: EVP_PKEY_derive_set_peer($CTX, $PEER)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+          - pattern: CryptoPP::ECDH<CryptoPP::ECP>::Domain($GROUP)
+          - pattern: CryptoPP::X25519::Domain()
+          - pattern: CryptoPP::X448::Domain()
+          - pattern: Botan::ECDH_PrivateKey($RNG, $GROUP)
+          - pattern: Botan::ECDH_PublicKey($GROUP, $PUBKEY)
+          - pattern: Botan::X25519_PrivateKey($RNG)
+          - pattern: Botan::X25519_PublicKey($PUBKEY)
+          - pattern: Botan::X448_PrivateKey($RNG)
+          - pattern: Botan::X448_PublicKey($PUBKEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDH key exchange operations detected in codebase"
+  - id: cpp-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: HMAC($EVPTYPE, $KEY, $KEYLEN, $DATA, $DATALEN, $HASH, $HASHLEN)
+          - pattern: HMAC_Init_ex($CTX, $KEY, $KEYLEN, $EVPTYPE, $ENGINE)
+          - pattern: HMAC_Update($CTX, $DATA, $DATALEN)
+          - pattern: HMAC_Final($CTX, $HASH, $HASHLEN)
+          - pattern: |
+              HMAC_CTX *$CTX;
+              HMAC_Init_ex($CTX, $KEY, $KEYLEN, $EVPTYPE, $ENGINE);
+              HMAC_Update($CTX, $DATA, $DATALEN);
+              HMAC_Final($CTX, $HASH, $HASHLEN);
+          - pattern: HMAC_CTX_new()
+          - pattern: HMAC_CTX_free($CTX)
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, $EVPTYPE, $ENGINE, $KEY)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $EVPTYPE, $ENGINE, $KEY)
+          - pattern: EVP_MAC_fetch($ENGINE, "HMAC", $PROPS)
+          - pattern: CryptoPP::HMAC<$HASH> $VAR;
+          - pattern: CryptoPP::HMAC<$HASH> $VAR($KEY, $KEYLEN);
           - pattern: CryptoPP::HMAC<$HASH>($KEY, $KEYLEN)
-          - pattern: CryptoPP::HMAC<$HASH> $HMAC($KEY, $KEYLEN);
-      - pattern: $HMAC.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HMAC
-          pattern-either:
-          - pattern: CryptoPP::HMAC<$HASH>($KEY, $KEYLEN)
-          - pattern: CryptoPP::HMAC<$HASH> $HMAC($KEY, $KEYLEN);
-      - pattern: $HMAC.Final($OUT)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: HMAC usage detected in codebase'
-- id: cpp-crypto-diffie-hellman
-  message: Diffie-Hellman key exchange detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: DH_new()
-    - patterns:
-      - pattern: DH_generate_parameters_ex($DH, $PRIME_LEN, $GENERATOR, $BN)
-      - metavariable-regex:
-          metavariable: $PRIME_LEN
-          regex: \d+
-      - focus-metavariable: $PRIME_LEN
-    - pattern: DH_generate_key($DH)
-    - pattern: DH_compute_key($KEY, $PUBKEY, $DH)
-    - pattern: EVP_PKEY_new_DH($DH)
-    - pattern: EVP_PKEY_assign_DH($PKEY, $DH)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_DH, $ENGINE)
-    - pattern: EVP_PKEY_derive_init($CTX)
-    - pattern: EVP_PKEY_derive_set_peer($CTX, $PEER)
-    - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
-    - pattern: EVP_PKEY_get0_DH($PKEY)
-    - pattern: DH_set0_pqg($DH, $P, $Q, $G)
-    - pattern: DH_get0_pqg($DH, $P, $Q, $G)
-    - pattern: CryptoPP::DH($GROUP, $GENERATOR)
-    - pattern: CryptoPP::DH_Domain($PRIME, $GENERATOR)
-    - pattern: Botan::DH_PrivateKey($RNG, $GROUP, $GENERATOR)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Diffie-Hellman key exchange detected in codebase'
-- id: cpp-crypto-ecdsa
-  message: ECDSA cryptographic operations detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EC_KEY_new()
-    - pattern: EC_KEY_new_by_curve_name($NID)
-    - pattern: EC_KEY_generate_key($KEY)
-    - pattern: ECDSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
-    - pattern: ECDSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
-    - pattern: ECDSA_do_sign($DGST, $DGSTLEN, $ECKEY)
-    - pattern: ECDSA_do_verify($DGST, $DGSTLEN, $SIG, $ECKEY)
-    - pattern: EVP_PKEY_new_EC_KEY($ECKEY)
-    - pattern: EVP_PKEY_assign_EC_KEY($PKEY, $ECKEY)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_EC, $ENGINE)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ECDSA, $ENGINE)
-    - pattern: EVP_DigestSignInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
-    - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
-    - pattern: EC_GROUP_new_by_curve_name($NID)
-    - pattern: EC_GROUP_get_curve_name($GROUP)
-    - pattern: EC_POINT_point2oct($GROUP, $POINT, $FORM, $BUF, $LEN, $CTX)
-    - pattern: EC_POINT_oct2point($GROUP, $POINT, $BUF, $LEN, $CTX)
-    - pattern: EVP_PKEY_get0_EC_KEY($PKEY)
-    - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Signer($PRIVKEY)
-    - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Verifier($PUBKEY)
-    - pattern: Botan::ECDSA_PrivateKey($RNG, $GROUP)
-    - pattern: Botan::ECDSA_PublicKey($GROUP, $PUBKEY)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: ECDSA cryptographic operations detected in codebase'
-- id: cpp-crypto-sha512
-  message: SHA512 hash function usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: SHA512_Init($CTX)
-    - pattern: SHA512_Update($CTX, $DATA, $LEN)
-    - pattern: SHA512_Final($HASH, $CTX)
-    - pattern: |
-        SHA512_CTX $CTX;
-        SHA512_Init(&$CTX);
-        SHA512_Update(&$CTX, $DATA, $LEN);
-        SHA512_Final($HASH, &$CTX);
-    - pattern: EVP_DigestInit_ex($CTX, EVP_sha512(), $ENGINE)
-    - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha512(), $ENGINE)
-    - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
-    - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA-512", $PROPS)
-    - pattern: EVP_MD_fetch($ENGINE, "SHA512", $PROPS)
-    - pattern: CryptoPP::SHA512()
-    - pattern: Botan::HashFunction::create("SHA-512")
-    - pattern: Botan::SHA_512()
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern: CryptoPP::SHA512()
-      - pattern: $HASH.Update($DATA, $LEN)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern: CryptoPP::SHA512()
-      - pattern: $HASH.Final($OUT)
-    - patterns:
-      - metavariable-pattern:
-          metavariable: $HASH
-          pattern: CryptoPP::SHA512()
-      - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: SHA512 hash function usage detected in codebase'
-- id: cpp-crypto-cryptopp
-  message: Crypto++ library usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: CryptoPP::AES::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::AES::Decryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::SHA256()
-    - pattern: CryptoPP::SHA512()
-    - pattern: CryptoPP::RSA::PrivateKey()
-    - pattern: CryptoPP::RSA::PublicKey()
-    - pattern: CryptoPP::AutoSeededRandomPool()
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Crypto++ library usage detected in codebase'
-- id: cpp-crypto-iv-nonce
-  message: Initialization vector or nonce usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_SET_IVLEN, $IVLEN, $NULL)
-    - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_IVLEN, $IVLEN, $NULL)
-    - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_GET_TAG, $TAGLEN, $TAG)
-    - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_TAG, $TAGLEN, $TAG)
-    - pattern: EVP_EncryptInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV)
-    - pattern: EVP_DecryptInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV)
-    - pattern: EVP_CipherInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-    - pattern: DES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-    - pattern: RAND_bytes($IV, $IVLEN)
-    - pattern: RAND_pseudo_bytes($IV, $IVLEN)
-    - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
-    - pattern: CryptoPP::GCM<$CIPHER>::Encryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("AES-256/GCM", Botan::ENCRYPTION)
-  metadata:
-    category: crypto
-    cwe: CWE-330
-    impact: 'Inventory: Initialization vector or nonce usage detected in codebase'
-- id: cpp-crypto-cipher-des
-  message: DES cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: DES_set_key($KEY, $SCHEDULE)
-    - pattern: DES_encrypt($DATA, $SCHEDULE, $ENCRYPT)
-    - pattern: DES_decrypt($DATA, $SCHEDULE, $DECRYPT)
-    - pattern: DES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
-    - pattern: DES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_des_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CipherInit_ex($CTX, EVP_des_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "DES-ECB", $PROPS)
-    - pattern: EVP_CIPHER_fetch($ENGINE, "DES-CBC", $PROPS)
-    - pattern: DES_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM, $ENCRYPT)
-    - pattern: DES_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
-    - pattern: DES_set_odd_parity($KEY)
-    - pattern: CryptoPP::DES::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::DES::Decryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("DES/ECB", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("DES/CBC", Botan::ENCRYPTION)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: DES cipher usage detected in codebase'
-- id: cpp-crypto-random-insecure
-  message: Non-cryptographic random number generator detected in cryptographic context
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: rand()
-    - pattern: random()
-    - pattern: srand($SEED)
-    - pattern: srandom($SEED)
-    - pattern: std::mt19937()
-    - pattern: std::mt19937_64()
-    - pattern: std::linear_congruential_engine<$A, $C, $M>()
-    - pattern: std::mersenne_twister_engine<$A, $B, $C, $D>()
-    - pattern: |
-        std::random_device $RD;
-        std::mt19937 $GEN($RD());
-    - pattern: |
-        std::random_device $RD;
-        std::mt19937_64 $GEN($RD());
-  metadata:
-    category: crypto
-    cwe: CWE-338
-    impact: 'Inventory: Non-cryptographic random number generator detected (may be
-      used in cryptographic context)'
-- id: cpp-crypto-libsodium
-  message: libsodium cryptographic library usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: sodium_init()
-    - pattern: crypto_box_easy($C, $M, $MLEN, $N, $PK, $SK)
-    - pattern: crypto_box_open_easy($M, $C, $CLEN, $N, $PK, $SK)
-    - pattern: crypto_secretbox_easy($C, $M, $MLEN, $N, $K)
-    - pattern: crypto_secretbox_open_easy($M, $C, $CLEN, $N, $K)
-    - pattern: crypto_sign_detached($SIG, $SIGLEN, $M, $MLEN, $SK)
-    - pattern: crypto_sign_verify_detached($SIG, $M, $MLEN, $PK)
-    - pattern: crypto_hash_sha256($OUT, $IN, $INLEN)
-    - pattern: crypto_hash_sha512($OUT, $IN, $INLEN)
-    - pattern: crypto_generichash($OUT, $OUTLEN, $IN, $INLEN, $KEY, $KEYLEN)
-    - pattern: crypto_pwhash($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT,
-        $ALG)
-    - pattern: crypto_pwhash_str($OUT, $PASSWD, $PASSLEN, $OPSLIMIT, $MEMLIMIT)
-    - pattern: crypto_pwhash_str_verify($STR, $PASSWD, $PASSLEN)
-    - pattern: crypto_pwhash_argon2i($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
-        $MEMLIMIT, $ALG)
-    - pattern: crypto_pwhash_argon2id($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
-        $MEMLIMIT, $ALG)
-    - pattern: randombytes($BUF, $SIZE)
-    - pattern: randombytes_buf($BUF, $SIZE)
-    - pattern: randombytes_random()
-    - pattern: crypto_aead_chacha20poly1305_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN,
-        $NPUB, $K)
-    - pattern: crypto_aead_chacha20poly1305_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD,
-        $ADLEN, $K)
-    - pattern: crypto_aead_aes256gcm_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN, $NPUB,
-        $K)
-    - pattern: crypto_aead_aes256gcm_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD, $ADLEN,
-        $K)
-    - pattern: crypto_box_keypair($PK, $SK)
-    - pattern: crypto_sign_keypair($PK, $SK)
-    - pattern: crypto_secretbox_keygen($K)
-    - pattern: crypto_generichash_blake2b_salt_personal($OUT, $OUTLEN, $IN, $INLEN,
-        $KEY, $KEYLEN, $SALT, $PERSONAL)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: libsodium cryptographic library usage detected in codebase'
-- id: cpp-crypto-random-generation
-  message: Random number generation for cryptographic use detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: RAND_bytes($BUF, $NUM)
-    - pattern: |
-        unsigned char $BUF[$LEN];
-        RAND_bytes($BUF, $LEN);
-        ...
-    - pattern: CryptoPP::AutoSeededRandomPool()
-    - pattern: CryptoPP::RandomNumberGenerator()
-    - pattern: Botan::RandomNumberGenerator::create("system")
-    - pattern: std::random_device()
-    - pattern: std::mt19937()
-  metadata:
-    category: crypto
-    cwe: CWE-338
-    impact: 'Inventory: Random number generation for cryptographic use detected in
-      codebase'
-- id: cpp-crypto-cipher-twofish
-  message: Twofish cipher usage detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: CryptoPP::Twofish::Encryption($KEY, $KEYLEN)
-    - pattern: CryptoPP::Twofish::Decryption($KEY, $KEYLEN)
-    - pattern: Botan::Cipher_Mode::create("Twofish/CBC", Botan::ENCRYPTION)
-    - pattern: Botan::Cipher_Mode::create("Twofish/GCM", Botan::ENCRYPTION)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: Twofish cipher usage detected in codebase'
-- id: cpp-crypto-hardcoded-key
-  message: Hardcoded cryptographic key detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: |
-        unsigned char $KEY[] = "$STRING";
-    - pattern: |
-        char $KEY[] = "$STRING";
-    - pattern: |
-        const unsigned char $KEY[] = "$STRING";
-    - pattern: |
-        const char $KEY[] = "$STRING";
-    - pattern: |
-        static unsigned char $KEY[] = "$STRING";
-    - pattern: |
-        static char $KEY[] = "$STRING";
-    - pattern: |
-        constexpr unsigned char $KEY[] = "$STRING";
-    - pattern: |
-        constexpr char $KEY[] = "$STRING";
-    - pattern: |
-        #define $KEY "$STRING"
-    - pattern: |
-        unsigned char $KEY[$LEN] = {$BYTES};
-    - pattern: |
-        const unsigned char $KEY[$LEN] = {$BYTES};
-    - pattern: |
-        static unsigned char $KEY[$LEN] = {$BYTES};
-    - pattern: |
-        constexpr unsigned char $KEY[$LEN] = {$BYTES};
-    - pattern: |
-        std::string $KEY = "$STRING";
-    - pattern: |
-        const std::string $KEY = "$STRING";
-    - pattern: |
-        static std::string $KEY = "$STRING";
-    - pattern: |
-        constexpr std::string $KEY = "$STRING";
-    - pattern: |
-        std::vector<unsigned char> $KEY = {$BYTES};
-    - pattern: |
-        const std::vector<unsigned char> $KEY = {$BYTES};
-    - pattern: |
-        std::array<unsigned char, $SIZE> $KEY = {$BYTES};
-    - pattern: |
-        const std::array<unsigned char, $SIZE> $KEY = {$BYTES};
-    - pattern: |
-        constexpr std::array<unsigned char, $SIZE> $KEY = {$BYTES};
-  metadata:
-    category: crypto
-    cwe: CWE-798
-    impact: 'Inventory: Hardcoded cryptographic key detected in codebase'
-- id: cpp-crypto-rsa
-  message: RSA cryptographic operations detected
-  severity: INFO
-  languages:
-  - cpp
-  patterns:
-  - pattern-either:
-    - pattern: RSA_new()
-    - patterns:
-      - pattern: RSA_generate_key_ex($RSA, $BITS, $E, $BN)
-      - metavariable-regex:
-          metavariable: $BITS
-          regex: \d+
-      - focus-metavariable: $BITS
-    - patterns:
-      - pattern: RSA_generate_key($BITS, $E, $CALLBACK, $CALLBACKARG)
-      - metavariable-regex:
-          metavariable: $BITS
-          regex: \d+
-      - focus-metavariable: $BITS
-    - patterns:
-      - pattern: EVP_PKEY_Q_keygen($LIBCTX, $PROPS, "RSA", $BITS)
-      - metavariable-regex:
-          metavariable: $BITS
-          regex: \d+
-      - focus-metavariable: $BITS
-    - patterns:
-      - pattern: Botan::RSA_PrivateKey($RNG, $BITS)
-      - metavariable-regex:
-          metavariable: $BITS
-          regex: \d+
-      - focus-metavariable: $BITS
-    - pattern: RSA_public_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
-    - pattern: RSA_private_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
-    - pattern: RSA_private_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
-    - pattern: RSA_public_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
-    - pattern: RSA_sign($TYPE, $M, $MLEN, $SIGRET, $SIGLEN, $RSA)
-    - pattern: RSA_verify($TYPE, $M, $MLEN, $SIGBUF, $SIGLEN, $RSA)
-    - pattern: EVP_PKEY_new_RSA($RSA)
-    - pattern: EVP_PKEY_assign_RSA($PKEY, $RSA)
-    - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, $ENGINE)
-    - pattern: EVP_PKEY_keygen_init($CTX)
-    - pattern: EVP_PKEY_keygen($CTX, $PKEY)
-    - pattern: EVP_PKEY_fromdata($CTX, $SELECTION, $PARAMS)
-    - pattern: EVP_PKEY_Q_keygen($LIBCTX, $PROPS, "RSA-PSS", $BITS)
-    - pattern: EVP_PKEY_get0_RSA($PKEY)
-    - pattern: CryptoPP::RSA::PrivateKey()
-    - pattern: CryptoPP::RSA::PublicKey()
-    - pattern: CryptoPP::RSAES_OAEP_SHA_Encryptor($PUBKEY)
-    - pattern: CryptoPP::RSAES_OAEP_SHA_Decryptor($PRIVKEY)
-    - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Signer($PRIVKEY)
-    - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Verifier($PUBKEY)
-    - pattern: Botan::RSA_PrivateKey($RNG, $BITS)
-    - pattern: Botan::RSA_PublicKey($N, $E)
-  metadata:
-    category: crypto
-    cwe: CWE-327
-    impact: 'Inventory: RSA cryptographic operations detected in codebase'
+          - pattern: Botan::MessageAuthenticationCode::create("HMAC($ALGO)")
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HMAC
+                  pattern-either:
+                    - pattern: CryptoPP::HMAC<$HASH>($KEY, $KEYLEN)
+                    - pattern: CryptoPP::HMAC<$HASH> $HMAC($KEY, $KEYLEN);
+              - pattern: $HMAC.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HMAC
+                  pattern-either:
+                    - pattern: CryptoPP::HMAC<$HASH>($KEY, $KEYLEN)
+                    - pattern: CryptoPP::HMAC<$HASH> $HMAC($KEY, $KEYLEN);
+              - pattern: $HMAC.Final($OUT)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"
+  - id: cpp-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: DH_new()
+          - patterns:
+              - pattern: DH_generate_parameters_ex($DH, $PRIME_LEN, $GENERATOR, $BN)
+              - metavariable-regex:
+                  metavariable: $PRIME_LEN
+                  regex: \d+
+              - focus-metavariable: $PRIME_LEN
+          - pattern: DH_generate_key($DH)
+          - pattern: DH_compute_key($KEY, $PUBKEY, $DH)
+          - pattern: EVP_PKEY_new_DH($DH)
+          - pattern: EVP_PKEY_assign_DH($PKEY, $DH)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_DH, $ENGINE)
+          - pattern: EVP_PKEY_derive_init($CTX)
+          - pattern: EVP_PKEY_derive_set_peer($CTX, $PEER)
+          - pattern: EVP_PKEY_derive($CTX, $KEY, $KEYLEN)
+          - pattern: EVP_PKEY_get0_DH($PKEY)
+          - pattern: DH_set0_pqg($DH, $P, $Q, $G)
+          - pattern: DH_get0_pqg($DH, $P, $Q, $G)
+          - pattern: CryptoPP::DH($GROUP, $GENERATOR)
+          - pattern: CryptoPP::DH_Domain($PRIME, $GENERATOR)
+          - pattern: Botan::DH_PrivateKey($RNG, $GROUP, $GENERATOR)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange detected in codebase"
+  - id: cpp-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EC_KEY_new()
+          - pattern: EC_KEY_new_by_curve_name($NID)
+          - pattern: EC_KEY_generate_key($KEY)
+          - pattern: ECDSA_sign($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
+          - pattern: ECDSA_verify($TYPE, $DGST, $DGSTLEN, $SIG, $SIGLEN, $ECKEY)
+          - pattern: ECDSA_do_sign($DGST, $DGSTLEN, $ECKEY)
+          - pattern: ECDSA_do_verify($DGST, $DGSTLEN, $SIG, $ECKEY)
+          - pattern: EVP_PKEY_new_EC_KEY($ECKEY)
+          - pattern: EVP_PKEY_assign_EC_KEY($PKEY, $ECKEY)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_EC, $ENGINE)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_ECDSA, $ENGINE)
+          - pattern: EVP_DigestSignInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
+          - pattern: EVP_DigestVerifyInit($CTX, $PKCTX, $TYPE, $ENGINE, $PKEY)
+          - pattern: EC_GROUP_new_by_curve_name($NID)
+          - pattern: EC_GROUP_get_curve_name($GROUP)
+          - pattern: EC_POINT_point2oct($GROUP, $POINT, $FORM, $BUF, $LEN, $CTX)
+          - pattern: EC_POINT_oct2point($GROUP, $POINT, $BUF, $LEN, $CTX)
+          - pattern: EVP_PKEY_get0_EC_KEY($PKEY)
+          - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Signer($PRIVKEY)
+          - pattern: CryptoPP::ECDSA<CryptoPP::ECP, $HASH>::Verifier($PUBKEY)
+          - pattern: Botan::ECDSA_PrivateKey($RNG, $GROUP)
+          - pattern: Botan::ECDSA_PublicKey($GROUP, $PUBKEY)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"
+  - id: cpp-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SHA512_Init($CTX)
+          - pattern: SHA512_Update($CTX, $DATA, $LEN)
+          - pattern: SHA512_Final($HASH, $CTX)
+          - pattern: |
+              SHA512_CTX $CTX;
+              SHA512_Init(&$CTX);
+              SHA512_Update(&$CTX, $DATA, $LEN);
+              SHA512_Final($HASH, &$CTX);
+          - pattern: EVP_DigestInit_ex($CTX, EVP_sha512(), $ENGINE)
+          - pattern: EVP_Digest($DATA, $LEN, $HASH, $SIZE, EVP_sha512(), $ENGINE)
+          - pattern: EVP_DigestUpdate($CTX, $DATA, $LEN)
+          - pattern: EVP_DigestFinal_ex($CTX, $HASH, $HASHLEN)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA-512", $PROPS)
+          - pattern: EVP_MD_fetch($ENGINE, "SHA512", $PROPS)
+          - pattern: CryptoPP::SHA512()
+          - pattern: Botan::HashFunction::create("SHA-512")
+          - pattern: Botan::SHA_512()
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern: CryptoPP::SHA512()
+              - pattern: $HASH.Update($DATA, $LEN)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern: CryptoPP::SHA512()
+              - pattern: $HASH.Final($OUT)
+          - patterns:
+              - metavariable-pattern:
+                  metavariable: $HASH
+                  pattern: CryptoPP::SHA512()
+              - pattern: $HASH.CalculateDigest($OUT, $DATA, $LEN)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"
+  - id: cpp-crypto-cryptopp
+    message: Crypto++ library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: CryptoPP::AES::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::AES::Decryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::SHA256()
+          - pattern: CryptoPP::SHA512()
+          - pattern: CryptoPP::RSA::PrivateKey()
+          - pattern: CryptoPP::RSA::PublicKey()
+          - pattern: CryptoPP::AutoSeededRandomPool()
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Crypto++ library usage detected in codebase"
+  - id: cpp-crypto-iv-nonce
+    message: Initialization vector or nonce usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_SET_IVLEN, $IVLEN, $NULL)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_IVLEN, $IVLEN, $NULL)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_GCM_GET_TAG, $TAGLEN, $TAG)
+          - pattern: EVP_CIPHER_CTX_ctrl($CTX, EVP_CTRL_CCM_SET_TAG, $TAGLEN, $TAG)
+          - pattern: EVP_EncryptInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV)
+          - pattern: EVP_DecryptInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV)
+          - pattern: EVP_CipherInit_ex($CTX, $CIPHER, $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: AES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: DES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: RAND_bytes($IV, $IVLEN)
+          - pattern: RAND_pseudo_bytes($IV, $IVLEN)
+          - pattern: CryptoPP::CBC_Mode<$CIPHER>::Encryption($KEY, $KEYLEN, $IV)
+          - pattern: CryptoPP::GCM<$CIPHER>::Encryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("AES-256/GCM", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: Initialization vector or nonce usage detected in codebase"
+  - id: cpp-crypto-cipher-des
+    message: DES cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: DES_set_key($KEY, $SCHEDULE)
+          - pattern: DES_encrypt($DATA, $SCHEDULE, $ENCRYPT)
+          - pattern: DES_decrypt($DATA, $SCHEDULE, $DECRYPT)
+          - pattern: DES_ecb_encrypt($INPUT, $OUTPUT, $SCHEDULE, $ENCRYPT)
+          - pattern: DES_cbc_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_ecb(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CipherInit_ex($CTX, EVP_des_cbc(), $ENGINE, $KEY, $IV, $ENCRYPT)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-ECB", $PROPS)
+          - pattern: EVP_CIPHER_fetch($ENGINE, "DES-CBC", $PROPS)
+          - pattern: DES_cfb64_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM, $ENCRYPT)
+          - pattern: DES_ofb64_encrypt($INPUT, $OUTPUT, $LENGTH, $SCHEDULE, $IV, $NUM)
+          - pattern: DES_set_odd_parity($KEY)
+          - pattern: CryptoPP::DES::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::DES::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("DES/ECB", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("DES/CBC", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: DES cipher usage detected in codebase"
+  - id: cpp-crypto-random-insecure
+    message: Non-cryptographic random number generator detected in cryptographic context
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: rand()
+          - pattern: random()
+          - pattern: srand($SEED)
+          - pattern: srandom($SEED)
+          - pattern: std::mt19937()
+          - pattern: std::mt19937_64()
+          - pattern: std::linear_congruential_engine<$A, $C, $M>()
+          - pattern: std::mersenne_twister_engine<$A, $B, $C, $D>()
+          - pattern: |
+              std::random_device $RD;
+              std::mt19937 $GEN($RD());
+          - pattern: |
+              std::random_device $RD;
+              std::mt19937_64 $GEN($RD());
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Non-cryptographic random number generator detected (may be
+        used in cryptographic context)"
+  - id: cpp-crypto-libsodium
+    message: libsodium cryptographic library usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: sodium_init()
+          - pattern: crypto_box_easy($C, $M, $MLEN, $N, $PK, $SK)
+          - pattern: crypto_box_open_easy($M, $C, $CLEN, $N, $PK, $SK)
+          - pattern: crypto_secretbox_easy($C, $M, $MLEN, $N, $K)
+          - pattern: crypto_secretbox_open_easy($M, $C, $CLEN, $N, $K)
+          - pattern: crypto_sign_detached($SIG, $SIGLEN, $M, $MLEN, $SK)
+          - pattern: crypto_sign_verify_detached($SIG, $M, $MLEN, $PK)
+          - pattern: crypto_hash_sha256($OUT, $IN, $INLEN)
+          - pattern: crypto_hash_sha512($OUT, $IN, $INLEN)
+          - pattern: crypto_generichash($OUT, $OUTLEN, $IN, $INLEN, $KEY, $KEYLEN)
+          - pattern: crypto_pwhash($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT, $MEMLIMIT,
+              $ALG)
+          - pattern: crypto_pwhash_str($OUT, $PASSWD, $PASSLEN, $OPSLIMIT, $MEMLIMIT)
+          - pattern: crypto_pwhash_str_verify($STR, $PASSWD, $PASSLEN)
+          - pattern: crypto_pwhash_argon2i($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
+              $MEMLIMIT, $ALG)
+          - pattern: crypto_pwhash_argon2id($OUT, $OUTLEN, $PASSWD, $PASSLEN, $SALT, $OPSLIMIT,
+              $MEMLIMIT, $ALG)
+          - pattern: randombytes($BUF, $SIZE)
+          - pattern: randombytes_buf($BUF, $SIZE)
+          - pattern: randombytes_random()
+          - pattern: crypto_aead_chacha20poly1305_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN,
+              $NPUB, $K)
+          - pattern: crypto_aead_chacha20poly1305_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD,
+              $ADLEN, $K)
+          - pattern: crypto_aead_aes256gcm_encrypt($C, $CLEN, $M, $MLEN, $AD, $ADLEN, $NPUB,
+              $K)
+          - pattern: crypto_aead_aes256gcm_decrypt($M, $MLEN, $NPUB, $C, $CLEN, $AD, $ADLEN,
+              $K)
+          - pattern: crypto_box_keypair($PK, $SK)
+          - pattern: crypto_sign_keypair($PK, $SK)
+          - pattern: crypto_secretbox_keygen($K)
+          - pattern: crypto_generichash_blake2b_salt_personal($OUT, $OUTLEN, $IN, $INLEN,
+              $KEY, $KEYLEN, $SALT, $PERSONAL)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: libsodium cryptographic library usage detected in codebase"
+  - id: cpp-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RAND_bytes($BUF, $NUM)
+          - pattern: |
+              unsigned char $BUF[$LEN];
+              RAND_bytes($BUF, $LEN);
+              ...
+          - pattern: CryptoPP::AutoSeededRandomPool()
+          - pattern: CryptoPP::RandomNumberGenerator()
+          - pattern: Botan::RandomNumberGenerator::create("system")
+          - pattern: std::random_device()
+          - pattern: std::mt19937()
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in
+        codebase"
+  - id: cpp-crypto-cipher-twofish
+    message: Twofish cipher usage detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: CryptoPP::Twofish::Encryption($KEY, $KEYLEN)
+          - pattern: CryptoPP::Twofish::Decryption($KEY, $KEYLEN)
+          - pattern: Botan::Cipher_Mode::create("Twofish/CBC", Botan::ENCRYPTION)
+          - pattern: Botan::Cipher_Mode::create("Twofish/GCM", Botan::ENCRYPTION)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Twofish cipher usage detected in codebase"
+  - id: cpp-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: |
+              unsigned char $KEY[] = "$STRING";
+          - pattern: |
+              char $KEY[] = "$STRING";
+          - pattern: |
+              const unsigned char $KEY[] = "$STRING";
+          - pattern: |
+              const char $KEY[] = "$STRING";
+          - pattern: |
+              static unsigned char $KEY[] = "$STRING";
+          - pattern: |
+              static char $KEY[] = "$STRING";
+          - pattern: |
+              constexpr unsigned char $KEY[] = "$STRING";
+          - pattern: |
+              constexpr char $KEY[] = "$STRING";
+          - pattern: |
+              #define $KEY "$STRING"
+          - pattern: |
+              unsigned char $KEY[$LEN] = {$BYTES};
+          - pattern: |
+              const unsigned char $KEY[$LEN] = {$BYTES};
+          - pattern: |
+              static unsigned char $KEY[$LEN] = {$BYTES};
+          - pattern: |
+              constexpr unsigned char $KEY[$LEN] = {$BYTES};
+          - pattern: |
+              std::string $KEY = "$STRING";
+          - pattern: |
+              const std::string $KEY = "$STRING";
+          - pattern: |
+              static std::string $KEY = "$STRING";
+          - pattern: |
+              constexpr std::string $KEY = "$STRING";
+          - pattern: |
+              std::vector<unsigned char> $KEY = {$BYTES};
+          - pattern: |
+              const std::vector<unsigned char> $KEY = {$BYTES};
+          - pattern: |
+              std::array<unsigned char, $SIZE> $KEY = {$BYTES};
+          - pattern: |
+              const std::array<unsigned char, $SIZE> $KEY = {$BYTES};
+          - pattern: |
+              constexpr std::array<unsigned char, $SIZE> $KEY = {$BYTES};
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"
+  - id: cpp-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: RSA_new()
+          - patterns:
+              - pattern: RSA_generate_key_ex($RSA, $BITS, $E, $BN)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: RSA_generate_key($BITS, $E, $CALLBACK, $CALLBACKARG)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: EVP_PKEY_Q_keygen($LIBCTX, $PROPS, "RSA", $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - patterns:
+              - pattern: Botan::RSA_PrivateKey($RNG, $BITS)
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: \d+
+              - focus-metavariable: $BITS
+          - pattern: RSA_public_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_private_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_private_encrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_public_decrypt($FLEN, $FROM, $TO, $RSA, $PADDING)
+          - pattern: RSA_sign($TYPE, $M, $MLEN, $SIGRET, $SIGLEN, $RSA)
+          - pattern: RSA_verify($TYPE, $M, $MLEN, $SIGBUF, $SIGLEN, $RSA)
+          - pattern: EVP_PKEY_new_RSA($RSA)
+          - pattern: EVP_PKEY_assign_RSA($PKEY, $RSA)
+          - pattern: EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, $ENGINE)
+          - pattern: EVP_PKEY_keygen_init($CTX)
+          - pattern: EVP_PKEY_keygen($CTX, $PKEY)
+          - pattern: EVP_PKEY_fromdata($CTX, $SELECTION, $PARAMS)
+          - pattern: EVP_PKEY_Q_keygen($LIBCTX, $PROPS, "RSA-PSS", $BITS)
+          - pattern: EVP_PKEY_get0_RSA($PKEY)
+          - pattern: CryptoPP::RSA::PrivateKey()
+          - pattern: CryptoPP::RSA::PublicKey()
+          - pattern: CryptoPP::RSAES_OAEP_SHA_Encryptor($PUBKEY)
+          - pattern: CryptoPP::RSAES_OAEP_SHA_Decryptor($PRIVKEY)
+          - pattern: CryptoPP::RSASS<CryptoPP::PSS, $HASH>::Signer($PRIVKEY)
+          - pattern: CryptoPP::RSASS<CryptoPP::PKCS1v15, $HASH>::Verifier($PUBKEY)
+          - pattern: Botan::RSA_PrivateKey($RNG, $BITS)
+          - pattern: Botan::RSA_PublicKey($N, $E)
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

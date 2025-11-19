@@ -1,55 +1,55 @@
 findings:
-- file: test_code.py
-  line: 13
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 15
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 18
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 21
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 23
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 25
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 28
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 29
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 33
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 36
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 37
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 40
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
-- file: test_code.py
-  line: 44
-  rule_id: python-crypto-hkdf
-  message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 13
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 15
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 18
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 21
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 23
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 25
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 28
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 29
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 33
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 36
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 37
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 40
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
+  - file: test_code.py
+    line: 44
+    rule_id: python-crypto-hkdf
+    message: HKDF key derivation function usage detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py

@@ -47,7 +47,7 @@ rules:
                   crypto.pbkdf2Sync($PASSWORD, SALT, $ITER, $KEYLEN, $DIGEST);
               - metavariable-regex:
                   metavariable: $STATIC_VALUE
-                  regex: '^(?!.*randomBytes|.*getRandomValues|.*random).*$'
+                  regex: "^(?!.*randomBytes|.*getRandomValues|.*random).*$"
           - patterns:
               - pattern: |
                   const SALT = Buffer.from("$STATIC_VALUE");
@@ -55,7 +55,7 @@ rules:
                   crypto.scryptSync($PASSWORD, SALT, $KEYLEN);
               - metavariable-regex:
                   metavariable: $STATIC_VALUE
-                  regex: '^(?!.*randomBytes|.*getRandomValues|.*random).*$'
+                  regex: "^(?!.*randomBytes|.*getRandomValues|.*random).*$"
     pattern-not-inside:
       - pattern: |
           describe($NAME, function() {

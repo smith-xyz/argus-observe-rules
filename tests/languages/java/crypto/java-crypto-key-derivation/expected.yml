@@ -1,19 +1,19 @@
 findings:
-- file: test_code.java
-  line: 8
-  rule_id: java-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.java
-  line: 12
-  rule_id: java-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.java
-  line: 21
-  rule_id: java-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.java
-  line: 21
-  rule_id: java-crypto-key-derivation
-  message: Key derivation function usage detected
+  - file: test_code.java
+    line: 8
+    rule_id: java-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.java
+    line: 12
+    rule_id: java-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.java
+    line: 21
+    rule_id: java-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.java
+    line: 21
+    rule_id: java-crypto-key-derivation
+    message: Key derivation function usage detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

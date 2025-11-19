@@ -1,23 +1,23 @@
 findings:
-- file: test_code.py
-  line: 5
-  rule_id: python-crypto-hardcoded-key
-  message: Hardcoded cryptographic key detected
-- file: test_code.py
-  line: 7
-  rule_id: python-crypto-hardcoded-key
-  message: Hardcoded cryptographic key detected
-- file: test_code.py
-  line: 10
-  rule_id: python-crypto-hardcoded-key
-  message: Hardcoded cryptographic key detected
-- file: test_code.py
-  line: 12
-  rule_id: python-crypto-hardcoded-key
-  message: Hardcoded cryptographic key detected
-- file: test_code.py
-  line: 15
-  rule_id: python-crypto-hardcoded-key
-  message: Hardcoded cryptographic key detected
+  - file: test_code.py
+    line: 5
+    rule_id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.py
+    line: 7
+    rule_id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.py
+    line: 10
+    rule_id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.py
+    line: 12
+    rule_id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.py
+    line: 15
+    rule_id: python-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py

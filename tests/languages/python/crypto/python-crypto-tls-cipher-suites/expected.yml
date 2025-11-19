@@ -1,39 +1,39 @@
 findings:
-- file: test_code.py
-  line: 6
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 9
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 12
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 15
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 18
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 19
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 22
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 23
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
-- file: test_code.py
-  line: 26
-  rule_id: python-crypto-tls-cipher-suites
-  message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 6
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 9
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 12
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 15
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 18
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 19
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 22
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 23
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+  - file: test_code.py
+    line: 26
+    rule_id: python-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py

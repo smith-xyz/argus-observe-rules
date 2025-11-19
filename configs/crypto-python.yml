@@ -450,8 +450,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: python-crypto-cipher-camellia
     message: Camellia cipher usage detected

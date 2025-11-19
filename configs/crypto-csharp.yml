@@ -351,8 +351,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-338
-      impact:
-        "Inventory: Random number generation for cryptographic use detected in
+      impact: "Inventory: Random number generation for cryptographic use detected in
         codebase"
   - id: csharp-crypto-key-length
     message: Cryptographic key length usage detected
@@ -527,8 +526,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-326
-      impact:
-        "Inventory: SP800108DeriveBytes key derivation function usage detected
+      impact: "Inventory: SP800108DeriveBytes key derivation function usage detected
         in codebase"
   - id: csharp-crypto-rsa
     message: RSA cryptographic operations detected
@@ -1230,8 +1228,7 @@ rules:
     metadata:
       category: crypto
       cwe: CWE-327
-      impact:
-        "Inventory: Cipher mode usage detected in codebase (CBC, CFB, ECB, OFB,
+      impact: "Inventory: Cipher mode usage detected in codebase (CBC, CFB, ECB, OFB,
         CTS)"
   - id: csharp-crypto-sha384
     message: SHA384 hash function usage detected

@@ -1,59 +1,59 @@
 findings:
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 11
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 15
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 19
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 23
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 30
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 30
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 30
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 38
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 46
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
-- file: test_code.java
-  line: 46
-  rule_id: java-crypto-sha512
-  message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 11
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 15
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 19
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 23
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 30
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 30
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 30
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 38
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 46
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
+  - file: test_code.java
+    line: 46
+    rule_id: java-crypto-sha512
+    message: SHA512 hash function usage detected
 no_findings:
-- negative_cases.java
+  - negative_cases.java

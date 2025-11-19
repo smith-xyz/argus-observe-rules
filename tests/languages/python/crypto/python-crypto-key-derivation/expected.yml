@@ -1,15 +1,15 @@
 findings:
-- file: test_code.py
-  line: 7
-  rule_id: python-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.py
-  line: 9
-  rule_id: python-crypto-key-derivation
-  message: Key derivation function usage detected
-- file: test_code.py
-  line: 11
-  rule_id: python-crypto-key-derivation
-  message: Key derivation function usage detected
+  - file: test_code.py
+    line: 7
+    rule_id: python-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.py
+    line: 9
+    rule_id: python-crypto-key-derivation
+    message: Key derivation function usage detected
+  - file: test_code.py
+    line: 11
+    rule_id: python-crypto-key-derivation
+    message: Key derivation function usage detected
 no_findings:
-- negative_cases.py
+  - negative_cases.py
