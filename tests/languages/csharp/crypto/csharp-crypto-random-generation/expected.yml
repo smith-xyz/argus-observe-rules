@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.cs
+    line: 21
+    rule_id: csharp-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.cs

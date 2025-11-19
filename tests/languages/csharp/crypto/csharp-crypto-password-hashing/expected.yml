@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cs
+    line: 20
+    rule_id: csharp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cs
+    line: 22
+    rule_id: csharp-crypto-password-hashing
+    message: "Password hashing operations detected"
+  - file: test_code.cs
+    line: 23
+    rule_id: csharp-crypto-password-hashing
+    message: "Password hashing operations detected"
+
+no_findings:
+  - negative_cases.cs

@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-crypto-hardcoded-key
+    message: "Hardcoded cryptographic key detected"
+
+no_findings:
+  - negative_cases.cs

@@ -1,0 +1,60 @@
+rules:
+  - id: csharp-crypto-digital-signatures
+    message: Digital signature operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING)
+          - pattern: $RSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
+          - pattern: $ECDSA.SignData($DATA, $HASH_ALGORITHM)
+          - pattern: $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM)
+          - pattern: $DSA.CreateSignature($HASH)
+          - pattern: $DSA.VerifySignature($HASH, $SIGNATURE)
+          - pattern: |
+              using ($RSA = RSA.Create($BITS)) {
+                $SIGNATURE = $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING);
+              }
+          - pattern: |
+              using ($ECDSA = ECDsa.Create($CURVE)) {
+                $SIGNATURE = $ECDSA.SignData($DATA, $HASH_ALGORITHM);
+              }
+          - pattern: $RSA.SignHash($HASH, $HASH_ALGORITHM, $PADDING)
+          - pattern: $RSA.VerifyHash($HASH, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
+          - pattern: $ECDSA.SignHash($HASH)
+          - pattern: $ECDSA.VerifyHash($HASH, $SIGNATURE)
+          - pattern: $DSA.SignHash($HASH)
+          - pattern: $DSA.VerifyHash($HASH, $SIGNATURE)
+          - pattern: await $RSA.SignDataAsync($DATA, $HASH_ALGORITHM, $PADDING)
+          - pattern: await $RSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
+          - pattern: await $ECDSA.SignDataAsync($DATA, $HASH_ALGORITHM)
+          - pattern: await $ECDSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Digital signature operations detected in codebase"

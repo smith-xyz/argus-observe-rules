@@ -1,0 +1,45 @@
+rules:
+  - id: csharp-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $SUITES
+    patterns:
+      - pattern-either:
+          - pattern: CipherSuitesPolicy($SUITES)
+          - pattern: new CipherSuitesPolicy($SUITES)
+          - pattern: |
+              $CONFIG.CipherSuitesPolicy = new CipherSuitesPolicy($SUITES);
+          - pattern: TlsCipherSuite.TLS_AES_256_GCM_SHA384
+          - pattern: TlsCipherSuite.TLS_AES_128_GCM_SHA256
+          - pattern: TlsCipherSuite.TLS_CHACHA20_POLY1305_SHA256
+          - pattern: TlsCipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          - pattern: TlsCipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

@@ -1,0 +1,51 @@
+rules:
+  - id: csharp-crypto-sha1
+    message: SHA1 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA1.Create()
+          - pattern: new SHA1CryptoServiceProvider()
+          - pattern: SHA1Managed()
+          - pattern: new SHA1Managed()
+          - pattern: SHA1Cng()
+          - pattern: new SHA1Cng()
+          - pattern: |
+              using ($HASHER = SHA1.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA1.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA1 $HASHER = SHA1.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA1 hash function usage detected in codebase"

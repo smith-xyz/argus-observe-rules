@@ -1,0 +1,47 @@
+rules:
+  - id: csharp-crypto-cipher-rc4
+    message: RC4 stream cipher usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: RC4CryptoServiceProvider()
+          - pattern: new RC4CryptoServiceProvider()
+          - pattern: |
+              using ($RC4 = new RC4CryptoServiceProvider()) {
+                $RC4.Key = $KEY;
+                $ENCRYPTOR = $RC4.CreateEncryptor();
+              }
+          - pattern: |
+              $RC4 = new RC4CryptoServiceProvider();
+              $RC4.Key = $KEY;
+              $CIPHERTEXT = $RC4.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RC4 stream cipher usage detected in codebase"

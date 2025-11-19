@@ -1,0 +1,48 @@
+rules:
+  - id: csharp-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $PUBLIC_KEY
+    patterns:
+      - pattern-either:
+          - pattern: ECDiffieHellman.Create($CURVE)
+          - pattern: new ECDiffieHellmanCng($CURVE)
+          - pattern: |
+              using ($ALICE = ECDiffieHellman.Create($CURVE)) {
+                $PUBLIC_KEY = $ALICE.PublicKey;
+              }
+          - pattern: |
+              $ALICE = ECDiffieHellman.Create($CURVE);
+              $BOB = ECDiffieHellman.Create($CURVE);
+              $SHARED_SECRET = $ALICE.DeriveKeyMaterial($BOB.PublicKey);
+          - pattern: $ECDH.DeriveKeyMaterial($PUBLIC_KEY)
+          - pattern: ECDiffieHellmanCng()
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

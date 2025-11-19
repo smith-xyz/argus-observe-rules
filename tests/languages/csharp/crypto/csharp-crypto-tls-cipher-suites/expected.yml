@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 18
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 20
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+  - file: test_code.cs
+    line: 21
+    rule_id: csharp-crypto-tls-cipher-suites
+    message: "TLS cipher suite configuration detected"
+
+no_findings:
+  - negative_cases.cs

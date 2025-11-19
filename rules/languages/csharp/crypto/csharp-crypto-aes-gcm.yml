@@ -1,0 +1,53 @@
+rules:
+  - id: csharp-crypto-aes-gcm
+    message: AES-GCM AEAD mode usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: new AesGcm($KEY)
+          - pattern: |
+              using ($AESGCM = new AesGcm($KEY)) {
+                $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $AESGCM = new AesGcm($KEY);
+              $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+          - pattern: |
+              using ($AESGCM = new AesGcm($KEY)) {
+                $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $AESGCM = new AesGcm($KEY);
+              $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+          - pattern: $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
+          - pattern: $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES-GCM AEAD mode usage detected in codebase"

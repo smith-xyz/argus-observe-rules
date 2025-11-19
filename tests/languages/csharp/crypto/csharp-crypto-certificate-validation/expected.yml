@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+  - file: test_code.cs
+    line: 21
+    rule_id: csharp-crypto-certificate-validation
+    message: "TLS certificate validation configuration detected"
+
+no_findings:
+  - negative_cases.cs

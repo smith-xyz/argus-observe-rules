@@ -1,0 +1,50 @@
+rules:
+  - id: csharp-crypto-iv-nonce
+    message: Initialization vector (IV) or nonce usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $IV
+    patterns:
+      - pattern-either:
+          - pattern: $CIPHER.IV = $IV
+          - pattern: $CIPHER.IV = Encoding.UTF8.GetBytes("$STATIC_IV")
+          - pattern: |
+              $CIPHER.IV = new byte[$SIZE];
+              $CIPHER.CreateEncryptor();
+          - pattern: |
+              $CIPHER.IV = Encoding.UTF8.GetBytes("$STATIC_VALUE");
+              $ENCRYPTOR = $CIPHER.CreateEncryptor();
+          - pattern: |
+              using ($CIPHER = Aes.Create()) {
+                $CIPHER.IV = $IV;
+                $ENCRYPTOR = $CIPHER.CreateEncryptor();
+              }
+          - pattern: $GCM.Encrypt($NONCE, $PLAINTEXT, $ADDITIONAL_DATA)
+          - pattern: $GCM.Decrypt($NONCE, $CIPHERTEXT, $ADDITIONAL_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-329
+      impact: "Inventory: Initialization vector (IV) or nonce usage detected in codebase"

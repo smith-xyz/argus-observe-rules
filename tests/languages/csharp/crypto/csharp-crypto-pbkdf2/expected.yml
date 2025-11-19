@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-pbkdf2
+    message: "PBKDF2 key derivation function usage detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-pbkdf2
+    message: "PBKDF2 key derivation function usage detected"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-crypto-pbkdf2
+    message: "PBKDF2 key derivation function usage detected"
+  - file: test_code.cs
+    line: 24
+    rule_id: csharp-crypto-pbkdf2
+    message: "PBKDF2 key derivation function usage detected"
+
+no_findings:
+  - negative_cases.cs

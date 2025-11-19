@@ -1,0 +1,52 @@
+rules:
+  - id: csharp-crypto-certificate-validation
+    message: TLS certificate validation configuration detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $CALLBACK
+    patterns:
+      - pattern-either:
+          - pattern: ServicePointManager.ServerCertificateValidationCallback = $CALLBACK
+          - pattern: ServicePointManager.ServerCertificateValidationCallback = null
+          - pattern: |
+              ServicePointManager.ServerCertificateValidationCallback =
+                delegate { return true; };
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => true;
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => { return true; };
+          - pattern: $HANDLER.ServerCertificateCustomValidationCallback
+          - pattern: X509Certificate2.Verify()
+          - pattern: $CERT.Verify()
+          - pattern: $CHAIN.Build($CERT)
+          - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: TLS certificate validation configuration detected in codebase"

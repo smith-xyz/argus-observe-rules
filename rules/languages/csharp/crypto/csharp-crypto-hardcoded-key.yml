@@ -1,0 +1,61 @@
+rules:
+  - id: csharp-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - csharp
+    mode: taint
+    pattern-sources:
+      - pattern: |
+          string $KEY = "$VALUE";
+      - pattern: |
+          private static readonly byte[] $KEY = Encoding.UTF8.GetBytes("$VALUE");
+      - pattern: |
+          const string $KEY = "$VALUE";
+      - pattern: |
+          private byte[] $KEY = Encoding.UTF8.GetBytes("$VALUE");
+      - pattern: |
+          $KEY = "$VALUE";
+      - pattern: |
+          $KEY = Encoding.UTF8.GetBytes("$VALUE");
+    pattern-sinks:
+      - pattern: $CIPHER.Key = Encoding.UTF8.GetBytes($KEY)
+      - pattern: $CIPHER.Key = $KEY
+      - pattern: new AesGcm($KEY)
+      - pattern: new ChaCha20Poly1305($KEY)
+      - pattern: new HMACSHA256($KEY)
+      - pattern: new HMACSHA1($KEY)
+      - pattern: new HMACSHA512($KEY)
+      - pattern: new HMACMD5($KEY)
+      - pattern: $HMAC.Key = $KEY
+      - pattern: $CIPHER.Key = new byte[$SIZE]
+    metavariable-propagator:
+      metavariable: $KEY
+      from: $KEY = $VALUE
+      to: $KEY
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"

@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-rc2
+    message: "RC2 cipher usage detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-rc2
+    message: "RC2 cipher usage detected"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-crypto-rc2
+    message: "RC2 cipher usage detected"
+  - file: test_code.cs
+    line: 21
+    rule_id: csharp-crypto-rc2
+    message: "RC2 cipher usage detected"
+
+no_findings:
+  - negative_cases.cs

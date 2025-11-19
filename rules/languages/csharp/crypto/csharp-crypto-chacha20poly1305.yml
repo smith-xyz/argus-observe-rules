@@ -1,0 +1,53 @@
+rules:
+  - id: csharp-crypto-chacha20poly1305
+    message: ChaCha20-Poly1305 AEAD mode usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: new ChaCha20Poly1305($KEY)
+          - pattern: |
+              using ($CHACHA = new ChaCha20Poly1305($KEY)) {
+                $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $CHACHA = new ChaCha20Poly1305($KEY);
+              $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA);
+          - pattern: |
+              using ($CHACHA = new ChaCha20Poly1305($KEY)) {
+                $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+              }
+          - pattern: |
+              $CHACHA = new ChaCha20Poly1305($KEY);
+              $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
+          - pattern: $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
+          - pattern: $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ChaCha20-Poly1305 AEAD mode usage detected in codebase"

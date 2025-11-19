@@ -1,0 +1,51 @@
+rules:
+  - id: csharp-crypto-sha512
+    message: SHA512 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA512.Create()
+          - pattern: new SHA512CryptoServiceProvider()
+          - pattern: SHA512Managed()
+          - pattern: new SHA512Managed()
+          - pattern: SHA512Cng()
+          - pattern: new SHA512Cng()
+          - pattern: |
+              using ($HASHER = SHA512.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA512.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA512 $HASHER = SHA512.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA512 hash function usage detected in codebase"

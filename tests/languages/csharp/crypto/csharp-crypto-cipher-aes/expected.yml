@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.cs
+    line: 18
+    rule_id: csharp-crypto-cipher-aes
+    message: "AES cipher usage detected"
+
+no_findings:
+  - negative_cases.cs

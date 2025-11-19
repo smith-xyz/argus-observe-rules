@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 20
+    rule_id: csharp-crypto-rsa
+    message: "RSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.cs

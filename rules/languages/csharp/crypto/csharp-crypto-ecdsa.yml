@@ -1,0 +1,51 @@
+rules:
+  - id: csharp-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: ECDsa.Create($CURVE)
+          - pattern: new ECDsaCng($CURVE)
+          - pattern: |
+              using ($ECDSA = ECDsa.Create($CURVE)) {
+                $SIGNATURE = $ECDSA.SignData($DATA, $HASH_ALGORITHM);
+              }
+          - pattern: |
+              $ECDSA = ECDsa.Create($CURVE);
+              $SIGNATURE = $ECDSA.SignData($DATA, $HASH_ALGORITHM);
+              $VERIFIED = $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM);
+          - pattern: $ECDSA.SignData($DATA, $HASH_ALGORITHM)
+          - pattern: $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH_ALGORITHM)
+          - pattern: ECCurve.NamedCurves.nistP256
+          - pattern: ECCurve.NamedCurves.nistP384
+          - pattern: ECCurve.NamedCurves.nistP521
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

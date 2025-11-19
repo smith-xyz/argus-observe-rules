@@ -1,0 +1,44 @@
+rules:
+  - id: csharp-crypto-sp800108
+    message: SP800108DeriveBytes key derivation function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)
+          - pattern: |
+              using ($KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)) {
+                $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
+              }
+          - pattern: |
+              $KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM);
+              $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: SP800108DeriveBytes key derivation function usage detected in codebase"

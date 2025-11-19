@@ -1,0 +1,63 @@
+rules:
+  - id: csharp-crypto-salt-generation
+    message: Salt generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $SALT
+    patterns:
+      - pattern-either:
+          - pattern: RandomNumberGenerator.Fill($SALT)
+          - pattern: |
+              $SALT = new byte[$SIZE];
+              RandomNumberGenerator.Fill($SALT);
+          - pattern: |
+              RandomNumberGenerator $RNG = RandomNumberGenerator.Create();
+              $SALT = new byte[$SIZE];
+              $RNG.GetBytes($SALT);
+          - pattern: |
+              using (RandomNumberGenerator $RNG = RandomNumberGenerator.Create()) {
+                $SALT = new byte[$SIZE];
+                $RNG.GetBytes($SALT);
+              }
+          - patterns:
+              - pattern: |
+                  $SALT = new byte[$SIZE];
+                  RandomNumberGenerator.Fill($SALT);
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 16
+          - patterns:
+              - pattern: |
+                  RandomNumberGenerator $RNG = RandomNumberGenerator.Create();
+                  $SALT = new byte[$SIZE];
+                  $RNG.GetBytes($SALT);
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 16
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-759
+      impact: "Inventory: Salt generation for cryptographic use detected in codebase"

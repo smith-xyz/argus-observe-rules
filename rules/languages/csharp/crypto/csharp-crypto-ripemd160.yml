@@ -1,0 +1,46 @@
+rules:
+  - id: csharp-crypto-ripemd160
+    message: RIPEMD160 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: RIPEMD160.Create()
+          - pattern: RIPEMD160Managed()
+          - pattern: new RIPEMD160Managed()
+          - pattern: |
+              using ($HASHER = RIPEMD160.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = RIPEMD160.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RIPEMD160 hash function usage detected in codebase"

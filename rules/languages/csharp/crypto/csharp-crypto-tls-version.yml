@@ -1,0 +1,48 @@
+rules:
+  - id: csharp-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $VERSION
+    patterns:
+      - pattern-either:
+          - pattern: SecurityProtocolType.Ssl3
+          - pattern: SecurityProtocolType.Tls
+          - pattern: SecurityProtocolType.Tls11
+          - pattern: SecurityProtocolType.Tls12
+          - pattern: SecurityProtocolType.Tls13
+          - pattern: ServicePointManager.SecurityProtocol = SecurityProtocolType.$VERSION
+          - pattern: |
+              ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+          - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK, $SELECTION_CALLBACK)
+          - pattern: new SslStream($STREAM, false, $VALIDATION_CALLBACK)
+          - pattern: $HANDLER.SslProtocols = SslProtocols.$PROTOCOL
+          - pattern: HttpClientHandler.SslProtocols
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

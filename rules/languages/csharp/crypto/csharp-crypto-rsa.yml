@@ -1,0 +1,55 @@
+rules:
+  - id: csharp-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $BITS
+    patterns:
+      - pattern-either:
+          - pattern: RSA.Create($BITS)
+          - pattern: new RSACryptoServiceProvider($BITS)
+          - pattern: |
+              using ($RSA = RSA.Create($BITS)) {
+                $PUBLIC_KEY = $RSA.ExportParameters(false);
+                $PRIVATE_KEY = $RSA.ExportParameters(true);
+              }
+          - patterns:
+              - pattern: RSA.Create($BITS)
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - pattern: $RSA.Encrypt($DATA, $PADDING)
+          - pattern: $RSA.Decrypt($CIPHERTEXT, $PADDING)
+          - pattern: $RSA.ExportParameters($INCLUDE_PRIVATE)
+          - pattern: $RSA.ImportParameters($PARAMETERS)
+          - pattern: $RSA.ExportRSAPublicKey()
+          - pattern: $RSA.ExportRSAPrivateKey()
+          - pattern: $RSA.ImportRSAPublicKey($KEY_DATA)
+          - pattern: $RSA.ImportRSAPrivateKey($KEY_DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

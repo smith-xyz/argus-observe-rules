@@ -1,0 +1,52 @@
+rules:
+  - id: csharp-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA256.Create()
+          - pattern: new SHA256CryptoServiceProvider()
+          - pattern: SHA256Managed()
+          - pattern: new SHA256Managed()
+          - pattern: SHA256Cng()
+          - pattern: new SHA256Cng()
+          - pattern: |
+              using ($HASHER = SHA256.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA256.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              SHA256 $HASHER = SHA256.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: await $HASHER.ComputeHashAsync($DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"

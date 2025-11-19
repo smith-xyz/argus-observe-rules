@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cs
+    line: 23
+    rule_id: csharp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cs
+    line: 24
+    rule_id: csharp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+  - file: test_code.cs
+    line: 28
+    rule_id: csharp-crypto-digital-signatures
+    message: "Digital signature operations detected"
+
+no_findings:
+  - negative_cases.cs

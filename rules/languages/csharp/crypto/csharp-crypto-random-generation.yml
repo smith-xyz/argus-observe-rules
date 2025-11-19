@@ -1,0 +1,43 @@
+rules:
+  - id: csharp-crypto-random-generation
+    message: Random number generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $BYTES
+    patterns:
+      - pattern-either:
+          - pattern: RandomNumberGenerator.Create()
+          - pattern: new RNGCryptoServiceProvider()
+          - pattern: |
+              using ($RNG = RandomNumberGenerator.Create()) {
+                $BYTES = new byte[$LENGTH];
+                $RNG.GetBytes($BYTES);
+              }
+          - pattern: RandomNumberGenerator.Fill($BYTES)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-338
+      impact: "Inventory: Random number generation for cryptographic use detected in codebase"

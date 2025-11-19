@@ -1,0 +1,65 @@
+rules:
+  - id: csharp-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: HMAC.Create($ALGORITHM)
+          - pattern: new HMACSHA1($KEY)
+          - pattern: new HMACSHA256($KEY)
+          - pattern: new HMACSHA384($KEY)
+          - pattern: new HMACSHA512($KEY)
+          - pattern: new HMACMD5($KEY)
+          - pattern: |
+              using ($HMAC = new HMACSHA256($KEY)) {
+                $BYTES = $HMAC.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HMAC = new HMACSHA256($KEY);
+              $HMAC.Key = $KEY;
+              $RESULT = $HMAC.ComputeHash($DATA);
+          - pattern: |
+              $HMAC = HMAC.Create($ALGORITHM);
+              $HMAC.Key = $KEY;
+              $RESULT = $HMAC.ComputeHash($DATA);
+          - pattern: |
+              using ($HMAC = new HMACSHA512($KEY)) {
+                $BYTES = $HMAC.ComputeHash($DATA);
+              }
+          - pattern: new HMACSHA3_256($KEY)
+          - pattern: new HMACSHA3_512($KEY)
+          - pattern: HMAC.Create("SHA3-256")
+          - pattern: HMAC.Create("SHA3-512")
+          - pattern: |
+              $HMAC = HMAC.Create("SHA3-256");
+              $HMAC.Key = $KEY;
+              $RESULT = $HMAC.ComputeHash($DATA);
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

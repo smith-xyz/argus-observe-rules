@@ -1,0 +1,48 @@
+rules:
+  - id: csharp-crypto-sha384
+    message: SHA384 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: SHA384.Create()
+          - pattern: new SHA384CryptoServiceProvider()
+          - pattern: |
+              using ($HASHER = SHA384.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = SHA384.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: SHA384Managed()
+          - pattern: new SHA384Managed()
+          - pattern: SHA384Cng()
+          - pattern: new SHA384Cng()
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA384 hash function usage detected in codebase"

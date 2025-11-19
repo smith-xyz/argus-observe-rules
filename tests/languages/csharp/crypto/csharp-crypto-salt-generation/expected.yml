@@ -1,0 +1,8 @@
+findings:
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-salt-generation
+    message: "Salt generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.cs

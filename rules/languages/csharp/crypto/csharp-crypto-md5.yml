@@ -1,0 +1,52 @@
+rules:
+  - id: csharp-crypto-md5
+    message: MD5 hash function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: MD5.Create()
+          - pattern: new MD5CryptoServiceProvider()
+          - pattern: MD5Managed()
+          - pattern: new MD5Managed()
+          - pattern: MD5Cng()
+          - pattern: new MD5Cng()
+          - pattern: |
+              using ($HASHER = MD5.Create()) {
+                $BYTES = $HASHER.ComputeHash($DATA);
+              }
+          - pattern: |
+              $HASHER = MD5.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: |
+              MD5 $HASHER = MD5.Create();
+              $HASH = $HASHER.ComputeHash($DATA);
+          - pattern: await $HASHER.ComputeHashAsync($DATA)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: MD5 hash function usage detected in codebase"

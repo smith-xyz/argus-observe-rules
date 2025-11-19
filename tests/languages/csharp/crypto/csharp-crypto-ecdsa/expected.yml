@@ -1,0 +1,56 @@
+findings:
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 22
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 22
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 23
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 24
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 27
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.cs
+    line: 28
+    rule_id: csharp-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.cs

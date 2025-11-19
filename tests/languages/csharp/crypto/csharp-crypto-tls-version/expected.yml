@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.cs
+    line: 18
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.cs
+    line: 20
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.cs
+    line: 22
+    rule_id: csharp-crypto-tls-version
+    message: "TLS version configuration detected"
+
+no_findings:
+  - negative_cases.cs

@@ -1,0 +1,66 @@
+rules:
+  - id: csharp-crypto-key-length
+    message: Cryptographic key length usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $SIZE
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $KEY = new byte[$SIZE];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[8];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[16];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[24];
+              $CIPHER.Key = $KEY;
+          - pattern: |
+              $KEY = new byte[32];
+              $CIPHER.Key = $KEY;
+          - pattern: $CIPHER.KeySize = $SIZE
+          - patterns:
+              - pattern: $CIPHER.Key = new byte[$SIZE]
+              - metavariable-regex:
+                  metavariable: $SIZE
+                  regex: '\d+'
+          - patterns:
+              - pattern: $CIPHER.Key = new byte[$SIZE]
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 16
+          - patterns:
+              - pattern: $CIPHER.KeySize = $SIZE
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 128
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Cryptographic key length usage detected in codebase"

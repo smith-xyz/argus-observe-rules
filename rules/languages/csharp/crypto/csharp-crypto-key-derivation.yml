@@ -1,0 +1,42 @@
+rules:
+  - id: csharp-crypto-key-derivation
+    message: Key derivation function usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
+          - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER, HashAlgorithmName.$ALGO)
+          - pattern: |
+              using ($KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)) {
+                $KEY = $KDF.GetBytes($KEYLEN);
+              }
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Key derivation function usage detected in codebase"

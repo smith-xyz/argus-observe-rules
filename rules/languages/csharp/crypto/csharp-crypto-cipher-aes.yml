@@ -1,0 +1,68 @@
+rules:
+  - id: csharp-crypto-cipher-aes
+    message: AES cipher usage detected
+    severity: INFO
+    languages:
+      - csharp
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: Aes.Create()
+          - pattern: Aes.Create($ALGORITHM_NAME)
+          - pattern: new AesCryptoServiceProvider()
+          - pattern: AesManaged()
+          - pattern: new AesManaged()
+          - pattern: AesCng()
+          - pattern: new AesCng()
+          - pattern: |
+              using ($CIPHER = Aes.Create()) {
+                $CIPHER.Key = $KEY;
+                $CIPHER.Mode = CipherMode.$MODE;
+                $ENCRYPTOR = $CIPHER.CreateEncryptor();
+                $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
+              }
+          - pattern: |
+              $CIPHER = Aes.Create();
+              $CIPHER.KeySize = 128;
+          - pattern: |
+              $CIPHER = Aes.Create();
+              $CIPHER.KeySize = 192;
+          - pattern: |
+              $CIPHER = Aes.Create();
+              $CIPHER.KeySize = 256;
+          - pattern: $CIPHER.KeySize = 128
+          - pattern: $CIPHER.KeySize = 192
+          - pattern: $CIPHER.KeySize = 256
+          - patterns:
+              - pattern: $CIPHER.KeySize = $SIZE
+              - metavariable-comparison:
+                  metavariable: $SIZE
+                  comparison: $SIZE < 128
+          - pattern: await $CIPHER.EncryptAsync($DATA)
+          - pattern: await $CIPHER.DecryptAsync($CIPHERTEXT)
+    pattern-not-inside:
+      - pattern: |
+          [Test]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Fact]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          [Theory]
+          public void $NAME() {
+            ...
+          }
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /// $DOCSTRING
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: AES cipher usage detected in codebase"
