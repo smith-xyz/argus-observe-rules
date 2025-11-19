@@ -22,6 +22,7 @@ help:
 	@echo "  validate     Validate all rules with semgrep"
 	@echo "  test         Run test suite against test cases (all rules)"
 	@echo "  generate-config  Generate unified Semgrep config files"
+	@echo "  regenerate-configs  Regenerate all config files and format them"
 	@echo ""
 	@echo "Usage Examples:"
 	@echo "  run DIR=<path>              Run all rules against directory"
@@ -92,6 +93,10 @@ endif
 # Generate config files
 generate-config:
 	uv run observe generate-config
+
+# Regenerate all config files and format them
+regenerate-configs:
+	@./scripts/regenerate-configs.sh
 
 # Quick development workflow
 dev: dev-install lint format
