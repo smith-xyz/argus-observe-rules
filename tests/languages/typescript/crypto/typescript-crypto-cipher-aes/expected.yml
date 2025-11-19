@@ -1,0 +1,44 @@
+findings:
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 10
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 11
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 14
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 20
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 26
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 32
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 43
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+  - file: test_code.ts
+    line: 44
+    rule_id: typescript-crypto-cipher-aes
+    message: "AES cipher usage detected"
+
+no_findings:
+  - negative_cases.ts

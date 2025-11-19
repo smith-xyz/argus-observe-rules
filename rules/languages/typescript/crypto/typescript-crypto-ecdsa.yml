@@ -1,0 +1,67 @@
+rules:
+  - id: typescript-crypto-ecdsa
+    message: ECDSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createSign("ecdsa-with-SHA256")
+          - pattern: crypto.createSign("ecdsa-with-SHA512")
+          - pattern: crypto.createVerify("ecdsa-with-SHA256")
+          - pattern: crypto.createVerify("ecdsa-with-SHA512")
+          - pattern: |
+              $SIGN: crypto.Sign = crypto.createSign("ecdsa-with-SHA256");
+              $SIGN.update($DATA);
+              $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+          - pattern: |
+              $VERIFY: crypto.Verify = crypto.createVerify("ecdsa-with-SHA256");
+              $VERIFY.update($DATA);
+              $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+          - pattern: crypto.createECDH("prime256v1")
+          - pattern: crypto.createECDH("secp256k1")
+          - pattern: crypto.createECDH("secp384r1")
+          - pattern: crypto.createECDH("secp521r1")
+          - pattern: |
+              $ECDH: crypto.ECDH = crypto.createECDH("prime256v1");
+              $ECDH.generateKeys();
+              $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-256" }, $EXTRACTABLE, $USAGE);
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-384" }, $EXTRACTABLE, $USAGE);
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey({ name: "ECDSA", namedCurve: "P-521" }, $EXTRACTABLE, $USAGE);
+          - pattern: |
+              await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA);
+          - pattern: |
+              await crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey({ name: "Ed25519" }, $EXTRACTABLE, $USAGE);
+          - pattern: |
+              await crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA);
+          - pattern: |
+              await crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: ECDSA cryptographic operations detected in codebase"

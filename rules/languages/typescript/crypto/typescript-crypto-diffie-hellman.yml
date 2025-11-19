@@ -1,0 +1,83 @@
+rules:
+  - id: typescript-crypto-diffie-hellman
+    message: Diffie-Hellman key exchange usage detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createDiffieHellman($PRIME, $ENCODING)
+          - pattern: crypto.createDiffieHellman($PRIME_LENGTH)
+          - pattern: crypto.createDiffieHellmanGroup("modp14")
+          - pattern: crypto.createDiffieHellmanGroup("modp15")
+          - pattern: crypto.createDiffieHellmanGroup("modp16")
+          - pattern: crypto.createDiffieHellmanGroup("modp1")
+          - pattern: crypto.createDiffieHellmanGroup("modp2")
+          - pattern: crypto.createDiffieHellmanGroup("modp5")
+          - pattern: crypto.createDiffieHellmanGroup("modp17")
+          - pattern: crypto.createDiffieHellmanGroup("modp18")
+          - pattern: |
+              $DH: crypto.DiffieHellman = crypto.createDiffieHellman($PRIME_LENGTH);
+              $DH.generateKeys();
+              $SHARED = $DH.computeSecret($PUBLIC_KEY);
+          - pattern: |
+              $DH: crypto.DiffieHellman = crypto.createDiffieHellmanGroup("modp14");
+              $DH.generateKeys();
+              $SHARED = $DH.computeSecret($PUBLIC_KEY);
+          - pattern: crypto.createECDH("prime256v1")
+          - pattern: crypto.createECDH("secp256k1")
+          - pattern: |
+              $ECDH: crypto.ECDH = crypto.createECDH("prime256v1");
+              $ECDH.generateKeys();
+              $SHARED = $ECDH.computeSecret($PUBLIC_KEY);
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: "ECDH", namedCurve: "P-256" },
+                true,
+                ["deriveKey", "deriveBits"]
+              );
+          - pattern: |
+              await crypto.subtle.deriveKey(
+                { name: "ECDH", public: $PUBLIC_KEY },
+                $PRIVATE_KEY,
+                { name: "AES-GCM", length: 256 },
+                true,
+                ["encrypt", "decrypt"]
+              );
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: "X25519" },
+                true,
+                ["deriveKey", "deriveBits"]
+              );
+          - pattern: |
+              await crypto.subtle.deriveKey(
+                { name: "X25519", public: $PUBLIC_KEY },
+                $PRIVATE_KEY,
+                { name: "AES-GCM", length: 256 },
+                true,
+                ["encrypt", "decrypt"]
+              );
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Diffie-Hellman key exchange usage detected in codebase"

@@ -1,0 +1,65 @@
+rules:
+  - id: typescript-crypto-argon2
+    message: Argon2 key derivation function usage detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $PASSWORD
+    patterns:
+      - pattern-either:
+          - pattern: require("argon2").hash($PASSWORD, $OPTIONS)
+          - pattern: require("argon2").verify($HASH, $PASSWORD)
+          - pattern: require("argon2-browser").hash($PASSWORD, $OPTIONS)
+          - pattern: require("argon2-browser").verify($HASH, $PASSWORD)
+          - pattern: |
+              $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2i, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
+          - pattern: |
+              $MATCH = await argon2.verify($HASH, $PASSWORD);
+          - pattern: import * as argon2 from "argon2"; await argon2.hash($PASSWORD, $OPTIONS)
+          - pattern: import * as argon2 from "argon2-browser"; await argon2.hash($PASSWORD, $OPTIONS)
+          - pattern: |
+              $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2d, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
+          - pattern: |
+              $HASH = await argon2.hash($PASSWORD, { type: argon2.argon2id, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM });
+          - pattern: |
+              const $LIBRARY = await import("argon2");
+              await $LIBRARY.hash($PASSWORD, $OPTIONS);
+          - pattern: |
+              const $LIBRARY = await import("argon2-browser");
+              await $LIBRARY.hash($PASSWORD, $OPTIONS);
+          - pattern: |
+              const $LIBRARY = require($MODULE);
+              await $LIBRARY.hash($PASSWORD, $OPTIONS);
+          - patterns:
+              - pattern: |
+                  await argon2.hash($PASSWORD, { type: argon2.argon2i, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM })
+              - metavariable-comparison:
+                  metavariable: $MEMORY
+                  comparison: $MEMORY < 65536
+          - patterns:
+              - pattern: |
+                  await argon2.hash($PASSWORD, { type: argon2.argon2i, memoryCost: $MEMORY, timeCost: $TIME, parallelism: $PARALLELISM })
+              - metavariable-comparison:
+                  metavariable: $TIME
+                  comparison: $TIME < 3
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-326
+      impact: "Inventory: Argon2 key derivation function usage detected in codebase"

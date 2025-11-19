@@ -1,0 +1,69 @@
+rules:
+  - id: typescript-crypto-sha256
+    message: SHA256 hash function usage detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createHash("sha256")
+          - pattern: crypto.createHash('sha256')
+          - pattern: |
+              $HASHER: crypto.Hash = crypto.createHash("sha256");
+              $HASHER.update($DATA);
+              $HASH = $HASHER.digest();
+          - pattern: crypto.createHash("sha256").update($DATA).digest()
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.SHA256($DATA)
+          - pattern: require("crypto-js").SHA256($DATA)
+          - pattern: CryptoJS.SHA256($DATA)
+          - pattern: |
+              await crypto.subtle.digest("SHA-256", $DATA);
+          - patterns:
+              - pattern: crypto.createHash($ALGORITHM)
+              - metavariable-regex:
+                  metavariable: $ALGORITHM
+                  regex: '"sha256"'
+          - patterns:
+              - pattern: crypto.createHash($ALGORITHM)
+              - metavariable-regex:
+                  metavariable: $ALGORITHM
+                  regex: "'sha256'"
+          - patterns:
+              - pattern: |
+                  const $ALGORITHM = "sha256";
+                  ...
+                  crypto.createHash($ALGORITHM)
+          - patterns:
+              - pattern: |
+                  await crypto.subtle.digest($ALGORITHM, $DATA);
+              - metavariable-regex:
+                  metavariable: $ALGORITHM
+                  regex: '"SHA-256"'
+          - patterns:
+              - pattern: |
+                  await crypto.subtle.digest($ALGORITHM, $DATA);
+              - metavariable-regex:
+                  metavariable: $ALGORITHM
+                  regex: "'SHA-256'"
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: SHA256 hash function usage detected in codebase"

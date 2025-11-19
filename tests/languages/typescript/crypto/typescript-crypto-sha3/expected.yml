@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.ts
+    line: 7
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+  - file: test_code.ts
+    line: 10
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+  - file: test_code.ts
+    line: 15
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+  - file: test_code.ts
+    line: 21
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+  - file: test_code.ts
+    line: 22
+    rule_id: typescript-crypto-sha3
+    message: "SHA3 hash function usage detected"
+
+no_findings:
+  - negative_cases.ts

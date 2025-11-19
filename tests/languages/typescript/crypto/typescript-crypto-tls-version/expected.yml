@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.ts
+    line: 23
+    rule_id: typescript-crypto-tls-version
+    message: "TLS version configuration detected"
+  - file: test_code.ts
+    line: 30
+    rule_id: typescript-crypto-tls-version
+    message: "TLS version configuration detected"
+
+no_findings:
+  - negative_cases.ts

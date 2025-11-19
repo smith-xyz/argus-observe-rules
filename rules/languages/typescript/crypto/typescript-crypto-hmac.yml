@@ -1,0 +1,74 @@
+rules:
+  - id: typescript-crypto-hmac
+    message: HMAC usage detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $DATA
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createHmac("sha256", $KEY)
+          - pattern: crypto.createHmac("sha512", $KEY)
+          - pattern: crypto.createHmac("sha1", $KEY)
+          - pattern: crypto.createHmac("md5", $KEY)
+          - pattern: crypto.createHmac("sha384", $KEY)
+          - patterns:
+              - pattern: crypto.createHmac($ALGORITHM, $KEY)
+              - metavariable-regex:
+                  metavariable: $ALGORITHM
+                  regex: '"(sha256|sha512|sha1|md5|sha384)"'
+          - patterns:
+              - pattern: crypto.createHmac($ALGORITHM, $KEY)
+              - metavariable-regex:
+                  metavariable: $ALGORITHM
+                  regex: "'(sha256|sha512|sha1|md5|sha384)'"
+          - patterns:
+              - pattern: |
+                  const $ALGORITHM = "sha256";
+                  ...
+                  crypto.createHmac($ALGORITHM, $KEY)
+          - pattern: |
+              $HMAC: crypto.Hmac = crypto.createHmac("sha256", $KEY);
+              $HMAC.update($DATA);
+              $RESULT = $HMAC.digest();
+          - pattern: crypto.createHmac("sha256", $KEY).update($DATA).digest()
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.HmacSHA256($DATA, $KEY)
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.HmacSHA512($DATA, $KEY)
+          - pattern: import * as CryptoJS from "crypto-js"; CryptoJS.HmacSHA1($DATA, $KEY)
+          - pattern: CryptoJS.HmacSHA256($DATA, $KEY)
+          - pattern: CryptoJS.HmacSHA512($DATA, $KEY)
+          - pattern: CryptoJS.HmacSHA1($DATA, $KEY)
+          - pattern: |
+              await crypto.subtle.sign(
+                { name: "HMAC", hash: "SHA-256" },
+                $KEY,
+                $DATA
+              );
+          - pattern: |
+              await crypto.subtle.verify(
+                { name: "HMAC", hash: "SHA-256" },
+                $KEY,
+                $SIGNATURE,
+                $DATA
+              );
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: HMAC usage detected in codebase"

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.ts
+    line: 4
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.ts
+    line: 7
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.ts
+    line: 18
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+  - file: test_code.ts
+    line: 19
+    rule_id: typescript-crypto-random-generation
+    message: "Random number generation for cryptographic use detected"
+
+no_findings:
+  - negative_cases.ts

@@ -1,0 +1,78 @@
+rules:
+  - id: typescript-crypto-tls-version
+    message: TLS version configuration detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $OPTIONS
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                secureProtocol: "TLSv1_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                secureProtocol: "TLSv1_1_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                secureProtocol: "TLSv1_2_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                minVersion: "TLSv1.2",
+                maxVersion: "TLSv1.3",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                secureProtocol: "TLSv1_method",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                minVersion: "TLSv1.2",
+                ...
+              };
+          - pattern: |
+              https.createServer($OPTIONS, $HANDLER);
+          - pattern: |
+              tls.createServer($OPTIONS, $HANDLER);
+          - pattern: |
+              tls.createSecureContext($OPTIONS);
+          - pattern: |
+              const $CONTEXT = tls.createSecureContext({
+                secureProtocol: "TLSv1_2_method",
+                ...
+              });
+          - pattern: |
+              const $CONTEXT = tls.createSecureContext({
+                minVersion: "TLSv1.2",
+                ...
+              });
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS version configuration detected in codebase"

@@ -1,0 +1,75 @@
+rules:
+  - id: typescript-crypto-cipher-modes
+    message: Cryptographic cipher mode usage detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createCipheriv("aes-128-cbc", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-192-cbc", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-cbc", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-128-ecb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-192-ecb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-ecb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-128-cfb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-192-cfb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-cfb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-128-ofb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-192-ofb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-ofb", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-128-ctr", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-192-ctr", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-ctr", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-128-gcm", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-192-gcm", $KEY, $IV)
+          - pattern: crypto.createCipheriv("aes-256-gcm", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-128-cbc", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-192-cbc", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-cbc", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-128-ecb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-192-ecb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-ecb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-128-cfb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-192-cfb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-cfb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-128-ofb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-192-ofb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-ofb", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-128-ctr", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-192-ctr", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-ctr", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-128-gcm", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-192-gcm", $KEY, $IV)
+          - pattern: crypto.createDecipheriv("aes-256-gcm", $KEY, $IV)
+          - pattern: |
+              $CIPHER: crypto.Cipher = crypto.createCipheriv("aes-256-$MODE", $KEY, $IV);
+              $CIPHERTEXT = $CIPHER.update($PLAINTEXT);
+              $CIPHERTEXT += $CIPHER.final();
+          - pattern: |
+              $DECIPHER: crypto.Decipher = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
+              $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
+              $PLAINTEXT += $DECIPHER.final();
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Cryptographic cipher mode usage detected in codebase"

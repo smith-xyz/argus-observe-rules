@@ -1,0 +1,107 @@
+rules:
+  - id: typescript-crypto-certificate-validation
+    message: Certificate validation configuration detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $OPTIONS
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                rejectUnauthorized: true,
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                rejectUnauthorized: false,
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                ca: $CA_CERT,
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                cert: $CERT,
+                key: $KEY,
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                checkServerIdentity: function($HOSTNAME, $CERT) {
+                  ...
+                },
+                ...
+              };
+          - pattern: |
+              $AGENT: https.Agent = new https.Agent({
+                rejectUnauthorized: $VALUE,
+                ...
+              });
+          - pattern: |
+              $AGENT: https.Agent = new https.Agent({
+                ca: $CA_CERT,
+                ...
+              });
+          - pattern: |
+              $OPTIONS = {
+                rejectUnauthorized: true,
+                ...
+              };
+          - pattern: |
+              $AGENT = new https.Agent({
+                rejectUnauthorized: $VALUE,
+                ...
+              });
+          - pattern: |
+              const $CONTEXT = tls.createSecureContext({
+                rejectUnauthorized: false,
+                ...
+              });
+          - pattern: |
+              const $CONTEXT = tls.createSecureContext({
+                checkServerIdentity: function($HOSTNAME, $CERT) {
+                  ...
+                },
+                ...
+              });
+          - pattern: |
+              https.createServer({
+                rejectUnauthorized: false,
+                ...
+              }, $HANDLER);
+          - pattern: |
+              tls.createServer({
+                rejectUnauthorized: false,
+                ...
+              }, $HANDLER);
+          - pattern: |
+              const $AGENT = new https.Agent({
+                rejectUnauthorized: false,
+                ...
+              });
+              https.request({ agent: $AGENT, ... }, $CALLBACK);
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+
+    metadata:
+      category: crypto
+      cwe: CWE-295
+      impact: "Inventory: Certificate validation configuration detected in codebase"

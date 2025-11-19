@@ -1,0 +1,58 @@
+rules:
+  - id: typescript-crypto-tls-cipher-suites
+    message: TLS cipher suite configuration detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $OPTIONS
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                ciphers: "$CIPHER_SUITE",
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                ciphers: "$CIPHER_LIST",
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                honorCipherOrder: true,
+                ciphers: "$CIPHER_SUITE",
+                ...
+              };
+          - pattern: |
+              $OPTIONS: tls.TlsOptions = {
+                secureOptions: $FLAGS,
+                ciphers: "$CIPHER_SUITE",
+                ...
+              };
+          - pattern: |
+              $OPTIONS = {
+                ciphers: "$CIPHER_SUITE",
+                ...
+              };
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: TLS cipher suite configuration detected in codebase"

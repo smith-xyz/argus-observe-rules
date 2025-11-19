@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.ts
+    line: 11
+    rule_id: typescript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.ts
+    line: 14
+    rule_id: typescript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.ts
+    line: 28
+    rule_id: typescript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+  - file: test_code.ts
+    line: 37
+    rule_id: typescript-crypto-key-derivation
+    message: "Key derivation function usage detected"
+
+no_findings:
+  - negative_cases.ts

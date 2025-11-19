@@ -1,0 +1,40 @@
+findings:
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 16
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 20
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 21
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 26
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 30
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 36
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+  - file: test_code.ts
+    line: 43
+    rule_id: typescript-crypto-diffie-hellman
+    message: "Diffie-Hellman key exchange usage detected"
+
+no_findings:
+  - negative_cases.ts

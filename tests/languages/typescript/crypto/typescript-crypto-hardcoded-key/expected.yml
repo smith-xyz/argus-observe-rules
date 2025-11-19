@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.ts
+    line: 16
+    rule_id: typescript-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.ts
+    line: 22
+    rule_id: typescript-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+  - file: test_code.ts
+    line: 28
+    rule_id: typescript-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+
+no_findings:
+  - negative_cases.ts

@@ -1,0 +1,68 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 11
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 17
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 23
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 31
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 37
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 43
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 50
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 51
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 52
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 59
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 60
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 73
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 84
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 89
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+  - file: test_code.ts
+    line: 92
+    rule_id: typescript-crypto-key-length
+    message: "Cryptographic key length usage detected"
+
+no_findings:
+  - negative_cases.ts

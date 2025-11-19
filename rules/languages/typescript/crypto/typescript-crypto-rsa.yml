@@ -1,0 +1,103 @@
+rules:
+  - id: typescript-crypto-rsa
+    message: RSA cryptographic operations detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: crypto.publicEncrypt($KEY, $DATA)
+          - pattern: crypto.privateDecrypt($KEY, $DATA)
+          - pattern: crypto.privateEncrypt($KEY, $DATA)
+          - pattern: crypto.publicDecrypt($KEY, $DATA)
+          - pattern: |
+              $CIPHERTEXT = crypto.publicEncrypt($PUBLIC_KEY, $PLAINTEXT);
+          - pattern: |
+              $PLAINTEXT = crypto.privateDecrypt($PRIVATE_KEY, $CIPHERTEXT);
+          - pattern: crypto.createSign("RSA-SHA256")
+          - pattern: crypto.createSign("RSA-SHA512")
+          - pattern: crypto.createVerify("RSA-SHA256")
+          - pattern: crypto.createVerify("RSA-SHA512")
+          - pattern: |
+              $SIGN: crypto.Sign = crypto.createSign("RSA-SHA256");
+              $SIGN.update($DATA);
+              $SIGNATURE = $SIGN.sign($PRIVATE_KEY);
+          - pattern: |
+              $VERIFY: crypto.Verify = crypto.createVerify("RSA-SHA256");
+              $VERIFY.update($DATA);
+              $VERIFY.verify($PUBLIC_KEY, $SIGNATURE);
+          - pattern: require("node-forge").pki.rsa.generateKeyPair($BITS)
+          - pattern: require("node-forge").pki.rsa.encrypt($DATA, $PUBLIC_KEY)
+          - pattern: require("node-forge").pki.rsa.decrypt($DATA, $PRIVATE_KEY)
+          - pattern: require("node-forge").pki.rsa.sign($DATA, $PRIVATE_KEY)
+          - pattern: require("node-forge").pki.rsa.verify($DATA, $SIGNATURE, $PUBLIC_KEY)
+          - pattern: require("node-forge").pki.rsa.setPublicKey($PUBLIC_KEY)
+          - pattern: require("node-forge").pki.rsa.setPrivateKey($PRIVATE_KEY)
+          - pattern: |
+              const $LIBRARY = await import("node-forge");
+              $LIBRARY.pki.rsa.generateKeyPair($BITS);
+          - pattern: |
+              const $LIBRARY = require($MODULE);
+              $LIBRARY.pki.rsa.generateKeyPair($BITS);
+          - patterns:
+              - pattern: |
+                  $KEY = await crypto.subtle.generateKey(
+                    { name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+                    true,
+                    ["encrypt", "decrypt"]
+                  );
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  $KEY = await crypto.subtle.generateKey(
+                    { name: "RSA-PSS", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+                    true,
+                    ["sign", "verify"]
+                  );
+              - metavariable-regex:
+                  metavariable: $BITS
+                  regex: '\d+'
+          - patterns:
+              - pattern: |
+                  $KEY = await crypto.subtle.generateKey(
+                    { name: "RSA-OAEP", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+                    true,
+                    ["encrypt", "decrypt"]
+                  );
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+          - patterns:
+              - pattern: |
+                  $KEY = await crypto.subtle.generateKey(
+                    { name: "RSA-PSS", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
+                    true,
+                    ["sign", "verify"]
+                  );
+              - metavariable-comparison:
+                  metavariable: $BITS
+                  comparison: $BITS < 2048
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: RSA cryptographic operations detected in codebase"

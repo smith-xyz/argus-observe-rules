@@ -1,0 +1,44 @@
+findings:
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 10
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 13
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 21
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 25
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 29
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 33
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 39
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 45
+    rule_id: typescript-crypto-rsa
+    message: "RSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.ts

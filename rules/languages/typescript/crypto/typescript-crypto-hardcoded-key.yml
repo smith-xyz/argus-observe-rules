@@ -1,0 +1,71 @@
+rules:
+  - id: typescript-crypto-hardcoded-key
+    message: Hardcoded cryptographic key detected
+    severity: INFO
+    languages:
+      - typescript
+    mode: taint
+    pattern-sources:
+      - pattern: |
+          const $KEY: string = "$VALUE";
+      - pattern: |
+          let $KEY: string = "$VALUE";
+      - pattern: |
+          const $KEY = "$VALUE";
+      - pattern: |
+          let $KEY = "$VALUE";
+      - pattern: |
+          $KEY = "$VALUE";
+      - pattern: |
+          $KEY = Buffer.from("$VALUE");
+      - pattern: |
+          $KEY = Buffer.from("$VALUE", "hex");
+      - pattern: |
+          $KEY = Buffer.from("$VALUE", "base64");
+      - pattern: |
+          $KEY_DATA = new Uint8Array([$VALUES]);
+      - pattern: |
+          $OPTIONS = {
+            key: "$VALUE",
+            ...
+          };
+    pattern-sinks:
+      - pattern: crypto.createCipheriv($ALGO, $KEY, $IV)
+      - pattern: crypto.createDecipheriv($ALGO, $KEY, $IV)
+      - pattern: crypto.subtle.encrypt($ALGO, $KEY, $DATA)
+      - pattern: crypto.subtle.decrypt($ALGO, $KEY, $DATA)
+      - pattern: crypto.subtle.sign($ALGO, $KEY, $DATA)
+      - pattern: crypto.subtle.verify($ALGO, $KEY, $SIG, $DATA)
+      - pattern: |
+          await crypto.subtle.importKey("raw", $KEY_DATA, { name: "AES-GCM" }, false, ["encrypt", "decrypt"])
+      - pattern: |
+          crypto.createCipheriv("aes-256-cbc", $OPTIONS.key, $IV)
+    metavariable-propagator:
+      metavariable: $KEY
+      from: $KEY = $VALUE
+      to: $KEY
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+      - pattern: |
+          /**
+           * $DOCSTRING
+           */
+    metadata:
+      category: crypto
+      cwe: CWE-798
+      impact: "Inventory: Hardcoded cryptographic key detected in codebase"

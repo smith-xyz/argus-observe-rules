@@ -1,0 +1,89 @@
+rules:
+  - id: typescript-crypto-webcrypto-api
+    message: Web Crypto API usage detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $KEY
+    patterns:
+      - pattern-either:
+          - pattern: crypto.subtle.encrypt($ALGO, $KEY, $DATA)
+          - pattern: crypto.subtle.decrypt($ALGO, $KEY, $DATA)
+          - pattern: crypto.subtle.sign($ALGO, $KEY, $DATA)
+          - pattern: crypto.subtle.verify($ALGO, $KEY, $SIG, $DATA)
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: "AES-GCM", length: 256 },
+                true,
+                ["encrypt", "decrypt"]
+              );
+          - pattern: crypto.subtle.digest($ALGO, $DATA)
+          - pattern: |
+              await crypto.subtle.digest("SHA-256", $DATA);
+          - pattern: crypto.subtle.importKey($FORMAT, $KEY_DATA, $ALGO, $EXTRACTABLE, $USAGE)
+          - pattern: crypto.subtle.exportKey($FORMAT, $KEY)
+          - pattern: crypto.subtle.wrapKey($FORMAT, $KEY, $WRAPPING_KEY, $WRAP_ALGO)
+          - pattern: crypto.subtle.unwrapKey($FORMAT, $WRAPPED_KEY, $UNWRAPPING_KEY, $UNWRAP_ALGO, $IMPORT_ALGO, $EXTRACTABLE, $USAGE)
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: "Ed25519" },
+                true,
+                ["sign", "verify"]
+              );
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: "X25519" },
+                true,
+                ["deriveKey", "deriveBits"]
+              );
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: "ChaCha20-Poly1305", length: 256 },
+                true,
+                ["encrypt", "decrypt"]
+              );
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: $ALGORITHM, length: $LENGTH },
+                $EXTRACTABLE,
+                $USAGE
+              );
+          - pattern: |
+              $KEY = await crypto.subtle.generateKey(
+                { name: $ALGORITHM },
+                $EXTRACTABLE,
+                $USAGE
+              );
+          - pattern: |
+              await crypto.subtle.deriveBits(
+                { name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" },
+                $BASE_KEY,
+                $LENGTH
+              );
+          - pattern: |
+              await crypto.subtle.deriveBits(
+                { name: "HKDF", hash: "SHA-256", salt: $SALT, info: $INFO },
+                $BASE_KEY,
+                $LENGTH
+              );
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-327
+      impact: "Inventory: Web Crypto API usage detected in codebase"

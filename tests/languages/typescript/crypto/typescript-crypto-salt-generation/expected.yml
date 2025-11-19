@@ -1,0 +1,23 @@
+findings:
+- file: test_code.ts
+  line: 5
+  rule_id: typescript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+- file: test_code.ts
+  line: 8
+  rule_id: typescript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+- file: test_code.ts
+  line: 11
+  rule_id: typescript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+- file: test_code.ts
+  line: 15
+  rule_id: typescript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+- file: test_code.ts
+  line: 20
+  rule_id: typescript-crypto-salt-generation
+  message: Salt generation for cryptographic use detected
+no_findings:
+- negative_cases.ts

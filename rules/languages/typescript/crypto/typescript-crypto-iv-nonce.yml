@@ -1,0 +1,53 @@
+rules:
+  - id: typescript-crypto-iv-nonce
+    message: IV or nonce generation for cryptographic use detected
+    severity: INFO
+    languages:
+      - typescript
+    focus-metavariable: $IV
+    patterns:
+      - pattern-either:
+          - pattern: crypto.randomBytes($LENGTH)
+          - pattern: crypto.getRandomValues($ARRAY)
+          - pattern: |
+              $IV: Buffer = crypto.randomBytes(16);
+              ...
+              crypto.createCipheriv("aes-256-cbc", $KEY, $IV);
+          - pattern: |
+              $NONCE: Buffer = crypto.randomBytes(12);
+              ...
+              crypto.createCipheriv("aes-256-gcm", $KEY, $NONCE);
+          - pattern: |
+              $IV = crypto.getRandomValues(new Uint8Array(16));
+              ...
+              await crypto.subtle.encrypt({ name: "AES-CBC", iv: $IV }, $KEY, $DATA);
+          - pattern: |
+              $NONCE = crypto.getRandomValues(new Uint8Array(12));
+              ...
+              await crypto.subtle.encrypt({ name: "AES-GCM", iv: $NONCE }, $KEY, $DATA);
+          - pattern: |
+              $IV = new Uint8Array(16);
+              crypto.getRandomValues($IV);
+              ...
+              await crypto.subtle.encrypt({ name: "AES-CBC", iv: $IV }, $KEY, $DATA);
+    pattern-not-inside:
+      - pattern: |
+          describe($NAME, () => {
+            ...
+          })
+      - pattern: |
+          it($NAME, () => {
+            ...
+          })
+      - pattern: |
+          test($NAME, () => {
+            ...
+          })
+      - pattern: |
+          // $COMMENT
+      - pattern: |
+          /* $COMMENT */
+    metadata:
+      category: crypto
+      cwe: CWE-330
+      impact: "Inventory: IV or nonce generation for cryptographic use detected in codebase"

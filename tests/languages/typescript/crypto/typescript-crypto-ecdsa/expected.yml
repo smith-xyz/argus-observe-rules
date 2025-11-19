@@ -1,0 +1,56 @@
+findings:
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 16
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 20
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 26
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 30
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 31
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 32
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 36
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 38
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 40
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 44
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+  - file: test_code.ts
+    line: 48
+    rule_id: typescript-crypto-ecdsa
+    message: "ECDSA cryptographic operations detected"
+
+no_findings:
+  - negative_cases.ts
