@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: DES.Create()
@@ -18,28 +17,21 @@ rules:
                 $ENCRYPTOR = $CIPHER.CreateEncryptor();
                 $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
               }
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -49,7 +41,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA1.Create()
@@ -68,28 +59,21 @@ rules:
           - pattern: |
               SHA1 $HASHER = SHA1.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -99,7 +83,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA3_256.Create()
@@ -126,28 +109,21 @@ rules:
           - pattern: |
               SHA3_256 $HASHER = SHA3_256.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -157,7 +133,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
@@ -186,28 +161,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $KEYLEN
                   comparison: $KEYLEN < 32
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -217,7 +185,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: BCrypt.Net.BCrypt.HashPassword($PASSWORD, $WORK_FACTOR)
@@ -233,28 +200,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $WORK_FACTOR
                   comparison: $WORK_FACTOR < 10
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -264,7 +224,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new AesGcm($KEY)
@@ -284,28 +243,21 @@ rules:
               $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
           - pattern: $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
           - pattern: $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -315,7 +267,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $BYTES
     patterns:
       - pattern-either:
           - pattern: RandomNumberGenerator.Create()
@@ -326,28 +277,21 @@ rules:
                 $RNG.GetBytes($BYTES);
               }
           - pattern: RandomNumberGenerator.Fill($BYTES)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-338
@@ -358,7 +302,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $SIZE
     patterns:
       - pattern-either:
           - pattern: |
@@ -392,28 +335,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $SIZE
                   comparison: $SIZE < 128
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -423,7 +359,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: Aes.Create()
@@ -459,28 +394,21 @@ rules:
                   comparison: $SIZE < 128
           - pattern: await $CIPHER.EncryptAsync($DATA)
           - pattern: await $CIPHER.DecryptAsync($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -490,7 +418,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)
@@ -501,28 +428,21 @@ rules:
           - pattern: |
               $KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM);
               $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -533,7 +453,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $BITS
     patterns:
       - pattern-either:
           - pattern: RSA.Create($BITS)
@@ -556,28 +475,21 @@ rules:
           - pattern: $RSA.ExportRSAPrivateKey()
           - pattern: $RSA.ImportRSAPublicKey($KEY_DATA)
           - pattern: $RSA.ImportRSAPrivateKey($KEY_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -587,7 +499,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA512.Create()
@@ -606,28 +517,21 @@ rules:
           - pattern: |
               SHA512 $HASHER = SHA512.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -637,7 +541,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $VERSION
     patterns:
       - pattern-either:
           - pattern: SecurityProtocolType.Ssl3
@@ -652,28 +555,21 @@ rules:
           - pattern: new SslStream($STREAM, false, $VALIDATION_CALLBACK)
           - pattern: $HANDLER.SslProtocols = SslProtocols.$PROTOCOL
           - pattern: HttpClientHandler.SslProtocols
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -683,7 +579,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: MD5.Create()
@@ -703,28 +598,21 @@ rules:
               MD5 $HASHER = MD5.Create();
               $HASH = $HASHER.ComputeHash($DATA);
           - pattern: await $HASHER.ComputeHashAsync($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -734,7 +622,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: ECDsa.Create($CURVE)
@@ -752,28 +639,21 @@ rules:
           - pattern: ECCurve.NamedCurves.nistP256
           - pattern: ECCurve.NamedCurves.nistP384
           - pattern: ECCurve.NamedCurves.nistP521
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -783,7 +663,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $IV
     patterns:
       - pattern-either:
           - pattern: $CIPHER.IV = $IV
@@ -801,28 +680,21 @@ rules:
               }
           - pattern: $GCM.Encrypt($NONCE, $PLAINTEXT, $ADDITIONAL_DATA)
           - pattern: $GCM.Decrypt($NONCE, $CIPHERTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-329
@@ -832,7 +704,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new ChaCha20Poly1305($KEY)
@@ -852,28 +723,21 @@ rules:
               $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
           - pattern: $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
           - pattern: $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -883,7 +747,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
@@ -892,28 +755,21 @@ rules:
               using ($KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)) {
                 $KEY = $KDF.GetBytes($KEYLEN);
               }
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -923,7 +779,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING)
@@ -950,28 +805,21 @@ rules:
           - pattern: await $RSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
           - pattern: await $ECDSA.SignDataAsync($DATA, $HASH_ALGORITHM)
           - pattern: await $ECDSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -981,7 +829,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA256.Create()
@@ -1001,28 +848,21 @@ rules:
               SHA256 $HASHER = SHA256.Create();
               $HASH = $HASHER.ComputeHash($DATA);
           - pattern: await $HASHER.ComputeHashAsync($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1032,7 +872,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: RIPEMD160.Create()
@@ -1045,28 +884,21 @@ rules:
           - pattern: |
               $HASHER = RIPEMD160.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1076,7 +908,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PUBLIC_KEY
     patterns:
       - pattern-either:
           - pattern: ECDiffieHellman.Create($CURVE)
@@ -1091,28 +922,21 @@ rules:
               $SHARED_SECRET = $ALICE.DeriveKeyMaterial($BOB.PublicKey);
           - pattern: $ECDH.DeriveKeyMaterial($PUBLIC_KEY)
           - pattern: ECDiffieHellmanCng()
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1147,32 +971,6 @@ rules:
       - pattern: new HMACMD5($KEY)
       - pattern: $HMAC.Key = $KEY
       - pattern: $CIPHER.Key = new byte[$SIZE]
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          [Test]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          [Fact]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          [Theory]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-798
@@ -1182,7 +980,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $MODE
     patterns:
       - pattern-either:
           - pattern: CipherMode.CBC
@@ -1203,28 +1000,21 @@ rules:
           - pattern: |
               $CIPHER.Mode = CipherMode.OFB;
               $ENCRYPTOR = $CIPHER.CreateEncryptor();
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1235,7 +1025,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA384.Create()
@@ -1251,28 +1040,21 @@ rules:
           - pattern: new SHA384Managed()
           - pattern: SHA384Cng()
           - pattern: new SHA384Cng()
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1282,7 +1064,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: RC4CryptoServiceProvider()
@@ -1296,28 +1077,21 @@ rules:
               $RC4 = new RC4CryptoServiceProvider();
               $RC4.Key = $KEY;
               $CIPHERTEXT = $RC4.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1327,7 +1101,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $SALT
     patterns:
       - pattern-either:
           - pattern: RandomNumberGenerator.Fill($SALT)
@@ -1358,28 +1131,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $SIZE
                   comparison: $SIZE < 16
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-759
@@ -1389,7 +1155,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: RC2.Create()
@@ -1403,28 +1168,21 @@ rules:
                 $ENCRYPTOR = $CIPHER.CreateEncryptor();
                 $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
               }
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1434,7 +1192,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $SUITES
     patterns:
       - pattern-either:
           - pattern: CipherSuitesPolicy($SUITES)
@@ -1446,28 +1203,21 @@ rules:
           - pattern: TlsCipherSuite.TLS_CHACHA20_POLY1305_SHA256
           - pattern: TlsCipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           - pattern: TlsCipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1477,7 +1227,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $CALLBACK
     patterns:
       - pattern-either:
           - pattern: ServicePointManager.ServerCertificateValidationCallback = $CALLBACK
@@ -1496,28 +1245,21 @@ rules:
           - pattern: $CERT.Verify()
           - pattern: $CHAIN.Build($CERT)
           - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-295
@@ -1527,7 +1269,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: HMAC.Create($ALGORITHM)
@@ -1560,28 +1301,21 @@ rules:
               $HMAC = HMAC.Create("SHA3-256");
               $HMAC.Key = $KEY;
               $RESULT = $HMAC.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327

@@ -893,7 +893,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
@@ -917,41 +916,38 @@ rules:
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
+              - focus-metavariable: $ITER
           - patterns:
               - pattern: |
                   crypto.subtle.deriveKey({ name: "PBKDF2", salt: $SALT, iterations: $ITER, hash: "SHA-256" }, $BASE_KEY, $DERIVED_ALGO, $EXTRACTABLE, $USAGE)
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
-    pattern-not-inside:
-      - pattern: |
+              - focus-metavariable: $ITER
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -961,7 +957,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: require("argon2").hash($PASSWORD, $OPTIONS)
@@ -1021,6 +1016,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $MEMORY
                   comparison: $MEMORY < 65536
+              - focus-metavariable: $MEMORY
           - patterns:
               - pattern: |
                   $HASH = await argon2.hash($PASSWORD, {
@@ -1032,6 +1028,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $TIME
                   comparison: $TIME < 3
+              - focus-metavariable: $TIME
           - patterns:
               - pattern: |
                   $HASH = await argon2.hash($PASSWORD, {
@@ -1043,6 +1040,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $MEMORY
                   comparison: $MEMORY < 65536
+              - focus-metavariable: $MEMORY
           - patterns:
               - pattern: |
                   $HASH = await argon2.hash($PASSWORD, {
@@ -1054,6 +1052,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $TIME
                   comparison: $TIME < 3
+              - focus-metavariable: $TIME
           - patterns:
               - pattern: |
                   $HASH = await argon2.hash($PASSWORD, {
@@ -1065,6 +1064,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $MEMORY
                   comparison: $MEMORY < 65536
+              - focus-metavariable: $MEMORY
           - patterns:
               - pattern: |
                   $HASH = await argon2.hash($PASSWORD, {
@@ -1076,39 +1076,35 @@ rules:
               - metavariable-comparison:
                   metavariable: $TIME
                   comparison: $TIME < 3
+              - focus-metavariable: $TIME
           - pattern: |
               $HASH = await argon2Browser.hash($PASSWORD, $OPTIONS)
           - pattern: |
               $HASH = await argon2Wasm.hash($PASSWORD, $OPTIONS)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -1178,35 +1174,30 @@ rules:
               - metavariable-regex:
                   metavariable: $STATIC_VALUE
                   regex: ^(?!.*randomBytes|.*getRandomValues|.*random).*$
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-329
@@ -1236,35 +1227,30 @@ rules:
               $NONCE = crypto.getRandomValues(new Uint8Array(12));
               ...
               crypto.subtle.encrypt({ name: "AES-GCM", iv: $NONCE }, $KEY, $DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-330
@@ -1318,35 +1304,30 @@ rules:
                 ciphers: "$CIPHER_SUITE",
                 ...
               })
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1396,35 +1377,30 @@ rules:
                 ca: $CA_CERT,
                 ...
               });
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-295
@@ -1444,35 +1420,30 @@ rules:
           - pattern: crypto.createDecipher("rc4-hmac-md5", $KEY)
           - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
           - pattern: CryptoJS.RC4.encrypt($DATA, $KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1482,7 +1453,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha3-224")
@@ -1518,35 +1488,30 @@ rules:
           - pattern: |
               const { shake128 } = require("@noble/hashes");
               shake128($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1556,7 +1521,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("md5")
@@ -1600,35 +1564,30 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGO
                   regex: '"(md5|MD5)"'
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1750,35 +1709,30 @@ rules:
                 maxVersion: $VERSION,
                 ...
               })
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1788,7 +1742,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha512")
@@ -1819,35 +1772,30 @@ rules:
           - pattern: require("crypto-js").SHA384($DATA)
           - pattern: CryptoJS.SHA512($DATA)
           - pattern: CryptoJS.SHA384($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1857,7 +1805,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha1")
@@ -1879,35 +1826,30 @@ rules:
           - pattern: crypto.createHash("sha1").update($DATA).digest("base64")
           - pattern: require("crypto-js").SHA1($DATA)
           - pattern: CryptoJS.SHA1($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1986,57 +1928,51 @@ rules:
           - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY"), $DATA)
           - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY", "hex"), $DATA)
           - pattern: crypto.subtle.encrypt($ALGO, Buffer.from("$KEY", "base64"), $DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-    pattern-not:
-      - pattern: |
+      - pattern-not: |
           $KEY = process.env.$VAR
           ...
           crypto.createCipheriv($ALGO, $KEY, $IV)
-      - pattern: |
+      - pattern-not: |
           const $KEY = process.env.$VAR
           ...
           crypto.createCipheriv($ALGO, $KEY, $IV)
-      - pattern: |
+      - pattern-not: |
           $KEY = require($MODULE).$PROP
           ...
           crypto.createCipheriv($ALGO, $KEY, $IV)
-      - pattern: |
+      - pattern-not: |
           const $KEY = require($MODULE).$PROP
           ...
           crypto.createCipheriv($ALGO, $KEY, $IV)
-      - pattern: |
+      - pattern-not: |
           $KEY = $CONFIG.$PROP
           ...
           crypto.createCipheriv($ALGO, $KEY, $IV)
-      - pattern: |
+      - pattern-not: |
           const $KEY = $CONFIG.$PROP
           ...
           crypto.createCipheriv($ALGO, $KEY, $IV)
@@ -2081,35 +2017,30 @@ rules:
               crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, $PRIVATE_KEY, $DATA)
           - pattern: |
               crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2133,6 +2064,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $BITS
                   comparison: $BITS < 2048
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
@@ -2145,6 +2077,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $BITS
                   comparison: $BITS < 2048
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "ECDSA", namedCurve: $CURVE }, $EXTRACTABLE, $USAGE)
@@ -2164,6 +2097,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $LENGTH
                   comparison: $LENGTH < 128
+              - focus-metavariable: $LENGTH
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
@@ -2176,6 +2110,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $LENGTH
                   comparison: $LENGTH < 128
+              - focus-metavariable: $LENGTH
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
@@ -2188,35 +2123,31 @@ rules:
               - metavariable-comparison:
                   metavariable: $LENGTH
                   comparison: $LENGTH < 128
-    pattern-not-inside:
-      - pattern: |
+              - focus-metavariable: $LENGTH
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -2226,7 +2157,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha256")
@@ -2257,35 +2187,30 @@ rules:
           - pattern: |
               const { createHash } = await import('crypto');
               createHash("sha256")
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2336,35 +2261,30 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGO
                   regex: '"aes-.*"'
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2384,36 +2304,30 @@ rules:
               $BYTES
           - pattern: Math.random()
           - pattern: Math.floor(Math.random() * $MAX)
-    focus-metavariable: $LENGTH
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-338
@@ -2424,7 +2338,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
@@ -2456,54 +2369,53 @@ rules:
               - metavariable-comparison:
                   metavariable: $ROUNDS
                   comparison: $ROUNDS < 10
+              - focus-metavariable: $ROUNDS
           - patterns:
               - pattern: require("bcryptjs").hashSync($PASSWORD, $ROUNDS)
               - metavariable-comparison:
                   metavariable: $ROUNDS
                   comparison: $ROUNDS < 10
+              - focus-metavariable: $ROUNDS
           - patterns:
               - pattern: bcrypt.hashSync($PASSWORD, $ROUNDS)
               - metavariable-comparison:
                   metavariable: $ROUNDS
                   comparison: $ROUNDS < 10
+              - focus-metavariable: $ROUNDS
           - patterns:
               - pattern: bcryptjs.hashSync($PASSWORD, $ROUNDS)
               - metavariable-comparison:
                   metavariable: $ROUNDS
                   comparison: $ROUNDS < 10
+              - focus-metavariable: $ROUNDS
           - pattern: |
               $HASH = await bcrypt.hash($PASSWORD, $ROUNDS);
               ...
               $MATCH = await bcrypt.compare($PASSWORD, $HASH);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -2558,35 +2470,30 @@ rules:
           - pattern: require("sjcl").ecc.ecdsa.generateKeys($CURVE, $PARANOIA)
           - pattern: require("sjcl").ecc.ecdsa.secretKey($KEY)
           - pattern: require("sjcl").ecc.ecdsa.publicKey($KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2642,35 +2549,30 @@ rules:
               $HASH = crypto.createHash("sha256");
               $HASH.update($DATA);
               crypto.timingSafeEqual($HASH.digest(), $EXPECTED)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2706,35 +2608,30 @@ rules:
           - pattern: require("node-forge").pki.rsa.generateKeyPair($BITS)
           - pattern: require("node-forge").pki.rsa.encrypt($DATA, $PUBLIC_KEY)
           - pattern: require("node-forge").pki.rsa.decrypt($DATA, $PRIVATE_KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2764,35 +2661,30 @@ rules:
               $SALT = crypto.randomBytes($SALT_LENGTH);
               ...
               require("bcrypt").hashSync($PASSWORD, $ROUNDS);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-330
@@ -2802,7 +2694,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createHmac("sha256", $KEY)
@@ -2855,35 +2746,30 @@ rules:
               crypto.subtle.sign({ name: "HMAC", hash: $HASH }, $KEY, $DATA)
           - pattern: |
               crypto.subtle.verify({ name: "HMAC", hash: $HASH }, $KEY, $SIG, $DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2893,7 +2779,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("ripemd160")
@@ -2915,35 +2800,30 @@ rules:
               $HASH = $HASHER.digest("base64");
           - pattern: crypto.createHash("ripemd160").update($DATA).digest("hex")
           - pattern: crypto.createHash("ripemd160").update($DATA).digest("base64")
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -2983,35 +2863,30 @@ rules:
               crypto.subtle.verify({ name: "RSA-PSS", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
           - pattern: |
               crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, $PUBLIC_KEY, $SIGNATURE, $DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3047,36 +2922,30 @@ rules:
           - pattern: |
               const { blake2s } = require("@noble/hashes");
               blake2s($DATA)
-    focus-metavariable: $DATA
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3146,35 +3015,30 @@ rules:
               crypto.subtle.deriveBits({ name: "X25519" }, $PRIVATE_KEY, $PUBLIC_KEY, $LENGTH)
           - pattern: |
               crypto.subtle.deriveBits({ name: "X448" }, $PRIVATE_KEY, $PUBLIC_KEY, $LENGTH)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3184,7 +3048,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
@@ -3212,35 +3075,30 @@ rules:
               - metavariable-comparison:
                   metavariable: $N
                   comparison: $N < 16384
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -3268,35 +3126,30 @@ rules:
           - pattern: CryptoJS.DES.encrypt($DATA, $KEY)
           - pattern: require("crypto-js").TripleDES.encrypt($DATA, $KEY)
           - pattern: CryptoJS.TripleDES.encrypt($DATA, $KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3342,35 +3195,30 @@ rules:
               $DECIPHER = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
               $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
               $PLAINTEXT += $DECIPHER.final();
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3433,35 +3281,30 @@ rules:
               - metavariable-regex:
                   metavariable: $STATIC_VALUE
                   regex: ^(?!.*randomBytes|.*getRandomValues|.*random).*$
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-330
@@ -3505,35 +3348,30 @@ rules:
                 false,
                 ["encrypt", "decrypt"]
               );
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -3595,35 +3433,30 @@ rules:
           - pattern: require("libsodium-wrappers").crypto_box_open($CIPHERTEXT, $NONCE,
               $PUBLIC_KEY, $SECRET_KEY)
           - pattern: require("sjcl").ecc.elGamal.generateKeys($CURVE, $PARANOIA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3633,7 +3466,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: DES.Create()
@@ -3647,28 +3479,21 @@ rules:
                 $ENCRYPTOR = $CIPHER.CreateEncryptor();
                 $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
               }
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3678,7 +3503,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA1.Create()
@@ -3697,28 +3521,21 @@ rules:
           - pattern: |
               SHA1 $HASHER = SHA1.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3728,7 +3545,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA3_256.Create()
@@ -3755,28 +3571,21 @@ rules:
           - pattern: |
               SHA3_256 $HASHER = SHA3_256.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3786,7 +3595,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
@@ -3815,28 +3623,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $KEYLEN
                   comparison: $KEYLEN < 32
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -3846,7 +3647,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: BCrypt.Net.BCrypt.HashPassword($PASSWORD, $WORK_FACTOR)
@@ -3862,28 +3662,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $WORK_FACTOR
                   comparison: $WORK_FACTOR < 10
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -3893,7 +3686,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new AesGcm($KEY)
@@ -3913,28 +3705,21 @@ rules:
               $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
           - pattern: $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
           - pattern: $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -3944,7 +3729,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $BYTES
     patterns:
       - pattern-either:
           - pattern: RandomNumberGenerator.Create()
@@ -3955,28 +3739,21 @@ rules:
                 $RNG.GetBytes($BYTES);
               }
           - pattern: RandomNumberGenerator.Fill($BYTES)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-338
@@ -3987,7 +3764,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $SIZE
     patterns:
       - pattern-either:
           - pattern: |
@@ -4021,28 +3797,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $SIZE
                   comparison: $SIZE < 128
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -4052,7 +3821,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: Aes.Create()
@@ -4088,28 +3856,21 @@ rules:
                   comparison: $SIZE < 128
           - pattern: await $CIPHER.EncryptAsync($DATA)
           - pattern: await $CIPHER.DecryptAsync($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4119,7 +3880,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)
@@ -4130,28 +3890,21 @@ rules:
           - pattern: |
               $KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM);
               $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -4162,7 +3915,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $BITS
     patterns:
       - pattern-either:
           - pattern: RSA.Create($BITS)
@@ -4185,28 +3937,21 @@ rules:
           - pattern: $RSA.ExportRSAPrivateKey()
           - pattern: $RSA.ImportRSAPublicKey($KEY_DATA)
           - pattern: $RSA.ImportRSAPrivateKey($KEY_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4216,7 +3961,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA512.Create()
@@ -4235,28 +3979,21 @@ rules:
           - pattern: |
               SHA512 $HASHER = SHA512.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4266,7 +4003,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $VERSION
     patterns:
       - pattern-either:
           - pattern: SecurityProtocolType.Ssl3
@@ -4281,28 +4017,21 @@ rules:
           - pattern: new SslStream($STREAM, false, $VALIDATION_CALLBACK)
           - pattern: $HANDLER.SslProtocols = SslProtocols.$PROTOCOL
           - pattern: HttpClientHandler.SslProtocols
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4312,7 +4041,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: MD5.Create()
@@ -4332,28 +4060,21 @@ rules:
               MD5 $HASHER = MD5.Create();
               $HASH = $HASHER.ComputeHash($DATA);
           - pattern: await $HASHER.ComputeHashAsync($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4363,7 +4084,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: ECDsa.Create($CURVE)
@@ -4381,28 +4101,21 @@ rules:
           - pattern: ECCurve.NamedCurves.nistP256
           - pattern: ECCurve.NamedCurves.nistP384
           - pattern: ECCurve.NamedCurves.nistP521
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4412,7 +4125,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $IV
     patterns:
       - pattern-either:
           - pattern: $CIPHER.IV = $IV
@@ -4430,28 +4142,21 @@ rules:
               }
           - pattern: $GCM.Encrypt($NONCE, $PLAINTEXT, $ADDITIONAL_DATA)
           - pattern: $GCM.Decrypt($NONCE, $CIPHERTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-329
@@ -4461,7 +4166,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new ChaCha20Poly1305($KEY)
@@ -4481,28 +4185,21 @@ rules:
               $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
           - pattern: $CHACHA.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
           - pattern: $CHACHA.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4512,7 +4209,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)
@@ -4521,28 +4217,21 @@ rules:
               using ($KDF = new Rfc2898DeriveBytes($PASSWORD, $SALT, $ITER)) {
                 $KEY = $KDF.GetBytes($KEYLEN);
               }
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-326
@@ -4552,7 +4241,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING)
@@ -4579,28 +4267,21 @@ rules:
           - pattern: await $RSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
           - pattern: await $ECDSA.SignDataAsync($DATA, $HASH_ALGORITHM)
           - pattern: await $ECDSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4610,7 +4291,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA256.Create()
@@ -4630,28 +4310,21 @@ rules:
               SHA256 $HASHER = SHA256.Create();
               $HASH = $HASHER.ComputeHash($DATA);
           - pattern: await $HASHER.ComputeHashAsync($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4661,7 +4334,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: RIPEMD160.Create()
@@ -4674,28 +4346,21 @@ rules:
           - pattern: |
               $HASHER = RIPEMD160.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4705,7 +4370,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PUBLIC_KEY
     patterns:
       - pattern-either:
           - pattern: ECDiffieHellman.Create($CURVE)
@@ -4720,28 +4384,21 @@ rules:
               $SHARED_SECRET = $ALICE.DeriveKeyMaterial($BOB.PublicKey);
           - pattern: $ECDH.DeriveKeyMaterial($PUBLIC_KEY)
           - pattern: ECDiffieHellmanCng()
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4776,32 +4433,6 @@ rules:
       - pattern: new HMACMD5($KEY)
       - pattern: $HMAC.Key = $KEY
       - pattern: $CIPHER.Key = new byte[$SIZE]
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          [Test]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          [Fact]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          [Theory]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-798
@@ -4811,7 +4442,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $MODE
     patterns:
       - pattern-either:
           - pattern: CipherMode.CBC
@@ -4832,28 +4462,21 @@ rules:
           - pattern: |
               $CIPHER.Mode = CipherMode.OFB;
               $ENCRYPTOR = $CIPHER.CreateEncryptor();
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4864,7 +4487,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA384.Create()
@@ -4880,28 +4502,21 @@ rules:
           - pattern: new SHA384Managed()
           - pattern: SHA384Cng()
           - pattern: new SHA384Cng()
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4911,7 +4526,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: RC4CryptoServiceProvider()
@@ -4925,28 +4539,21 @@ rules:
               $RC4 = new RC4CryptoServiceProvider();
               $RC4.Key = $KEY;
               $CIPHERTEXT = $RC4.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -4956,7 +4563,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $SALT
     patterns:
       - pattern-either:
           - pattern: RandomNumberGenerator.Fill($SALT)
@@ -4987,28 +4593,21 @@ rules:
               - metavariable-comparison:
                   metavariable: $SIZE
                   comparison: $SIZE < 16
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-759
@@ -5018,7 +4617,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: RC2.Create()
@@ -5032,28 +4630,21 @@ rules:
                 $ENCRYPTOR = $CIPHER.CreateEncryptor();
                 $CIPHERTEXT = $ENCRYPTOR.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
               }
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -5063,7 +4654,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $SUITES
     patterns:
       - pattern-either:
           - pattern: CipherSuitesPolicy($SUITES)
@@ -5075,28 +4665,21 @@ rules:
           - pattern: TlsCipherSuite.TLS_CHACHA20_POLY1305_SHA256
           - pattern: TlsCipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           - pattern: TlsCipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -5106,7 +4689,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $CALLBACK
     patterns:
       - pattern-either:
           - pattern: ServicePointManager.ServerCertificateValidationCallback = $CALLBACK
@@ -5125,28 +4707,21 @@ rules:
           - pattern: $CERT.Verify()
           - pattern: $CHAIN.Build($CERT)
           - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-295
@@ -5156,7 +4731,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: HMAC.Create($ALGORITHM)
@@ -5189,28 +4763,21 @@ rules:
               $HMAC = HMAC.Create("SHA3-256");
               $HMAC.Key = $KEY;
               $RESULT = $HMAC.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
@@ -7156,22 +6723,6 @@ rules:
     severity: INFO
     languages:
       - java
-    taint-mode:
-      source:
-        - pattern-either:
-            - pattern: $KEY = "$VALUE"
-            - pattern: $KEY = '$VALUE'
-            - pattern: private static final String $KEY = "$VALUE"
-            - pattern: private static final String $KEY = '$VALUE'
-            - pattern: final String $KEY = "$VALUE"
-            - pattern: final String $KEY = '$VALUE'
-            - pattern: private static final byte[] $KEY = {$BYTES}
-            - pattern: final byte[] $KEY = {$BYTES}
-      sink:
-        - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
-        - pattern: new SecretKeySpec($KEY, $ALGO)
-        - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
-        - pattern: new SecretKeySpec(new byte[] {$KEY}, $ALGO)
     patterns:
       - pattern-either:
           - pattern: new SecretKeySpec("$KEY".getBytes(), "AES")
@@ -7192,6 +6743,72 @@ rules:
               final String $KEY = "$VALUE";
               ...
               new SecretKeySpec($KEY.getBytes(), "AES");
+          - pattern: |
+              String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              private static final String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              public static final String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              private String $KEY = "$VALUE";
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              final byte[] $KEY = {$BYTES};
+              ...
+              new SecretKeySpec($KEY, $ALGO);
+          - pattern: |
+              byte[] $KEY = {$BYTES};
+              ...
+              new SecretKeySpec($KEY, $ALGO);
+          - pattern: |
+              $CIPHER.init(Cipher.ENCRYPT_MODE, new SecretKeySpec("$KEY".getBytes(), $ALGO));
+          - pattern: |
+              $CIPHER.init(Cipher.DECRYPT_MODE, new SecretKeySpec("$KEY".getBytes(), $ALGO));
+          - pattern: |
+              $MAC.init(new SecretKeySpec("$KEY".getBytes(), $ALGO));
+          - pattern: |
+              String $KEY = System.getenv($VAR);
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              String $KEY = System.getProperty($VAR);
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              $KEY = System.getenv($VAR);
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+          - pattern: |
+              $KEY = System.getProperty($VAR);
+              ...
+              new SecretKeySpec($KEY.getBytes(), $ALGO);
+      - pattern-not-inside: |
+          @Test
+          public void $NAME() {
+            ...
+          }
+      - pattern-not-inside: |
+          @org.junit.Test
+          public void $NAME() {
+            ...
+          }
+      - pattern-not-inside: |
+          @org.junit.jupiter.api.Test
+          public void $NAME() {
+            ...
+          }
+      - pattern-not-inside: |
+          @org.testng.annotations.Test
+          public void $NAME() {
+            ...
+          }
     metadata:
       category: crypto
       cwe: CWE-798
@@ -8006,7 +7623,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $VERSION
     metadata:
       category: crypto
       cwe: CWE-327
@@ -8316,7 +7932,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327
@@ -8427,21 +8042,6 @@ rules:
               let $RNG = ring::rand::SystemRandom::new();
               ring::rand::generate(&$RNG, $OUTPUT)
           }
-    pattern-not-inside:
-      - pattern: |
-          #[test]
-          fn $TEST() {
-              ...
-          }
-      - pattern: |
-          #[cfg(test)]
-          mod $MODULE {
-              ...
-          }
-      - pattern: |
-          mod tests {
-              ...
-          }
     metadata:
       category: crypto
       cwe: CWE-330
@@ -8512,7 +8112,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $COST
     metadata:
       category: crypto
       cwe: CWE-916
@@ -8593,25 +8192,6 @@ rules:
       - pattern: openssl::symm::decrypt($CIPHER, $KEY.as_bytes(), $IV, $DATA)
       - pattern: aes::Aes256::new($KEY)
       - pattern: aes_gcm::Aes256Gcm::new($KEY)
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          #[test]
-          fn $TEST() {
-              ...
-          }
-      - pattern: |
-          #[cfg(test)]
-          mod $MODULE {
-              ...
-          }
-      - pattern: |
-          mod tests {
-              ...
-          }
     metadata:
       category: crypto
       cwe: CWE-798
@@ -8896,7 +8476,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327
@@ -8932,7 +8511,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-326
@@ -8988,7 +8566,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9119,7 +8696,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9574,7 +9150,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $DATA
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9645,7 +9220,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $VERSION
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9708,7 +9282,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $CURVE
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9718,7 +9291,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $OPTIONS
     patterns:
       - pattern-either:
           - pattern: |
@@ -9765,26 +9337,21 @@ rules:
               });
           - pattern: |
               const $CONTEXT = tls.createSecureContext({
-                minVersion: "TLSv1.2",
-                ...
+                  minVersion: "TLSv1.2",
+                  ...
               });
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9794,7 +9361,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha256")
@@ -9836,23 +9402,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'SHA-256'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9862,7 +9423,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.subtle.encrypt($ALGO, $KEY, $DATA)
@@ -9925,23 +9485,18 @@ rules:
                 $BASE_KEY,
                 $LENGTH
               );
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -9951,7 +9506,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $IV
     patterns:
       - pattern-either:
           - pattern: crypto.randomBytes($LENGTH)
@@ -9977,23 +9531,18 @@ rules:
               crypto.getRandomValues($IV);
               ...
               await crypto.subtle.encrypt({ name: "AES-CBC", iv: $IV }, $KEY, $DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-330
@@ -10003,7 +9552,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createSign("RSA-SHA256")
@@ -10040,23 +9588,18 @@ rules:
               await crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA);
           - pattern: |
               await crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10066,7 +9609,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha224")
@@ -10098,23 +9640,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'SHA-224'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10124,7 +9661,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.publicEncrypt($KEY, $DATA)
@@ -10200,23 +9736,18 @@ rules:
               - metavariable-comparison:
                   metavariable: $BITS
                   comparison: $BITS < 2048
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10226,7 +9757,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.scrypt($PASSWORD, $SALT, $KEYLEN, $OPTIONS, $CALLBACK)
@@ -10260,23 +9790,18 @@ rules:
               - metavariable-comparison:
                   metavariable: $N
                   comparison: $N < 16384
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -10286,7 +9811,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $OPTIONS
     patterns:
       - pattern-either:
           - pattern: |
@@ -10365,23 +9889,18 @@ rules:
                 ...
               });
               https.request({ agent: $AGENT, ... }, $CALLBACK);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-295
@@ -10391,7 +9910,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("blake2b512")
@@ -10418,23 +9936,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'(blake2b512|blake2s256)'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10444,7 +9957,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha3-224")
@@ -10473,23 +9985,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'sha3-(224|256|384|512)'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10499,7 +10006,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createCipher("rc4", $KEY)
@@ -10531,23 +10037,18 @@ rules:
           - pattern: CryptoJS.RC4.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
           - pattern: require("crypto-js").RC4.decrypt($DATA, $KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10557,7 +10058,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $OPTIONS
     patterns:
       - pattern-either:
           - pattern: |
@@ -10587,23 +10087,18 @@ rules:
                 ciphers: "$CIPHER_SUITE",
                 ...
               };
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10613,7 +10108,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha1")
@@ -10650,23 +10144,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'SHA-1'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10676,7 +10165,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $SALT
     patterns:
       - pattern-either:
           - pattern: crypto.randomBytes($LENGTH)
@@ -10725,23 +10213,18 @@ rules:
                   metavariable: $SALT_LENGTH
                   regex: \d+
               - focus-metavariable: $SALT_LENGTH
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-330
@@ -10751,7 +10234,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createDiffieHellman($PRIME, $ENCODING)
@@ -10806,23 +10288,18 @@ rules:
                 true,
                 ["encrypt", "decrypt"]
               );
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -10832,7 +10309,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
@@ -10892,23 +10368,18 @@ rules:
               - metavariable-comparison:
                   metavariable: $ROUNDS
                   comparison: $ROUNDS < 10
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -10918,7 +10389,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHmac("sha256", $KEY)
@@ -10965,23 +10435,18 @@ rules:
                 $SIGNATURE,
                 $DATA
               );
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11027,31 +10492,6 @@ rules:
           await crypto.subtle.importKey("raw", $KEY_DATA, { name: "AES-GCM" }, false, ["encrypt", "decrypt"])
       - pattern: |
           crypto.createCipheriv("aes-256-cbc", $OPTIONS.key, $IV)
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          describe($NAME, () => {
-            ...
-          })
-      - pattern: |
-          it($NAME, () => {
-            ...
-          })
-      - pattern: |
-          test($NAME, () => {
-            ...
-          })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /**
-           * $DOCSTRING
-           */
     metadata:
       category: crypto
       cwe: CWE-798
@@ -11061,7 +10501,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
@@ -11092,23 +10531,18 @@ rules:
                 false,
                 ["encrypt", "decrypt"]
               );
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -11118,7 +10552,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("md5")
@@ -11149,23 +10582,18 @@ rules:
           - pattern: |
               const $ALGORITHM = "md5";
               crypto.createHash($ALGORITHM)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11175,7 +10603,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: require("argon2").hash($PASSWORD, $OPTIONS)
@@ -11214,23 +10641,18 @@ rules:
               - metavariable-comparison:
                   metavariable: $TIME
                   comparison: $TIME < 3
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -11240,7 +10662,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createCipher("des", $KEY)
@@ -11286,23 +10707,18 @@ rules:
           - pattern: require("crypto-js").DES.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").TripleDES.encrypt($DATA, $KEY)
           - pattern: require("crypto-js").TripleDES.decrypt($DATA, $KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11312,7 +10728,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: crypto.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK)
@@ -11369,23 +10784,18 @@ rules:
           - pattern: |
               const $LIBRARY = await import("crypto");
               await $LIBRARY.pbkdf2($PASSWORD, $SALT, $ITER, $KEYLEN, $DIGEST, $CALLBACK);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -11395,7 +10805,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createCipheriv("aes-128-cbc", $KEY, $IV)
@@ -11442,23 +10851,18 @@ rules:
               $DECIPHER: crypto.Decipher = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
               $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
               $PLAINTEXT += $DECIPHER.final();
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11468,7 +10872,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createCipher("aes-128-cbc", $KEY)
@@ -11546,23 +10949,18 @@ rules:
                 true,
                 ["wrapKey", "unwrapKey"]
               );
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11688,23 +11086,18 @@ rules:
                   metavariable: $LENGTH
                   regex: \d+
               - focus-metavariable: $LENGTH
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326
@@ -11714,7 +11107,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $LENGTH
     patterns:
       - pattern-either:
           - pattern: crypto.randomBytes($LENGTH)
@@ -11735,23 +11127,18 @@ rules:
           - pattern: |
               $IV = new Uint8Array(12);
               crypto.getRandomValues($IV);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-338
@@ -11762,7 +11149,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha512")
@@ -11811,23 +11197,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'(SHA-512|SHA-384)'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11837,7 +11218,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createSign("ecdsa-with-SHA256")
@@ -11876,23 +11256,18 @@ rules:
               await crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA);
           - pattern: |
               await crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
@@ -11902,7 +11277,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -11951,8 +11325,7 @@ rules:
                   patterns:
                     - pattern: AES.new($KEY, $MODE)
                     - pattern: Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -11998,8 +11371,7 @@ rules:
               from cryptography.hazmat.primitives.kdf.hkdf import HKDFExtract
               $HKDF = HKDFExtract($ALGORITHM, $SALT, $BACKEND)
               $PRK = $HKDF.extract($INPUT_MATERIAL)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12052,8 +11424,7 @@ rules:
               from cryptography.hazmat.primitives.asymmetric import dh
               $PRIV_NUMS = dh.DHPrivateNumbers($PRIVATE_VALUE, $PUBLIC_NUMS)
               $PRIVATE_KEY = $PRIV_NUMS.private_key($BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12073,7 +11444,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $KEY_SIZE
     patterns:
       - pattern-either:
           - pattern: |
@@ -12155,8 +11525,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $KEY_LENGTH
                   comparison: $KEY_LENGTH < 16
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12169,7 +11538,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -12205,8 +11573,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.TripleDES($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12226,7 +11593,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
@@ -12254,8 +11620,7 @@ rules:
           - pattern: argon2.verify_password($HASH, $PASSWORD)
           - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
           - pattern: scrypt.verify($HASH, $PASSWORD)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12268,7 +11633,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $VERSION
     paths:
       include:
         - "**/*.py"
@@ -12291,8 +11655,7 @@ rules:
           - pattern: |
               $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
               ...
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12305,7 +11668,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $LENGTH
     paths:
       include:
         - "**/*.py"
@@ -12340,8 +11702,7 @@ rules:
               $IV = os.urandom($LENGTH)
               ...
               $IV
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12383,8 +11744,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.Camellia($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12397,7 +11757,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -12452,8 +11811,7 @@ rules:
               - metavariable-regex:
                   metavariable: $SIZE
                   regex: (16|20|28|32)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12473,7 +11831,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $PRIVATE_KEY
     patterns:
       - pattern-either:
           - pattern: ec.generate_private_key($CURVE, $BACKEND)
@@ -12531,8 +11888,7 @@ rules:
           - pattern: |
               from ecdsa import curves
               $CURVE = curves.NIST521p
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12545,7 +11901,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -12580,8 +11935,7 @@ rules:
               - metavariable-regex:
                   metavariable: $DATA
                   regex: .+
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12594,7 +11948,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -12644,8 +11997,7 @@ rules:
               - metavariable-regex:
                   metavariable: $LENGTH
                   regex: \d+
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12680,8 +12032,7 @@ rules:
               from Crypto.Cipher import Twofish
               $CIPHER = Twofish.new($KEY, $MODE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12694,7 +12045,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -12724,8 +12074,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12738,7 +12087,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -12757,8 +12105,7 @@ rules:
               $CIPHER = DES3.new($KEY, $MODE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
           - pattern: cryptography.hazmat.primitives.ciphers.algorithms.TripleDES($KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12771,7 +12118,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -12802,8 +12148,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12816,7 +12161,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -12863,8 +12207,7 @@ rules:
               from cryptography.fernet import MultiFernet
               $FERNET = MultiFernet([$FERNET1, $FERNET2])
               $DATA = $FERNET.decrypt($TOKEN)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12877,7 +12220,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $IV
     paths:
       include:
         - "**/*.py"
@@ -12964,8 +12306,7 @@ rules:
               $IV = b"\x00" * $LENGTH
               ...
               AES.new($KEY, AES.MODE_CBC, $IV)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -12978,7 +12319,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $PRIVATE_KEY
     paths:
       include:
         - "**/*.py"
@@ -13056,8 +12396,7 @@ rules:
               from cryptography.hazmat.primitives.asymmetric import ed448
               $PUBLIC_KEY = $PRIVATE_KEY.public_key()
               $PUBLIC_KEY.verify($SIGNATURE, $DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13087,8 +12426,7 @@ rules:
               from Crypto.Cipher import Salsa20
               $CIPHER = Salsa20.new($KEY, $NONCE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13101,7 +12439,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $MODE
     paths:
       include:
         - "**/*.py"
@@ -13162,8 +12499,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13176,7 +12512,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $SUITE
     paths:
       include:
         - "**/*.py"
@@ -13216,8 +12551,7 @@ rules:
               $SESSION.mount("https://", $ADAPTER)
               ...
               $ADAPTER.init_poolmanager(ciphers=$CIPHER_STRING)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13314,8 +12648,7 @@ rules:
                     - pattern-either:
                         - pattern: $PUBLIC_KEY.encrypt(...)
                         - pattern: $PUBLIC_KEY.verify(...)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13328,7 +12661,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -13395,8 +12727,7 @@ rules:
                   patterns:
                     - pattern: hmac.new($KEY, $MSG, $DIGEST)
                     - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13436,8 +12767,7 @@ rules:
               $CIPHER = ARC4.new($KEY)
               ...
               $CIPHER.decrypt($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13477,8 +12807,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13529,8 +12858,7 @@ rules:
               from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
               $CIPHER = ChaCha20Poly1305($KEY)
               $PLAINTEXT = $CIPHER.decrypt($NONCE, $CIPHERTEXT, $ASSOCIATED_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13543,7 +12871,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -13568,8 +12895,7 @@ rules:
           - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
           - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
           - pattern: pbkdf2_hmac("sha512", $PASSWORD, $SALT, $ITER)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13582,7 +12908,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $CONTEXT
     paths:
       include:
         - "**/*.py"
@@ -13638,8 +12963,7 @@ rules:
               urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
               ...
               requests.get($URL, verify=False)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13652,7 +12976,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $PASSWORD
     paths:
       include:
         - "**/*.py"
@@ -13701,8 +13024,7 @@ rules:
           - pattern: |
               from passlib.hash import argon2
               argon2.verify($PASSWORD, $HASH)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -13779,11 +13101,6 @@ rules:
       - pattern: ec.generate_private_key($CURVE, $BACKEND)
       - pattern: hmac.new($KEY, $MSG, $DIGEST)
       - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
-    pattern-not-inside:
-      - pattern: |
-          """
-          $DOCSTRING
-          """
     metadata:
       category: crypto
       cwe: CWE-798
@@ -13831,8 +13148,7 @@ rules:
               import Crypto.Hash
           - pattern: |
               import Crypto.Signature
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -53,8 +52,7 @@ rules:
                   patterns:
                     - pattern: AES.new($KEY, $MODE)
                     - pattern: Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -100,8 +98,7 @@ rules:
               from cryptography.hazmat.primitives.kdf.hkdf import HKDFExtract
               $HKDF = HKDFExtract($ALGORITHM, $SALT, $BACKEND)
               $PRK = $HKDF.extract($INPUT_MATERIAL)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -154,8 +151,7 @@ rules:
               from cryptography.hazmat.primitives.asymmetric import dh
               $PRIV_NUMS = dh.DHPrivateNumbers($PRIVATE_VALUE, $PUBLIC_NUMS)
               $PRIVATE_KEY = $PRIV_NUMS.private_key($BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -175,7 +171,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $KEY_SIZE
     patterns:
       - pattern-either:
           - pattern: |
@@ -257,8 +252,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $KEY_LENGTH
                   comparison: $KEY_LENGTH < 16
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -271,7 +265,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -307,8 +300,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.TripleDES($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -328,7 +320,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $PASSWORD
     patterns:
       - pattern-either:
           - pattern: hashlib.pbkdf2_hmac($HASH_NAME, $PASSWORD, $SALT, $ITER)
@@ -356,8 +347,7 @@ rules:
           - pattern: argon2.verify_password($HASH, $PASSWORD)
           - pattern: scrypt.hash($PASSWORD, $SALT, $N, $R, $P)
           - pattern: scrypt.verify($HASH, $PASSWORD)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -370,7 +360,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $VERSION
     paths:
       include:
         - "**/*.py"
@@ -393,8 +382,7 @@ rules:
           - pattern: |
               $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
               ...
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -407,7 +395,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $LENGTH
     paths:
       include:
         - "**/*.py"
@@ -442,8 +429,7 @@ rules:
               $IV = os.urandom($LENGTH)
               ...
               $IV
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -485,8 +471,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.Camellia($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -499,7 +484,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -554,8 +538,7 @@ rules:
               - metavariable-regex:
                   metavariable: $SIZE
                   regex: (16|20|28|32)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -575,7 +558,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $PRIVATE_KEY
     patterns:
       - pattern-either:
           - pattern: ec.generate_private_key($CURVE, $BACKEND)
@@ -633,8 +615,7 @@ rules:
           - pattern: |
               from ecdsa import curves
               $CURVE = curves.NIST521p
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -647,7 +628,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -682,8 +662,7 @@ rules:
               - metavariable-regex:
                   metavariable: $DATA
                   regex: .+
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -696,7 +675,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -746,8 +724,7 @@ rules:
               - metavariable-regex:
                   metavariable: $LENGTH
                   regex: \d+
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -782,8 +759,7 @@ rules:
               from Crypto.Cipher import Twofish
               $CIPHER = Twofish.new($KEY, $MODE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -796,7 +772,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -826,8 +801,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -840,7 +814,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -859,8 +832,7 @@ rules:
               $CIPHER = DES3.new($KEY, $MODE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
           - pattern: cryptography.hazmat.primitives.ciphers.algorithms.TripleDES($KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -873,7 +845,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -904,8 +875,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -918,7 +888,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -965,8 +934,7 @@ rules:
               from cryptography.fernet import MultiFernet
               $FERNET = MultiFernet([$FERNET1, $FERNET2])
               $DATA = $FERNET.decrypt($TOKEN)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -979,7 +947,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $IV
     paths:
       include:
         - "**/*.py"
@@ -1066,8 +1033,7 @@ rules:
               $IV = b"\x00" * $LENGTH
               ...
               AES.new($KEY, AES.MODE_CBC, $IV)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1080,7 +1046,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $PRIVATE_KEY
     paths:
       include:
         - "**/*.py"
@@ -1158,8 +1123,7 @@ rules:
               from cryptography.hazmat.primitives.asymmetric import ed448
               $PUBLIC_KEY = $PRIVATE_KEY.public_key()
               $PUBLIC_KEY.verify($SIGNATURE, $DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1189,8 +1153,7 @@ rules:
               from Crypto.Cipher import Salsa20
               $CIPHER = Salsa20.new($KEY, $NONCE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1203,7 +1166,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $MODE
     paths:
       include:
         - "**/*.py"
@@ -1264,8 +1226,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1278,7 +1239,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $SUITE
     paths:
       include:
         - "**/*.py"
@@ -1318,8 +1278,7 @@ rules:
               $SESSION.mount("https://", $ADAPTER)
               ...
               $ADAPTER.init_poolmanager(ciphers=$CIPHER_STRING)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1416,8 +1375,7 @@ rules:
                     - pattern-either:
                         - pattern: $PUBLIC_KEY.encrypt(...)
                         - pattern: $PUBLIC_KEY.verify(...)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1430,7 +1388,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -1497,8 +1454,7 @@ rules:
                   patterns:
                     - pattern: hmac.new($KEY, $MSG, $DIGEST)
                     - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1538,8 +1494,7 @@ rules:
               $CIPHER = ARC4.new($KEY)
               ...
               $CIPHER.decrypt($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1579,8 +1534,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1631,8 +1585,7 @@ rules:
               from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
               $CIPHER = ChaCha20Poly1305($KEY)
               $PLAINTEXT = $CIPHER.decrypt($NONCE, $CIPHERTEXT, $ASSOCIATED_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1645,7 +1598,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -1670,8 +1622,7 @@ rules:
           - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
           - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
           - pattern: pbkdf2_hmac("sha512", $PASSWORD, $SALT, $ITER)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1684,7 +1635,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $CONTEXT
     paths:
       include:
         - "**/*.py"
@@ -1740,8 +1690,7 @@ rules:
               urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
               ...
               requests.get($URL, verify=False)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1754,7 +1703,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $PASSWORD
     paths:
       include:
         - "**/*.py"
@@ -1803,8 +1751,7 @@ rules:
           - pattern: |
               from passlib.hash import argon2
               argon2.verify($PASSWORD, $HASH)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
@@ -1881,11 +1828,6 @@ rules:
       - pattern: ec.generate_private_key($CURVE, $BACKEND)
       - pattern: hmac.new($KEY, $MSG, $DIGEST)
       - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
-    pattern-not-inside:
-      - pattern: |
-          """
-          $DOCSTRING
-          """
     metadata:
       category: crypto
       cwe: CWE-798
@@ -1933,8 +1875,7 @@ rules:
               import Crypto.Hash
           - pattern: |
               import Crypto.Signature
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

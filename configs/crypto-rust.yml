@@ -235,7 +235,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $VERSION
     metadata:
       category: crypto
       cwe: CWE-327
@@ -545,7 +544,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327
@@ -656,21 +654,6 @@ rules:
               let $RNG = ring::rand::SystemRandom::new();
               ring::rand::generate(&$RNG, $OUTPUT)
           }
-    pattern-not-inside:
-      - pattern: |
-          #[test]
-          fn $TEST() {
-              ...
-          }
-      - pattern: |
-          #[cfg(test)]
-          mod $MODULE {
-              ...
-          }
-      - pattern: |
-          mod tests {
-              ...
-          }
     metadata:
       category: crypto
       cwe: CWE-330
@@ -741,7 +724,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $COST
     metadata:
       category: crypto
       cwe: CWE-916
@@ -822,25 +804,6 @@ rules:
       - pattern: openssl::symm::decrypt($CIPHER, $KEY.as_bytes(), $IV, $DATA)
       - pattern: aes::Aes256::new($KEY)
       - pattern: aes_gcm::Aes256Gcm::new($KEY)
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          #[test]
-          fn $TEST() {
-              ...
-          }
-      - pattern: |
-          #[cfg(test)]
-          mod $MODULE {
-              ...
-          }
-      - pattern: |
-          mod tests {
-              ...
-          }
     metadata:
       category: crypto
       cwe: CWE-798
@@ -1125,7 +1088,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1161,7 +1123,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-326
@@ -1217,7 +1178,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1348,7 +1308,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1803,7 +1762,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $DATA
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1874,7 +1832,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $VERSION
     metadata:
       category: crypto
       cwe: CWE-327
@@ -1937,7 +1894,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $CURVE
     metadata:
       category: crypto
       cwe: CWE-327
