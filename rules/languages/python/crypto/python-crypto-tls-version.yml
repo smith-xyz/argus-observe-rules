@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $VERSION
     paths:
       include:
         - "**/*.py"
@@ -27,9 +26,7 @@ rules:
           - pattern: |
               $CONTEXT = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
               ...
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $CONTEXT
     paths:
       include:
         - "**/*.py"
@@ -60,9 +59,7 @@ rules:
               urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
               ...
               requests.get($URL, verify=False)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

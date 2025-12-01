@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $MODE
     paths:
       include:
         - "**/*.py"
@@ -65,9 +64,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.AES($KEY), modes.GCM($NONCE), $BACKEND)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

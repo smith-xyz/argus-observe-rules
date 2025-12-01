@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -71,8 +70,7 @@ rules:
                   patterns:
                     - pattern: hmac.new($KEY, $MSG, $DIGEST)
                     - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

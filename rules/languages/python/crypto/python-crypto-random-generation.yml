@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $LENGTH
     paths:
       include:
         - "**/*.py"
@@ -39,9 +38,7 @@ rules:
               $IV = os.urandom($LENGTH)
               ...
               $IV
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

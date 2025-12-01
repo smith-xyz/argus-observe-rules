@@ -31,9 +31,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.Blowfish($KEY), $MODE, $BACKEND)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

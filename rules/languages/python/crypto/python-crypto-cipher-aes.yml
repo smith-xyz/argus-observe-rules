@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -53,9 +52,7 @@ rules:
                   patterns:
                     - pattern: AES.new($KEY, $MODE)
                     - pattern: Cipher(algorithms.AES($KEY), $MODE, $BACKEND)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

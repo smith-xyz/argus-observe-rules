@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $KEY
     paths:
       include:
         - "**/*.py"
@@ -40,9 +39,7 @@ rules:
           - pattern: |
               from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
               $CIPHER = Cipher(algorithms.TripleDES($KEY), $MODE, $BACKEND)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

@@ -88,9 +88,7 @@ rules:
                     - pattern-either:
                         - pattern: $PUBLIC_KEY.encrypt(...)
                         - pattern: $PUBLIC_KEY.verify(...)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $SUITE
     paths:
       include:
         - "**/*.py"
@@ -44,9 +43,7 @@ rules:
               $SESSION.mount("https://", $ADAPTER)
               ...
               $ADAPTER.init_poolmanager(ciphers=$CIPHER_STRING)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

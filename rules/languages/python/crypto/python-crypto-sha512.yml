@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -29,9 +28,7 @@ rules:
           - pattern: hmac.new($KEY, $MSG, hashlib.sha512)
           - pattern: hmac.new($KEY, $MSG, digestmod=hashlib.sha512)
           - pattern: pbkdf2_hmac("sha512", $PASSWORD, $SALT, $ITER)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

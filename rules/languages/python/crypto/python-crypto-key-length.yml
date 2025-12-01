@@ -11,7 +11,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $KEY_SIZE
     patterns:
       - pattern-either:
           - pattern: |
@@ -93,9 +92,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $KEY_LENGTH
                   comparison: $KEY_LENGTH < 16
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

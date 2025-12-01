@@ -11,7 +11,6 @@ rules:
       exclude:
         - "**/__pycache__/**"
         - "**/*.pyc"
-    focus-metavariable: $PRIVATE_KEY
     patterns:
       - pattern-either:
           - pattern: ec.generate_private_key($CURVE, $BACKEND)
@@ -69,9 +68,7 @@ rules:
           - pattern: |
               from ecdsa import curves
               $CURVE = curves.NIST521p
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

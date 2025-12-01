@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -59,9 +58,7 @@ rules:
               - metavariable-regex:
                   metavariable: $SIZE
                   regex: "(16|20|28|32)"
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

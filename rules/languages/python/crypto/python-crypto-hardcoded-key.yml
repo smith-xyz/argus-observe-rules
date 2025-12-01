@@ -68,12 +68,6 @@ rules:
       - pattern: ec.generate_private_key($CURVE, $BACKEND)
       - pattern: hmac.new($KEY, $MSG, $DIGEST)
       - pattern: hmac.new($KEY, $MSG, digestmod=$DIGEST)
-
-    pattern-not-inside:
-      - pattern: |
-          """
-          $DOCSTRING
-          """
     metadata:
       category: crypto
       cwe: CWE-798

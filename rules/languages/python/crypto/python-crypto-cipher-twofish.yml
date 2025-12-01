@@ -26,9 +26,7 @@ rules:
               from Crypto.Cipher import Twofish
               $CIPHER = Twofish.new($KEY, $MODE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

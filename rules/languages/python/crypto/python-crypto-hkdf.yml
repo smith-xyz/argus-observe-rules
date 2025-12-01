@@ -37,9 +37,7 @@ rules:
               from cryptography.hazmat.primitives.kdf.hkdf import HKDFExtract
               $HKDF = HKDFExtract($ALGORITHM, $SALT, $BACKEND)
               $PRK = $HKDF.extract($INPUT_MATERIAL)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

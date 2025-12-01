@@ -21,9 +21,7 @@ rules:
               from Crypto.Cipher import Salsa20
               $CIPHER = Salsa20.new($KEY, $NONCE)
               $PLAINTEXT = $CIPHER.decrypt($CIPHERTEXT)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

@@ -42,9 +42,7 @@ rules:
               from cryptography.hazmat.primitives.ciphers.aead import ChaCha20Poly1305
               $CIPHER = ChaCha20Poly1305($KEY)
               $PLAINTEXT = $CIPHER.decrypt($NONCE, $CIPHERTEXT, $ASSOCIATED_DATA)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

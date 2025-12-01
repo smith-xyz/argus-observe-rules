@@ -42,9 +42,7 @@ rules:
               import Crypto.Hash
           - pattern: |
               import Crypto.Signature
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

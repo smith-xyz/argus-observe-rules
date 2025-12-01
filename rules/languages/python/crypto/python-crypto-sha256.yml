@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $DATA
     paths:
       include:
         - "**/*.py"
@@ -34,8 +33,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $ITER
                   comparison: $ITER < 100000
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """

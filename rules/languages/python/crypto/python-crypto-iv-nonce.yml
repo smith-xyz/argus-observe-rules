@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - python
-    focus-metavariable: $IV
     paths:
       include:
         - "**/*.py"
@@ -91,9 +90,7 @@ rules:
               $IV = b"\x00" * $LENGTH
               ...
               AES.new($KEY, AES.MODE_CBC, $IV)
-
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           """
           $DOCSTRING
           """
