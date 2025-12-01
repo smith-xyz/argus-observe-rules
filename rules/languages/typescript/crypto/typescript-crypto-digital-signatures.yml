@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createSign("RSA-SHA256")
@@ -41,24 +40,18 @@ rules:
               await crypto.subtle.sign({ name: "Ed25519" }, $PRIVATE_KEY, $DATA);
           - pattern: |
               await crypto.subtle.verify({ name: "Ed25519" }, $PUBLIC_KEY, $SIGNATURE, $DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-
     metadata:
       category: crypto
       cwe: CWE-327

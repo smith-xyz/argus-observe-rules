@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("md5")
@@ -35,23 +34,18 @@ rules:
           - pattern: |
               const $ALGORITHM = "md5";
               crypto.createHash($ALGORITHM)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327

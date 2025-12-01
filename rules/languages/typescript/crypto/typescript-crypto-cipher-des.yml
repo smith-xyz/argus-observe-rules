@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createCipher("des", $KEY)
@@ -46,24 +45,18 @@ rules:
           - pattern: require("crypto-js").DES.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").TripleDES.encrypt($DATA, $KEY)
           - pattern: require("crypto-js").TripleDES.decrypt($DATA, $KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-
     metadata:
       category: crypto
       cwe: CWE-327

@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $SALT
     patterns:
       - pattern-either:
           - pattern: crypto.randomBytes($LENGTH)
@@ -53,23 +52,18 @@ rules:
                   metavariable: $SALT_LENGTH
                   regex: '\d+'
               - focus-metavariable: $SALT_LENGTH
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-330

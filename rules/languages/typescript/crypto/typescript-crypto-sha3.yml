@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha3-224")
@@ -33,23 +32,18 @@ rules:
               - metavariable-regex:
                   metavariable: $ALGORITHM
                   regex: "'sha3-(224|256|384|512)'"
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327

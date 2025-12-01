@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - typescript
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: crypto.createCipher("rc4", $KEY)
@@ -34,24 +33,18 @@ rules:
           - pattern: CryptoJS.RC4.decrypt($DATA, $KEY)
           - pattern: require("crypto-js").RC4.encrypt($DATA, $KEY)
           - pattern: require("crypto-js").RC4.decrypt($DATA, $KEY)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-
     metadata:
       category: crypto
       cwe: CWE-327
