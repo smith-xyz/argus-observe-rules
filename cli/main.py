@@ -454,6 +454,29 @@ def test(
             semgrep_output = json.loads(result.stdout)
             findings = semgrep_output.get("results", [])
 
+            warnings = semgrep_output.get("warnings", [])
+            if warnings:
+                typer.echo("\nSemgrep Warnings:", err=True)
+                for warning in warnings:
+                    rule_id = warning.get("rule_id", "unknown")
+                    message = warning.get("message", "")
+                    level = warning.get("level", "warning")
+                    typer.echo(f"  [{level.upper()}] {rule_id}: {message}", err=True)
+                typer.echo("")
+
+            if result.stderr and result.stderr.strip():
+                stderr_lines = result.stderr.strip().split("\n")
+                warning_lines = [
+                    line.strip()
+                    for line in stderr_lines
+                    if "[WARNING]" in line or (line.strip().startswith("WARNING:") or "Skipping unknown field" in line)
+                ]
+                if warning_lines:
+                    typer.echo("\nSemgrep Warnings:", err=True)
+                    for line in warning_lines:
+                        typer.echo(f"  {line}", err=True)
+                    typer.echo("")
+
             if verbose:
                 typer.echo(f"Found {len(findings)} total findings")
 
