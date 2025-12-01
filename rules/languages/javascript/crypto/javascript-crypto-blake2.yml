@@ -30,36 +30,30 @@ rules:
           - pattern: |
               const { blake2s } = require("@noble/hashes");
               blake2s($DATA)
-    focus-metavariable: $DATA
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327

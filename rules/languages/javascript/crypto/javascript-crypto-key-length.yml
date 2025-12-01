@@ -18,6 +18,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $BITS
                   comparison: $BITS < 2048
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "RSASSA-PKCS1-v1_5", modulusLength: $BITS, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" }, $EXTRACTABLE, $USAGE)
@@ -30,6 +31,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $BITS
                   comparison: $BITS < 2048
+              - focus-metavariable: $BITS
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "ECDSA", namedCurve: $CURVE }, $EXTRACTABLE, $USAGE)
@@ -49,6 +51,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $LENGTH
                   comparison: $LENGTH < 128
+              - focus-metavariable: $LENGTH
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "AES-CBC", length: $LENGTH }, $EXTRACTABLE, $USAGE)
@@ -61,6 +64,7 @@ rules:
               - metavariable-comparison:
                   metavariable: $LENGTH
                   comparison: $LENGTH < 128
+              - focus-metavariable: $LENGTH
           - patterns:
               - pattern: |
                   crypto.subtle.generateKey({ name: "AES-KW", length: $LENGTH }, $EXTRACTABLE, $USAGE)
@@ -73,35 +77,31 @@ rules:
               - metavariable-comparison:
                   metavariable: $LENGTH
                   comparison: $LENGTH < 128
-    pattern-not-inside:
-      - pattern: |
+              - focus-metavariable: $LENGTH
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-326

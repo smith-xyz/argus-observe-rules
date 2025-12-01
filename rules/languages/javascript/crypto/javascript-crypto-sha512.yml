@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - javascript
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: crypto.createHash("sha512")
@@ -35,35 +34,30 @@ rules:
           - pattern: require("crypto-js").SHA384($DATA)
           - pattern: CryptoJS.SHA512($DATA)
           - pattern: CryptoJS.SHA384($DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327

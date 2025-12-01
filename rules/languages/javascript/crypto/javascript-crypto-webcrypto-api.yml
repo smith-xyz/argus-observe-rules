@@ -62,35 +62,30 @@ rules:
               crypto.subtle.deriveBits({ name: "X25519" }, $PRIVATE_KEY, $PUBLIC_KEY, $LENGTH)
           - pattern: |
               crypto.subtle.deriveBits({ name: "X448" }, $PRIVATE_KEY, $PUBLIC_KEY, $LENGTH)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327

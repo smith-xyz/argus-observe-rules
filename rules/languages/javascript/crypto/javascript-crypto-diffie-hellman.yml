@@ -54,35 +54,30 @@ rules:
           - pattern: require("libsodium-wrappers").crypto_box($MESSAGE, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
           - pattern: require("libsodium-wrappers").crypto_box_open($CIPHERTEXT, $NONCE, $PUBLIC_KEY, $SECRET_KEY)
           - pattern: require("sjcl").ecc.elGamal.generateKeys($CURVE, $PARANOIA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327

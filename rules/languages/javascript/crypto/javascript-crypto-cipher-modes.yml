@@ -39,35 +39,30 @@ rules:
               $DECIPHER = crypto.createDecipheriv("aes-256-$MODE", $KEY, $IV);
               $PLAINTEXT = $DECIPHER.update($CIPHERTEXT);
               $PLAINTEXT += $DECIPHER.final();
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           describe($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           it($NAME, () => {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, function() {
             ...
           })
-      - pattern: |
+      - pattern-not-inside: |
           test($NAME, () => {
             ...
           })
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
     metadata:
       category: crypto
       cwe: CWE-327
