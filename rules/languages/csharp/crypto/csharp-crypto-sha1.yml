@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: SHA1.Create()
@@ -23,28 +22,21 @@ rules:
           - pattern: |
               SHA1 $HASHER = SHA1.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327

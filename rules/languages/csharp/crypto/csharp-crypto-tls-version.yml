@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $VERSION
     patterns:
       - pattern-either:
           - pattern: SecurityProtocolType.Ssl3
@@ -19,28 +18,21 @@ rules:
           - pattern: new SslStream($STREAM, false, $VALIDATION_CALLBACK)
           - pattern: $HANDLER.SslProtocols = SslProtocols.$PROTOCOL
           - pattern: HttpClientHandler.SslProtocols
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

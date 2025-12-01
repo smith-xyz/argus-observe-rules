@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: RIPEMD160.Create()
@@ -17,28 +16,21 @@ rules:
           - pattern: |
               $HASHER = RIPEMD160.Create();
               $HASH = $HASHER.ComputeHash($DATA);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

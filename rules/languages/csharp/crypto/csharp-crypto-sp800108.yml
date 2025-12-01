@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM)
@@ -15,28 +14,21 @@ rules:
           - pattern: |
               $KDF = new SP800108DeriveBytes($KEY, $LABEL, $CONTEXT, $HASH_ALGORITHM);
               $DERIVED_KEY = $KDF.GetBytes($KEYLEN);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

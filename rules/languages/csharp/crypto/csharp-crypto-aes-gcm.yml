@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: new AesGcm($KEY)
@@ -24,28 +23,21 @@ rules:
               $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA);
           - pattern: $AESGCM.Encrypt($NONCE, $PLAINTEXT, $CIPHERTEXT, $TAG, $ADDITIONAL_DATA)
           - pattern: $AESGCM.Decrypt($NONCE, $CIPHERTEXT, $TAG, $PLAINTEXT, $ADDITIONAL_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

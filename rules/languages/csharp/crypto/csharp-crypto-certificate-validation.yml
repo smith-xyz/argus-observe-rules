@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $CALLBACK
     patterns:
       - pattern-either:
           - pattern: ServicePointManager.ServerCertificateValidationCallback = $CALLBACK
@@ -23,28 +22,21 @@ rules:
           - pattern: $CERT.Verify()
           - pattern: $CHAIN.Build($CERT)
           - pattern: SslStream($STREAM, false, $VALIDATION_CALLBACK)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

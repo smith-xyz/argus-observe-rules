@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $BITS
     patterns:
       - pattern-either:
           - pattern: RSA.Create($BITS)
@@ -27,28 +26,21 @@ rules:
           - pattern: $RSA.ExportRSAPrivateKey()
           - pattern: $RSA.ImportRSAPublicKey($KEY_DATA)
           - pattern: $RSA.ImportRSAPrivateKey($KEY_DATA)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327

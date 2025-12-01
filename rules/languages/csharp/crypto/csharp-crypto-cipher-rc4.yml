@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: RC4CryptoServiceProvider()
@@ -18,28 +17,21 @@ rules:
               $RC4 = new RC4CryptoServiceProvider();
               $RC4.Key = $KEY;
               $CIPHERTEXT = $RC4.TransformFinalBlock($PLAINTEXT, 0, $PLAINTEXT.Length);
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

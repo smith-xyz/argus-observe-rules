@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $DATA
     patterns:
       - pattern-either:
           - pattern: $RSA.SignData($DATA, $HASH_ALGORITHM, $PADDING)
@@ -31,28 +30,21 @@ rules:
           - pattern: await $RSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM, $PADDING)
           - pattern: await $ECDSA.SignDataAsync($DATA, $HASH_ALGORITHM)
           - pattern: await $ECDSA.VerifyDataAsync($DATA, $SIGNATURE, $HASH_ALGORITHM)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

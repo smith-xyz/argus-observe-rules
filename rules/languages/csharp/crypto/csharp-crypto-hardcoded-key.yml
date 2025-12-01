@@ -29,32 +29,6 @@ rules:
       - pattern: new HMACMD5($KEY)
       - pattern: $HMAC.Key = $KEY
       - pattern: $CIPHER.Key = new byte[$SIZE]
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          [Test]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          [Fact]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          [Theory]
-          public void $NAME() {
-            ...
-          }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-798

@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $PUBLIC_KEY
     patterns:
       - pattern-either:
           - pattern: ECDiffieHellman.Create($CURVE)
@@ -19,28 +18,21 @@ rules:
               $SHARED_SECRET = $ALICE.DeriveKeyMaterial($BOB.PublicKey);
           - pattern: $ECDH.DeriveKeyMaterial($PUBLIC_KEY)
           - pattern: ECDiffieHellmanCng()
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
 
     metadata:
       category: crypto

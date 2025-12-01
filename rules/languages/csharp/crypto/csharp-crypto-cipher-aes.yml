@@ -4,7 +4,6 @@ rules:
     severity: INFO
     languages:
       - csharp
-    focus-metavariable: $KEY
     patterns:
       - pattern-either:
           - pattern: Aes.Create()
@@ -40,28 +39,21 @@ rules:
                   comparison: $SIZE < 128
           - pattern: await $CIPHER.EncryptAsync($DATA)
           - pattern: await $CIPHER.DecryptAsync($CIPHERTEXT)
-    pattern-not-inside:
-      - pattern: |
+      - pattern-not-inside: |
           [Test]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Fact]
           public void $NAME() {
             ...
           }
-      - pattern: |
+      - pattern-not-inside: |
           [Theory]
           public void $NAME() {
             ...
           }
-      - pattern: |
-          // $COMMENT
-      - pattern: |
-          /* $COMMENT */
-      - pattern: |
-          /// $DOCSTRING
     metadata:
       category: crypto
       cwe: CWE-327
