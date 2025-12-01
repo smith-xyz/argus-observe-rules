@@ -31,25 +31,6 @@ rules:
       - pattern: openssl::symm::decrypt($CIPHER, $KEY.as_bytes(), $IV, $DATA)
       - pattern: aes::Aes256::new($KEY)
       - pattern: aes_gcm::Aes256Gcm::new($KEY)
-    metavariable-propagator:
-      metavariable: $KEY
-      from: $KEY = $VALUE
-      to: $KEY
-    pattern-not-inside:
-      - pattern: |
-          #[test]
-          fn $TEST() {
-              ...
-          }
-      - pattern: |
-          #[cfg(test)]
-          mod $MODULE {
-              ...
-          }
-      - pattern: |
-          mod tests {
-              ...
-          }
     metadata:
       category: crypto
       cwe: CWE-798

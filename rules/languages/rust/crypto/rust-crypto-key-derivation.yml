@@ -67,7 +67,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $VERSION
     metadata:
       category: crypto
       cwe: CWE-327

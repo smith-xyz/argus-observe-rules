@@ -120,7 +120,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $ALGO
     metadata:
       category: crypto
       cwe: CWE-327

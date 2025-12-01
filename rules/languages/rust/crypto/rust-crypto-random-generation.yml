@@ -46,21 +46,6 @@ rules:
               let $RNG = ring::rand::SystemRandom::new();
               ring::rand::generate(&$RNG, $OUTPUT)
           }
-    pattern-not-inside:
-      - pattern: |
-          #[test]
-          fn $TEST() {
-              ...
-          }
-      - pattern: |
-          #[cfg(test)]
-          mod $MODULE {
-              ...
-          }
-      - pattern: |
-          mod tests {
-              ...
-          }
     metadata:
       category: crypto
       cwe: CWE-330

@@ -30,7 +30,6 @@ rules:
           mod tests {
               ...
           }
-    focus-metavariable: $BITS
     metadata:
       category: crypto
       cwe: CWE-326
