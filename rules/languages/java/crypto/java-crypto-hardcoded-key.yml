@@ -4,92 +4,27 @@ rules:
     severity: INFO
     languages:
       - java
-    patterns:
-      - pattern-either:
-          - pattern: new SecretKeySpec("$KEY".getBytes(), "AES")
-          - pattern: new SecretKeySpec($KEY.getBytes(), "AES")
-          - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
-          - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
-          - pattern: new SecretKeySpec(new byte[] {$BYTES}, "AES")
-          - pattern: new SecretKeySpec(new byte[] {$BYTES}, $ALGO)
-          - pattern: |
-              private static final String $KEY = "$VALUE";
-              ...
-              new SecretKeySpec($KEY.getBytes(), "AES");
-          - pattern: |
-              private static final byte[] $KEY = {$BYTES};
-              ...
-              new SecretKeySpec($KEY, "AES");
-          - pattern: |
-              final String $KEY = "$VALUE";
-              ...
-              new SecretKeySpec($KEY.getBytes(), "AES");
-          - pattern: |
-              String $KEY = "$VALUE";
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              private static final String $KEY = "$VALUE";
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              public static final String $KEY = "$VALUE";
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              private String $KEY = "$VALUE";
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              final byte[] $KEY = {$BYTES};
-              ...
-              new SecretKeySpec($KEY, $ALGO);
-          - pattern: |
-              byte[] $KEY = {$BYTES};
-              ...
-              new SecretKeySpec($KEY, $ALGO);
-          - pattern: |
-              $CIPHER.init(Cipher.ENCRYPT_MODE, new SecretKeySpec("$KEY".getBytes(), $ALGO));
-          - pattern: |
-              $CIPHER.init(Cipher.DECRYPT_MODE, new SecretKeySpec("$KEY".getBytes(), $ALGO));
-          - pattern: |
-              $MAC.init(new SecretKeySpec("$KEY".getBytes(), $ALGO));
-          - pattern: |
-              String $KEY = System.getenv($VAR);
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              String $KEY = System.getProperty($VAR);
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              $KEY = System.getenv($VAR);
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-          - pattern: |
-              $KEY = System.getProperty($VAR);
-              ...
-              new SecretKeySpec($KEY.getBytes(), $ALGO);
-      - pattern-not-inside: |
-          @Test
-          public void $NAME() {
-            ...
-          }
-      - pattern-not-inside: |
-          @org.junit.Test
-          public void $NAME() {
-            ...
-          }
-      - pattern-not-inside: |
-          @org.junit.jupiter.api.Test
-          public void $NAME() {
-            ...
-          }
-      - pattern-not-inside: |
-          @org.testng.annotations.Test
-          public void $NAME() {
-            ...
-          }
+    mode: taint
+    pattern-sources:
+      - pattern: private static final String $KEY = "$VALUE";
+      - pattern: public static final String $KEY = "$VALUE";
+      - pattern: private static final byte[] $KEY = {$BYTES};
+      - pattern: final String $KEY = "$VALUE";
+      - pattern: String $KEY = "$VALUE";
+      - pattern: private String $KEY = "$VALUE";
+      - pattern: final byte[] $KEY = {$BYTES};
+      - pattern: byte[] $KEY = {$BYTES};
+      - pattern: $KEY = "$VALUE"
+      - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
+      - pattern: new SecretKeySpec("$KEY".getBytes(), "AES")
+    pattern-sinks:
+      - pattern: new SecretKeySpec($KEY.getBytes(), $ALGO)
+      - pattern: new SecretKeySpec($KEY, $ALGO)
+      - pattern: new SecretKeySpec("$KEY".getBytes(), $ALGO)
+      - pattern: new SecretKeySpec(new byte[] {$BYTES}, $ALGO)
+      - pattern: $CIPHER.init(Cipher.ENCRYPT_MODE, new SecretKeySpec($KEY.getBytes(), $ALGO))
+      - pattern: $CIPHER.init(Cipher.DECRYPT_MODE, new SecretKeySpec($KEY.getBytes(), $ALGO))
+      - pattern: $MAC.init(new SecretKeySpec($KEY.getBytes(), $ALGO))
     metadata:
       category: crypto
       cwe: CWE-798

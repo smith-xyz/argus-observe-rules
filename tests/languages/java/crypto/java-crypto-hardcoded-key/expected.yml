@@ -8,10 +8,6 @@ findings:
     rule_id: java-crypto-hardcoded-key
     message: Hardcoded cryptographic key detected
   - file: test_code.java
-    line: 12
-    rule_id: java-crypto-hardcoded-key
-    message: Hardcoded cryptographic key detected
-  - file: test_code.java
     line: 13
     rule_id: java-crypto-hardcoded-key
     message: Hardcoded cryptographic key detected
