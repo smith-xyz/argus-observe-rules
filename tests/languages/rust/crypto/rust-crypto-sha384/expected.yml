@@ -1,0 +1,72 @@
+findings:
+  - file: test_code.rs
+    line: 9
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 9
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 19
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 25
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 28
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 33
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 39
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 39
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 48
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 51
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 55
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 58
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 68
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+  - file: test_code.rs
+    line: 77
+    rule_id: rust-crypto-sha384
+    message: "SHA384 hash function usage detected"
+
+no_findings:
+  - negative_cases.rs

@@ -1,0 +1,23 @@
+findings:
+- file: test_code.go
+  line: 10
+  rule_id: go-kubernetes-client-tls-override
+  message: Kubernetes client TLS configuration override detected
+- file: test_code.go
+  line: 21
+  rule_id: go-kubernetes-client-tls-override
+  message: Kubernetes client TLS configuration override detected
+- file: test_code.go
+  line: 21
+  rule_id: go-kubernetes-client-tls-override
+  message: Kubernetes client TLS configuration override detected
+- file: test_code.go
+  line: 31
+  rule_id: go-kubernetes-client-tls-override
+  message: Kubernetes client TLS configuration override detected
+- file: test_code.go
+  line: 41
+  rule_id: go-kubernetes-client-tls-override
+  message: Kubernetes client TLS configuration override detected
+no_findings:
+- negative_cases.go

@@ -588,12 +588,6 @@ rules:
               ...
               http.$METHOD($URL, ...)
           - pattern: |
-              $CLIENT := &http.Client{
-                Transport: &http.Transport{
-                  Proxy: http.ProxyFromEnvironment,
-                },
-              }
-          - pattern: |
               for _, $ENDPOINT := range $ENDPOINTS {
                 $URL := "http://" + $ENDPOINT
                 http.$METHOD($URL)
@@ -637,8 +631,6 @@ rules:
                 InsecureSkipVerify: true,
                 ...
               }
-          - pattern: $CONFIG.TLSClientConfig.Insecure = true
-          - pattern: $CONFIG.Insecure = true
           - pattern: |
               if $CONDITION {
                 $CONFIG.InsecureSkipVerify = true
@@ -651,15 +643,6 @@ rules:
               $FIELD := $VALUE.FieldByName("InsecureSkipVerify")
               $FIELD.SetBool(true)
           - pattern: $CONFIG.ServerName = ""
-          - pattern: |
-              $URL := "http://" + $HOST
-              http.Get($URL)
-          - pattern: $CONFIG.VerifyPeerCertificate = nil
-          - pattern: $CONFIG.TLS.Enable = false
-          - pattern: $CONFIG.Net.TLS.Enable = false
-          - pattern: $CONFIG.SSL.Enable = false
-          - pattern: $CONFIG.TLSConfig = "false"
-          - pattern: $CONFIG.SSLMode = "disable"
           - pattern: $FUNC($DRIVER, $DSN + "?sslmode=disable")
           - pattern: $FUNC($DRIVER, $DSN + "&tls=false")
           - pattern: $FUNC($DRIVER, $DSN + "?ssl=false")

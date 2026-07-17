@@ -1,0 +1,11 @@
+findings:
+  - file: go.sum
+    line: 3
+    rule_id: govulncheck-go-sum
+    message: "Found govulncheck in go.sum (dependency lock file)"
+  - file: go.sum
+    line: 4
+    rule_id: govulncheck-go-sum
+    message: "Found govulncheck in go.sum (dependency lock file)"
+no_findings:
+  - negative_cases.sum

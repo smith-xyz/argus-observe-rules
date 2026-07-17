@@ -1,0 +1,7 @@
+findings:
+- file: package.json
+  line: 4
+  rule_id: renovate-package-json
+  message: Found Renovate configuration in package.json
+no_findings:
+- negative_cases.json

@@ -1,0 +1,19 @@
+findings:
+  - file: config.yml
+    line: 4
+    rule_id: govulncheck-config
+    message: "Found govulncheck in configuration files"
+  - file: config.yml
+    line: 6
+    rule_id: govulncheck-config
+    message: "Found govulncheck in configuration files"
+  - file: config.yml
+    line: 8
+    rule_id: govulncheck-config
+    message: "Found govulncheck in configuration files"
+  - file: config.yml
+    line: 10
+    rule_id: govulncheck-config
+    message: "Found govulncheck in configuration files"
+no_findings:
+  - negative_cases.yml

@@ -1,0 +1,10 @@
+{
+  "name": "snyk-test-app",
+  "version": "1.0.0",
+  "devDependencies": {
+    "snyk": "^1.1294.0"
+  },
+  "scripts": {
+    "snyk": "snyk test"
+  }
+}

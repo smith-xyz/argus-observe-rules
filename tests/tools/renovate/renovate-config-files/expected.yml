@@ -1,0 +1,27 @@
+findings:
+- file: renovate.json
+  line: 2
+  rule_id: renovate-config-files
+  message: Found Renovate configuration file
+- file: renovate.json
+  line: 3
+  rule_id: renovate-config-files
+  message: Found Renovate configuration file
+- file: renovate.json
+  line: 4
+  rule_id: renovate-config-files
+  message: Found Renovate configuration file
+- file: renovate.json
+  line: 5
+  rule_id: renovate-config-files
+  message: Found Renovate configuration file
+- file: renovate.json
+  line: 8
+  rule_id: renovate-config-files
+  message: Found Renovate configuration file
+- file: renovate.json
+  line: 9
+  rule_id: renovate-config-files
+  message: Found Renovate configuration file
+no_findings:
+- negative_cases.json

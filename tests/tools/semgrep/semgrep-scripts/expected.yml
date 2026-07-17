@@ -1,0 +1,11 @@
+findings:
+- file: test_code.sh
+  line: 4
+  rule_id: semgrep-scripts
+  message: Found Semgrep in shell script
+- file: test_code.sh
+  line: 5
+  rule_id: semgrep-scripts
+  message: Found Semgrep in shell script
+no_findings:
+- negative_cases.sh

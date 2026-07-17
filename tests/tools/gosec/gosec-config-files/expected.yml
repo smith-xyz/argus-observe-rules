@@ -1,0 +1,15 @@
+findings:
+  - file: .gosec.json
+    line: 1
+    rule_id: gosec-config-files
+    message: Found gosec configuration file
+  - file: .gosec.json
+    line: 2
+    rule_id: gosec-config-files
+    message: Found gosec configuration file
+  - file: .gosec.json
+    line: 4
+    rule_id: gosec-config-files
+    message: Found gosec configuration file
+no_findings:
+  - negative_cases.json

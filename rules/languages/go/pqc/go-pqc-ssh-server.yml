@@ -8,7 +8,7 @@ rules:
       - pattern-either:
           - pattern: ssh.NewServerConn($CONN, $CONFIG)
           - pattern: ssh.ServerConfig{...}
-          - pattern: ssh.Listen($NETWORK, $ADDR, $CONFIG)
+          - pattern: net.Listen($NETWORK, $ADDR)
           - pattern: $CONFIG.AddHostKey($SIGNER)
           - patterns:
               - pattern: ssh.$FUNC($ARG)

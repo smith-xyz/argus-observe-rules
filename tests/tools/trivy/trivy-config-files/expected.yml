@@ -1,0 +1,11 @@
+findings:
+- file: trivy.yml
+  line: 1
+  rule_id: trivy-config-files
+  message: Found Trivy configuration file
+- file: trivy.yml
+  line: 3
+  rule_id: trivy-config-files
+  message: Found Trivy configuration file
+no_findings:
+- negative_cases.yml

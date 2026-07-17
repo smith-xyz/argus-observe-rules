@@ -1,0 +1,7 @@
+scan:
+  security-checks:
+    - vuln
+    - secret
+  severity:
+    - CRITICAL
+    - HIGH

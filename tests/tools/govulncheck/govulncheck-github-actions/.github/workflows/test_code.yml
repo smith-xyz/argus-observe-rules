@@ -1,0 +1,12 @@
+name: Govulncheck Analysis
+on:
+  push:
+    branches: [main]
+
+jobs:
+  vulnerability-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: golang/govulncheck-action@v1
+      - run: govulncheck ./...

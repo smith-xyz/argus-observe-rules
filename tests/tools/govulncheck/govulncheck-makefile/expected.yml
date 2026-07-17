@@ -1,0 +1,59 @@
+findings:
+  - file: Makefile
+    line: 1
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 3
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 4
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 6
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 7
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 9
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 10
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 12
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 13
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 15
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 16
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 16
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 18
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+  - file: Makefile
+    line: 19
+    rule_id: govulncheck-makefile
+    message: Found govulncheck in Makefile
+no_findings:
+  - negative_cases.mk

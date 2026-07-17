@@ -1,0 +1,68 @@
+findings:
+  - file: test_code.go
+    line: 14
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 15
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 16
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 17
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 21
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 26
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 27
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 28
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 29
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 37
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 38
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 39
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 43
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 45
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 46
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.go
+    line: 49
+    rule_id: go-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+
+no_findings:
+  - negative_cases.go

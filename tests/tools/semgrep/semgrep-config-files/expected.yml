@@ -1,0 +1,7 @@
+findings:
+- file: .semgrep.yml
+  line: 1
+  rule_id: semgrep-config-files
+  message: Found Semgrep configuration file
+no_findings:
+- negative_cases.yml

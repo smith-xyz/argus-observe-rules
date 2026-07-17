@@ -1,0 +1,38 @@
+findings:
+- file: test_code.go
+  line: 12
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+- file: test_code.go
+  line: 12
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+- file: test_code.go
+  line: 21
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+- file: test_code.go
+  line: 32
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+- file: test_code.go
+  line: 41
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+- file: test_code.go
+  line: 50
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+- file: test_code.go
+  line: 50
+  rule_id: go-http-server-tls-override
+  message: HTTP server with custom TLS config detected - May override OpenShift TLS
+    profile settings
+no_findings:
+- negative_cases.go

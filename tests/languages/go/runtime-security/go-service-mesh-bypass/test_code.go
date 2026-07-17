@@ -11,18 +11,11 @@ func main() {
 	url := "http://" + serviceIP + ":" + port
 	http.Get(url)
 
-	// Direct HTTP HEAD bypass - line 18
+	// Direct HTTP HEAD bypass - line 16
 	headURL := "http://" + serviceIP
 	http.Head(headURL)
 
-	// HTTP client with proxy bypass - line 17
-	client := &http.Client{
-		Transport: &http.Transport{
-			Proxy: http.ProxyFromEnvironment,
-		},
-	}
-
-	// Service discovery bypass loop - line 25
+	// Service discovery bypass loop - line 20
 	endpoints := getServiceEndpoints("user-service")
 	for _, endpoint := range endpoints {
 		url := "http://" + endpoint

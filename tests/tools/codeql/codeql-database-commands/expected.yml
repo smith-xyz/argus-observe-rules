@@ -1,0 +1,15 @@
+findings:
+  - file: test_code.sh
+    line: 4
+    rule_id: codeql-database-commands
+    message: Found CodeQL CLI usage
+  - file: test_code.sh
+    line: 5
+    rule_id: codeql-database-commands
+    message: Found CodeQL CLI usage
+  - file: test_code.sh
+    line: 6
+    rule_id: codeql-database-commands
+    message: Found CodeQL CLI usage
+no_findings:
+  - negative_cases.sh

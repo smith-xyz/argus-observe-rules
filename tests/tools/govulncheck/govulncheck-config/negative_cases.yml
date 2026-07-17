@@ -1,0 +1,4 @@
+linters-settings:
+  custom:
+    golangci-lint:
+      cmd: golangci-lint run

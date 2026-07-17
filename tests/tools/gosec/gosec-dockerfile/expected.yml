@@ -1,0 +1,7 @@
+findings:
+  - file: Dockerfile
+    line: 5
+    rule_id: gosec-dockerfile
+    message: Found gosec in Dockerfile
+no_findings:
+  - negative_cases.dockerfile

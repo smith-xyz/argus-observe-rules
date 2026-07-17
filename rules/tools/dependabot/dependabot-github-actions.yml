@@ -2,7 +2,7 @@ rules:
   - id: dependabot-github-actions
     message: "Found Dependabot in GitHub Actions workflow"
     severity: INFO
-    languages: [yaml]
+    languages: [generic]
     patterns:
       - pattern-either:
           - pattern: |

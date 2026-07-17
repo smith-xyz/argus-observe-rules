@@ -1,0 +1,53 @@
+findings:
+- file: test_code.go
+  line: 12
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 17
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 22
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 26
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 30
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 34
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 38
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 42
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 46
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+- file: test_code.go
+  line: 50
+  rule_id: go-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+no_findings:
+- negative_cases.go

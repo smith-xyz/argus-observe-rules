@@ -1,0 +1,39 @@
+findings:
+- file: test_code.go
+  line: 19
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 29
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 39
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 47
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 55
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 65
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 77
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 85
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+- file: test_code.go
+  line: 86
+  rule_id: go-certificate-validation-override
+  message: Certificate validation override detected - breaks trust chain
+no_findings:
+- negative_cases.go

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.go
+    line: 15
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.go
+    line: 16
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.go
+    line: 17
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.go
+    line: 18
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.go
+    line: 19
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.go
+    line: 24
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.go
+    line: 28
+    rule_id: go-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+
+no_findings:
+  - negative_cases.go

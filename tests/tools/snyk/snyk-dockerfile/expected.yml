@@ -1,0 +1,11 @@
+findings:
+- file: Dockerfile
+  line: 3
+  rule_id: snyk-dockerfile
+  message: Found Snyk in Dockerfile
+- file: Dockerfile
+  line: 4
+  rule_id: snyk-dockerfile
+  message: Found Snyk in Dockerfile
+no_findings:
+- negative_cases.dockerfile

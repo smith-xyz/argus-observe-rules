@@ -1,0 +1,7 @@
+{
+  "name": "renovate-test-app",
+  "version": "1.0.0",
+  "renovate": {
+    "extends": ["config:base"]
+  }
+}

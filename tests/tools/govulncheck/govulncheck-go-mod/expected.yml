@@ -1,0 +1,15 @@
+findings:
+  - file: go.mod
+    line: 5
+    rule_id: govulncheck-go-mod
+    message: "Found govulncheck in go.mod dependencies"
+  - file: go.mod
+    line: 5
+    rule_id: govulncheck-go-mod
+    message: "Found govulncheck in go.mod dependencies"
+  - file: go.mod
+    line: 7
+    rule_id: govulncheck-go-mod
+    message: "Found govulncheck in go.mod dependencies"
+no_findings:
+  - negative_cases.mod

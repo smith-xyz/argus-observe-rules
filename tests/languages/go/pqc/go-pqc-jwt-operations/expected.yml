@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.go
+    line: 10
+    rule_id: go-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.go
+    line: 15
+    rule_id: go-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.go
+    line: 19
+    rule_id: go-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+
+no_findings:
+  - negative_cases.go

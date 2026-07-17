@@ -4,15 +4,19 @@ findings:
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
+    line: 9
+    rule_id: rust-crypto-sha256
+    message: "SHA256 hash function usage detected"
+  - file: test_code.rs
     line: 12
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 15
+    line: 19
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 18
+    line: 22
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
@@ -24,11 +28,11 @@ findings:
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 31
+    line: 28
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 34
+    line: 33
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
@@ -36,39 +40,27 @@ findings:
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 45
+    line: 47
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 53
+    line: 50
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 56
+    line: 54
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 59
+    line: 57
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 62
+    line: 67
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
   - file: test_code.rs
-    line: 66
-    rule_id: rust-crypto-sha256
-    message: "SHA256 hash function usage detected"
-  - file: test_code.rs
-    line: 69
-    rule_id: rust-crypto-sha256
-    message: "SHA256 hash function usage detected"
-  - file: test_code.rs
-    line: 79
-    rule_id: rust-crypto-sha256
-    message: "SHA256 hash function usage detected"
-  - file: test_code.rs
-    line: 88
+    line: 76
     rule_id: rust-crypto-sha256
     message: "SHA256 hash function usage detected"
 

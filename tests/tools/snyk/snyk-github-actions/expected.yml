@@ -1,0 +1,11 @@
+findings:
+- file: .github/workflows/test_code.yml
+  line: 9
+  rule_id: snyk-github-actions
+  message: Found Snyk in GitHub Actions workflow
+- file: .github/workflows/test_code.yml
+  line: 11
+  rule_id: snyk-github-actions
+  message: Found Snyk in GitHub Actions workflow
+no_findings:
+- .github/workflows/negative_cases.yml

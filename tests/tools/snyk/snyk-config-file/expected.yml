@@ -1,0 +1,7 @@
+findings:
+- file: .snyk
+  line: 1
+  rule_id: snyk-config-file
+  message: Found Snyk configuration file
+no_findings:
+- negative_cases.json

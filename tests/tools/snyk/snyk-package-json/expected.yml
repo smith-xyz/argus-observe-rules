@@ -1,0 +1,19 @@
+findings:
+- file: package.json
+  line: 5
+  rule_id: snyk-package-json
+  message: Found Snyk in package.json dependencies
+- file: package.json
+  line: 5
+  rule_id: snyk-package-json
+  message: Found Snyk in package.json dependencies
+- file: package.json
+  line: 8
+  rule_id: snyk-package-json
+  message: Found Snyk in package.json dependencies
+- file: package.json
+  line: 8
+  rule_id: snyk-package-json
+  message: Found Snyk in package.json dependencies
+no_findings:
+- negative_cases.json

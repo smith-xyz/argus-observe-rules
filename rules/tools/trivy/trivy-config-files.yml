@@ -3,7 +3,7 @@ rules:
     message: Found Trivy configuration file
     severity: INFO
     languages:
-      - yaml
+      - generic
     patterns:
       - pattern: $...CONTENT
     paths:

@@ -1,0 +1,103 @@
+findings:
+- file: test_code.go
+  line: 18
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 21
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 24
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 28
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 31
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 35
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 35
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 38
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 38
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 41
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 44
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 48
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 48
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 52
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 52
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 52
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 83
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 83
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 83
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 111
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 111
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 111
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 119
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 119
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+- file: test_code.go
+  line: 119
+  rule_id: go-reflection-basic-usage
+  message: Basic reflection usage detected - mapping reflection landscape
+no_findings:
+- negative_cases.go

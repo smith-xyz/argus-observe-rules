@@ -1,0 +1,19 @@
+findings:
+  - file: Dockerfile
+    line: 6
+    rule_id: govulncheck-docker
+    message: "Found govulncheck in Docker/container configuration"
+  - file: Dockerfile
+    line: 7
+    rule_id: govulncheck-docker
+    message: "Found govulncheck in Docker/container configuration"
+  - file: Dockerfile
+    line: 9
+    rule_id: govulncheck-docker
+    message: "Found govulncheck in Docker/container configuration"
+  - file: Dockerfile
+    line: 10
+    rule_id: govulncheck-docker
+    message: "Found govulncheck in Docker/container configuration"
+no_findings:
+  - negative_cases.dockerfile

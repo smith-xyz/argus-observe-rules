@@ -1,0 +1,7 @@
+findings:
+  - file: test_code.sh
+    line: 4
+    rule_id: govulncheck-scripts
+    message: Found govulncheck in shell script
+no_findings:
+  - negative_cases.sh

@@ -2,7 +2,7 @@ rules:
   - id: govulncheck-github-actions
     message: "Found govulncheck in GitHub Actions workflow"
     severity: INFO
-    languages: [yaml]
+    languages: [generic]
     patterns:
       - pattern-either:
           - pattern: |

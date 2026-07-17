@@ -1,0 +1,11 @@
+name: Semgrep
+on: push
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Semgrep
+        run: semgrep --config auto .
+      - name: Semgrep Action
+        uses: returntocorp/semgrep-action@v1

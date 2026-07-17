@@ -1,0 +1,9 @@
+rules:
+  - id: example-rule
+    message: Example Semgrep rule
+    languages: [python]
+    severity: WARNING
+    pattern: eval(...)
+
+extends:
+  - p/ci

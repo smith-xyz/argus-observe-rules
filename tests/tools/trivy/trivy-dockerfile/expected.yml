@@ -1,0 +1,11 @@
+findings:
+- file: Dockerfile
+  line: 3
+  rule_id: trivy-dockerfile
+  message: Found Trivy in Dockerfile
+- file: Dockerfile
+  line: 4
+  rule_id: trivy-dockerfile
+  message: Found Trivy in Dockerfile
+no_findings:
+- negative_cases.dockerfile

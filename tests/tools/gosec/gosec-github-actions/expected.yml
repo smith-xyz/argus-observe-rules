@@ -1,0 +1,19 @@
+findings:
+  - file: .github/workflows/test_code.yml
+    line: 11
+    rule_id: gosec-github-actions
+    message: "Found gosec in GitHub Actions workflow"
+  - file: .github/workflows/test_code.yml
+    line: 11
+    rule_id: gosec-github-actions
+    message: "Found gosec in GitHub Actions workflow"
+  - file: .github/workflows/test_code.yml
+    line: 12
+    rule_id: gosec-github-actions
+    message: "Found gosec in GitHub Actions workflow"
+  - file: .github/workflows/test_code.yml
+    line: 12
+    rule_id: gosec-github-actions
+    message: "Found gosec in GitHub Actions workflow"
+no_findings:
+  - .github/workflows/negative_cases.yml

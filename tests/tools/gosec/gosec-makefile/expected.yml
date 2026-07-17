@@ -1,0 +1,35 @@
+findings:
+  - file: Makefile
+    line: 3
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 4
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 4
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 9
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 9
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 10
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 10
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+  - file: Makefile
+    line: 10
+    rule_id: gosec-makefile
+    message: "Found gosec in Makefile"
+no_findings:
+  - negative_cases.mk

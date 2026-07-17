@@ -1,0 +1,79 @@
+findings:
+- file: test_code.go
+  line: 14
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 19
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 22
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 25
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 28
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 33
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 36
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 40
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 43
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 46
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 49
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 52
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 55
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 58
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 62
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 62
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 62
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 62
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+- file: test_code.go
+  line: 62
+  rule_id: go-reflection-advanced-patterns
+  message: Advanced reflection patterns detected - landscape mapping
+no_findings:
+- negative_cases.go

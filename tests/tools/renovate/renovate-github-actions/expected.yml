@@ -1,0 +1,11 @@
+findings:
+- file: .github/workflows/test_code.yml
+  line: 11
+  rule_id: renovate-github-actions
+  message: Found Renovate in GitHub Actions workflow
+- file: .github/workflows/test_code.yml
+  line: 13
+  rule_id: renovate-github-actions
+  message: Found Renovate in GitHub Actions workflow
+no_findings:
+- .github/workflows/negative_cases.yml

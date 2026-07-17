@@ -1,0 +1,10 @@
+linters-settings:
+  custom:
+    govulncheck-cmd:
+      cmd: govulncheck
+    govulncheck-command:
+      command: govulncheck
+    govulncheck-tool:
+      tool: govulncheck
+    govulncheck-name:
+      name: govulncheck

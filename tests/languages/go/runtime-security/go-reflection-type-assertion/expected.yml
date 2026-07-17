@@ -1,0 +1,51 @@
+findings:
+- file: test_code.go
+  line: 14
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 14
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 17
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 22
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 22
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 33
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 38
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 43
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 48
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 48
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 53
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+- file: test_code.go
+  line: 53
+  rule_id: go-reflection-type-assertion
+  message: Reflection-based type assertion detected - potential type confusion risk
+no_findings:
+- negative_cases.go

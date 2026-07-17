@@ -1,0 +1,151 @@
+findings:
+- file: test_code.go
+  line: 17
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 20
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 23
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 26
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 29
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 32
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 36
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 36
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 36
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 48
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 50
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 103
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 109
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 112
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 116
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 116
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 116
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 127
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 135
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 138
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 141
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 141
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 144
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 144
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 146
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 152
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 152
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 155
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 155
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 155
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 158
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 158
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 158
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 158
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 160
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 163
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+- file: test_code.go
+  line: 168
+  rule_id: go-reflection-structural-manipulation
+  message: Reflection structural manipulation detected - landscape mapping
+no_findings:
+- negative_cases.go

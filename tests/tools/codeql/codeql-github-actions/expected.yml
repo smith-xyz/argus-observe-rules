@@ -1,0 +1,27 @@
+findings:
+  - file: .github/workflows/test_code.yml
+    line: 11
+    rule_id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+  - file: .github/workflows/test_code.yml
+    line: 11
+    rule_id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+  - file: .github/workflows/test_code.yml
+    line: 15
+    rule_id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+  - file: .github/workflows/test_code.yml
+    line: 15
+    rule_id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+  - file: .github/workflows/test_code.yml
+    line: 17
+    rule_id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+  - file: .github/workflows/test_code.yml
+    line: 17
+    rule_id: codeql-github-actions
+    message: Found CodeQL in GitHub Actions workflow
+no_findings:
+  - .github/workflows/negative_cases.yml

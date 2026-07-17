@@ -6,15 +6,13 @@ rules:
       - go
     patterns:
       - pattern-either:
-          - patterns:
-              - pattern: ct.$FUNC($ARGS)
-              - metavariable-regex:
-                  metavariable: $FUNC
-                  regex: ^(AddChain|GetSTH|GetEntries|GetProofByHash)$
-          - pattern: ct.VerifySCT($PUB, $SCT, $ENTRY)
-          - pattern: ctutil.VerifySCT($LOGKEY, $SCT, $CHAIN)
           - pattern: client.New($URL, $HTTP, $OPTS)
+          - pattern: $CLIENT.GetSTH($CTX)
+          - pattern: $CLIENT.GetEntries($CTX, $START, $END)
+          - pattern: $CLIENT.GetProofByHash($CTX, $HASH, $TREESIZE)
           - pattern: $CLIENT.AddChain($CTX, $CHAIN)
+          - pattern: $CLIENT.AddPreChain($CTX, $CHAIN)
+          - pattern: ctutil.VerifySCT($LOGKEY, $SCT, $CHAIN)
     metadata:
       category: pqc_readiness
       cwe: CWE-295

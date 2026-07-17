@@ -2,7 +2,7 @@ rules:
   - id: semgrep-github-actions
     message: "Found Semgrep in GitHub Actions workflow"
     severity: INFO
-    languages: [yaml]
+    languages: [generic]
     patterns:
       - pattern-either:
           - pattern: |

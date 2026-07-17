@@ -3,8 +3,7 @@ rules:
     message: Found gosec configuration file
     severity: INFO
     languages:
-      - json
-      - yaml
+      - generic
     patterns:
       - pattern: $...CONTENT
     paths:

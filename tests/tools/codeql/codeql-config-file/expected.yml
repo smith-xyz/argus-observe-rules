@@ -1,0 +1,7 @@
+findings:
+  - file: .github/codeql/test_code.yml
+    line: 1
+    rule_id: codeql-config-file
+    message: Found CodeQL configuration file
+no_findings:
+  - .github/codeql/negative_cases.yml

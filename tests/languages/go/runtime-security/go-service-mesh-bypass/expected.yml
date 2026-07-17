@@ -8,15 +8,11 @@ findings:
     message: "Service mesh TLS bypass detected - communication outside mesh security"
     rule_id: go-service-mesh-bypass
   - file: test_code.go
-    line: 19
+    line: 20
     message: "Service mesh TLS bypass detected - communication outside mesh security"
     rule_id: go-service-mesh-bypass
   - file: test_code.go
-    line: 27
-    message: "Service mesh TLS bypass detected - communication outside mesh security"
-    rule_id: go-service-mesh-bypass
-  - file: test_code.go
-    line: 28
+    line: 21
     message: "Service mesh TLS bypass detected - communication outside mesh security"
     rule_id: go-service-mesh-bypass
 

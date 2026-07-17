@@ -1,0 +1,7 @@
+findings:
+  - file: .github/dependabot.yml
+    line: 1
+    rule_id: dependabot-config
+    message: Found Dependabot configuration
+no_findings:
+  - .dependabot/config.yml

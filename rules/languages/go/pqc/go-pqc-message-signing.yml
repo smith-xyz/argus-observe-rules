@@ -7,16 +7,12 @@ rules:
     patterns:
       - pattern-either:
           - pattern: $PRIV.Sign($RAND, $DIGEST, $OPTS)
-          - pattern: $PUB.Verify($MESSAGE, $SIG, $OPTS)
-          - pattern: jws.Sign($PAYLOAD, $ALG, $KEY)
-          - pattern: jws.Verify($MESSAGE, $ALG, $KEY)
-          - pattern: jose.NewSigner($ALG, $KEY)
-          - pattern: jose.NewVerifier($ALG, $KEY)
-          - patterns:
-              - pattern: openpgp.$FUNC($ARGS)
-              - metavariable-regex:
-                  metavariable: $FUNC
-                  regex: ^(Armored)?Detach(Sign|.*Signature)$
+          - pattern: "jose.NewSigner(jose.SigningKey{Algorithm: $ALG, Key: $KEY}, $OPTS)"
+          - pattern: $SIGNER.Sign($PAYLOAD)
+          - pattern: jws.ParseSigned($SERIALIZED, $ALGS)
+          - pattern: $JWS.Verify($KEY)
+          - pattern: openpgp.DetachSign(...)
+          - pattern: openpgp.ArmoredDetachSign(...)
     metadata:
       category: pqc_readiness
       cwe: CWE-327

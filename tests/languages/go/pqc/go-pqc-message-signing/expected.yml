@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.go
+    line: 14
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.go
+    line: 18
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.go
+    line: 22
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.go
+    line: 26
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.go
+    line: 30
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.go
+    line: 34
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.go
+    line: 38
+    rule_id: go-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+
+no_findings:
+  - negative_cases.go

@@ -1,0 +1,51 @@
+findings:
+- file: test_code.go
+  line: 13
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 19
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 27
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 28
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 34
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 45
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 53
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 54
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 62
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 69
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 70
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+- file: test_code.go
+  line: 71
+  rule_id: go-grpc-tls-credential-override
+  message: gRPC TLS credential override detected - may bypass service mesh security
+no_findings:
+- negative_cases.go

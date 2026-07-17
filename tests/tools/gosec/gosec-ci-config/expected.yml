@@ -1,0 +1,7 @@
+findings:
+  - file: .gitlab-ci.yml
+    line: 4
+    rule_id: gosec-ci-config
+    message: Found gosec in CI configuration
+no_findings:
+  - .travis.yml

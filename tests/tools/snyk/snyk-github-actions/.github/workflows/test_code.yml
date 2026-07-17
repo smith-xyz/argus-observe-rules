@@ -1,0 +1,11 @@
+name: Snyk Security
+on: push
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Snyk
+        run: snyk test
+      - name: Snyk Action
+        uses: snyk/actions/node@master

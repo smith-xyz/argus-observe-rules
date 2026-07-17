@@ -1,0 +1,6 @@
+version: v1.25.0
+ignore:
+  SNYK-JS-LODASH-567746:
+    - '*':
+        reason: Accepted risk for test suite
+        expires: 2027-01-01T00:00:00.000Z

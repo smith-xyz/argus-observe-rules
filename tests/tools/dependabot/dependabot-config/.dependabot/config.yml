@@ -1,0 +1,6 @@
+# Repository automation settings — not a Dependabot config
+settings:
+  automerge:
+    enabled: false
+  labels:
+    - dependencies

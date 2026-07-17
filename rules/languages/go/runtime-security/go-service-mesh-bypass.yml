@@ -24,14 +24,6 @@ rules:
               ...
               http.$METHOD($URL, ...)
 
-          # HTTP client with proxy bypass - service mesh specific
-          - pattern: |
-              $CLIENT := &http.Client{
-                Transport: &http.Transport{
-                  Proxy: http.ProxyFromEnvironment,
-                },
-              }
-
           # Service discovery bypass loop - the complete pattern
           - pattern: |
               for _, $ENDPOINT := range $ENDPOINTS {

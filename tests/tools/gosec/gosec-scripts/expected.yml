@@ -1,0 +1,7 @@
+findings:
+  - file: test_code.sh
+    line: 4
+    rule_id: gosec-scripts
+    message: "Found gosec in shell script"
+no_findings:
+  - negative_cases.sh
