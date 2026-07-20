@@ -1,0 +1,16 @@
+rules:
+  - id: java-reflection-advanced-patterns
+    message: "Advanced reflection patterns detected - landscape mapping"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $LOADER.loadClass($NAME)
+          - pattern: Class.forName($NAME, $INIT, $LOADER)
+          - pattern: Proxy.newProxyInstance($LOADER, $INTERFACES, $HANDLER)
+          - pattern: $METHOD.invoke($OBJ, $ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety and create security vulnerabilities

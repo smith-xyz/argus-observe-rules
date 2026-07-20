@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.py
+    line: 2
+    rule_id: python-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+  - file: test_code.py
+    line: 3
+    rule_id: python-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+
+no_findings:
+  - negative_cases.py

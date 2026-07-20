@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-reflection-advanced-patterns
+    message: "Advanced reflection patterns detected - landscape mapping"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: Assembly.Load($NAME)
+          - pattern: Assembly.LoadFrom($PATH)
+          - pattern: Activator.CreateInstance($TYPE)
+          - pattern: Activator.CreateInstance($TYPE, $ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety and create security vulnerabilities

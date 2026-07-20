@@ -1,0 +1,15 @@
+rules:
+  - id: csharp-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: $OBJ is $TYPE
+          - pattern: $TYPE.IsAssignableFrom($OTHER)
+          - pattern: $TYPE.IsInstanceOfType($OBJ)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to type confusion vulnerabilities

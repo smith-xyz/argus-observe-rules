@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.js
+    line: 5
+    rule_id: javascript-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+
+no_findings:
+  - negative_cases.js

@@ -1,0 +1,8 @@
+findings:
+  - file: test_code.java
+    line: 7
+    rule_id: java-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+
+no_findings:
+  - negative_cases.java

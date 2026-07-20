@@ -1,0 +1,14 @@
+rules:
+  - id: python-reflection-type-assertion
+    message: Reflection-based type assertion detected - potential type confusion risk
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: isinstance($OBJ, $TYPE)
+          - pattern: issubclass($CLS, $BASE)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to type confusion vulnerabilities

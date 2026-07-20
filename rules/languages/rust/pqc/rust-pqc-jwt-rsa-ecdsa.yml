@@ -1,0 +1,20 @@
+rules:
+  - id: rust-pqc-jwt-rsa-ecdsa
+    message: JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: "Header::new(Algorithm::RS256)"
+          - pattern: "Header::new(Algorithm::RS384)"
+          - pattern: "Header::new(Algorithm::RS512)"
+          - pattern: "Header::new(Algorithm::ES256)"
+          - pattern: "Header::new(Algorithm::ES384)"
+          - pattern: "Header::new(Algorithm::PS256)"
+          - pattern: "Validation::new(Algorithm::RS256)"
+          - pattern: "Validation::new(Algorithm::ES256)"
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT signature algorithms catalogued - verify JWT library supports hybrid or PQC signature methods

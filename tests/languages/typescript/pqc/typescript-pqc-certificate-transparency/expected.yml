@@ -1,0 +1,8 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+
+no_findings:
+  - negative_cases.ts

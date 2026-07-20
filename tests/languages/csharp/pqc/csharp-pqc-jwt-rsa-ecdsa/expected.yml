@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+
+no_findings:
+  - negative_cases.cs

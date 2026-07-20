@@ -1,0 +1,18 @@
+rules:
+  - id: python-pqc-hardcoded-cipher-dependencies
+    message: Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONTEXT.set_ciphers($CIPHERS)
+          - pattern: |
+              $CONTEXT.minimum_version = ssl.TLSVersion.TLSv1_2
+          - pattern: |
+              $CONTEXT.maximum_version = ssl.TLSVersion.TLSv1_2
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled, especially in mixed-version environments

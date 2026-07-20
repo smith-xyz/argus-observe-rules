@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.cs
+    line: 18
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+
+no_findings:
+  - negative_cases.cs

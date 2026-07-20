@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+
+no_findings:
+  - negative_cases.cs

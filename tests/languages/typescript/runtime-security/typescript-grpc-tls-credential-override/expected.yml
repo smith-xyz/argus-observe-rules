@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.ts
+    line: 4
+    rule_id: typescript-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-grpc-tls-credential-override
+    message: "gRPC TLS credential override detected - may bypass service mesh security"
+
+no_findings:
+  - negative_cases.ts

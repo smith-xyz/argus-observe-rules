@@ -1,0 +1,15 @@
+rules:
+  - id: c-unsafe-pointer-operations
+    message: Unsafe memory operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: memcpy($DST, $SRC, $COUNT)
+          - pattern: memmove($DST, $SRC, $COUNT)
+          - pattern: realloc($PTR, $SIZE)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe memory operations can lead to memory corruption

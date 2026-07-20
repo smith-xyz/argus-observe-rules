@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 4
+    rule_id: typescript-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.ts
+    line: 16
+    rule_id: typescript-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+
+no_findings:
+  - negative_cases.ts

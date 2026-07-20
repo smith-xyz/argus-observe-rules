@@ -1,0 +1,16 @@
+rules:
+  - id: java-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Config.fromConfig($PATH)
+          - pattern: Config.defaultClient()
+          - pattern: $CLIENT.setVerifyingSsl(false)
+          - pattern: Configuration.setDefaultApiClient($CLIENT)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: "Kubernetes client TLS override can bypass cluster security policies"

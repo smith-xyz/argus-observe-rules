@@ -1,0 +1,17 @@
+rules:
+  - id: cpp-pqc-config-profile-dependencies
+    message: TLS/crypto configuration detected - verify PQC algorithm compatibility across system components
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: getenv("OPENSSL_FIPS")
+          - pattern: getenv("FIPS_MODE")
+          - pattern: SSL_CTX_new($METHOD)
+          - pattern: grpc::CreateChannel($TARGET, $CREDS)
+          - pattern: $CTX.set_verify_mode($MODE)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments

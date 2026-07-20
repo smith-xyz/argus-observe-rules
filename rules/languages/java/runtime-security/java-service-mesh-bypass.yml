@@ -1,0 +1,17 @@
+rules:
+  - id: java-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+    severity: ERROR
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: '"http://" + $SERVICE_IP + ":" + $PORT'
+          - pattern: '"http://" + $ENDPOINT'
+          - pattern: $CLIENT.send($REQUEST, $HANDLER)
+          - pattern: $CLIENT.execute($GET)
+          - pattern: $CLIENT.execute(new HttpGet($URL))
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: "Service mesh bypass eliminates mTLS protection and security observability"

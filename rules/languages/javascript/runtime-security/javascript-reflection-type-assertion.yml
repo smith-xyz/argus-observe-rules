@@ -1,0 +1,14 @@
+rules:
+  - id: javascript-reflection-type-assertion
+    message: Reflection-based type assertion detected - potential type confusion risk
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: $OBJ instanceof $TYPE
+          - pattern: Object.prototype.toString.call($OBJ)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to type confusion vulnerabilities

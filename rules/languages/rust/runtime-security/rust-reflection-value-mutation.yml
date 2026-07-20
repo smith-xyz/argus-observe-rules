@@ -1,0 +1,15 @@
+rules:
+  - id: rust-reflection-value-mutation
+    message: Reflection-based value mutation detected - landscape mapping
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: std::ptr::write(&mut $TARGET, $VALUE)
+          - pattern: std::mem::replace(&mut $TARGET, $VALUE)
+          - pattern: unsafe { $EXPR }
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Reflection-based value mutation bypasses type safety and obscures data flow

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.rs
+    line: 4
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.rs
+    line: 5
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.rs
+    line: 5
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.rs
+    line: 13
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.rs
+    line: 21
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.rs
+    line: 22
+    rule_id: rust-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+
+no_findings:
+  - negative_cases.rs

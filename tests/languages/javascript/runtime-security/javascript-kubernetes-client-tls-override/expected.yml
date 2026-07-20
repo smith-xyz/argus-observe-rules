@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.js
+    line: 5
+    rule_id: javascript-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.js
+    line: 6
+    rule_id: javascript-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.js
+    line: 7
+    rule_id: javascript-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+
+no_findings:
+  - negative_cases.js

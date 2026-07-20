@@ -1,0 +1,16 @@
+rules:
+  - id: cpp-tls-version-override
+    message: TLS version override detected - may block TLS 1.3 or weaken transport security
+    severity: WARNING
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_max_proto_version($CTX, TLS1_2_VERSION)
+          - pattern: SSL_CTX_set_min_proto_version($CTX, TLS1_1_VERSION)
+          - pattern: SSL_CTX_set_options($CTX, SSL_OP_NO_TLSv1_3)
+          - pattern: $CTX.set_options(boost::asio::ssl::context::no_tlsv1_3)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: TLS version restrictions may conflict with platform TLS profiles requiring TLS 1.3

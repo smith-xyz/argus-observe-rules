@@ -1,0 +1,17 @@
+rules:
+  - id: c-pqc-config-profile-dependencies
+    message: TLS/crypto configuration detected - verify PQC algorithm compatibility across system components
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: getenv("OPENSSL_FIPS")
+          - pattern: getenv("FIPS_MODE")
+          - pattern: getenv("OPENSSL_CONF")
+          - pattern: SSL_CTX_new($METHOD)
+          - pattern: grpc_ssl_credentials_create($ROOT, $KEY, $CERT, $FLAGS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments

@@ -1,0 +1,20 @@
+rules:
+  - id: rust-service-mesh-bypass
+    message: Service mesh TLS bypass detected - communication outside mesh security
+    severity: ERROR
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $URL = format!("http://{}:{}", $SERVICE_IP, $PORT)
+              ...
+              reqwest::get(&$URL)
+          - pattern: |
+              $URL = format!("http://{}", $ENDPOINT)
+              ...
+              reqwest::get(&$URL)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Service mesh bypass eliminates mTLS protection and security observability

@@ -1,0 +1,15 @@
+rules:
+  - id: javascript-tls-version-override
+    message: TLS version override detected - may block TLS 1.3 or weaken transport security
+    severity: WARNING
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: "minVersion: 'TLSv1'"
+          - pattern: "maxVersion: 'TLSv1.2'"
+          - pattern: "secureProtocol: 'TLSv1_2_method'"
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: TLS version restrictions may conflict with platform TLS profiles requiring TLS 1.3

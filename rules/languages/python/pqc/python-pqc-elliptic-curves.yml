@@ -1,0 +1,21 @@
+rules:
+  - id: python-pqc-elliptic-curves
+    message: Elliptic curve cryptography identified - catalog for PQC migration assessment
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: ec.generate_private_key($CURVE, $BACKEND)
+          - pattern: ec.SECP256R1()
+          - pattern: ec.SECP384R1()
+          - pattern: ec.SECP521R1()
+          - pattern: ec.SECP256K1()
+          - pattern: ed25519.Ed25519PrivateKey.generate()
+          - pattern: ed25519.Ed25519PrivateKey.from_private_bytes($KEY)
+          - pattern: $PRIVATE.sign($DATA)
+          - pattern: $PUBLIC.verify($SIG, $DATA)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution

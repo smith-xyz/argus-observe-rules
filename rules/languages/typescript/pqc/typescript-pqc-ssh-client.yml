@@ -1,0 +1,18 @@
+rules:
+  - id: typescript-pqc-ssh-client
+    message: SSH client configuration detected - evaluate PQC SSH algorithm support readiness
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: new Client()
+          - pattern: |
+              $CLIENT = new Client()
+              ...
+              $CLIENT.connect($CONFIG)
+          - pattern: $CLIENT.on('hostkey', $HANDLER)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH client configuration documented - verify SSH library supports hybrid or PQC key exchange and authentication algorithms

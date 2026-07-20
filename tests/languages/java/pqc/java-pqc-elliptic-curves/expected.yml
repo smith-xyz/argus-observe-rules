@@ -1,0 +1,36 @@
+findings:
+  - file: test_code.java
+    line: 9
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 10
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 11
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 12
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 16
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 17
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 21
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.java
+    line: 22
+    rule_id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+
+no_findings:
+  - negative_cases.java

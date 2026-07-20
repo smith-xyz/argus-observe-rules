@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.py
+    line: 8
+    rule_id: python-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.py
+    line: 8
+    rule_id: python-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.py
+    line: 9
+    rule_id: python-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+
+no_findings:
+  - negative_cases.py

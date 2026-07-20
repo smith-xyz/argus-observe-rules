@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-http-server-tls-override
+    message: "HTTP server with custom TLS config detected - may override platform TLS profile settings"
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-http-server-tls-override
+    message: "HTTP server with custom TLS config detected - may override platform TLS profile settings"
+
+no_findings:
+  - negative_cases.ts

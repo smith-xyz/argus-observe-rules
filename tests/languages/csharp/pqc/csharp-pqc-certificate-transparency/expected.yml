@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+
+no_findings:
+  - negative_cases.cs

@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cs
+    line: 17
+    rule_id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cs
+    line: 18
+    rule_id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+
+no_findings:
+  - negative_cases.cs

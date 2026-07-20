@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+
+no_findings:
+  - negative_cases.rs

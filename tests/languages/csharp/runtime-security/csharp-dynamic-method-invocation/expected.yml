@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+
+no_findings:
+  - negative_cases.cs

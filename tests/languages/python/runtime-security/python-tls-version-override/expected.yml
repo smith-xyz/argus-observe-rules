@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.py
+    line: 4
+    rule_id: python-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+  - file: test_code.py
+    line: 5
+    rule_id: python-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+  - file: test_code.py
+    line: 6
+    rule_id: python-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+  - file: test_code.py
+    line: 7
+    rule_id: python-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+
+no_findings:
+  - negative_cases.py

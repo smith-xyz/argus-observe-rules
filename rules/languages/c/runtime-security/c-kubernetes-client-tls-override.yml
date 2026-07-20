@@ -1,0 +1,15 @@
+rules:
+  - id: c-kubernetes-client-tls-override
+    message: Kubernetes client TLS configuration override detected
+    severity: WARNING
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: getenv("KUBERNETES_SERVICE_HOST")
+          - pattern: getenv("KUBECONFIG")
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_SSL_VERIFYPEER, 0L)"
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Kubernetes client TLS override can bypass cluster security policies

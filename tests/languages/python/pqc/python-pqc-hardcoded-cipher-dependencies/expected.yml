@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.py
+    line: 5
+    rule_id: python-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.py
+    line: 6
+    rule_id: python-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.py
+    line: 7
+    rule_id: python-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+
+no_findings:
+  - negative_cases.py

@@ -1,0 +1,17 @@
+rules:
+  - id: csharp-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: unsafe
+          - pattern: fixed ($TYPE $VAR = $EXPR)
+          - pattern: stackalloc $TYPE[$SIZE]
+          - pattern: Marshal.AllocHGlobal($SIZE)
+          - pattern: Marshal.Copy($SRC, $DEST, $START, $LENGTH)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe memory operations can lead to memory corruption

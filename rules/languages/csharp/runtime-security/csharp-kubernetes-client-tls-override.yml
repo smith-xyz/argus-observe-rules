@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+    severity: WARNING
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: KubernetesClientConfiguration.BuildConfigFromConfigFile()
+          - pattern: KubernetesClientConfiguration.IsInCluster()
+          - pattern: $CONFIG.SkipTlsVerify = true
+          - pattern: new KubernetesClientConfiguration()
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: "Kubernetes client TLS override can bypass cluster security policies"

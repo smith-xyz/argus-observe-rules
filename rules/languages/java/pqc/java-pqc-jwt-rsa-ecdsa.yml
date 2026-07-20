@@ -1,0 +1,21 @@
+rules:
+  - id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SignatureAlgorithm.RS256
+          - pattern: SignatureAlgorithm.RS384
+          - pattern: SignatureAlgorithm.RS512
+          - pattern: SignatureAlgorithm.ES256
+          - pattern: SignatureAlgorithm.ES384
+          - pattern: SignatureAlgorithm.ES512
+          - pattern: SignatureAlgorithm.PS256
+          - pattern: $BUILDER.signWith($KEY, SignatureAlgorithm.RS256)
+          - pattern: $BUILDER.signWith($KEY, SignatureAlgorithm.ES256)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "JWT signature algorithms catalogued - verify JWT library supports hybrid or PQC signature methods"

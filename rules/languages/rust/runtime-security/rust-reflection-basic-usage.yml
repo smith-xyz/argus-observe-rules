@@ -1,0 +1,17 @@
+rules:
+  - id: rust-reflection-basic-usage
+    message: Basic reflection usage detected - mapping reflection landscape
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: std::any::TypeId::of::<$T>()
+          - pattern: ($OBJ as &dyn std::any::Any).type_id()
+          - pattern: std::mem::size_of::<$T>()
+          - pattern: std::mem::align_of::<$T>()
+          - pattern: std::any::type_name::<$T>()
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

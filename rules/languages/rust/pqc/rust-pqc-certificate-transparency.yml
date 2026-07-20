@@ -1,0 +1,17 @@
+rules:
+  - id: rust-pqc-certificate-transparency
+    message: Certificate Transparency operations detected - ensure PQC certificate support
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ct_client::LogClient::new($URL)
+          - pattern: $CLIENT.get_sth()
+          - pattern: $CLIENT.get_entries($START, $END)
+          - pattern: $CLIENT.add_chain($CHAIN)
+          - pattern: sct::verify_sct($CERT, $LOGS, $TIMESTAMP)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-295
+      impact: Certificate Transparency logs must support PQC certificates

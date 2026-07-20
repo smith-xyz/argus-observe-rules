@@ -1,0 +1,19 @@
+rules:
+  - id: java-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: Jwts.builder()
+          - pattern: Jwts.parser()
+          - pattern: Jwts.parserBuilder()
+          - pattern: $BUILDER.compact()
+          - pattern: $PARSER.parseClaimsJws($TOKEN)
+          - pattern: $PARSER.parseClaimsJwt($TOKEN)
+          - pattern: $PARSER.parse($TOKEN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT infrastructure may need updates for PQC signature algorithms

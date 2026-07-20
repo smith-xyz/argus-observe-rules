@@ -1,0 +1,14 @@
+rules:
+  - id: python-reflection-value-mutation
+    message: Reflection-based value mutation detected - landscape mapping
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: setattr($OBJ, $NAME, $VALUE)
+          - pattern: object.__setattr__($OBJ, $NAME, $VALUE)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Reflection-based value mutation bypasses type safety and obscures data flow

@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.rs
+    line: 4
+    rule_id: rust-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.rs
+    line: 5
+    rule_id: rust-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.rs
+    line: 6
+    rule_id: rust-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.rs
+    line: 7
+    rule_id: rust-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+
+no_findings:
+  - negative_cases.rs

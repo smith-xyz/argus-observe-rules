@@ -1,0 +1,16 @@
+rules:
+  - id: python-reflection-advanced-patterns
+    message: Advanced reflection patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: __import__($NAME)
+          - pattern: importlib.import_module($NAME)
+          - pattern: eval($EXPR)
+          - pattern: exec($CODE)
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety and create security vulnerabilities

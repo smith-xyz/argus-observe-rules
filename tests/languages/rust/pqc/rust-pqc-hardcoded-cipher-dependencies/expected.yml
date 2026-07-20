@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.rs
+    line: 6
+    rule_id: rust-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+
+no_findings:
+  - negative_cases.rs

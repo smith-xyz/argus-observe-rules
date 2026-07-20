@@ -8,11 +8,11 @@ rules:
       - pattern: $...CONTENT
     paths:
       include:
-        - .gosec.json
+        - "**/.gosec.json"
         - gosec.json
-        - .gosec.yaml
+        - "**/.gosec.yaml"
         - gosec.yaml
-        - .gosec.yml
+        - "**/.gosec.yml"
         - gosec.yml
     metadata:
       category: static-analysis

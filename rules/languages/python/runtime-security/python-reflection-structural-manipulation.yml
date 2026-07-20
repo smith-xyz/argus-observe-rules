@@ -1,0 +1,16 @@
+rules:
+  - id: python-reflection-structural-manipulation
+    message: Reflection structural manipulation detected - landscape mapping
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: setattr($OBJ, $NAME, $VALUE)
+          - pattern: delattr($OBJ, $NAME)
+          - pattern: globals()
+          - pattern: locals()
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety

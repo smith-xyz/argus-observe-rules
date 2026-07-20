@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.py
+    line: 4
+    rule_id: python-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.py
+    line: 7
+    rule_id: python-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.py
+    line: 10
+    rule_id: python-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+
+no_findings:
+  - negative_cases.py

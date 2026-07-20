@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.cs
+    line: 20
+    rule_id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.cs
+    line: 22
+    rule_id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.cs
+    line: 23
+    rule_id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+
+no_findings:
+  - negative_cases.cs

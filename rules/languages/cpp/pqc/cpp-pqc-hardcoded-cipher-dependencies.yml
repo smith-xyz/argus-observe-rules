@@ -1,0 +1,16 @@
+rules:
+  - id: cpp-pqc-hardcoded-cipher-dependencies
+    message: Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced
+    severity: WARNING
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_cipher_list($CTX, $LIST)
+          - pattern: SSL_CTX_set_min_proto_version($CTX, TLS1_2_VERSION)
+          - pattern: SSL_CTX_set_max_proto_version($CTX, TLS1_2_VERSION)
+          - pattern: $CTX.set_options($OPTIONS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled, especially in mixed-version environments

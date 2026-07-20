@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.rs
+    line: 6
+    rule_id: rust-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.rs
+    line: 9
+    rule_id: rust-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.rs
+    line: 15
+    rule_id: rust-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.rs
+    line: 17
+    rule_id: rust-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+
+no_findings:
+  - negative_cases.rs

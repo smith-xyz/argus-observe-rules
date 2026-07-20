@@ -1,0 +1,19 @@
+rules:
+  - id: csharp-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: new JwtSecurityTokenHandler()
+          - pattern: $HANDLER.CreateToken($DESCRIPTOR)
+          - pattern: $HANDLER.ValidateToken($TOKEN, $PARAMS, out $VALIDATED)
+          - pattern: $HANDLER.ReadJwtToken($TOKEN)
+          - pattern: new JsonWebTokenHandler()
+          - pattern: $JWT_HANDLER.CreateToken($DESCRIPTOR)
+          - pattern: $JWT_HANDLER.ValidateToken($TOKEN, $PARAMS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT infrastructure may need updates for PQC signature algorithms

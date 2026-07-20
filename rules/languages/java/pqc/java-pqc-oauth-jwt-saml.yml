@@ -1,0 +1,19 @@
+rules:
+  - id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: new OAuth2AuthorizedClientManager($REPO, $SERVICE)
+          - pattern: OAuth2AuthorizeRequest.withClientRegistrationId($ID)
+          - pattern: $MANAGER.authorize($REQUEST)
+          - pattern: new Clients($CLIENTS)
+          - pattern: new SAML2Client($CONFIG)
+          - pattern: $CLIENTS.init()
+          - pattern: InitializationService.initialize()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Identity protocol usage documented - verify OAuth/SAML/OIDC libraries support hybrid or PQC signature algorithms"

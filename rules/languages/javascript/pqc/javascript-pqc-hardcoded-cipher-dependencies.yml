@@ -1,0 +1,17 @@
+rules:
+  - id: javascript-pqc-hardcoded-cipher-dependencies
+    message: Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced
+    severity: WARNING
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: "tls.createSecureContext({ ciphers: $CIPHERS })"
+          - pattern: |
+              $CTX = tls.createSecureContext($OPTIONS)
+              ...
+              $CTX.setCiphers($CIPHERS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled

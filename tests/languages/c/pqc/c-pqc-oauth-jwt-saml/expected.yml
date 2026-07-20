@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.c
+    line: 6
+    rule_id: c-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.c
+    line: 10
+    rule_id: c-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.c
+    line: 11
+    rule_id: c-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.c
+    line: 12
+    rule_id: c-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.c
+    line: 16
+    rule_id: c-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+
+no_findings:
+  - negative_cases.c

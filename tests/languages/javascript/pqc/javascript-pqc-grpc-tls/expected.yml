@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+
+no_findings:
+  - negative_cases.js

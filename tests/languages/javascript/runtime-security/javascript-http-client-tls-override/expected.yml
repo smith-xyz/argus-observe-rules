@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.js
+    line: 5
+    rule_id: javascript-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+  - file: test_code.js
+    line: 6
+    rule_id: javascript-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+
+no_findings:
+  - negative_cases.js

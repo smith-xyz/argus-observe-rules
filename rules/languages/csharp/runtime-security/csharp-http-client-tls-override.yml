@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+    severity: WARNING
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: new HttpClientHandler()
+          - pattern: new HttpClient($HANDLER)
+          - pattern: $HANDLER.ClientCertificates.Add($CERT)
+          - pattern: $HANDLER.SslProtocols = $PROTOCOLS
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: "Custom TLS config in HTTP clients may override platform TLS profiles"

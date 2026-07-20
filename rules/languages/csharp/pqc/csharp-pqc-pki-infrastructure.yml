@@ -1,0 +1,21 @@
+rules:
+  - id: csharp-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: new X509Certificate2($BYTES)
+          - pattern: new X509Certificate2($PATH)
+          - pattern: X509Certificate2.CreateFromPem($PEM)
+          - pattern: new X509Chain()
+          - pattern: $CHAIN.Build($CERT)
+          - pattern: new CertificateRequest($SUBJECT, $KEY, $HASH)
+          - pattern: $REQUEST.CreateSelfSigned($NOT_BEFORE, $NOT_AFTER)
+          - pattern: $CERT.GetPublicKey()
+          - pattern: $CERT.Verify()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "PKI infrastructure usage documented - verify certificate authorities and systems support hybrid or PQC certificates"

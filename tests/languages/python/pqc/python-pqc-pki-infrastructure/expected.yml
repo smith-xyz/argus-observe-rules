@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.py
+    line: 5
+    rule_id: python-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.py
+    line: 8
+    rule_id: python-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.py
+    line: 9
+    rule_id: python-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.py
+    line: 12
+    rule_id: python-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.py
+    line: 15
+    rule_id: python-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+
+no_findings:
+  - negative_cases.py

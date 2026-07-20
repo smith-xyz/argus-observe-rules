@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.rs
+    line: 6
+    rule_id: rust-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.rs
+    line: 7
+    rule_id: rust-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+
+no_findings:
+  - negative_cases.rs

@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.rs
+    line: 15
+    rule_id: rust-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.rs
+    line: 16
+    rule_id: rust-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+
+no_findings:
+  - negative_cases.rs

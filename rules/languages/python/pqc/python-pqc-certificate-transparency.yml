@@ -1,0 +1,16 @@
+rules:
+  - id: python-pqc-certificate-transparency
+    message: Certificate Transparency operations detected - ensure PQC certificate support
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: log_client.LogClient($URL, $FORMAT, $PUBKEY)
+          - pattern: $CLIENT.get_sth()
+          - pattern: $CLIENT.get_entries($START, $END)
+          - pattern: $CLIENT.add_chain($CHAIN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-295
+      impact: Certificate Transparency logs must support PQC certificates

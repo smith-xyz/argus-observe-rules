@@ -1,0 +1,19 @@
+rules:
+  - id: cpp-pqc-ssh-client
+    message: SSH client configuration detected - evaluate PQC SSH algorithm support readiness
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: ssh_new()
+          - pattern: |
+              $SESSION = ssh_new()
+              ...
+              ssh_connect($SESSION)
+          - pattern: ssh_options_set($SESSION, SSH_OPTIONS_HOST, $HOST)
+          - pattern: ssh_userauth_publickey_auto($SESSION, $USER, $KEY)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH client configuration documented - verify SSH library supports hybrid or PQC key exchange and authentication algorithms

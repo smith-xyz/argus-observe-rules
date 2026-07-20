@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.py
+    line: 4
+    rule_id: python-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.py
+    line: 7
+    rule_id: python-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.py
+    line: 10
+    rule_id: python-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+
+no_findings:
+  - negative_cases.py

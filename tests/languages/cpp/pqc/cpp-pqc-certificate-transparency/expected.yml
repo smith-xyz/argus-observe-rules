@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cpp
+    line: 4
+    rule_id: cpp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.cpp
+    line: 5
+    rule_id: cpp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.cpp
+    line: 6
+    rule_id: cpp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,14 @@
+rules:
+  - id: typescript-reflection-value-mutation
+    message: Reflection-based value mutation detected - landscape mapping
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: Reflect.set($OBJ, $KEY, $VALUE)
+          - pattern: Object.assign($TARGET, $SOURCE)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Reflection-based value mutation bypasses type safety and obscures data flow

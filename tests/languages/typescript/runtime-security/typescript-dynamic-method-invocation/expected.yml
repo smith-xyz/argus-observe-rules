@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.ts
+    line: 2
+    rule_id: typescript-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.ts
+    line: 3
+    rule_id: typescript-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+
+no_findings:
+  - negative_cases.ts

@@ -1,0 +1,18 @@
+rules:
+  - id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: ManagedChannelBuilder.forAddress($HOST, $PORT)
+          - pattern: NettyChannelBuilder.forAddress($HOST, $PORT)
+          - pattern: Grpc.newChannelBuilder($TARGET, $CREDS)
+          - pattern: $BUILDER.useTransportSecurity()
+          - pattern: $BUILDER.sslContext($CONTEXT)
+          - pattern: ServerBuilder.forPort($PORT)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites"

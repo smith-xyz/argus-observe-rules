@@ -1,0 +1,14 @@
+rules:
+  - id: cpp-reflection-structural-manipulation
+    message: Reflection structural manipulation detected - landscape mapping
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: memcpy($DST, $SRC, $SIZE)
+          - pattern: memmove($DST, $SRC, $SIZE)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety

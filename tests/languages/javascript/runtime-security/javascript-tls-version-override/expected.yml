@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.js
+    line: 7
+    rule_id: javascript-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+  - file: test_code.js
+    line: 8
+    rule_id: javascript-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+  - file: test_code.js
+    line: 9
+    rule_id: javascript-tls-version-override
+    message: "TLS version override detected - may block TLS 1.3 or weaken transport security"
+
+no_findings:
+  - negative_cases.js

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.java
+    line: 11
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.java
+    line: 12
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.java
+    line: 13
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.java
+    line: 19
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.java
+    line: 20
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.java
+    line: 26
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.java
+    line: 27
+    rule_id: java-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+
+no_findings:
+  - negative_cases.java

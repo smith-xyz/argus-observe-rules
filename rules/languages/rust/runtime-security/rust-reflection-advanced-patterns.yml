@@ -1,0 +1,17 @@
+rules:
+  - id: rust-reflection-advanced-patterns
+    message: Advanced reflection patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: include!($PATH)
+          - pattern: include_str!($PATH)
+          - pattern: include_bytes!($PATH)
+          - pattern: $ANY.downcast_ref::<$T>()
+          - pattern: $ANY.downcast_mut::<$T>()
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety and create security vulnerabilities

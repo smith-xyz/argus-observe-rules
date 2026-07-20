@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.rs
+    line: 6
+    rule_id: rust-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.rs
+    line: 10
+    rule_id: rust-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.rs
+    line: 18
+    rule_id: rust-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+
+no_findings:
+  - negative_cases.rs

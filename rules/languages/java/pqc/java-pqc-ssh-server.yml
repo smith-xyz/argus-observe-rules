@@ -1,0 +1,18 @@
+rules:
+  - id: java-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: SshServer.setUpDefaultServer()
+          - pattern: $SERVER.setHost($HOST)
+          - pattern: $SERVER.setPort($PORT)
+          - pattern: $SERVER.start()
+          - pattern: $SERVER.setKeyPairProvider($PROVIDER)
+          - pattern: $SERVER.setPasswordAuthenticator($AUTH)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms"

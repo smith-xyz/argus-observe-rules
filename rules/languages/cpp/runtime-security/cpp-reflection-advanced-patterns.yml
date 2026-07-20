@@ -1,0 +1,14 @@
+rules:
+  - id: cpp-reflection-advanced-patterns
+    message: Advanced reflection patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: $FN = ($TYPE)dlsym($HANDLE, $SYM)
+          - pattern: reinterpret_cast<$TYPE>($EXPR)
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety and create security vulnerabilities

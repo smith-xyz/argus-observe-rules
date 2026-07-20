@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cpp
+    line: 5
+    rule_id: cpp-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+
+no_findings:
+  - negative_cases.cpp

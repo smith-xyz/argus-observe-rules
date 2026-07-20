@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.cpp
+    line: 8
+    rule_id: cpp-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.cpp
+    line: 12
+    rule_id: cpp-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.cpp
+    line: 14
+    rule_id: cpp-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.cpp
+    line: 15
+    rule_id: cpp-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+
+no_findings:
+  - negative_cases.cpp

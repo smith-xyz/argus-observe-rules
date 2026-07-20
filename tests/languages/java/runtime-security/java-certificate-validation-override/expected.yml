@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.java
+    line: 11
+    rule_id: java-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.java
+    line: 19
+    rule_id: java-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+
+no_findings:
+  - negative_cases.java

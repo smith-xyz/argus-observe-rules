@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cpp
+    line: 5
+    rule_id: cpp-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.cpp
+    line: 6
+    rule_id: cpp-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+
+no_findings:
+  - negative_cases.cpp

@@ -1,0 +1,20 @@
+rules:
+  - id: python-pqc-pki-infrastructure
+    message: PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: x509.load_pem_x509_certificate($DATA)
+          - pattern: x509.load_der_x509_certificate($DATA)
+          - pattern: x509.CertificateBuilder()
+          - pattern: $BUILDER.sign($PRIVATE_KEY, $HASH_ALGORITHM)
+          - pattern: x509.load_pem_x509_csr($DATA)
+          - pattern: x509.Name.from_rfc4514_string($DN)
+          - pattern: $CERT.public_key()
+          - pattern: $CERT.verify_directly_issued_by($ISSUER)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: PKI infrastructure usage documented - verify certificate authorities and systems support hybrid or PQC certificates

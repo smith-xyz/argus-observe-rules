@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.js
+    line: 4
+    rule_id: javascript-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.js
+    line: 7
+    rule_id: javascript-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+
+no_findings:
+  - negative_cases.js

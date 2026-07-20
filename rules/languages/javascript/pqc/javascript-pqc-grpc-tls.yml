@@ -1,0 +1,15 @@
+rules:
+  - id: javascript-pqc-grpc-tls
+    message: gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: new grpc.Client($TARGET, grpc.credentials.createSsl($ROOTS, $KEY, $CERT))
+          - pattern: grpc.credentials.createInsecure()
+          - pattern: grpc.Server($OPTIONS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites

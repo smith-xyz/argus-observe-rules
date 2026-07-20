@@ -1,0 +1,19 @@
+rules:
+  - id: python-pqc-ssh-server
+    message: SSH server configuration detected - assess PQC SSH algorithm implementation capability
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: paramiko.Transport($SOCKET)
+          - pattern: |
+              $TRANSPORT = paramiko.Transport($SOCKET)
+              ...
+              $TRANSPORT.start_server(server=$SERVER)
+          - pattern: $TRANSPORT.add_server_key($KEY)
+          - pattern: paramiko.ServerInterface()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms

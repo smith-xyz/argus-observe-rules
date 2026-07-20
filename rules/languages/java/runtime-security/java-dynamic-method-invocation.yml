@@ -1,0 +1,14 @@
+rules:
+  - id: java-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $METHOD.invoke($OBJ, $ARGS)
+          - pattern: $CLASS.getMethod($NAME).invoke($OBJ, $ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: "Dynamic method calls can bypass authentication, authorization, and input validation"

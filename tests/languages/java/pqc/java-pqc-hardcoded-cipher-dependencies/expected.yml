@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.java
+    line: 8
+    rule_id: java-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.java
+    line: 9
+    rule_id: java-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.java
+    line: 10
+    rule_id: java-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+  - file: test_code.java
+    line: 11
+    rule_id: java-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+
+no_findings:
+  - negative_cases.java

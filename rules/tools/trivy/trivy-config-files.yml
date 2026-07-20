@@ -9,9 +9,9 @@ rules:
     paths:
       include:
         - trivy.yaml
-        - .trivy.yaml
+        - "**/.trivy.yaml"
         - trivy.yml
-        - .trivy.yml
+        - "**/.trivy.yml"
     metadata:
       category: vulnerability-scanning
       tool: trivy

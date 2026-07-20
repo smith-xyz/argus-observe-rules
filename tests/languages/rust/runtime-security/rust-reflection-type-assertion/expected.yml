@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.rs
+    line: 4
+    rule_id: rust-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+
+no_findings:
+  - negative_cases.rs

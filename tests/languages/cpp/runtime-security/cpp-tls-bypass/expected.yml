@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cpp
+    line: 7
+    rule_id: cpp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.cpp
+    line: 11
+    rule_id: cpp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+
+no_findings:
+  - negative_cases.cpp

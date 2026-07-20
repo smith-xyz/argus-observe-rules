@@ -1,0 +1,17 @@
+rules:
+  - id: java-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: System.getenv("FIPS_MODE")
+          - pattern: System.getenv("JAVA_FIPS")
+          - pattern: System.getenv("org.bouncycastle.fips.approved_only")
+          - pattern: SSLContext.getInstance("TLS")
+          - pattern: ManagedChannelBuilder.forAddress($HOST, $PORT)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments"

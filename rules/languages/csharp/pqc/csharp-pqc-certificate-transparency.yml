@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: $CERT.Extensions
+          - pattern: new X509Extension($OID, $RAW, $CRITICAL)
+          - pattern: $EXTENSION.RawData
+          - pattern: X509Certificate2.CreateFromPem($PEM, $KEY_PEM)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-295
+      impact: Certificate Transparency logs must support PQC certificates

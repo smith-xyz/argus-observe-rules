@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.java
+    line: 8
+    rule_id: java-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.java
+    line: 9
+    rule_id: java-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.java
+    line: 10
+    rule_id: java-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.java
+    line: 11
+    rule_id: java-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.java
+    line: 12
+    rule_id: java-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+
+no_findings:
+  - negative_cases.java

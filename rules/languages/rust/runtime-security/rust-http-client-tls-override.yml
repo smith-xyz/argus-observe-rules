@@ -1,0 +1,17 @@
+rules:
+  - id: rust-http-client-tls-override
+    message: HTTP client with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: reqwest::Client::builder()
+          - pattern: reqwest::ClientBuilder::new()
+          - pattern: hyper_util::client::legacy::Client::builder($...ARGS)
+          - pattern: ureq::AgentBuilder::new()
+          - pattern: isahc::HttpClient::builder()
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP clients may override platform TLS profiles

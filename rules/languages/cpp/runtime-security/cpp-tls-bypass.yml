@@ -1,0 +1,16 @@
+rules:
+  - id: cpp-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_verify($CTX, SSL_VERIFY_NONE, $CB)
+          - pattern: $CTX.set_verify_mode(boost::asio::ssl::verify_none)
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_SSL_VERIFYPEER, 0L)"
+          - pattern: grpc::CreateChannel($TARGET, grpc::InsecureChannelCredentials())
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

@@ -1,0 +1,15 @@
+rules:
+  - id: typescript-http-client-tls-override
+    message: HTTP client with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: new https.Agent($OPTIONS)
+          - pattern: "axios.create({ httpsAgent: $AGENT })"
+          - pattern: "fetch($URL, { agent: $AGENT })"
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP clients may override platform TLS profiles

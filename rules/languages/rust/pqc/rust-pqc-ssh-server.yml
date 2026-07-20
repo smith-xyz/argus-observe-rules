@@ -1,0 +1,16 @@
+rules:
+  - id: rust-pqc-ssh-server
+    message: SSH server configuration detected - assess PQC SSH algorithm implementation capability
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: russh::server::Config::default()
+          - pattern: russh::server::run($ADDR, $CONFIG, $HANDLER)
+          - pattern: $SERVER.run_on_address($ADDR, $CONFIG)
+          - pattern: ssh2::Session::channel_direct_tcpip($HOST, $PORT, $ORIG)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms

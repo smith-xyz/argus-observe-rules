@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.py
+    line: 2
+    rule_id: python-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+  - file: test_code.py
+    line: 3
+    rule_id: python-dynamic-method-invocation
+    message: "Dynamic method invocation patterns detected - landscape mapping"
+
+no_findings:
+  - negative_cases.py

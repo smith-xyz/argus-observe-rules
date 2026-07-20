@@ -1,0 +1,17 @@
+rules:
+  - id: typescript-pqc-oauth-jwt-saml
+    message: OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: new Issuer($ISSUER)
+          - pattern: $CLIENT.callbackParams($REQ)
+          - pattern: $CLIENT.callback($REDIRECT_URI, $PARAMS)
+          - pattern: new SamlAuth($OPTIONS)
+          - pattern: $SAML.getAuthorizeUrlAsync($REQ, $HOST)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Identity protocol usage documented - verify OAuth/SAML/OIDC libraries support hybrid or PQC signature algorithms

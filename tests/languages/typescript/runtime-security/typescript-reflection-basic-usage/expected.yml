@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.ts
+    line: 2
+    rule_id: typescript-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.ts
+    line: 3
+    rule_id: typescript-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.ts
+    line: 4
+    rule_id: typescript-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+
+no_findings:
+  - negative_cases.ts

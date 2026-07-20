@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.py
+    line: 6
+    rule_id: python-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.py
+    line: 14
+    rule_id: python-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+
+no_findings:
+  - negative_cases.py

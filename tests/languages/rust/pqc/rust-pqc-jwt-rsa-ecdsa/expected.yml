@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.rs
+    line: 4
+    rule_id: rust-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.rs
+    line: 9
+    rule_id: rust-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.rs
+    line: 14
+    rule_id: rust-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+
+no_findings:
+  - negative_cases.rs

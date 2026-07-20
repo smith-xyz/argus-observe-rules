@@ -1,0 +1,18 @@
+rules:
+  - id: rust-pqc-hardcoded-cipher-dependencies
+    message: Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $CONFIG.with_cipher_suites(&[$...SUITES])
+          - pattern: |
+              $CONFIG.with_protocol_versions(&[rustls::ProtocolVersion::TLSv1_2])
+          - pattern: "rustls::cipher_suite::TLS13_AES_256_GCM_SHA384"
+          - pattern: "rustls::cipher_suite::TLS13_CHACHA20_POLY1305_SHA256"
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled, especially in mixed-version environments

@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.c
+    line: 5
+    rule_id: c-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.c
+    line: 6
+    rule_id: c-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.c
+    line: 7
+    rule_id: c-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+
+no_findings:
+  - negative_cases.c

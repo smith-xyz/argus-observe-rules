@@ -1,0 +1,15 @@
+rules:
+  - id: csharp-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: $PROPERTY.SetValue($OBJ, $VALUE)
+          - pattern: $FIELD.SetValue($OBJ, $VALUE)
+          - pattern: $PROPERTY.SetValue($OBJ, $VALUE, $INDEX)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety

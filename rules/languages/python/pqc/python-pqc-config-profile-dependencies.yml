@@ -1,0 +1,17 @@
+rules:
+  - id: python-pqc-config-profile-dependencies
+    message: TLS/crypto configuration detected - verify PQC algorithm compatibility across system components
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: os.environ.get("OPENSSL_FIPS")
+          - pattern: os.environ.get("FIPS_MODE")
+          - pattern: os.environ.get("CRYPTOGRAPHY_OPENSSL_NO_LEGACY")
+          - pattern: ssl.create_default_context()
+          - pattern: grpc.secure_channel($TARGET, $CREDS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments

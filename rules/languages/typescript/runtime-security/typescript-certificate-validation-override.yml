@@ -1,0 +1,16 @@
+rules:
+  - id: typescript-certificate-validation-override
+    message: Certificate validation override detected - breaks trust chain
+    severity: ERROR
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: |
+              checkServerIdentity: () => undefined
+          - pattern: |
+              checkServerIdentity: function($HOST, $CERT) { return undefined; }
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Certificate validation override breaks trust chain and enables MITM attacks

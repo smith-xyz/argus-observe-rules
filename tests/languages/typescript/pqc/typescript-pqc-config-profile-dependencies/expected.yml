@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.ts
+    line: 7
+    rule_id: typescript-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+
+no_findings:
+  - negative_cases.ts

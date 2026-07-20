@@ -1,0 +1,21 @@
+rules:
+  - id: csharp-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: AddOpenIdConnect($OPTIONS)
+          - pattern: OpenIdConnectOptions
+          - pattern: $OPTIONS.Authority = $AUTHORITY
+          - pattern: $OPTIONS.ClientId = $CLIENT_ID
+          - pattern: AddSaml2($OPTIONS)
+          - pattern: new Saml2Configuration()
+          - pattern: $CONFIG.SigningCertificate = $CERT
+          - pattern: ConfidentialClientApplicationBuilder.Create($CLIENT_ID)
+          - pattern: $BUILDER.WithClientSecret($SECRET)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Identity protocol usage documented - verify OAuth/SAML/OIDC libraries support hybrid or PQC signature algorithms"

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.java
+    line: 8
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.java
+    line: 10
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.java
+    line: 15
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.java
+    line: 17
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.java
+    line: 22
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.java
+    line: 23
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.java
+    line: 24
+    rule_id: java-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+
+no_findings:
+  - negative_cases.java

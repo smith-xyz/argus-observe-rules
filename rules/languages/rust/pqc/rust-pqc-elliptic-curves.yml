@@ -1,0 +1,19 @@
+rules:
+  - id: rust-pqc-elliptic-curves
+    message: Elliptic curve cryptography identified - catalog for PQC migration assessment
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: p256::ecdsa::SigningKey::random($RNG)
+          - pattern: p384::ecdsa::SigningKey::random($RNG)
+          - pattern: k256::ecdsa::SigningKey::random($RNG)
+          - pattern: ed25519_dalek::SigningKey::generate($RNG)
+          - pattern: ed25519_dalek::SigningKey::from_bytes($KEY)
+          - pattern: $SIGNER.sign($DATA)
+          - pattern: $VERIFIER.verify($DATA, $SIG)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution

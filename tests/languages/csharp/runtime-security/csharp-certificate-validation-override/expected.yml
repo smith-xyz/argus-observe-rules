@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cs
+    line: 18
+    rule_id: csharp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.cs
+    line: 20
+    rule_id: csharp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.cs
+    line: 22
+    rule_id: csharp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+
+no_findings:
+  - negative_cases.cs

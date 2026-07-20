@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 2
+    rule_id: typescript-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+  - file: test_code.ts
+    line: 3
+    rule_id: typescript-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+  - file: test_code.ts
+    line: 4
+    rule_id: typescript-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+
+no_findings:
+  - negative_cases.ts

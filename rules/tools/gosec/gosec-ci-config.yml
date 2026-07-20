@@ -10,8 +10,8 @@ rules:
           - pattern: github.com/securego/gosec
     paths:
       include:
-        - .gitlab-ci.yml
-        - .circleci/config.yml
+        - "**/.gitlab-ci.yml"
+        - "**/.circleci/config.yml"
         - "**/.travis.yml"
         - "**/jenkins/**/*.yml"
         - "**/jenkins/**/*.yaml"

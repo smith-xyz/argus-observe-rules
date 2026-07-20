@@ -1,0 +1,17 @@
+rules:
+  - id: typescript-reflection-basic-usage
+    message: Basic reflection usage detected - mapping reflection landscape
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: Reflect.get($OBJ, $KEY)
+          - pattern: Reflect.has($OBJ, $KEY)
+          - pattern: Reflect.ownKeys($OBJ)
+          - pattern: typeof $OBJ
+          - pattern: Object.keys($OBJ)
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

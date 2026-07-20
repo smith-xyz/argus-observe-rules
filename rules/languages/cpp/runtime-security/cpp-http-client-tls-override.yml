@@ -1,0 +1,16 @@
+rules:
+  - id: cpp-http-client-tls-override
+    message: HTTP client with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: curl_easy_init()
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_CAINFO, $PATH)"
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_SSLCERT, $PATH)"
+          - pattern: boost::beast::ssl_stream<$STREAM>($STREAM, $CTX)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP clients may override platform TLS profiles

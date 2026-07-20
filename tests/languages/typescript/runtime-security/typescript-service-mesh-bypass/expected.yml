@@ -1,0 +1,8 @@
+findings:
+  - file: test_code.ts
+    line: 2
+    rule_id: typescript-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+
+no_findings:
+  - negative_cases.ts

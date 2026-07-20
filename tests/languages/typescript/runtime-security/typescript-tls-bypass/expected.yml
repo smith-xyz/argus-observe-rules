@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.ts
+    line: 7
+    rule_id: typescript-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+
+no_findings:
+  - negative_cases.ts

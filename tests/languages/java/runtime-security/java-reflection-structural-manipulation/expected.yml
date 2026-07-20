@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.java
+    line: 8
+    rule_id: java-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+  - file: test_code.java
+    line: 9
+    rule_id: java-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+  - file: test_code.java
+    line: 10
+    rule_id: java-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+
+no_findings:
+  - negative_cases.java

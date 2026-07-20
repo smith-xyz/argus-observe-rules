@@ -1,0 +1,18 @@
+rules:
+  - id: python-reflection-basic-usage
+    message: Basic reflection usage detected - mapping reflection landscape
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: type($OBJ)
+          - pattern: isinstance($OBJ, $CLS)
+          - pattern: getattr($OBJ, $NAME)
+          - pattern: hasattr($OBJ, $NAME)
+          - pattern: vars($OBJ)
+          - pattern: dir($OBJ)
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+
+no_findings:
+  - negative_cases.cs

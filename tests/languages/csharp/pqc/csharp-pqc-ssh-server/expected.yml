@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+  - file: test_code.cs
+    line: 19
+    rule_id: csharp-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+
+no_findings:
+  - negative_cases.cs

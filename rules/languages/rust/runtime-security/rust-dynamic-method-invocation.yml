@@ -1,0 +1,18 @@
+rules:
+  - id: rust-dynamic-method-invocation
+    message: Dynamic method invocation patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: $LIB.get::<$T>($SYMBOL)
+          - pattern: libloading::Library::new($PATH)
+          - pattern: |
+              $FN = $LIB.get($SYMBOL)
+              ...
+              $FN($...ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Dynamic method calls can bypass authentication, authorization, and input validation

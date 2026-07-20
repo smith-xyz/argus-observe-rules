@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.py
+    line: 4
+    rule_id: python-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.py
+    line: 7
+    rule_id: python-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.py
+    line: 10
+    rule_id: python-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+
+no_findings:
+  - negative_cases.py

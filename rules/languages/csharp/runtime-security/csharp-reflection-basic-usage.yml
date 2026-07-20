@@ -1,0 +1,18 @@
+rules:
+  - id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: typeof($TYPE)
+          - pattern: $OBJ.GetType()
+          - pattern: Type.GetType($NAME)
+          - pattern: $TYPE.GetProperty($NAME)
+          - pattern: $TYPE.GetField($NAME)
+          - pattern: $TYPE.GetMethod($NAME)
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

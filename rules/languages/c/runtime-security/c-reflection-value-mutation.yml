@@ -1,0 +1,14 @@
+rules:
+  - id: c-reflection-value-mutation
+    message: Reflection-based value mutation detected - landscape mapping
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: "*$PTR = $VALUE"
+          - pattern: memcpy($DST, &$VALUE, $SIZE)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Reflection-based value mutation bypasses type safety and obscures data flow

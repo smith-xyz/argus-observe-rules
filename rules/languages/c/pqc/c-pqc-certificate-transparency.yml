@@ -1,0 +1,15 @@
+rules:
+  - id: c-pqc-certificate-transparency
+    message: Certificate Transparency operations detected - ensure PQC certificate support
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: CTLOG_STORE_new()
+          - pattern: SCT_new_from_base64($B64, $LOG)
+          - pattern: CTLOG_STORE_load_default_file($STORE, $PATH)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-295
+      impact: Certificate Transparency logs must support PQC certificates

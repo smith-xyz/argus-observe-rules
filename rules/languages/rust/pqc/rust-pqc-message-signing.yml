@@ -1,0 +1,16 @@
+rules:
+  - id: rust-pqc-message-signing
+    message: Message signing operations detected - evaluate PQC signature algorithm support capability
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ring::signature::sign($ALGO, $PRIVATE_KEY, $MESSAGE)
+          - pattern: ring::signature::verify($PUBLIC_KEY, $MESSAGE, $SIGNATURE)
+          - pattern: rsa::RsaPrivateKey::sign($PADDING, $HASH, $DATA)
+          - pattern: $SIGNING_KEY.sign($DATA)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Message signing mechanisms documented - verify signing libraries support hybrid or PQC signature algorithms

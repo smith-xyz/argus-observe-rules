@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.c
+    line: 6
+    rule_id: c-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.c
+    line: 7
+    rule_id: c-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.c
+    line: 11
+    rule_id: c-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.c
+    line: 12
+    rule_id: c-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.c
+    line: 13
+    rule_id: c-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.c
+    line: 17
+    rule_id: c-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+
+no_findings:
+  - negative_cases.c

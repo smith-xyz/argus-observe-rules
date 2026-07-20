@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cpp
+    line: 6
+    rule_id: cpp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.cpp
+    line: 8
+    rule_id: cpp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.cpp
+    line: 9
+    rule_id: cpp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+
+no_findings:
+  - negative_cases.cpp

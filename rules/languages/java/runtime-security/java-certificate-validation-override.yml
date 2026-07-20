@@ -1,0 +1,15 @@
+rules:
+  - id: java-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+    severity: ERROR
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: HttpsURLConnection.setDefaultHostnameVerifier($VERIFIER)
+          - pattern: $CONNECTION.setHostnameVerifier($VERIFIER)
+          - pattern: $CLIENT.setSSLHostnameVerifier($VERIFIER)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: "Certificate validation override breaks trust chain and enables MITM attacks"

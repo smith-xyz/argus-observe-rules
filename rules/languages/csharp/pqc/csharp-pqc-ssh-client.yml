@@ -1,0 +1,19 @@
+rules:
+  - id: csharp-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: new SshClient($HOST, $PORT, $USERNAME, $PASSWORD)
+          - pattern: new SshClient($CONNECTION_INFO)
+          - pattern: new ConnectionInfo($HOST, $PORT, $USERNAME, $AUTH)
+          - pattern: new PrivateKeyFile($PATH)
+          - pattern: new PrivateKeyFile($PATH, $PASSPHRASE)
+          - pattern: $CLIENT.Connect()
+          - pattern: $CLIENT.HostKeyReceived += $HANDLER
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "SSH client configuration documented - verify SSH library supports hybrid or PQC key exchange and authentication algorithms"

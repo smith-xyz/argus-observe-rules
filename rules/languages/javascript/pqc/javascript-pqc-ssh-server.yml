@@ -1,0 +1,15 @@
+rules:
+  - id: javascript-pqc-ssh-server
+    message: SSH server configuration detected - assess PQC SSH algorithm implementation capability
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: new Server($CONFIG, $HANDLER)
+          - pattern: $SERVER.listen($PORT, $HOST, $CB)
+          - pattern: $SERVER.on('connection', $HANDLER)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms

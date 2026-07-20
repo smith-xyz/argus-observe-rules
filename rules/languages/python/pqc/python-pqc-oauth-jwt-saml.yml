@@ -1,0 +1,19 @@
+rules:
+  - id: python-pqc-oauth-jwt-saml
+    message: OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: OAuth2Session($CLIENT_ID, $CLIENT_SECRET)
+          - pattern: $SESSION.fetch_token($URL, code=$CODE)
+          - pattern: $SESSION.get($URL)
+          - pattern: OneLogin_Saml2_Auth($REQUEST, $SETTINGS)
+          - pattern: $AUTH.login()
+          - pattern: $AUTH.process_response()
+          - pattern: OAuth2Client($CLIENT_ID, $CLIENT_SECRET)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Identity protocol usage documented - verify OAuth/SAML/OIDC libraries support hybrid or PQC signature algorithms

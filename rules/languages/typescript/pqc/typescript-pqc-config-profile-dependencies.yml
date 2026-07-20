@@ -1,0 +1,16 @@
+rules:
+  - id: typescript-pqc-config-profile-dependencies
+    message: TLS/crypto configuration detected - verify PQC algorithm compatibility across system components
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: process.env.NODE_OPTIONS
+          - pattern: process.env.OPENSSL_CONF
+          - pattern: tls.createSecureContext($OPTIONS)
+          - pattern: new grpc.Client($TARGET, $CREDS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Configuration may impose crypto requirements that create hard dependencies

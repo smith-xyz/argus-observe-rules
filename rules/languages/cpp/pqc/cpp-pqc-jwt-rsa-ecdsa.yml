@@ -1,0 +1,20 @@
+rules:
+  - id: cpp-pqc-jwt-rsa-ecdsa
+    message: JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: '$TOKEN.set_algorithm("RS256")'
+          - pattern: '$TOKEN.set_algorithm("RS384")'
+          - pattern: '$TOKEN.set_algorithm("RS512")'
+          - pattern: '$TOKEN.set_algorithm("ES256")'
+          - pattern: '$TOKEN.set_algorithm("ES384")'
+          - pattern: '$TOKEN.set_algorithm("ES512")'
+          - pattern: jwt::algorithm::rs256($KEY)
+          - pattern: jwt::algorithm::es256($KEY)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT signature algorithms catalogued - verify JWT library supports hybrid or PQC signature methods

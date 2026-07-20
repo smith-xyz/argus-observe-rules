@@ -1,0 +1,15 @@
+rules:
+  - id: cpp-pqc-jwt-operations
+    message: JWT token operations detected - verify PQC signature algorithm support
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: jwt::create()
+          - pattern: jwt::decode($TOKEN)
+          - pattern: $TOKEN.sign($ALGORITHM)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT infrastructure may need updates for PQC signature algorithms

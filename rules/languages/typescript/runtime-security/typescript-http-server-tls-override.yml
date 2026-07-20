@@ -1,0 +1,14 @@
+rules:
+  - id: typescript-http-server-tls-override
+    message: HTTP server with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: https.createServer($OPTIONS, $HANDLER)
+          - pattern: tls.createServer($OPTIONS, $HANDLER)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP servers may override platform TLS profiles

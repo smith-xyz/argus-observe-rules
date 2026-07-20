@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+    severity: WARNING
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: $HANDLER.SslProtocols = SslProtocols.Tls12
+          - pattern: ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+          - pattern: |
+              $HANDLER.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls11;
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled, especially in mixed-version environments"

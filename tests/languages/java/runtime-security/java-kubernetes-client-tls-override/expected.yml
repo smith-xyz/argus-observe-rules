@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.java
+    line: 9
+    rule_id: java-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.java
+    line: 10
+    rule_id: java-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.java
+    line: 11
+    rule_id: java-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.java
+    line: 12
+    rule_id: java-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+
+no_findings:
+  - negative_cases.java

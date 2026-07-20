@@ -1,0 +1,15 @@
+rules:
+  - id: c-http-server-tls-override
+    message: HTTP server with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_use_certificate_file($CTX, $FILE, $TYPE)
+          - pattern: SSL_CTX_use_PrivateKey_file($CTX, $FILE, $TYPE)
+          - pattern: BIO_new_ssl($CTX, $ACCEPT)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP servers may override platform TLS profiles

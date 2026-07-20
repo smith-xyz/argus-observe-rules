@@ -1,0 +1,16 @@
+rules:
+  - id: cpp-pqc-oauth-jwt-saml
+    message: OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_XOAUTH2_BEARER, $TOKEN)"
+          - pattern: lasso_login_new($PROVIDER)
+          - pattern: lasso_login_init_auth($LOGIN)
+          - pattern: lasso_login_process_auth($LOGIN, $REQUEST)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Identity protocol usage documented - verify OAuth/SAML/OIDC libraries support hybrid or PQC signature algorithms

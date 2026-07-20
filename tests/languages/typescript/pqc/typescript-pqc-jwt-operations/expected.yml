@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.ts
+    line: 4
+    rule_id: typescript-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+
+no_findings:
+  - negative_cases.ts

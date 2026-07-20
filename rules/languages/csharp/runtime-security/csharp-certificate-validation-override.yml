@@ -1,0 +1,20 @@
+rules:
+  - id: csharp-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+    severity: ERROR
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => true;
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => { return true; };
+          - pattern: RemoteCertificateValidationCallback($VALIDATION)
+          - pattern: new RemoteCertificateValidationCallback($VALIDATION)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: "Certificate validation override breaks trust chain and enables MITM attacks"

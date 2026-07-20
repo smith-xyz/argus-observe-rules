@@ -1,0 +1,17 @@
+rules:
+  - id: csharp-pqc-ssh-server
+    message: "SSH server configuration detected - assess PQC SSH algorithm implementation capability"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: new SftpClient($HOST, $PORT, $USERNAME, $PASSWORD)
+          - pattern: new ScpClient($CONNECTION_INFO)
+          - pattern: new PrivateKeyAuthenticationMethod($USERNAME, $KEY_FILE)
+          - pattern: $SERVER.Start()
+          - pattern: $SERVER.Accept()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms"

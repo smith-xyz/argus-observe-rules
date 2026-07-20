@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.cs
+    line: 9
+    rule_id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+
+no_findings:
+  - negative_cases.cs

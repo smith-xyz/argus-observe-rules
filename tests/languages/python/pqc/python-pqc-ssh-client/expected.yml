@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.py
+    line: 4
+    rule_id: python-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.py
+    line: 4
+    rule_id: python-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.py
+    line: 5
+    rule_id: python-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+  - file: test_code.py
+    line: 10
+    rule_id: python-pqc-ssh-client
+    message: "SSH client configuration detected - evaluate PQC SSH algorithm support readiness"
+
+no_findings:
+  - negative_cases.py

@@ -1,0 +1,32 @@
+findings:
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.cs
+    line: 14
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+
+no_findings:
+  - negative_cases.cs

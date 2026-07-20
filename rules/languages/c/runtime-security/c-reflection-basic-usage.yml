@@ -1,0 +1,15 @@
+rules:
+  - id: c-reflection-basic-usage
+    message: Basic reflection usage detected - mapping reflection landscape
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: dlopen($LIB, $FLAGS)
+          - pattern: dlsym($HANDLE, $SYM)
+          - pattern: dlclose($HANDLE)
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

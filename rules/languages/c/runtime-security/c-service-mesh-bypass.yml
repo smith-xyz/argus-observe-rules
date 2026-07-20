@@ -1,0 +1,20 @@
+rules:
+  - id: c-service-mesh-bypass
+    message: Service mesh TLS bypass detected - communication outside mesh security
+    severity: ERROR
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: |
+              sprintf($URL, "http://%s:%d", $HOST, $PORT)
+              ...
+              curl_easy_perform($CURL)
+          - pattern: |
+              snprintf($URL, $SIZE, "http://%s", $ENDPOINT)
+              ...
+              curl_easy_perform($CURL)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Service mesh bypass eliminates mTLS protection and security observability

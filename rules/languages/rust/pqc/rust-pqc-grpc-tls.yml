@@ -1,0 +1,19 @@
+rules:
+  - id: rust-pqc-grpc-tls
+    message: gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: tonic::transport::Channel::from_static($URL)
+          - pattern: tonic::transport::Channel::from_shared($URL)
+          - pattern: ClientTlsConfig::new()
+          - pattern: ServerTlsConfig::new()
+          - pattern: $CHANNEL.tls_config($CONFIG)
+          - pattern: grpcio::ChannelBuilder::new($ENV)
+          - pattern: $BUILDER.secure_channel($TARGET, $CREDS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites

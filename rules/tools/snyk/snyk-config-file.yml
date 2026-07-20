@@ -8,7 +8,7 @@ rules:
       - pattern: $...CONTENT
     paths:
       include:
-        - .snyk
+        - "**/.snyk"
     metadata:
       category: vulnerability-scanning
       tool: snyk

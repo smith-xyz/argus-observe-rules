@@ -1,0 +1,19 @@
+rules:
+  - id: c-pqc-ssh-server
+    message: SSH server configuration detected - assess PQC SSH algorithm implementation capability
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: ssh_bind_new()
+          - pattern: |
+              $BIND = ssh_bind_new()
+              ...
+              ssh_bind_listen($BIND, $PORT)
+          - pattern: ssh_bind_accept($BIND, $SESSION)
+          - pattern: ssh_bind_options_set($BIND, SSH_BIND_OPTIONS_BINDPORT, $PORT)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH server configuration catalogued - verify SSH server supports hybrid host keys and PQC algorithms

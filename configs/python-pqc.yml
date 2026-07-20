@@ -1,0 +1,228 @@
+rules:
+- id: python-pqc-certificate-transparency
+  message: Certificate Transparency operations detected - ensure PQC certificate support
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: log_client.LogClient($URL, $FORMAT, $PUBKEY)
+    - pattern: $CLIENT.get_sth()
+    - pattern: $CLIENT.get_entries($START, $END)
+    - pattern: $CLIENT.add_chain($CHAIN)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-295
+    impact: Certificate Transparency logs must support PQC certificates
+- id: python-pqc-grpc-tls
+  message: gRPC TLS configuration detected - evaluate hybrid TLS and certificate support
+    capability
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: grpc.secure_channel($TARGET, $CREDS)
+    - pattern: grpc.ssl_channel_credentials($ROOT_CERTS, $PRIVATE_KEY, $CERT_CHAIN)
+    - pattern: grpc.insecure_channel($TARGET)
+    - pattern: grpc.server($THREAD_POOL)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: gRPC TLS configuration documented - verify gRPC supports hybrid certificates
+      and PQC cipher suites
+- id: python-pqc-elliptic-curves
+  message: Elliptic curve cryptography identified - catalog for PQC migration assessment
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: ec.generate_private_key($CURVE, $BACKEND)
+    - pattern: ec.SECP256R1()
+    - pattern: ec.SECP384R1()
+    - pattern: ec.SECP521R1()
+    - pattern: ec.SECP256K1()
+    - pattern: ed25519.Ed25519PrivateKey.generate()
+    - pattern: ed25519.Ed25519PrivateKey.from_private_bytes($KEY)
+    - pattern: $PRIVATE.sign($DATA)
+    - pattern: $PUBLIC.verify($SIG, $DATA)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: Elliptic curve usage documented for PQC transition planning - verify system
+      supports algorithm substitution
+- id: python-pqc-ssh-client
+  message: SSH client configuration detected - evaluate PQC SSH algorithm support
+    readiness
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: paramiko.SSHClient()
+    - pattern: |
+        $CLIENT = paramiko.SSHClient()
+        ...
+        $CLIENT.connect($HOSTNAME, ...)
+    - pattern: $CLIENT.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    - pattern: $CLIENT.set_missing_host_key_policy(paramiko.RejectPolicy())
+    - pattern: paramiko.RSAKey.from_private_key_file($PATH)
+    - pattern: paramiko.ECDSAKey.from_private_key_file($PATH)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: SSH client configuration documented - verify SSH library supports hybrid
+      or PQC key exchange and authentication algorithms
+- id: python-pqc-jwt-rsa-ecdsa
+  message: JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm
+    support readiness
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="RS256")
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="RS384")
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="RS512")
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="ES256")
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="ES384")
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="ES512")
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm="PS256")
+    - pattern: jwt.decode($TOKEN, $KEY, algorithms=["RS256"])
+    - pattern: jwt.decode($TOKEN, $KEY, algorithms=["ES256"])
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: JWT signature algorithms catalogued - verify JWT library supports hybrid
+      or PQC signature methods
+- id: python-pqc-oauth-jwt-saml
+  message: OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature
+    readiness
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: OAuth2Session($CLIENT_ID, $CLIENT_SECRET)
+    - pattern: $SESSION.fetch_token($URL, code=$CODE)
+    - pattern: $SESSION.get($URL)
+    - pattern: OneLogin_Saml2_Auth($REQUEST, $SETTINGS)
+    - pattern: $AUTH.login()
+    - pattern: $AUTH.process_response()
+    - pattern: OAuth2Client($CLIENT_ID, $CLIENT_SECRET)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: Identity protocol usage documented - verify OAuth/SAML/OIDC libraries
+      support hybrid or PQC signature algorithms
+- id: python-pqc-hardcoded-cipher-dependencies
+  message: Hardcoded cipher suite or crypto algorithm configuration detected - may
+    break when PQC algorithms are introduced
+  severity: WARNING
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: |
+        $CONTEXT.set_ciphers($CIPHERS)
+    - pattern: |
+        $CONTEXT.minimum_version = ssl.TLSVersion.TLSv1_2
+    - pattern: |
+        $CONTEXT.maximum_version = ssl.TLSVersion.TLSv1_2
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: Hardcoded crypto configurations create dependencies that may break when
+      PQC algorithms are enabled, especially in mixed-version environments
+- id: python-pqc-ssh-server
+  message: SSH server configuration detected - assess PQC SSH algorithm implementation
+    capability
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: paramiko.Transport($SOCKET)
+    - pattern: |
+        $TRANSPORT = paramiko.Transport($SOCKET)
+        ...
+        $TRANSPORT.start_server(server=$SERVER)
+    - pattern: $TRANSPORT.add_server_key($KEY)
+    - pattern: paramiko.ServerInterface()
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: SSH server configuration catalogued - verify SSH server supports hybrid
+      host keys and PQC algorithms
+- id: python-pqc-message-signing
+  message: Message signing operations detected - evaluate PQC signature algorithm
+    support capability
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: $PRIVATE.sign($DATA, padding.$PAD(), $HASH)
+    - pattern: $PRIVATE.sign($DATA, $PAD, $HASH)
+    - pattern: jws.JWS($PAYLOAD, $HEADER)
+    - pattern: $JWS.add_signature($KEY, $HEADER)
+    - pattern: jws.JWS.verify($TOKEN)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: Message signing mechanisms documented - verify signing libraries support
+      hybrid or PQC signature algorithms
+- id: python-pqc-pki-infrastructure
+  message: PKI and X.509 certificate operations detected - evaluate hybrid certificate
+    infrastructure readiness
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: x509.load_pem_x509_certificate($DATA)
+    - pattern: x509.load_der_x509_certificate($DATA)
+    - pattern: x509.CertificateBuilder()
+    - pattern: $BUILDER.sign($PRIVATE_KEY, $HASH_ALGORITHM)
+    - pattern: x509.load_pem_x509_csr($DATA)
+    - pattern: x509.Name.from_rfc4514_string($DN)
+    - pattern: $CERT.public_key()
+    - pattern: $CERT.verify_directly_issued_by($ISSUER)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: PKI infrastructure usage documented - verify certificate authorities and
+      systems support hybrid or PQC certificates
+- id: python-pqc-jwt-operations
+  message: JWT token operations detected - verify PQC signature algorithm support
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: jwt.encode($PAYLOAD, $KEY, algorithm=$ALG)
+    - pattern: jwt.decode($TOKEN, $KEY, algorithms=$ALGS)
+    - pattern: jwt.decode($TOKEN, $KEY, algorithms=[$ALG])
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: JWT infrastructure may need updates for PQC signature algorithms
+- id: python-pqc-config-profile-dependencies
+  message: TLS/crypto configuration detected - verify PQC algorithm compatibility
+    across system components
+  severity: INFO
+  languages:
+  - python
+  patterns:
+  - pattern-either:
+    - pattern: os.environ.get("OPENSSL_FIPS")
+    - pattern: os.environ.get("FIPS_MODE")
+    - pattern: os.environ.get("CRYPTOGRAPHY_OPENSSL_NO_LEGACY")
+    - pattern: ssl.create_default_context()
+    - pattern: grpc.secure_channel($TARGET, $CREDS)
+  metadata:
+    category: pqc_readiness
+    cwe: CWE-327
+    impact: Configuration may impose crypto requirements that create hard dependencies,
+      causing system failures when PQC algorithms are enabled in mixed-version environments

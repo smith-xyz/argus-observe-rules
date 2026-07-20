@@ -15,8 +15,8 @@ rules:
     paths:
       include:
         - renovate.json
-        - .renovaterc
-        - .renovaterc.json
+        - "**/.renovaterc"
+        - "**/.renovaterc.json"
         - "**/.github/renovate.json"
     metadata:
       category: dependency-management

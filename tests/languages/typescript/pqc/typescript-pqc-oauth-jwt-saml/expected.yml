@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 7
+    rule_id: typescript-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.ts
+    line: 8
+    rule_id: typescript-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.ts
+    line: 13
+    rule_id: typescript-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+
+no_findings:
+  - negative_cases.ts

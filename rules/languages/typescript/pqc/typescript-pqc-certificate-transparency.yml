@@ -1,0 +1,13 @@
+rules:
+  - id: typescript-pqc-certificate-transparency
+    message: Certificate Transparency operations detected - ensure PQC certificate support
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: $CERT.signedCertificateTimestampList
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-295
+      impact: Certificate Transparency logs must support PQC certificates

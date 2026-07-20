@@ -1,0 +1,16 @@
+rules:
+  - id: python-http-client-tls-override
+    message: HTTP client with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: requests.Session()
+          - pattern: httpx.Client($...ARGS)
+          - pattern: aiohttp.ClientSession(connector=$CONNECTOR)
+          - pattern: urllib3.PoolManager(cert_reqs=$REQ)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP clients may override platform TLS profiles

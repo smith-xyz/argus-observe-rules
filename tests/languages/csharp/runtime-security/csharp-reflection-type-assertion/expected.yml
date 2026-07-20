@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+
+no_findings:
+  - negative_cases.cs

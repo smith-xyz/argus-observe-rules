@@ -1,0 +1,15 @@
+rules:
+  - id: cpp-reflection-type-assertion
+    message: Reflection-based type assertion detected - potential type confusion risk
+    severity: INFO
+    languages:
+      - cpp
+    patterns:
+      - pattern-either:
+          - pattern: dynamic_cast<$TYPE>($EXPR)
+          - pattern: static_cast<$TYPE>($EXPR)
+          - pattern: reinterpret_cast<$TYPE>($EXPR)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to type confusion vulnerabilities

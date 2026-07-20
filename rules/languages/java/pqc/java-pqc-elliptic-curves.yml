@@ -1,0 +1,20 @@
+rules:
+  - id: java-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: KeyPairGenerator.getInstance("EC")
+          - pattern: new ECGenParameterSpec("secp256r1")
+          - pattern: new ECGenParameterSpec("secp384r1")
+          - pattern: new ECGenParameterSpec("secp521r1")
+          - pattern: KeyPairGenerator.getInstance("Ed25519")
+          - pattern: KeyPairGenerator.getInstance("Ed448")
+          - pattern: $SIGNATURE.update($DATA)
+          - pattern: $SIGNATURE.sign()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution"

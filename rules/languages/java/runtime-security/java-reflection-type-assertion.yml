@@ -1,0 +1,15 @@
+rules:
+  - id: java-reflection-type-assertion
+    message: "Reflection-based type assertion detected - potential type confusion risk"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $OBJ instanceof $TYPE
+          - pattern: $CLASS.isAssignableFrom($OTHER)
+          - pattern: $CLASS.isInstance($OBJ)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to type confusion vulnerabilities

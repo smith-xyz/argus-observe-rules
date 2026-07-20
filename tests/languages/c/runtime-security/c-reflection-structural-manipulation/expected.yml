@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.c
+    line: 6
+    rule_id: c-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+  - file: test_code.c
+    line: 7
+    rule_id: c-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+
+no_findings:
+  - negative_cases.c

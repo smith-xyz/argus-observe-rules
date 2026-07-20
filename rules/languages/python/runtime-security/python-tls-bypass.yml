@@ -1,0 +1,20 @@
+rules:
+  - id: python-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: $CONTEXT.check_hostname = False
+          - pattern: $CONTEXT.verify_mode = ssl.CERT_NONE
+          - pattern: ssl._create_unverified_context()
+          - pattern: requests.get($URL, verify=False)
+          - pattern: requests.post($URL, verify=False, ...)
+          - pattern: requests.Session().get($URL, verify=False)
+          - pattern: httpx.get($URL, verify=False)
+          - pattern: aiohttp.TCPConnector(ssl=False)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

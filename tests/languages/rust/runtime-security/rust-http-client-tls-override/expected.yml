@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.rs
+    line: 5
+    rule_id: rust-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+  - file: test_code.rs
+    line: 6
+    rule_id: rust-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+  - file: test_code.rs
+    line: 7
+    rule_id: rust-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+  - file: test_code.rs
+    line: 8
+    rule_id: rust-http-client-tls-override
+    message: "HTTP client with custom TLS config detected - may override platform TLS profile settings"
+
+no_findings:
+  - negative_cases.rs

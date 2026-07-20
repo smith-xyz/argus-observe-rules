@@ -1,0 +1,16 @@
+rules:
+  - id: javascript-unsafe-pointer-operations
+    message: Unsafe memory operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: new ArrayBuffer($SIZE)
+          - pattern: new SharedArrayBuffer($SIZE)
+          - pattern: new DataView($BUFFER)
+          - pattern: new Uint8Array($BUFFER)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Low-level buffer operations require careful bounds checking

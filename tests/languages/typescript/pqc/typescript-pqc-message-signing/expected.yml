@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+  - file: test_code.ts
+    line: 9
+    rule_id: typescript-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+
+no_findings:
+  - negative_cases.ts

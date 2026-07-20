@@ -1,0 +1,16 @@
+rules:
+  - id: python-pqc-grpc-tls
+    message: gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: grpc.secure_channel($TARGET, $CREDS)
+          - pattern: grpc.ssl_channel_credentials($ROOT_CERTS, $PRIVATE_KEY, $CERT_CHAIN)
+          - pattern: grpc.insecure_channel($TARGET)
+          - pattern: grpc.server($THREAD_POOL)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites

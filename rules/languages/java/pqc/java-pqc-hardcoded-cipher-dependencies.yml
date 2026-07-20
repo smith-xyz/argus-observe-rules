@@ -1,0 +1,16 @@
+rules:
+  - id: java-pqc-hardcoded-cipher-dependencies
+    message: "Hardcoded cipher suite or crypto algorithm configuration detected - may break when PQC algorithms are introduced"
+    severity: WARNING
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $SOCKET.setEnabledCipherSuites($SUITES)
+          - pattern: $PARAMS.setCipherSuites($SUITES)
+          - pattern: $SOCKET.setEnabledProtocols($PROTOCOLS)
+          - pattern: System.setProperty("jdk.tls.client.protocols", "TLSv1.2")
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Hardcoded crypto configurations create dependencies that may break when PQC algorithms are enabled, especially in mixed-version environments"

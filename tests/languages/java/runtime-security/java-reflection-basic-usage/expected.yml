@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.java
+    line: 5
+    rule_id: java-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.java
+    line: 6
+    rule_id: java-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.java
+    line: 7
+    rule_id: java-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.java
+    line: 8
+    rule_id: java-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+  - file: test_code.java
+    line: 9
+    rule_id: java-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+
+no_findings:
+  - negative_cases.java

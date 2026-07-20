@@ -1,0 +1,16 @@
+rules:
+  - id: python-kubernetes-client-tls-override
+    message: Kubernetes client TLS configuration override detected
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: config.load_kube_config()
+          - pattern: client.Configuration()
+          - pattern: $CONFIG.verify_ssl = False
+          - pattern: $CONFIG.assert_hostname = False
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Kubernetes client TLS override can bypass cluster security policies

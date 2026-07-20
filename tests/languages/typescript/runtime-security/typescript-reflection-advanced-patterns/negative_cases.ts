@@ -1,0 +1,3 @@
+function staticName() {
+  return 'json';
+}

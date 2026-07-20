@@ -1,0 +1,17 @@
+rules:
+  - id: rust-pqc-config-profile-dependencies
+    message: TLS/crypto configuration detected - verify PQC algorithm compatibility across system components
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: std::env::var("OPENSSL_FIPS")
+          - pattern: std::env::var("RUSTLS_FIPS")
+          - pattern: std::env::var("FIPS_MODE")
+          - pattern: rustls::ClientConfig::builder()
+          - pattern: tonic::transport::Channel::from_static($URL)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments

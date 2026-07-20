@@ -1,0 +1,14 @@
+rules:
+  - id: c-reflection-type-assertion
+    message: Reflection-based type assertion detected - potential type confusion risk
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: ($TYPE *)$EXPR
+          - pattern: (const $TYPE *)$EXPR
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Type assertions from reflection can lead to type confusion vulnerabilities

@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.cpp
+    line: 5
+    rule_id: cpp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+  - file: test_code.cpp
+    line: 10
+    rule_id: cpp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+
+no_findings:
+  - negative_cases.cpp

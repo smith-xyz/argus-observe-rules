@@ -1,0 +1,16 @@
+rules:
+  - id: csharp-http-server-tls-override
+    message: "HTTP server with custom TLS config detected - may override platform TLS profile settings"
+    severity: WARNING
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: new SslStream($STREAM, $LEAVE_OPEN)
+          - pattern: new SslStream($STREAM, false, $VALIDATION_CALLBACK)
+          - pattern: $BUILDER.UseHttps($CERT)
+          - pattern: $BUILDER.UseKestrel($OPTIONS)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: "Custom TLS config in HTTP servers may override platform TLS profiles"

@@ -1,0 +1,21 @@
+rules:
+  - id: rust-pqc-ssh-client
+    message: SSH client configuration detected - evaluate PQC SSH algorithm support readiness
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: ssh2::Session::new()
+          - pattern: |
+              $SESSION = ssh2::Session::new()
+              ...
+              $SESSION.set_tcp_stream($TCP)
+          - pattern: $SESSION.handshake()
+          - pattern: $SESSION.userauth_password($USER, $PASS)
+          - pattern: $SESSION.userauth_pubkey_file($USER, $KEY, $PASS)
+          - pattern: ssh2::Session::set_method_pref($METHOD, $PREFS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH client configuration documented - verify SSH library supports hybrid or PQC key exchange and authentication algorithms

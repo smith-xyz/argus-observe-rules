@@ -1,0 +1,20 @@
+rules:
+  - id: csharp-pqc-elliptic-curves
+    message: "Elliptic curve cryptography identified - catalog for PQC migration assessment"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: ECDsa.Create($CURVE)
+          - pattern: ECDsa.Create()
+          - pattern: ECDiffieHellman.Create($CURVE)
+          - pattern: ECCurve.NamedCurves.nistP256
+          - pattern: ECCurve.NamedCurves.nistP384
+          - pattern: ECCurve.NamedCurves.nistP521
+          - pattern: $ECDSA.SignData($DATA, $HASH)
+          - pattern: $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution"

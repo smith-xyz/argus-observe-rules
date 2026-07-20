@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.c
+    line: 4
+    rule_id: c-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.c
+    line: 8
+    rule_id: c-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+  - file: test_code.c
+    line: 12
+    rule_id: c-pqc-jwt-operations
+    message: "JWT token operations detected - verify PQC signature algorithm support"
+
+no_findings:
+  - negative_cases.c

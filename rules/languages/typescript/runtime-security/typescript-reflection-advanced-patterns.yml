@@ -1,0 +1,15 @@
+rules:
+  - id: typescript-reflection-advanced-patterns
+    message: Advanced reflection patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: eval($EXPR)
+          - pattern: new Function($ARGS, $BODY)
+          - pattern: import($MODULE)
+    metadata:
+      category: reflection
+      cwe: CWE-20
+      impact: Can bypass type safety and create security vulnerabilities

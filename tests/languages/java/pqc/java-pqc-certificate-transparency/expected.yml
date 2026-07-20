@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.java
+    line: 8
+    rule_id: java-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.java
+    line: 12
+    rule_id: java-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.java
+    line: 13
+    rule_id: java-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.java
+    line: 14
+    rule_id: java-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+  - file: test_code.java
+    line: 15
+    rule_id: java-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+
+no_findings:
+  - negative_cases.java

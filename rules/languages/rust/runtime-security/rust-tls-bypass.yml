@@ -1,0 +1,19 @@
+rules:
+  - id: rust-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: $BUILDER.danger_accept_invalid_certs(true)
+          - pattern: native_tls::TlsConnector::builder().danger_accept_invalid_certs(true)
+          - pattern: native_tls::TlsAcceptor::builder().danger_accept_invalid_certs(true)
+          - pattern: |
+              reqwest::Client::builder()
+                .danger_accept_invalid_certs(true)
+          - pattern: rustls::ClientConfig::builder().with_safe_defaults().dangerous()
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

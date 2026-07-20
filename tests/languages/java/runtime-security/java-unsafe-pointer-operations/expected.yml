@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.java
+    line: 8
+    rule_id: java-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+  - file: test_code.java
+    line: 9
+    rule_id: java-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+  - file: test_code.java
+    line: 11
+    rule_id: java-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+  - file: test_code.java
+    line: 12
+    rule_id: java-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+
+no_findings:
+  - negative_cases.java

@@ -1,0 +1,17 @@
+rules:
+  - id: rust-unsafe-pointer-operations
+    message: Unsafe memory operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: std::mem::transmute($EXPR)
+          - pattern: std::ptr::read($PTR)
+          - pattern: std::ptr::write($PTR, $VALUE)
+          - pattern: std::slice::from_raw_parts($PTR, $LEN)
+          - pattern: std::slice::from_raw_parts_mut($PTR, $LEN)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe memory operations can lead to memory corruption

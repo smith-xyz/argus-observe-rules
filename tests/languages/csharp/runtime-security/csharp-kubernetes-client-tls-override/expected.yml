@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.cs
+    line: 10
+    rule_id: csharp-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.cs
+    line: 11
+    rule_id: csharp-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.cs
+    line: 12
+    rule_id: csharp-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-kubernetes-client-tls-override
+    message: "Kubernetes client TLS configuration override detected"
+
+no_findings:
+  - negative_cases.cs

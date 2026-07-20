@@ -1,0 +1,17 @@
+rules:
+  - id: rust-kubernetes-client-tls-override
+    message: Kubernetes client TLS configuration override detected
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: kube::Config::infer()
+          - pattern: kube::Client::try_default()
+          - pattern: $CONFIG.accept_invalid_certs = true
+          - pattern: $CONFIG.insecure = true
+          - pattern: kube::config::Kubeconfig::read()
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Kubernetes client TLS override can bypass cluster security policies

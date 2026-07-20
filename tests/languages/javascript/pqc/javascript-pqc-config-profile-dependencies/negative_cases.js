@@ -1,0 +1,3 @@
+function appName() {
+  return 'myapp';
+}

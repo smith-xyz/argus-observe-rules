@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.java
+    line: 11
+    rule_id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.java
+    line: 11
+    rule_id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.java
+    line: 17
+    rule_id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.java
+    line: 17
+    rule_id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.java
+    line: 23
+    rule_id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.java
+    line: 27
+    rule_id: java-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+
+no_findings:
+  - negative_cases.java

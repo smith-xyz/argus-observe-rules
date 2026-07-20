@@ -1,0 +1,15 @@
+rules:
+  - id: python-http-server-tls-override
+    message: HTTP server with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: ssl.wrap_socket($SOCK, ...)
+          - pattern: http.server.HTTPServer($ADDR, $HANDLER)
+          - pattern: uvicorn.run($APP, ssl_keyfile=$KEY, ssl_certfile=$CERT)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP servers may override platform TLS profiles

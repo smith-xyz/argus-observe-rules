@@ -1,0 +1,16 @@
+rules:
+  - id: rust-http-server-tls-override
+    message: HTTP server with custom TLS config detected - may override platform TLS profile settings
+    severity: WARNING
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: axum_server::bind_rustls($ADDR, $CONFIG)
+          - pattern: axum_server::bind_rustls_acme($ADDR, $CONFIG)
+          - pattern: warp::serve($FILTER).tls()
+          - pattern: hyper_rustls::HttpsConnectorBuilder::new()
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-757
+      impact: Custom TLS config in HTTP servers may override platform TLS profiles

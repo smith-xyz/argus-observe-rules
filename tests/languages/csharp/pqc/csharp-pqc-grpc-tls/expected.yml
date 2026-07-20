@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.cs
+    line: 13
+    rule_id: csharp-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.cs
+    line: 15
+    rule_id: csharp-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+  - file: test_code.cs
+    line: 16
+    rule_id: csharp-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+
+no_findings:
+  - negative_cases.cs

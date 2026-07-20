@@ -1,0 +1,17 @@
+rules:
+  - id: csharp-pqc-config-profile-dependencies
+    message: "TLS/crypto configuration detected - verify PQC algorithm compatibility across system components"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: Environment.GetEnvironmentVariable("COMPlus_EnableDiagnostics")
+          - pattern: Environment.GetEnvironmentVariable("DOTNET_SYSTEM_NET_HTTP_USESOCKETSHTTPHANDLER")
+          - pattern: CryptoConfig.AllowOnlyFipsAlgorithms
+          - pattern: new HttpClientHandler()
+          - pattern: GrpcChannel.ForAddress($ADDRESS, $OPTIONS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Configuration may impose crypto requirements that create hard dependencies, causing system failures when PQC algorithms are enabled in mixed-version environments"

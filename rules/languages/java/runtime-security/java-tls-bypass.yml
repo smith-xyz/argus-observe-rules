@@ -1,0 +1,18 @@
+rules:
+  - id: java-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+    severity: ERROR
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: HttpsURLConnection.setDefaultHostnameVerifier($VERIFIER)
+          - pattern: SSLContext.init($KEY, $TRUST_ALL, $RANDOM)
+          - pattern: new OkHttpClient.Builder().hostnameVerifier($VERIFIER)
+          - pattern: $BUILDER.hostnameVerifier($VERIFIER)
+          - pattern: TrustAllStrategy
+          - pattern: NoopHostnameVerifier.INSTANCE
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

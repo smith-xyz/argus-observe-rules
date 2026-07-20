@@ -1,0 +1,20 @@
+rules:
+  - id: csharp-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+    severity: ERROR
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $URL = "http://" + $SERVICE_IP + ":" + $PORT
+              ...
+              $CLIENT.GetAsync($URL)
+          - pattern: |
+              $URL = "http://" + $ENDPOINT
+              ...
+              $CLIENT.GetStringAsync($URL)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: "Service mesh bypass eliminates mTLS protection and security observability"

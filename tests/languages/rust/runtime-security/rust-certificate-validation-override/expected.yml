@@ -1,0 +1,16 @@
+findings:
+  - file: test_code.rs
+    line: 4
+    rule_id: rust-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.rs
+    line: 4
+    rule_id: rust-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+  - file: test_code.rs
+    line: 12
+    rule_id: rust-certificate-validation-override
+    message: "Certificate validation override detected - breaks trust chain"
+
+no_findings:
+  - negative_cases.rs

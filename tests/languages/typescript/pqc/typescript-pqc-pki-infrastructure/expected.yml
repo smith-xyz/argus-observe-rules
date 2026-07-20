@@ -1,0 +1,20 @@
+findings:
+  - file: test_code.ts
+    line: 5
+    rule_id: typescript-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.ts
+    line: 6
+    rule_id: typescript-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.ts
+    line: 7
+    rule_id: typescript-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+  - file: test_code.ts
+    line: 12
+    rule_id: typescript-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+
+no_findings:
+  - negative_cases.ts

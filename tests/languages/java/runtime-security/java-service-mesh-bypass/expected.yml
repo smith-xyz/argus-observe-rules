@@ -1,0 +1,24 @@
+findings:
+  - file: test_code.java
+    line: 11
+    rule_id: java-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+  - file: test_code.java
+    line: 11
+    rule_id: java-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+  - file: test_code.java
+    line: 14
+    rule_id: java-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+  - file: test_code.java
+    line: 18
+    rule_id: java-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+  - file: test_code.java
+    line: 20
+    rule_id: java-service-mesh-bypass
+    message: "Service mesh TLS bypass detected - communication outside mesh security"
+
+no_findings:
+  - negative_cases.java

@@ -1,0 +1,15 @@
+rules:
+  - id: c-pqc-grpc-tls
+    message: gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: grpc_ssl_credentials_create($ROOT, $KEY, $CERT, $FLAGS)
+          - pattern: grpc_insecure_channel_create($TARGET, $ARGS, $CREDS)
+          - pattern: grpc_server_credentials_create($CREDS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites

@@ -1,0 +1,16 @@
+rules:
+  - id: python-unsafe-pointer-operations
+    message: Unsafe memory operations detected - landscape mapping
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: ctypes.cast($OBJ, $TYPE)
+          - pattern: ctypes.POINTER($TYPE)
+          - pattern: ctypes.memmove($DEST, $SRC, $COUNT)
+          - pattern: ctypes.c_void_p($VALUE)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe memory operations can lead to memory corruption

@@ -1,0 +1,20 @@
+rules:
+  - id: python-service-mesh-bypass
+    message: Service mesh TLS bypass detected - communication outside mesh security
+    severity: ERROR
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $URL = "http://" + $SERVICE_IP + ":" + $PORT
+              ...
+              requests.get($URL)
+          - pattern: |
+              $URL = "http://" + $ENDPOINT
+              ...
+              requests.get($URL)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Service mesh bypass eliminates mTLS protection and security observability

@@ -1,0 +1,28 @@
+findings:
+  - file: test_code.java
+    line: 17
+    rule_id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.java
+    line: 18
+    rule_id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.java
+    line: 22
+    rule_id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.java
+    line: 26
+    rule_id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.java
+    line: 28
+    rule_id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+  - file: test_code.java
+    line: 30
+    rule_id: java-pqc-oauth-jwt-saml
+    message: "OAuth/SAML/OIDC operations detected - assess identity protocol PQC signature readiness"
+
+no_findings:
+  - negative_cases.java

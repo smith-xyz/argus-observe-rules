@@ -1,0 +1,8 @@
+findings:
+  - file: test_code.js
+    line: 5
+    rule_id: javascript-pqc-certificate-transparency
+    message: "Certificate Transparency operations detected - ensure PQC certificate support"
+
+no_findings:
+  - negative_cases.js

@@ -1,0 +1,18 @@
+rules:
+  - id: csharp-pqc-grpc-tls
+    message: "gRPC TLS configuration detected - evaluate hybrid TLS and certificate support capability"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: GrpcChannel.ForAddress($ADDRESS, $OPTIONS)
+          - pattern: new GrpcChannelOptions()
+          - pattern: ChannelCredentials.SecureSsl
+          - pattern: ChannelCredentials.Insecure
+          - pattern: SslClientAuthenticationOptions
+          - pattern: $OPTIONS.Credentials = $CREDS
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "gRPC TLS configuration documented - verify gRPC supports hybrid certificates and PQC cipher suites"

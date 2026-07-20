@@ -1,0 +1,18 @@
+rules:
+  - id: rust-certificate-validation-override
+    message: Certificate validation override detected - breaks trust chain
+    severity: ERROR
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: $BUILDER.danger_accept_invalid_certs(true)
+          - pattern: $BUILDER.danger_accept_invalid_hostnames(true)
+          - pattern: |
+              $CONFIG.dangerous()
+                .set_certificate_verifier($VERIFIER)
+          - pattern: rustls::client::DangerousClientConfig::set_certificate_verifier($VERIFIER)
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Certificate validation override breaks trust chain and enables MITM attacks

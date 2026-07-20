@@ -1,0 +1,17 @@
+rules:
+  - id: typescript-pqc-pki-infrastructure
+    message: PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: new crypto.X509Certificate($DATA)
+          - pattern: $CERT.checkIssued($ISSUER)
+          - pattern: $CERT.verify($PUBLIC_KEY)
+          - pattern: forge.pki.certificateFromPem($PEM)
+          - pattern: forge.pki.certificationRequestFromPem($PEM)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: PKI infrastructure usage documented - verify certificate authorities and systems support hybrid or PQC certificates

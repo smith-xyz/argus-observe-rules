@@ -1,0 +1,18 @@
+rules:
+  - id: csharp-pqc-message-signing
+    message: "Message signing operations detected - evaluate PQC signature algorithm support capability"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: $RSA.SignData($DATA, $HASH, $PADDING)
+          - pattern: $RSA.VerifyData($DATA, $SIGNATURE, $HASH, $PADDING)
+          - pattern: $ECDSA.SignData($DATA, $HASH)
+          - pattern: $ECDSA.VerifyData($DATA, $SIGNATURE, $HASH)
+          - pattern: new JsonWebSignatureHandler()
+          - pattern: $JWS.CreateToken($DESCRIPTOR)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "Message signing mechanisms documented - verify signing libraries support hybrid or PQC signature algorithms"

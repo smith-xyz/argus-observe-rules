@@ -96,6 +96,8 @@ def run_semgrep_validate(
     except FileNotFoundError:
         typer.echo("Error: semgrep not found. Is it installed?", err=True)
         raise typer.Exit(1)
+    except (typer.Exit, SystemExit):
+        raise
     except Exception as e:
         typer.echo(f"Unexpected error: {e}", err=True)
         if verbose:
@@ -442,7 +444,7 @@ def test(
                 semgrep_cli, capture_output=True, text=True, check=False
             )
 
-            if result.returncode != 0:
+            if result.returncode not in (0, 2) or not result.stdout.strip():
                 typer.echo(
                     f"Semgrep failed with return code {result.returncode}", err=True
                 )
@@ -450,6 +452,9 @@ def test(
                     typer.echo(f"Command: {' '.join(semgrep_cli)}", err=True)
                 typer.echo(result.stderr, err=True)
                 raise typer.Exit(1)
+
+            if result.returncode == 2 and verbose:
+                typer.echo("Semgrep returned exit code 2 (warnings present)", err=True)
 
             semgrep_output = json.loads(result.stdout)
             findings = semgrep_output.get("results", [])
@@ -501,6 +506,8 @@ def test(
             if verbose:
                 typer.echo(f"Semgrep stdout: {result.stdout[:500]}", err=True)
             raise typer.Exit(1)
+        except (typer.Exit, SystemExit):
+            raise
         except Exception as e:
             typer.echo(f"Unexpected error: {e}", err=True)
             if verbose:

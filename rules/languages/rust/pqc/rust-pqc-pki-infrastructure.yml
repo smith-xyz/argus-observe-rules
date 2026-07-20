@@ -1,0 +1,19 @@
+rules:
+  - id: rust-pqc-pki-infrastructure
+    message: PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: rcgen::CertificateParams::default()
+          - pattern: rcgen::generate_simple_self_signed($SUBJECT)
+          - pattern: $PARAMS.self_signed($KEY)
+          - pattern: x509_parser::parse_x509_certificate($DATA)
+          - pattern: x509_parser::parse_x509_pem($DATA)
+          - pattern: $CERT.public_key()
+          - pattern: $CERT.validity()
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: PKI infrastructure usage documented - verify certificate authorities and systems support hybrid or PQC certificates

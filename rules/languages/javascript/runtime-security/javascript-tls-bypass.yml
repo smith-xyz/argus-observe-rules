@@ -1,0 +1,16 @@
+rules:
+  - id: javascript-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: "rejectUnauthorized: false"
+          - pattern: process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+          - pattern: $AGENT.options.rejectUnauthorized = false
+          - pattern: "axios.get($URL, { httpsAgent: $AGENT })"
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

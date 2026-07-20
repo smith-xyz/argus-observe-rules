@@ -1,0 +1,21 @@
+rules:
+  - id: python-pqc-ssh-client
+    message: SSH client configuration detected - evaluate PQC SSH algorithm support readiness
+    severity: INFO
+    languages:
+      - python
+    patterns:
+      - pattern-either:
+          - pattern: paramiko.SSHClient()
+          - pattern: |
+              $CLIENT = paramiko.SSHClient()
+              ...
+              $CLIENT.connect($HOSTNAME, ...)
+          - pattern: $CLIENT.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+          - pattern: $CLIENT.set_missing_host_key_policy(paramiko.RejectPolicy())
+          - pattern: paramiko.RSAKey.from_private_key_file($PATH)
+          - pattern: paramiko.ECDSAKey.from_private_key_file($PATH)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: SSH client configuration documented - verify SSH library supports hybrid or PQC key exchange and authentication algorithms

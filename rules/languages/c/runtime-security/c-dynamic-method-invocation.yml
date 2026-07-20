@@ -1,0 +1,17 @@
+rules:
+  - id: c-dynamic-method-invocation
+    message: Dynamic method invocation patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: $FN = ($TYPE)dlsym($HANDLE, $SYM)
+          - pattern: |
+              $FN = ($TYPE)dlsym($HANDLE, $SYM)
+              ...
+              $FN($ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Dynamic method calls can bypass authentication, authorization, and input validation

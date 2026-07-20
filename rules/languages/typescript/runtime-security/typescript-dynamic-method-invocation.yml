@@ -1,0 +1,17 @@
+rules:
+  - id: typescript-dynamic-method-invocation
+    message: Dynamic method invocation patterns detected - landscape mapping
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: $OBJ[$METHOD]($...ARGS)
+          - pattern: |
+              $FN = $OBJ[$METHOD]
+              ...
+              $FN($...ARGS)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Dynamic method calls can bypass authentication, authorization, and input validation

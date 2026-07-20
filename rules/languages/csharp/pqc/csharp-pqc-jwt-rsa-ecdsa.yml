@@ -1,0 +1,21 @@
+rules:
+  - id: csharp-pqc-jwt-rsa-ecdsa
+    message: "JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness"
+    severity: INFO
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: SecurityAlgorithms.RsaSha256
+          - pattern: SecurityAlgorithms.RsaSha384
+          - pattern: SecurityAlgorithms.RsaSha512
+          - pattern: SecurityAlgorithms.EcdsaSha256
+          - pattern: SecurityAlgorithms.EcdsaSha384
+          - pattern: SecurityAlgorithms.EcdsaSha512
+          - pattern: SecurityAlgorithms.RsaSsaPssSha256
+          - pattern: SigningCredentials($KEY, SecurityAlgorithms.RsaSha256)
+          - pattern: SigningCredentials($KEY, SecurityAlgorithms.EcdsaSha256)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "JWT signature algorithms catalogued - verify JWT library supports hybrid or PQC signature methods"

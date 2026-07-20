@@ -1,0 +1,15 @@
+rules:
+  - id: java-reflection-structural-manipulation
+    message: "Reflection structural manipulation detected - landscape mapping"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $FIELD.setAccessible(true)
+          - pattern: $FIELD.set($OBJ, $VALUE)
+          - pattern: $METHOD.setAccessible(true)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety

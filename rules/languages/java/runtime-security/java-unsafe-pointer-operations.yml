@@ -1,0 +1,17 @@
+rules:
+  - id: java-unsafe-pointer-operations
+    message: "Unsafe memory operations detected - landscape mapping"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: sun.misc.Unsafe.getUnsafe()
+          - pattern: $UNSAFE.allocateMemory($SIZE)
+          - pattern: $UNSAFE.copyMemory($SRC, $DEST, $SIZE)
+          - pattern: ByteBuffer.allocateDirect($SIZE)
+          - pattern: $BUFFER.getLong($INDEX)
+    metadata:
+      category: memory_safety
+      cwe: CWE-119
+      impact: Unsafe memory operations can lead to memory corruption

@@ -1,0 +1,21 @@
+rules:
+  - id: csharp-tls-bypass
+    message: "TLS security bypass detected - compromises transport security"
+    severity: ERROR
+    languages:
+      - csharp
+    patterns:
+      - pattern-either:
+          - pattern: ServicePointManager.ServerCertificateValidationCallback = $CALLBACK
+          - pattern: |
+              ServicePointManager.ServerCertificateValidationCallback =
+                delegate { return true; };
+          - pattern: |
+              $HANDLER.ServerCertificateCustomValidationCallback =
+                ($REQUEST, $CERT, $CHAIN, $ERRORS) => true;
+          - pattern: HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+          - pattern: $HANDLER.ServerCertificateCustomValidationCallback = $VALIDATOR
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

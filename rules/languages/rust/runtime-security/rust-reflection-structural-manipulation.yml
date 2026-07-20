@@ -1,0 +1,16 @@
+rules:
+  - id: rust-reflection-structural-manipulation
+    message: Reflection structural manipulation detected - landscape mapping
+    severity: INFO
+    languages:
+      - rust
+    patterns:
+      - pattern-either:
+          - pattern: std::mem::replace(&mut $TARGET, $VALUE)
+          - pattern: std::mem::swap(&mut $A, &mut $B)
+          - pattern: std::mem::take(&mut $TARGET)
+          - pattern: std::mem::forget($VALUE)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety

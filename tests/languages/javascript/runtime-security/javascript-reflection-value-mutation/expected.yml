@@ -1,0 +1,12 @@
+findings:
+  - file: test_code.js
+    line: 2
+    rule_id: javascript-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+  - file: test_code.js
+    line: 3
+    rule_id: javascript-reflection-value-mutation
+    message: "Reflection-based value mutation detected - landscape mapping"
+
+no_findings:
+  - negative_cases.js

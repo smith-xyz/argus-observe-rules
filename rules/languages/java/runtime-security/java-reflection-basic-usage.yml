@@ -1,0 +1,17 @@
+rules:
+  - id: java-reflection-basic-usage
+    message: "Basic reflection usage detected - mapping reflection landscape"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: $OBJ.getClass()
+          - pattern: Class.forName($NAME)
+          - pattern: $CLASS.getDeclaredMethod($NAME, $...ARGS)
+          - pattern: $CLASS.getField($NAME)
+          - pattern: $CLASS.getDeclaredField($NAME)
+    metadata:
+      category: reflection
+      cwe: CWE-200
+      impact: Basic reflection usage for landscape mapping

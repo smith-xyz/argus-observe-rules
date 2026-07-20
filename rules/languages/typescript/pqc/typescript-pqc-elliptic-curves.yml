@@ -1,0 +1,17 @@
+rules:
+  - id: typescript-pqc-elliptic-curves
+    message: Elliptic curve cryptography identified - catalog for PQC migration assessment
+    severity: INFO
+    languages:
+      - typescript
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createECDH($CURVE)
+          - pattern: crypto.generateKeyPair('ec', $OPTIONS, $CALLBACK)
+          - pattern: crypto.generateKeyPairSync('ed25519')
+          - pattern: crypto.sign(null, $DATA, $PRIVATE_KEY)
+          - pattern: crypto.verify(null, $DATA, $PUBLIC_KEY, $SIG)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution

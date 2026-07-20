@@ -1,0 +1,17 @@
+rules:
+  - id: c-pqc-elliptic-curves
+    message: Elliptic curve cryptography identified - catalog for PQC migration assessment
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: EC_KEY_new_by_curve_name($NID)
+          - pattern: EC_KEY_generate_key($KEY)
+          - pattern: ECDSA_sign($TYPE, $DIGEST, $LEN, $SIG, $SIGLEN, $KEY)
+          - pattern: ECDSA_verify($TYPE, $DIGEST, $LEN, $SIG, $SIGLEN, $KEY)
+          - pattern: EC_KEY_get0_group($KEY)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: Elliptic curve usage documented for PQC transition planning - verify system supports algorithm substitution

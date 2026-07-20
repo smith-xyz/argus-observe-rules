@@ -1,0 +1,16 @@
+rules:
+  - id: c-tls-bypass
+    message: TLS security bypass detected - compromises transport security
+    severity: ERROR
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_verify($CTX, SSL_VERIFY_NONE, $CB)
+          - pattern: SSL_set_verify($SSL, SSL_VERIFY_NONE, $CB)
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_SSL_VERIFYPEER, 0L)"
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_SSL_VERIFYHOST, 0L)"
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: TLS bypasses eliminate transport security and enable MITM attacks

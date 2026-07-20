@@ -1,0 +1,15 @@
+rules:
+  - id: c-certificate-validation-override
+    message: Certificate validation override detected - breaks trust chain
+    severity: ERROR
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: SSL_CTX_set_verify($CTX, SSL_VERIFY_NONE, $CB)
+          - pattern: SSL_CTX_set_cert_verify_callback($CTX, $CB, $ARG)
+          - pattern: "curl_easy_setopt($CURL, CURLOPT_SSL_VERIFYPEER, 0L)"
+    metadata:
+      category: tls_runtime_security
+      cwe: CWE-295
+      impact: Certificate validation override breaks trust chain and enables MITM attacks

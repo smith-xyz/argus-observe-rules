@@ -1,0 +1,15 @@
+rules:
+  - id: javascript-reflection-structural-manipulation
+    message: Reflection structural manipulation detected - landscape mapping
+    severity: INFO
+    languages:
+      - javascript
+    patterns:
+      - pattern-either:
+          - pattern: Reflect.set($OBJ, $KEY, $VALUE)
+          - pattern: Reflect.deleteProperty($OBJ, $KEY)
+          - pattern: Object.defineProperty($OBJ, $KEY, $DESC)
+    metadata:
+      category: reflection
+      cwe: CWE-470
+      impact: Runtime type manipulation can bypass compile-time safety

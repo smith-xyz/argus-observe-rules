@@ -1,0 +1,19 @@
+rules:
+  - id: java-pqc-pki-infrastructure
+    message: "PKI and X.509 certificate operations detected - evaluate hybrid certificate infrastructure readiness"
+    severity: INFO
+    languages:
+      - java
+    patterns:
+      - pattern-either:
+          - pattern: CertificateFactory.getInstance("X.509")
+          - pattern: $FACTORY.generateCertificate($STREAM)
+          - pattern: (X509Certificate) $CERT
+          - pattern: $CERT.getPublicKey()
+          - pattern: $CERT.verify($PUBLIC_KEY)
+          - pattern: CertPathValidator.getInstance("PKIX")
+          - pattern: $VALIDATOR.validate($PATH, $PARAMS)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: "PKI infrastructure usage documented - verify certificate authorities and systems support hybrid or PQC certificates"

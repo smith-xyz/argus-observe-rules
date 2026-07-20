@@ -1,0 +1,18 @@
+rules:
+  - id: c-pqc-jwt-rsa-ecdsa
+    message: JWT with RSA/ECDSA signatures detected - assess PQC signature algorithm support readiness
+    severity: INFO
+    languages:
+      - c
+    patterns:
+      - pattern-either:
+          - pattern: jwt_set_alg($JWT, JWT_ALG_RS256, $KEY, $LEN)
+          - pattern: jwt_set_alg($JWT, JWT_ALG_RS384, $KEY, $LEN)
+          - pattern: jwt_set_alg($JWT, JWT_ALG_RS512, $KEY, $LEN)
+          - pattern: jwt_set_alg($JWT, JWT_ALG_ES256, $KEY, $LEN)
+          - pattern: jwt_set_alg($JWT, JWT_ALG_ES384, $KEY, $LEN)
+          - pattern: jwt_set_alg($JWT, JWT_ALG_ES512, $KEY, $LEN)
+    metadata:
+      category: pqc_readiness
+      cwe: CWE-327
+      impact: JWT signature algorithms catalogued - verify JWT library supports hybrid or PQC signature methods
